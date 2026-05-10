@@ -138,6 +138,39 @@
   word-break: keep-all;
   line-height: 1.1;
 }
+
+    .sub-box {
+  display: none;
+  max-width: 900px;
+  margin: 18px auto 0;
+  padding: 14px;
+  background: #f3f4f6;
+  border-radius: 16px;
+  border: 1px solid #e5e7eb;
+}
+
+.sub-box.active {
+  display: block;
+}
+
+.sub-grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 10px;
+}
+
+.sub-item {
+  display: block;
+  padding: 12px 14px;
+  background: #000000;
+  color: #ffffff;
+  text-align: center;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 800;
+  border-radius: 10px;
+  border: 2px solid #5ffcff;
+}
     
    @media (min-width: 1024px) {
   .promotion-box {
@@ -168,9 +201,15 @@
 
   <nav class="menu">
   <button onclick="location.href='#intro'">들어가며</button>
-  <button onclick="location.href='#diamond-roadmap'">다이아 소모처 로드맵</button>
+  <button onclick="toggleDiamond()">다이아 소모처</button>
   <button onclick="togglePromotion()">승급</button>
 </nav>
+
+<section id="diamondBox" class="sub-box">
+  <div class="sub-grid">
+    <a href="#diamond-roadmap" class="sub-item">다이아 소모처 로드맵</a>
+  </div>
+</section>
 
 <section id="promotionBox" class="promotion-box">
   <div class="promotion-grid">
