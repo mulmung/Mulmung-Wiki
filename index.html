@@ -91,6 +91,38 @@
   border-radius: 16px;
   border: 1px solid #e5e7eb;
     }
+
+    .promotion-box {
+  display: none;
+  margin-top: 18px;
+  padding: 18px;
+  background: #f3f4f6;
+  border-radius: 16px;
+  border: 1px solid #e5e7eb;
+}
+
+.promotion-box.active {
+  display: block;
+}
+
+.promotion-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.promotion-item {
+  display: block;
+  padding: 13px 10px;
+  background: #ffffff;
+  color: #111111;
+  text-align: center;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 800;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+}
   </style>
 </head>
 
@@ -100,9 +132,40 @@
   </header>
 
   <nav class="menu">
-    <button onclick="location.href='#intro'">들어가며</button>
-    <button onclick="location.href='#diamond-roadmap'">다이아 소모처 로드맵</button>
-  </nav>
+  <button onclick="location.href='#intro'">들어가며</button>
+  <button onclick="location.href='#diamond-roadmap'">다이아 소모처 로드맵</button>
+  <button onclick="togglePromotion()">승급</button>
+</nav>
+
+<section id="promotionBox" class="promotion-box">
+  <div class="promotion-grid">
+    <a href="#stone" class="promotion-item">스톤</a>
+    <a href="#bronze" class="promotion-item">브론즈</a>
+    <a href="#iron" class="promotion-item">아이언</a>
+    <a href="#silver" class="promotion-item">실버</a>
+    <a href="#gold" class="promotion-item">골드</a>
+    <a href="#mithril" class="promotion-item">미스릴</a>
+    <a href="#orichalcon" class="promotion-item">오리하르콘</a>
+    <a href="#arcanite" class="promotion-item">아케이나이트</a>
+    <a href="#adamantite" class="promotion-item">아다만타이트</a>
+    <a href="#ether" class="promotion-item">에테르</a>
+    <a href="#black-mithril" class="promotion-item">블랙미스릴</a>
+    <a href="#demon-metal" class="promotion-item">데몬메탈</a>
+    <a href="#dragonog" class="promotion-item">드라고노그</a>
+    <a href="#ragnablood" class="promotion-item">라그나블러드</a>
+    <a href="#war-frost" class="promotion-item">워프로스트</a>
+    <a href="#dark-nox" class="promotion-item">다크녹스</a>
+    <a href="#blue-abyss" class="promotion-item">블루어비스</a>
+    <a href="#infinite" class="promotion-item">인피넌트</a>
+    <a href="#cyclos" class="promotion-item">사이클로스</a>
+    <a href="#egation-nine" class="promotion-item">에게이션트나인</a>
+    <a href="#giga-rock" class="promotion-item">기가로크</a>
+    <a href="#eisenhart" class="promotion-item">아이젠하르트</a>
+    <a href="#diamond-dust" class="promotion-item">다이아더스트</a>
+    <a href="#elden-wood" class="promotion-item">엘든우드</a>
+    <a href="#blitz-gold" class="promotion-item">블리츠골드</a>
+  </div>
+</section>
 
   <main class="content">
     <section id="intro" class="card">
@@ -147,5 +210,11 @@
   />
     </section>
   </main>
+  <script>
+  function togglePromotion() {
+    const box = document.getElementById("promotionBox");
+    box.classList.toggle("active");
+  }
+  </script>
 </body>
 </html>
