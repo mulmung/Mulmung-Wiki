@@ -46,8 +46,12 @@
     }
 
     .top-title {
+      border: none;
+      background: transparent;
+      color: #111827;
       font-size: 20px;
       font-weight: 900;
+      cursor: pointer;
     }
 
     .header {
@@ -473,7 +477,7 @@
 <body>
   <div class="top-bar">
     <button class="hamburger-btn" onclick="toggleSidebar()">☰</button>
-    <div class="top-title">물멍위키</div>
+    <button class="top-title" onclick="showSection('intro')">물멍위키</button>
   </div>
 
   <header class="header">
@@ -593,7 +597,7 @@
           <h2>클래스</h2>
 
           <button class="unlock-btn" onclick="openUnlockPopup('클래스', '250레벨 달성 / 120 스테이지')">
-  해금
+            해금
           </button>
           
           <p>추후 [클래스] 내용을 업데이트 할 예정입니다.</p>
@@ -684,7 +688,7 @@
           <h2>사역마</h2>
 
           <button class="unlock-btn" onclick="openUnlockPopup('사역마', '데몬메탈 승급 시')">
-  해금
+            해금
           </button>
           
           <p>추후 [사역마] 내용을 업데이트 할 예정입니다.</p>
@@ -694,7 +698,7 @@
           <h2>비스트</h2>
 
           <button class="unlock-btn" onclick="openUnlockPopup('비스트', '워프로스트 승급 시')">
-  해금
+            해금
           </button>
           
           <p>추후 [비스트] 내용을 업데이트 할 예정입니다.</p>
