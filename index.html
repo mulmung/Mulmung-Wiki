@@ -32,79 +32,82 @@
       height: auto;
     }
 
-    .menu-wrap {
+    .menu-area {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
+      padding: 20px 16px;
       background: #ffffff;
       border-bottom: 1px solid #e5e7eb;
-      padding: 20px 12px;
-    }
-
-    .menu-scroll {
-      display: flex;
-      gap: 10px;
       overflow-x: auto;
-      overflow-y: hidden;
       white-space: nowrap;
-      flex: 1;
-      scroll-behavior: smooth;
       -webkit-overflow-scrolling: touch;
     }
 
-    .menu-scroll::-webkit-scrollbar {
+    .menu-area::-webkit-scrollbar {
       display: none;
     }
 
-    .menu-button {
+    .top-menu-btn,
+    .home-btn,
+    .arrow-btn {
       flex: 0 0 auto;
       background: #000000;
       color: #ffffff;
       border: none;
       border-radius: 12px;
-      padding: 13px 22px;
-      font-size: 16px;
+      padding: 14px 22px;
+      font-size: 17px;
       font-weight: 800;
       cursor: pointer;
     }
 
-    .sub-button {
-      flex: 0 0 auto;
-      background: #6b7280;
-      color: #ffffff;
-      border: none;
-      border-radius: 12px;
-      padding: 13px 18px;
-      font-size: 15px;
-      font-weight: 800;
-      cursor: pointer;
-    }
-
-    .home-button {
-      flex: 0 0 auto;
-      background: #000000;
-      color: #ffffff;
-      border: 2px solid #63F4F1;
-      border-radius: 12px;
-      padding: 13px 18px;
-      font-size: 15px;
-      font-weight: 800;
-      cursor: pointer;
+    .home-btn {
+      display: none;
       margin-left: auto;
+      border: 2px solid #25f4f4;
     }
 
-    .arrow-button {
-      flex: 0 0 auto;
-      width: 38px;
-      height: 38px;
-      border-radius: 999px;
-      border: none;
-      background: #111111;
-      color: #ffffff;
-      font-size: 20px;
-      font-weight: 900;
-      cursor: pointer;
+    .arrow-btn {
+      width: 40px;
+      height: 40px;
+      padding: 0;
+      border-radius: 50%;
+      font-size: 22px;
       display: none;
+    }
+
+    .sub-menu-wrap {
+      display: none;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .sub-menu-scroll {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      white-space: nowrap;
+      -webkit-overflow-scrolling: touch;
+      scroll-behavior: smooth;
+    }
+
+    .sub-menu-scroll::-webkit-scrollbar {
+      display: none;
+    }
+
+    .sub-menu-btn {
+      flex: 0 0 auto;
+      background: #777777;
+      color: #ffffff;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 18px;
+      font-size: 15px;
+      font-weight: 800;
+      cursor: pointer;
     }
 
     .content {
@@ -113,17 +116,16 @@
       padding: 0 20px;
     }
 
-    .card {
+    .section {
       display: none;
+    }
+
+    .card {
       background: #ffffff;
       border-radius: 18px;
       padding: 28px;
       box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
       margin-bottom: 28px;
-    }
-
-    .card.active {
-      display: block;
     }
 
     .card h2 {
@@ -151,16 +153,36 @@
       border: 1px solid #e5e7eb;
     }
 
-    @media (min-width: 768px) {
-      .menu-wrap {
-        max-width: 1100px;
-        margin: 0 auto;
-        border-left: 1px solid #e5e7eb;
-        border-right: 1px solid #e5e7eb;
+    @media (max-width: 600px) {
+      .header {
+        padding: 34px 20px 26px;
       }
 
-      .arrow-button {
-        display: block;
+      .logo {
+        max-width: 300px;
+      }
+
+      .top-menu-btn,
+      .home-btn {
+        padding: 13px 18px;
+        font-size: 16px;
+      }
+
+      .sub-menu-btn {
+        padding: 11px 16px;
+        font-size: 14px;
+      }
+
+      .card {
+        padding: 24px;
+      }
+
+      .card h2 {
+        font-size: 26px;
+      }
+
+      .card p {
+        font-size: 16px;
       }
     }
   </style>
@@ -171,20 +193,60 @@
     <img src="logo.png" alt="물멍위키 로고" class="logo" />
   </header>
 
-  <nav class="menu-wrap">
-    <button class="arrow-button" onclick="scrollMenu(-260)">‹</button>
+  <nav class="menu-area">
+    <button id="introBtn" class="top-menu-btn" onclick="showTopMenu('intro')">들어가며</button>
+    <button id="diamondBtn" class="top-menu-btn" onclick="showTopMenu('diamond')">다이아 소모처</button>
+    <button id="promotionBtn" class="top-menu-btn" onclick="showTopMenu('promotion')">승급</button>
 
-    <div class="menu-scroll" id="menuScroll">
-      <button class="menu-button" onclick="openIntro()">들어가며</button>
-      <button class="menu-button" onclick="openDiamondMenu()">다이아 소모처</button>
-      <button class="menu-button" onclick="openPromotionMenu()">승급</button>
+    <div id="diamondSubMenu" class="sub-menu-wrap">
+      <button class="arrow-btn" onclick="scrollSubMenu('diamondScroll', -250)">‹</button>
+
+      <div id="diamondScroll" class="sub-menu-scroll">
+        <button class="sub-menu-btn" onclick="showSection('diamond-roadmap')">다이아 소모처 로드맵</button>
+      </div>
+
+      <button class="arrow-btn" onclick="scrollSubMenu('diamondScroll', 250)">›</button>
     </div>
 
-    <button class="arrow-button" onclick="scrollMenu(260)">›</button>
+    <div id="promotionSubMenu" class="sub-menu-wrap">
+      <button class="arrow-btn" onclick="scrollSubMenu('promotionScroll', -250)">‹</button>
+
+      <div id="promotionScroll" class="sub-menu-scroll">
+        <button class="sub-menu-btn" onclick="showSection('stone')">스톤</button>
+        <button class="sub-menu-btn" onclick="showSection('bronze')">브론즈</button>
+        <button class="sub-menu-btn" onclick="showSection('iron')">아이언</button>
+        <button class="sub-menu-btn" onclick="showSection('silver')">실버</button>
+        <button class="sub-menu-btn" onclick="showSection('gold')">골드</button>
+        <button class="sub-menu-btn" onclick="showSection('mithril')">미스릴</button>
+        <button class="sub-menu-btn" onclick="showSection('orichalcon')">오리하르콘</button>
+        <button class="sub-menu-btn" onclick="showSection('arcanite')">아케이나이트</button>
+        <button class="sub-menu-btn" onclick="showSection('adamantite')">아다만타이트</button>
+        <button class="sub-menu-btn" onclick="showSection('ether')">에테르</button>
+        <button class="sub-menu-btn" onclick="showSection('black-mithril')">블랙미스릴</button>
+        <button class="sub-menu-btn" onclick="showSection('demon-metal')">데몬메탈</button>
+        <button class="sub-menu-btn" onclick="showSection('dragonog')">드라고노그</button>
+        <button class="sub-menu-btn" onclick="showSection('ragnablood')">라그나블러드</button>
+        <button class="sub-menu-btn" onclick="showSection('war-frost')">워프로스트</button>
+        <button class="sub-menu-btn" onclick="showSection('dark-nox')">다크녹스</button>
+        <button class="sub-menu-btn" onclick="showSection('blue-abyss')">블루어비스</button>
+        <button class="sub-menu-btn" onclick="showSection('infinite')">인피넌트</button>
+        <button class="sub-menu-btn" onclick="showSection('cyclos')">사이클로스</button>
+        <button class="sub-menu-btn" onclick="showSection('egation-nine')">에게이션트나인</button>
+        <button class="sub-menu-btn" onclick="showSection('giga-rock')">기가로크</button>
+        <button class="sub-menu-btn" onclick="showSection('eisenhart')">아이젠하르트</button>
+        <button class="sub-menu-btn" onclick="showSection('diamond-dust')">다이아더스트</button>
+        <button class="sub-menu-btn" onclick="showSection('elden-wood')">엘든우드</button>
+        <button class="sub-menu-btn" onclick="showSection('blitz-gold')">블리츠골드</button>
+      </div>
+
+      <button class="arrow-btn" onclick="scrollSubMenu('promotionScroll', 250)">›</button>
+    </div>
+
+    <button id="homeBtn" class="home-btn" onclick="goHome()">홈으로</button>
   </nav>
 
   <main class="content">
-    <section id="intro" class="card">
+    <section id="intro" class="section card">
       <h2>들어가며</h2>
 
       <p>
@@ -210,147 +272,159 @@
       </p>
     </section>
 
-    <section id="diamond-roadmap" class="card">
+    <section id="diamond-roadmap" class="section card">
       <h2>다이아 소모처 로드맵</h2>
 
       <p>
         초보자들이 다이아를 어디에 먼저 사용해야 하는지 한눈에 볼 수 있도록 정리한 로드맵입니다.
+      </p>
+
+      <p>
         성장 초반에는 무기 소환, 악세 소환, 유물, 클래스, 정령, 오브 제작 등 여러 선택지가 있기 때문에
         순서를 참고하여 낭비 없이 성장하는 것을 목표로 합니다.
       </p>
 
-      <img 
-        src="diamond-roadmap.png" 
-        alt="다이아 소모처 로드맵" 
+      <img
+        src="diamond-roadmap.png"
+        alt="다이아 소모처 로드맵"
         class="roadmap-image"
       />
     </section>
 
-    <section id="promotion-detail" class="card">
-      <h2 id="promotion-title">승급</h2>
-      <p id="promotion-description">
-        선택한 승급의 세부 내용을 이곳에 정리할 예정입니다.
-      </p>
-    </section>
+    <section id="stone" class="section card"><h2>스톤</h2><p>스톤 승급 내용을 작성할 공간입니다.</p></section>
+    <section id="bronze" class="section card"><h2>브론즈</h2><p>브론즈 승급 내용을 작성할 공간입니다.</p></section>
+    <section id="iron" class="section card"><h2>아이언</h2><p>아이언 승급 내용을 작성할 공간입니다.</p></section>
+    <section id="silver" class="section card"><h2>실버</h2><p>실버 승급 내용을 작성할 공간입니다.</p></section>
+    <section id="gold" class="section card"><h2>골드</h2><p>골드 승급 내용을 작성할 공간입니다.</p></section>
+    <section id="mithril" class="section card"><h2>미스릴</h2><p>미스릴 승급 내용을 작성할 공간입니다.</p></section>
+    <section id="orichalcon" class="section card"><h2>오리하르콘</h2><p>오리하르콘 승급 내용을 작성할 공간입니다.</p></section>
+    <section id="arcanite" class="section card"><h2>아케이나이트</h2><p>아케이나이트 승급 내용을 작성할 공간입니다.</p></section>
+    <section id="adamantite" class="section card"><h2>아다만타이트</h2><p>아다만타이트 승급 내용을 작성할 공간입니다.</p></section>
+    <section id="ether" class="section card"><h2>에테르</h2><p>에테르 승급 내용을 작성할 공간입니다.</p></section>
+    <section id="black-mithril" class="section card"><h2>블랙미스릴</h2><p>블랙미스릴 승급 내용을 작성할 공간입니다.</p></section>
+    <section id="demon-metal" class="section card"><h2>데몬메탈</h2><p>데몬메탈 승급 내용을 작성할 공간입니다.</p></section>
+    <section id="dragonog" class="section card"><h2>드라고노그</h2><p>드라고노그 승급 내용을 작성할 공간입니다.</p></section>
+    <section id="ragnablood" class="section card"><h2>라그나블러드</h2><p>라그나블러드 승급 내용을 작성할 공간입니다.</p></section>
+    <section id="war-frost" class="section card"><h2>워프로스트</h2><p>워프로스트 승급 내용을 작성할 공간입니다.</p></section>
+    <section id="dark-nox" class="section card"><h2>다크녹스</h2><p>다크녹스 승급 내용을 작성할 공간입니다.</p></section>
+    <section id="blue-abyss" class="section card"><h2>블루어비스</h2><p>블루어비스 승급 내용을 작성할 공간입니다.</p></section>
+    <section id="infinite" class="section card"><h2>인피넌트</h2><p>인피넌트 승급 내용을 작성할 공간입니다.</p></section>
+    <section id="cyclos" class="section card"><h2>사이클로스</h2><p>사이클로스 승급 내용을 작성할 공간입니다.</p></section>
+    <section id="egation-nine" class="section card"><h2>에게이션트나인</h2><p>에게이션트나인 승급 내용을 작성할 공간입니다.</p></section>
+    <section id="giga-rock" class="section card"><h2>기가로크</h2><p>기가로크 승급 내용을 작성할 공간입니다.</p></section>
+    <section id="eisenhart" class="section card"><h2>아이젠하르트</h2><p>아이젠하르트 승급 내용을 작성할 공간입니다.</p></section>
+    <section id="diamond-dust" class="section card"><h2>다이아더스트</h2><p>다이아더스트 승급 내용을 작성할 공간입니다.</p></section>
+    <section id="elden-wood" class="section card"><h2>엘든우드</h2><p>엘든우드 승급 내용을 작성할 공간입니다.</p></section>
+    <section id="blitz-gold" class="section card"><h2>블리츠골드</h2><p>블리츠골드 승급 내용을 작성할 공간입니다.</p></section>
   </main>
 
   <script>
-    const menuScroll = document.getElementById("menuScroll");
+    let currentMenu = "home";
 
-    const homeMenu = `
-      <button class="menu-button" onclick="openIntro()">들어가며</button>
-      <button class="menu-button" onclick="openDiamondMenu()">다이아 소모처</button>
-      <button class="menu-button" onclick="openPromotionMenu()">승급</button>
-    `;
+    function showTopMenu(menuName) {
+      if (currentMenu === menuName) {
+        goHome();
+        return;
+      }
 
-    const introMenu = `
-      <button class="menu-button" onclick="openIntro()">들어가며</button>
-      <button class="home-button" onclick="goHome()">홈으로</button>
-    `;
+      currentMenu = menuName;
 
-    const diamondMenu = `
-      <button class="menu-button" onclick="openDiamondMenu()">다이아 소모처</button>
-      <button class="sub-button" onclick="showPage('diamond-roadmap')">다이아 소모처 로드맵</button>
-      <button class="home-button" onclick="goHome()">홈으로</button>
-    `;
-
-    const promotionMenu = `
-      <button class="menu-button" onclick="openPromotionMenu()">승급</button>
-      <button class="sub-button" onclick="showPromotion('스톤')">스톤</button>
-      <button class="sub-button" onclick="showPromotion('브론즈')">브론즈</button>
-      <button class="sub-button" onclick="showPromotion('아이언')">아이언</button>
-      <button class="sub-button" onclick="showPromotion('실버')">실버</button>
-      <button class="sub-button" onclick="showPromotion('골드')">골드</button>
-      <button class="sub-button" onclick="showPromotion('미스릴')">미스릴</button>
-      <button class="sub-button" onclick="showPromotion('오리하르콘')">오리하르콘</button>
-      <button class="sub-button" onclick="showPromotion('아케이나이트')">아케이나이트</button>
-      <button class="sub-button" onclick="showPromotion('아다만타이트')">아다만타이트</button>
-      <button class="sub-button" onclick="showPromotion('에테르')">에테르</button>
-      <button class="sub-button" onclick="showPromotion('블랙미스릴')">블랙미스릴</button>
-      <button class="sub-button" onclick="showPromotion('데몬메탈')">데몬메탈</button>
-      <button class="sub-button" onclick="showPromotion('드라고노그')">드라고노그</button>
-      <button class="sub-button" onclick="showPromotion('라그나블러드')">라그나블러드</button>
-      <button class="sub-button" onclick="showPromotion('워프로스트')">워프로스트</button>
-      <button class="sub-button" onclick="showPromotion('다크녹스')">다크녹스</button>
-      <button class="sub-button" onclick="showPromotion('블루어비스')">블루어비스</button>
-      <button class="sub-button" onclick="showPromotion('인피넌트')">인피넌트</button>
-      <button class="sub-button" onclick="showPromotion('사이클로스')">사이클로스</button>
-      <button class="sub-button" onclick="showPromotion('에게이션트나인')">에게이션트나인</button>
-      <button class="sub-button" onclick="showPromotion('기가로크')">기가로크</button>
-      <button class="sub-button" onclick="showPromotion('아이젠하르트')">아이젠하르트</button>
-      <button class="sub-button" onclick="showPromotion('다이아더스트')">다이아더스트</button>
-      <button class="sub-button" onclick="showPromotion('엘든우드')">엘든우드</button>
-      <button class="sub-button" onclick="showPromotion('블리츠골드')">블리츠골드</button>
-      <button class="home-button" onclick="goHome()">홈으로</button>
-    `;
-
-    function hidePages() {
-      const pages = document.querySelectorAll(".card");
-      pages.forEach(function(page) {
-        page.classList.remove("active");
+      document.querySelectorAll(".top-menu-btn").forEach(function(btn) {
+        btn.style.display = "none";
       });
+
+      document.querySelectorAll(".sub-menu-wrap").forEach(function(menu) {
+        menu.style.display = "none";
+      });
+
+      document.querySelectorAll(".section").forEach(function(section) {
+        section.style.display = "none";
+      });
+
+      document.querySelectorAll(".arrow-btn").forEach(function(btn) {
+        btn.style.display = "none";
+      });
+
+      const selectedBtn = document.getElementById(menuName + "Btn");
+      if (selectedBtn) {
+        selectedBtn.style.display = "inline-block";
+      }
+
+      const homeBtn = document.getElementById("homeBtn");
+      if (homeBtn) {
+        homeBtn.style.display = "inline-block";
+      }
+
+      if (menuName === "intro") {
+        showSection("intro");
+      }
+
+      if (menuName === "diamond") {
+        document.getElementById("diamondSubMenu").style.display = "flex";
+      }
+
+      if (menuName === "promotion") {
+        document.getElementById("promotionSubMenu").style.display = "flex";
+
+        document.querySelectorAll("#promotionSubMenu .arrow-btn").forEach(function(btn) {
+          btn.style.display = "block";
+        });
+      }
     }
 
-    function setMenu(menuHtml) {
-      menuScroll.innerHTML = menuHtml;
-      menuScroll.scrollLeft = 0;
+    function showSection(sectionId) {
+      document.querySelectorAll(".section").forEach(function(section) {
+        section.style.display = "none";
+      });
+
+      const targetSection = document.getElementById(sectionId);
+      if (targetSection) {
+        targetSection.style.display = "block";
+        targetSection.scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+      }
     }
 
     function goHome() {
-      setMenu(homeMenu);
-      hidePages();
+      currentMenu = "home";
+
+      document.querySelectorAll(".top-menu-btn").forEach(function(btn) {
+        btn.style.display = "inline-block";
+      });
+
+      document.querySelectorAll(".sub-menu-wrap").forEach(function(menu) {
+        menu.style.display = "none";
+      });
+
+      document.querySelectorAll(".section").forEach(function(section) {
+        section.style.display = "none";
+      });
+
+      document.querySelectorAll(".arrow-btn").forEach(function(btn) {
+        btn.style.display = "none";
+      });
+
+      const homeBtn = document.getElementById("homeBtn");
+      if (homeBtn) {
+        homeBtn.style.display = "none";
+      }
+
       window.scrollTo({
         top: 0,
         behavior: "smooth"
       });
     }
 
-    function openIntro() {
-      setMenu(introMenu);
-      showPage("intro");
-    }
-
-    function openDiamondMenu() {
-      setMenu(diamondMenu);
-      hidePages();
-    }
-
-    function openPromotionMenu() {
-      setMenu(promotionMenu);
-      hidePages();
-    }
-
-    function showPage(pageId) {
-      hidePages();
-
-      const page = document.getElementById(pageId);
-      page.classList.add("active");
-      page.scrollIntoView({
-        behavior: "smooth",
-        block: "start"
-      });
-    }
-
-    function showPromotion(name) {
-      hidePages();
-
-      document.getElementById("promotion-title").innerText = name;
-      document.getElementById("promotion-description").innerText =
-        name + " 승급 관련 내용은 앞으로 이곳에 정리할 예정입니다.";
-
-      const page = document.getElementById("promotion-detail");
-      page.classList.add("active");
-      page.scrollIntoView({
-        behavior: "smooth",
-        block: "start"
-      });
-    }
-
-    function scrollMenu(amount) {
-      menuScroll.scrollBy({
-        left: amount,
-        behavior: "smooth"
-      });
+    function scrollSubMenu(scrollId, amount) {
+      const scrollBox = document.getElementById(scrollId);
+      if (scrollBox) {
+        scrollBox.scrollBy({
+          left: amount,
+          behavior: "smooth"
+        });
+      }
     }
   </script>
 </body>
