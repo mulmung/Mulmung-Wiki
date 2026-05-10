@@ -19,23 +19,53 @@
     }
 
     header {
-      background: linear-gradient(135deg, #0f5fff, #38bdf8);
-      color: white;
-      padding: 56px 20px 48px;
+      background: #ffffff;
+      color: #111827;
+      padding: 48px 20px 42px;
       text-align: center;
+      border-bottom: 1px solid #e5efff;
     }
 
-    header h1 {
-      font-size: 42px;
-      margin-bottom: 12px;
-      letter-spacing: -1px;
+    .main-logo {
+      width: min(92%, 620px);
+      height: auto;
+      display: block;
+      margin: 0 auto 26px;
     }
 
-    header p {
-      font-size: 17px;
+    .main-subtitle {
+      font-size: 18px;
       max-width: 720px;
       margin: 0 auto;
-      opacity: 0.95;
+      color: #374151;
+      font-weight: 600;
+    }
+
+    .hero-buttons {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      max-width: 720px;
+      margin: 28px auto 0;
+    }
+
+    .button {
+      display: block;
+      text-align: center;
+      background: #0f5fff;
+      color: white;
+      padding: 15px 18px;
+      border-radius: 16px;
+      text-decoration: none;
+      font-weight: 900;
+      font-size: 17px;
+      box-shadow: 0 8px 18px rgba(15, 95, 255, 0.18);
+    }
+
+    .button.gold {
+      background: #facc15;
+      color: #111827;
+      box-shadow: 0 8px 18px rgba(250, 204, 21, 0.28);
     }
 
     nav {
@@ -53,9 +83,9 @@
     nav a {
       color: #0f5fff;
       text-decoration: none;
-      font-weight: 700;
+      font-weight: 800;
       white-space: nowrap;
-      padding: 8px 12px;
+      padding: 8px 13px;
       border-radius: 999px;
       background: #eff6ff;
     }
@@ -86,27 +116,8 @@
       font-size: 18px;
     }
 
-    .hero-buttons {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 12px;
-      margin-top: 22px;
-    }
-
-    .button {
-      display: block;
-      text-align: center;
-      background: #0f5fff;
-      color: white;
-      padding: 14px 18px;
-      border-radius: 14px;
-      text-decoration: none;
-      font-weight: 800;
-    }
-
-    .button.gold {
-      background: #facc15;
-      color: #111827;
+    p {
+      margin-bottom: 10px;
     }
 
     .grid {
@@ -145,6 +156,14 @@
       color: #3f2f00;
     }
 
+    .update-box {
+      background: #eef6ff;
+      border-left: 5px solid #0f5fff;
+      padding: 16px;
+      border-radius: 14px;
+      margin-top: 14px;
+    }
+
     footer {
       text-align: center;
       color: #6b7280;
@@ -161,17 +180,18 @@
         grid-template-columns: repeat(2, 1fr);
       }
 
-      header h1 {
-        font-size: 54px;
+      header {
+        padding: 64px 20px 54px;
       }
     }
   </style>
 </head>
 <body>
   <header>
-    <h1>물멍위키</h1>
-    <p>
-      슬레이어 키우기를 처음 시작한 유저들이 성장 방향을 쉽게 잡을 수 있도록 정리한 물멍의 공략 홈페이지입니다.
+    <img class="main-logo" src="logo.png" alt="물멍위키 로고" />
+
+    <p class="main-subtitle">
+      물멍이 가꾸어 나가는 슬레이어 키우기 지식의 나무
     </p>
 
     <div class="hero-buttons">
@@ -199,12 +219,18 @@
       <p>
         복잡한 정보는 쉽게, 중요한 내용은 빠르게, 그리고 물멍식으로 조금 재밌게 정리하는 것을 목표로 합니다.
       </p>
+
+      <div class="update-box">
+        <strong>현재 버전:</strong> 물멍위키 v1 테스트 홈페이지<br />
+        <strong>추가 예정:</strong> 카페 공략글 정리, 초보자 질문, 장비 세팅, 스킬 조합, 승급 가이드
+      </div>
     </section>
 
     <section class="notice">
       <h2>공지</h2>
       <p>
-        현재 물멍위키는 첫 번째 테스트 버전입니다. 앞으로 카페 공략글, 초보자 질문, 장비 세팅, 스킬 조합 내용을 순서대로 추가할 예정입니다.
+        현재 물멍위키는 첫 번째 테스트 버전입니다.
+        앞으로 카페 공략글을 바탕으로 실제 공략 내용을 순서대로 추가할 예정입니다.
       </p>
     </section>
 
@@ -233,7 +259,8 @@
     <section id="start">
       <h2>초보자 가이드</h2>
       <p>
-        처음 시작했다면 모든 콘텐츠를 한 번에 이해하려고 하지 말고, 성장에 직접적으로 필요한 것부터 순서대로 따라오면 됩니다.
+        처음 시작했다면 모든 콘텐츠를 한 번에 이해하려고 하지 말고,
+        성장에 직접적으로 필요한 것부터 순서대로 따라오면 됩니다.
       </p>
       <ul>
         <li>먼저 기본 성장 구조를 이해합니다.</li>
