@@ -102,10 +102,10 @@
   border: 1px solid #e5e7eb;
     }
 
-    .promotion-box {
+.promotion-box {
   display: none;
-  margin-top: 18px;
-  padding: 18px;
+  margin-top: 0;
+  padding: 14px;
   background: #f3f4f6;
   border-radius: 16px;
   border: 1px solid #e5e7eb;
@@ -117,21 +117,26 @@
 
 .promotion-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
 }
 
 .promotion-item {
-  display: block;
-  padding: 13px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 8px 4px;
   background: #ffffff;
   color: #111111;
   text-align: center;
   text-decoration: none;
-  font-size: 15px;
+  font-size: 12px;
   font-weight: 800;
-  border-radius: 10px;
+  border-radius: 9px;
   border: 1px solid #d1d5db;
+  word-break: keep-all;
+  line-height: 1.2;
 }
   </style>
 </head>
