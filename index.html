@@ -32,108 +32,79 @@
       height: auto;
     }
 
-    .menu {
+    .menu-wrap {
       display: flex;
-      justify-content: flex-start;
-      gap: 12px;
+      align-items: center;
+      gap: 8px;
+      background: #ffffff;
+      border-bottom: 1px solid #e5e7eb;
+      padding: 20px 12px;
+    }
+
+    .menu-scroll {
+      display: flex;
+      gap: 10px;
       overflow-x: auto;
       overflow-y: hidden;
       white-space: nowrap;
-      padding: 24px 16px;
-      background: #ffffff;
-      border-bottom: 1px solid #e5e7eb;
-      scroll-snap-type: x mandatory;
+      flex: 1;
+      scroll-behavior: smooth;
       -webkit-overflow-scrolling: touch;
     }
 
-    .menu::-webkit-scrollbar {
+    .menu-scroll::-webkit-scrollbar {
       display: none;
     }
 
-    .menu button {
+    .menu-button {
       flex: 0 0 auto;
       background: #000000;
       color: #ffffff;
       border: none;
       border-radius: 12px;
-      padding: 14px 24px;
-      font-size: 17px;
-      font-weight: 700;
+      padding: 13px 22px;
+      font-size: 16px;
+      font-weight: 800;
       cursor: pointer;
-      scroll-snap-align: start;
     }
 
-    .sub-box {
-      display: none;
-      max-width: 900px;
-      margin: 14px auto 0;
-      padding: 14px;
-      background: #f3f4f6;
-      border-radius: 16px;
-      border: 1px solid #e5e7eb;
-    }
-
-    .sub-box.active {
-      display: block;
-    }
-
-    .sub-grid {
-      display: grid;
-      grid-template-columns: repeat(1, 1fr);
-      gap: 10px;
-    }
-
-    .sub-item {
-      display: block;
-      padding: 12px 14px;
-      background: #000000;
+    .sub-button {
+      flex: 0 0 auto;
+      background: #6b7280;
       color: #ffffff;
-      text-align: center;
-      text-decoration: none;
+      border: none;
+      border-radius: 12px;
+      padding: 13px 18px;
       font-size: 15px;
       font-weight: 800;
-      border-radius: 10px;
-      border: 2px solid #63F4F1;
       cursor: pointer;
     }
 
-    .promotion-box {
-      display: none;
-      max-width: 1000px;
-      margin: 14px auto 0;
-      padding: 10px;
-      background: #f3f4f6;
-      border-radius: 16px;
-      border: 1px solid #e5e7eb;
-    }
-
-    .promotion-box.active {
-      display: block;
-    }
-
-    .promotion-grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 8px;
-    }
-
-    .promotion-item {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 34px;
-      padding: 6px 4px;
+    .home-button {
+      flex: 0 0 auto;
       background: #000000;
       color: #ffffff;
-      text-align: center;
-      text-decoration: none;
-      font-size: 11px;
-      font-weight: 800;
-      border-radius: 9px;
       border: 2px solid #63F4F1;
-      word-break: keep-all;
-      line-height: 1.1;
+      border-radius: 12px;
+      padding: 13px 18px;
+      font-size: 15px;
+      font-weight: 800;
       cursor: pointer;
+      margin-left: auto;
+    }
+
+    .arrow-button {
+      flex: 0 0 auto;
+      width: 38px;
+      height: 38px;
+      border-radius: 999px;
+      border: none;
+      background: #111111;
+      color: #ffffff;
+      font-size: 20px;
+      font-weight: 900;
+      cursor: pointer;
+      display: none;
     }
 
     .content {
@@ -143,11 +114,16 @@
     }
 
     .card {
+      display: none;
       background: #ffffff;
       border-radius: 18px;
       padding: 28px;
       box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
       margin-bottom: 28px;
+    }
+
+    .card.active {
+      display: block;
     }
 
     .card h2 {
@@ -165,14 +141,6 @@
       font-weight: 800;
     }
 
-    .page {
-      display: none;
-    }
-
-    .page.active {
-      display: block;
-    }
-
     .roadmap-image {
       width: 100%;
       max-width: 100%;
@@ -183,30 +151,18 @@
       border: 1px solid #e5e7eb;
     }
 
-    @media (min-width: 1024px) {
-      .promotion-box {
-        max-width: 1000px;
-        margin: 14px auto 0;
-        padding: 10px;
+    @media (min-width: 768px) {
+      .menu-wrap {
+        max-width: 1100px;
+        margin: 0 auto;
+        border-left: 1px solid #e5e7eb;
+        border-right: 1px solid #e5e7eb;
       }
 
-      .promotion-grid {
-        grid-template-columns: repeat(5, 1fr);
-        gap: 6px;
-      }
-
-      .promotion-item {
-        min-height: 34px;
-        padding: 5px 4px;
-        font-size: 11px;
-        line-height: 1.1;
+      .arrow-button {
+        display: block;
       }
     }
-
-    .selected-menu {
-  display: none;
-  justify-content: space-between;
-}
   </style>
 </head>
 
@@ -215,55 +171,20 @@
     <img src="logo.png" alt="물멍위키 로고" class="logo" />
   </header>
 
-  <nav class="menu" id="mainMenu">
-  <button onclick="openIntro()">들어가며</button>
-  <button onclick="openDiamond()">다이아 소모처</button>
-  <button onclick="openPromotion()">승급</button>
-</nav>
+  <nav class="menu-wrap">
+    <button class="arrow-button" onclick="scrollMenu(-260)">‹</button>
 
-<nav class="menu selected-menu" id="selectedMenu">
-  <button id="selectedMenuButton">들어가며</button>
-  <button onclick="goHome()">홈으로</button>
-</nav>
-
-  <section id="diamondBox" class="sub-box">
-    <div class="sub-grid">
-      <button class="sub-item" onclick="showPage('diamond-roadmap')">다이아 소모처 로드맵</button>
+    <div class="menu-scroll" id="menuScroll">
+      <button class="menu-button" onclick="openIntro()">들어가며</button>
+      <button class="menu-button" onclick="openDiamondMenu()">다이아 소모처</button>
+      <button class="menu-button" onclick="openPromotionMenu()">승급</button>
     </div>
-  </section>
 
-  <section id="promotionBox" class="promotion-box">
-    <div class="promotion-grid">
-      <button class="promotion-item" onclick="showPromotion('스톤')">스톤</button>
-      <button class="promotion-item" onclick="showPromotion('브론즈')">브론즈</button>
-      <button class="promotion-item" onclick="showPromotion('아이언')">아이언</button>
-      <button class="promotion-item" onclick="showPromotion('실버')">실버</button>
-      <button class="promotion-item" onclick="showPromotion('골드')">골드</button>
-      <button class="promotion-item" onclick="showPromotion('미스릴')">미스릴</button>
-      <button class="promotion-item" onclick="showPromotion('오리하르콘')">오리하르콘</button>
-      <button class="promotion-item" onclick="showPromotion('아케이나이트')">아케이나이트</button>
-      <button class="promotion-item" onclick="showPromotion('아다만타이트')">아다만타이트</button>
-      <button class="promotion-item" onclick="showPromotion('에테르')">에테르</button>
-      <button class="promotion-item" onclick="showPromotion('블랙미스릴')">블랙미스릴</button>
-      <button class="promotion-item" onclick="showPromotion('데몬메탈')">데몬메탈</button>
-      <button class="promotion-item" onclick="showPromotion('드라고노그')">드라고노그</button>
-      <button class="promotion-item" onclick="showPromotion('라그나블러드')">라그나블러드</button>
-      <button class="promotion-item" onclick="showPromotion('워프로스트')">워프로스트</button>
-      <button class="promotion-item" onclick="showPromotion('다크녹스')">다크녹스</button>
-      <button class="promotion-item" onclick="showPromotion('블루어비스')">블루어비스</button>
-      <button class="promotion-item" onclick="showPromotion('인피넌트')">인피넌트</button>
-      <button class="promotion-item" onclick="showPromotion('사이클로스')">사이클로스</button>
-      <button class="promotion-item" onclick="showPromotion('에게이션트나인')">에게이션트나인</button>
-      <button class="promotion-item" onclick="showPromotion('기가로크')">기가로크</button>
-      <button class="promotion-item" onclick="showPromotion('아이젠하르트')">아이젠하르트</button>
-      <button class="promotion-item" onclick="showPromotion('다이아더스트')">다이아더스트</button>
-      <button class="promotion-item" onclick="showPromotion('엘든우드')">엘든우드</button>
-      <button class="promotion-item" onclick="showPromotion('블리츠골드')">블리츠골드</button>
-    </div>
-  </section>
+    <button class="arrow-button" onclick="scrollMenu(260)">›</button>
+  </nav>
 
   <main class="content">
-    <section id="intro" class="card page">
+    <section id="intro" class="card">
       <h2>들어가며</h2>
 
       <p>
@@ -289,7 +210,7 @@
       </p>
     </section>
 
-    <section id="diamond-roadmap" class="card page">
+    <section id="diamond-roadmap" class="card">
       <h2>다이아 소모처 로드맵</h2>
 
       <p>
@@ -305,9 +226,8 @@
       />
     </section>
 
-    <section id="promotion-detail" class="card page">
+    <section id="promotion-detail" class="card">
       <h2 id="promotion-title">승급</h2>
-
       <p id="promotion-description">
         선택한 승급의 세부 내용을 이곳에 정리할 예정입니다.
       </p>
@@ -315,81 +235,123 @@
   </main>
 
   <script>
-  function hideSubMenus() {
-    document.getElementById("diamondBox").classList.remove("active");
-    document.getElementById("promotionBox").classList.remove("active");
-  }
+    const menuScroll = document.getElementById("menuScroll");
 
-  function hidePages() {
-    const pages = document.querySelectorAll(".page");
-    pages.forEach(function(page) {
-      page.classList.remove("active");
-    });
-  }
+    const homeMenu = `
+      <button class="menu-button" onclick="openIntro()">들어가며</button>
+      <button class="menu-button" onclick="openDiamondMenu()">다이아 소모처</button>
+      <button class="menu-button" onclick="openPromotionMenu()">승급</button>
+    `;
 
-  function showSelectedMenu(name) {
-    document.getElementById("mainMenu").style.display = "none";
-    document.getElementById("selectedMenu").style.display = "flex";
-    document.getElementById("selectedMenuButton").innerText = name;
-  }
+    const introMenu = `
+      <button class="menu-button" onclick="openIntro()">들어가며</button>
+      <button class="home-button" onclick="goHome()">홈으로</button>
+    `;
 
-  function goHome() {
-    document.getElementById("mainMenu").style.display = "flex";
-    document.getElementById("selectedMenu").style.display = "none";
+    const diamondMenu = `
+      <button class="menu-button" onclick="openDiamondMenu()">다이아 소모처</button>
+      <button class="sub-button" onclick="showPage('diamond-roadmap')">다이아 소모처 로드맵</button>
+      <button class="home-button" onclick="goHome()">홈으로</button>
+    `;
 
-    hideSubMenus();
-    hidePages();
+    const promotionMenu = `
+      <button class="menu-button" onclick="openPromotionMenu()">승급</button>
+      <button class="sub-button" onclick="showPromotion('스톤')">스톤</button>
+      <button class="sub-button" onclick="showPromotion('브론즈')">브론즈</button>
+      <button class="sub-button" onclick="showPromotion('아이언')">아이언</button>
+      <button class="sub-button" onclick="showPromotion('실버')">실버</button>
+      <button class="sub-button" onclick="showPromotion('골드')">골드</button>
+      <button class="sub-button" onclick="showPromotion('미스릴')">미스릴</button>
+      <button class="sub-button" onclick="showPromotion('오리하르콘')">오리하르콘</button>
+      <button class="sub-button" onclick="showPromotion('아케이나이트')">아케이나이트</button>
+      <button class="sub-button" onclick="showPromotion('아다만타이트')">아다만타이트</button>
+      <button class="sub-button" onclick="showPromotion('에테르')">에테르</button>
+      <button class="sub-button" onclick="showPromotion('블랙미스릴')">블랙미스릴</button>
+      <button class="sub-button" onclick="showPromotion('데몬메탈')">데몬메탈</button>
+      <button class="sub-button" onclick="showPromotion('드라고노그')">드라고노그</button>
+      <button class="sub-button" onclick="showPromotion('라그나블러드')">라그나블러드</button>
+      <button class="sub-button" onclick="showPromotion('워프로스트')">워프로스트</button>
+      <button class="sub-button" onclick="showPromotion('다크녹스')">다크녹스</button>
+      <button class="sub-button" onclick="showPromotion('블루어비스')">블루어비스</button>
+      <button class="sub-button" onclick="showPromotion('인피넌트')">인피넌트</button>
+      <button class="sub-button" onclick="showPromotion('사이클로스')">사이클로스</button>
+      <button class="sub-button" onclick="showPromotion('에게이션트나인')">에게이션트나인</button>
+      <button class="sub-button" onclick="showPromotion('기가로크')">기가로크</button>
+      <button class="sub-button" onclick="showPromotion('아이젠하르트')">아이젠하르트</button>
+      <button class="sub-button" onclick="showPromotion('다이아더스트')">다이아더스트</button>
+      <button class="sub-button" onclick="showPromotion('엘든우드')">엘든우드</button>
+      <button class="sub-button" onclick="showPromotion('블리츠골드')">블리츠골드</button>
+      <button class="home-button" onclick="goHome()">홈으로</button>
+    `;
 
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth"
-    });
-  }
+    function hidePages() {
+      const pages = document.querySelectorAll(".card");
+      pages.forEach(function(page) {
+        page.classList.remove("active");
+      });
+    }
 
-  function openIntro() {
-    showSelectedMenu("들어가며");
-    hideSubMenus();
-    hidePages();
+    function setMenu(menuHtml) {
+      menuScroll.innerHTML = menuHtml;
+      menuScroll.scrollLeft = 0;
+    }
 
-    const page = document.getElementById("intro");
-    page.classList.add("active");
-    page.scrollIntoView({ behavior: "smooth", block: "start" });
-  }
+    function goHome() {
+      setMenu(homeMenu);
+      hidePages();
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    }
 
-  function openDiamond() {
-    showSelectedMenu("다이아 소모처");
-    document.getElementById("promotionBox").classList.remove("active");
-    document.getElementById("diamondBox").classList.add("active");
-    hidePages();
-  }
+    function openIntro() {
+      setMenu(introMenu);
+      showPage("intro");
+    }
 
-  function openPromotion() {
-    showSelectedMenu("승급");
-    document.getElementById("diamondBox").classList.remove("active");
-    document.getElementById("promotionBox").classList.add("active");
-    hidePages();
-  }
+    function openDiamondMenu() {
+      setMenu(diamondMenu);
+      hidePages();
+    }
 
-  function showPage(pageId) {
-    hidePages();
+    function openPromotionMenu() {
+      setMenu(promotionMenu);
+      hidePages();
+    }
 
-    const page = document.getElementById(pageId);
-    page.classList.add("active");
-    page.scrollIntoView({ behavior: "smooth", block: "start" });
-  }
+    function showPage(pageId) {
+      hidePages();
 
-  function showPromotion(name) {
-    hideSubMenus();
-    hidePages();
+      const page = document.getElementById(pageId);
+      page.classList.add("active");
+      page.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    }
 
-    document.getElementById("promotion-title").innerText = name;
-    document.getElementById("promotion-description").innerText =
-      name + " 승급 관련 내용은 앞으로 이곳에 정리할 예정입니다.";
+    function showPromotion(name) {
+      hidePages();
 
-    const page = document.getElementById("promotion-detail");
-    page.classList.add("active");
-    page.scrollIntoView({ behavior: "smooth", block: "start" });
-  }
-</script>
+      document.getElementById("promotion-title").innerText = name;
+      document.getElementById("promotion-description").innerText =
+        name + " 승급 관련 내용은 앞으로 이곳에 정리할 예정입니다.";
+
+      const page = document.getElementById("promotion-detail");
+      page.classList.add("active");
+      page.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    }
+
+    function scrollMenu(amount) {
+      menuScroll.scrollBy({
+        left: amount,
+        behavior: "smooth"
+      });
+    }
+  </script>
 </body>
 </html>
