@@ -72,9 +72,18 @@
     }
 
     .home-btn {
+      width: 54px;
+      height: 54px;
+      padding: 0;
+      border-radius: 12px;
       border: 2px solid #55ffff;
       box-shadow: 0 0 12px rgba(85, 255, 255, 0.7);
       margin-left: auto;
+      font-size: 28px;
+      line-height: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .sub-btn {
@@ -173,11 +182,18 @@
       }
 
       .main-btn,
-      .sub-btn,
-      .home-btn {
+      .sub-btn {
         padding: 12px 18px;
         font-size: 16px;
         border-radius: 14px;
+      }
+
+      .home-btn {
+        width: 46px;
+        height: 46px;
+        padding: 0;
+        font-size: 24px;
+        border-radius: 11px;
       }
 
       .arrow-btn {
@@ -216,7 +232,7 @@
 
     <div class="menu-scroll" id="menuScroll"></div>
 
-    <button class="home-btn" id="homeBtn" onclick="showHome()" style="display: none;">홈으로</button>
+    <button class="home-btn" id="homeBtn" onclick="showHome()" style="display: none;" aria-label="홈으로">⌂</button>
     <button class="arrow-btn" onclick="scrollMenu(1)">›</button>
   </nav>
 
@@ -369,7 +385,7 @@
       currentMainMenu = menuName;
 
       document.getElementById("menuArea").classList.add("menu-open");
-      document.getElementById("homeBtn").style.display = "block";
+      document.getElementById("homeBtn").style.display = "inline-flex";
 
       hideAllSections();
 
