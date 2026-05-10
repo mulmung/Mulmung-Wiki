@@ -36,7 +36,7 @@
       display: flex;
       align-items: center;
       gap: 14px;
-      padding: 16px 16px;
+      padding: 16px;
       background: #ffffff;
       border-bottom: 1px solid #e5e7eb;
       min-height: 86px;
@@ -177,42 +177,31 @@
       border: 1px solid #e5e7eb;
     }
 
-    .table-wrap {
-      width: 100%;
-      overflow-x: auto;
-      margin-top: 18px;
-    }
-
     .or-table {
       width: 100%;
       border-collapse: collapse;
+      margin-top: 20px;
       background: #ffffff;
-      font-size: 16px;
+      font-size: 18px;
+      font-weight: 800;
       text-align: center;
-      min-width: 620px;
     }
 
     .or-table th,
     .or-table td {
       border: 1px solid #d1d5db;
-      padding: 14px 12px;
-      vertical-align: middle;
+      padding: 16px 12px;
     }
 
     .or-table th {
-      font-size: 20px;
-      font-weight: 900;
-      background: #ffffff;
+      background: #000000;
+      color: #ffffff;
+      font-size: 24px;
     }
 
-    .or-table td {
-      font-weight: 700;
-    }
-
-    .or-table .total-cell {
+    .or-table .total {
       color: #ff0000;
       font-weight: 900;
-      font-size: 17px;
     }
 
     @media (max-width: 768px) {
@@ -226,7 +215,7 @@
 
       .menu-area {
         gap: 6px;
-        padding: 8px 8px;
+        padding: 8px;
         min-height: 58px;
       }
 
@@ -279,8 +268,7 @@
       }
 
       .or-table {
-        font-size: 14px;
-        min-width: 560px;
+        font-size: 13px;
       }
 
       .or-table th {
@@ -289,11 +277,7 @@
 
       .or-table th,
       .or-table td {
-        padding: 11px 8px;
-      }
-
-      .or-table .total-cell {
-        font-size: 15px;
+        padding: 11px 6px;
       }
     }
   </style>
@@ -456,47 +440,37 @@
           section.innerHTML = `
             <h2>오르</h2>
 
-            <p>
-              오르 제작에 필요한 재료를 정리한 표입니다.
-            </p>
+            <table class="or-table">
+              <tr>
+                <th colspan="3">오르</th>
+              </tr>
 
-            <div class="table-wrap">
-              <table class="or-table">
-                <thead>
-                  <tr>
-                    <th colspan="3">오르</th>
-                  </tr>
-                </thead>
+              <tr>
+                <td>신입 슬레이어</td>
+                <td>신화 1등급 무기 [1개]</td>
+                <td rowspan="5" class="total">총 신화 1등급 무기 5개</td>
+              </tr>
 
-                <tbody>
-                  <tr>
-                    <td>신입 슬레이어</td>
-                    <td>신화 1등급 무기 [1개]</td>
-                    <td class="total-cell" rowspan="5">총 신화 1등급 무기 5개</td>
-                  </tr>
+              <tr>
+                <td>중급 슬레이어</td>
+                <td>신화 1등급 무기 [1개]</td>
+              </tr>
 
-                  <tr>
-                    <td>중급 슬레이어</td>
-                    <td>신화 1등급 무기 [1개]</td>
-                  </tr>
+              <tr>
+                <td>스킬 마스터리</td>
+                <td>신화 1등급 무기 [1개]</td>
+              </tr>
 
-                  <tr>
-                    <td>스킬 마스터리</td>
-                    <td>신화 1등급 무기 [1개]</td>
-                  </tr>
+              <tr>
+                <td>무별 소환 레벨 6</td>
+                <td>신화 1등급 무기 [1개]</td>
+              </tr>
 
-                  <tr>
-                    <td>무별 소환 레벨 6</td>
-                    <td>신화 1등급 무기 [1개]</td>
-                  </tr>
-
-                  <tr>
-                    <td>악을 멸하는 검 패키지</td>
-                    <td>신화 1등급 무기 [1개]</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+              <tr>
+                <td>악을 멸하는 검 패키지</td>
+                <td>신화 1등급 무기 [1개]</td>
+              </tr>
+            </table>
           `;
         } else {
           section.innerHTML = `
