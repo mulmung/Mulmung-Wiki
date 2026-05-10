@@ -177,69 +177,125 @@
       border: 1px solid #e5e7eb;
     }
 
+    .table-wrap {
+      width: 100%;
+      overflow-x: auto;
+      margin-top: 18px;
+    }
+
+    .or-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #ffffff;
+      font-size: 16px;
+      text-align: center;
+      min-width: 620px;
+    }
+
+    .or-table th,
+    .or-table td {
+      border: 1px solid #d1d5db;
+      padding: 14px 12px;
+      vertical-align: middle;
+    }
+
+    .or-table th {
+      font-size: 20px;
+      font-weight: 900;
+      background: #ffffff;
+    }
+
+    .or-table td {
+      font-weight: 700;
+    }
+
+    .or-table .total-cell {
+      color: #ff0000;
+      font-weight: 900;
+      font-size: 17px;
+    }
+
     @media (max-width: 768px) {
-  .header {
-    padding: 42px 20px 34px;
-  }
+      .header {
+        padding: 42px 20px 34px;
+      }
 
-  .logo {
-    max-width: 260px;
-  }
+      .logo {
+        max-width: 260px;
+      }
 
-  .menu-area {
-    gap: 6px;
-    padding: 8px 8px;
-    min-height: 58px;
-  }
+      .menu-area {
+        gap: 6px;
+        padding: 8px 8px;
+        min-height: 58px;
+      }
 
-  .home-menu-scroll,
-  .sub-menu-scroll {
-    gap: 6px;
-  }
+      .home-menu-scroll,
+      .sub-menu-scroll {
+        gap: 6px;
+      }
 
-  .main-btn,
-  .selected-main-btn,
-  .sub-btn {
-    padding: 8px 12px;
-    font-size: 13px;
-    border-radius: 10px;
-  }
+      .main-btn,
+      .selected-main-btn,
+      .sub-btn {
+        padding: 8px 12px;
+        font-size: 13px;
+        border-radius: 10px;
+      }
 
-  .home-btn {
-    width: 36px;
-    height: 36px;
-    padding: 0;
-    font-size: 19px;
-    border-radius: 9px;
-  }
+      .home-btn {
+        width: 36px;
+        height: 36px;
+        padding: 0;
+        font-size: 19px;
+        border-radius: 9px;
+      }
 
-  .arrow-btn {
-    width: 32px;
-    height: 32px;
-    font-size: 17px;
-  }
+      .arrow-btn {
+        width: 32px;
+        height: 32px;
+        font-size: 17px;
+      }
 
-  .menu-divider {
-    height: 24px;
-  }
+      .menu-divider {
+        height: 24px;
+      }
 
-  .content {
-    margin: 20px auto;
-    padding: 0 14px;
-  }
+      .content {
+        margin: 20px auto;
+        padding: 0 14px;
+      }
 
-  .card {
-    padding: 22px;
-  }
+      .card {
+        padding: 22px;
+      }
 
-  .card h2 {
-    font-size: 24px;
-  }
+      .card h2 {
+        font-size: 24px;
+      }
 
-  .card p {
-    font-size: 16px;
-  }
-}
+      .card p {
+        font-size: 16px;
+      }
+
+      .or-table {
+        font-size: 14px;
+        min-width: 560px;
+      }
+
+      .or-table th {
+        font-size: 18px;
+      }
+
+      .or-table th,
+      .or-table td {
+        padding: 11px 8px;
+      }
+
+      .or-table .total-cell {
+        font-size: 15px;
+      }
+    }
   </style>
 </head>
 
@@ -396,10 +452,58 @@
         section.id = id;
         section.className = "card";
 
-        section.innerHTML = `
-          <h2>${name}</h2>
-          <p>추후 [${name}] 내용을 업데이트 할 예정입니다.</p>
-        `;
+        if (id === "diamond-or") {
+          section.innerHTML = `
+            <h2>오르</h2>
+
+            <p>
+              오르 제작에 필요한 재료를 정리한 표입니다.
+            </p>
+
+            <div class="table-wrap">
+              <table class="or-table">
+                <thead>
+                  <tr>
+                    <th colspan="3">오르</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr>
+                    <td>신입 슬레이어</td>
+                    <td>신화 1등급 무기 [1개]</td>
+                    <td class="total-cell" rowspan="5">총 신화 1등급 무기 5개</td>
+                  </tr>
+
+                  <tr>
+                    <td>중급 슬레이어</td>
+                    <td>신화 1등급 무기 [1개]</td>
+                  </tr>
+
+                  <tr>
+                    <td>스킬 마스터리</td>
+                    <td>신화 1등급 무기 [1개]</td>
+                  </tr>
+
+                  <tr>
+                    <td>무별 소환 레벨 6</td>
+                    <td>신화 1등급 무기 [1개]</td>
+                  </tr>
+
+                  <tr>
+                    <td>악을 멸하는 검 패키지</td>
+                    <td>신화 1등급 무기 [1개]</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          `;
+        } else {
+          section.innerHTML = `
+            <h2>${name}</h2>
+            <p>추후 [${name}] 내용을 업데이트 할 예정입니다.</p>
+          `;
+        }
 
         content.appendChild(section);
       });
