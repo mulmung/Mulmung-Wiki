@@ -19,17 +19,40 @@
       line-height: 1.6;
     }
 
-    .hidden {
-      display: none !important;
+    .top-bar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      height: 62px;
+      padding: 0 18px;
+      background: #ffffff;
+      border-bottom: 1px solid #e5e7eb;
     }
 
-    .visible-flex {
-      display: flex !important;
+    .hamburger-btn {
+      width: 42px;
+      height: 42px;
+      border: none;
+      border-radius: 12px;
+      background: #000000;
+      color: #ffffff;
+      font-size: 24px;
+      font-weight: 900;
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    .top-title {
+      font-size: 20px;
+      font-weight: 900;
     }
 
     .header {
       background: #ffffff;
-      padding: 52px 20px 48px;
+      padding: 58px 20px 52px;
       text-align: center;
       border-bottom: 1px solid #e5e7eb;
     }
@@ -40,110 +63,92 @@
       height: auto;
     }
 
-    .menu-area {
+    .layout {
       display: flex;
-      align-items: center;
-      gap: 10px;
-      min-height: 92px;
-      padding: 18px 16px;
-      background: #ffffff;
-      border-bottom: 1px solid #e5e7eb;
-      overflow: hidden;
+      max-width: 1280px;
+      margin: 0 auto;
     }
 
-    .home-menu-scroll,
-    .sub-menu-scroll {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      overflow-x: auto;
-      overflow-y: hidden;
-      white-space: nowrap;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
+    .sidebar {
+      width: 280px;
+      flex: 0 0 280px;
+      min-height: calc(100vh - 62px);
+      padding: 18px;
+      background: #202326;
+      border-right: 1px solid #111827;
     }
 
-    .home-menu-scroll {
+    .sidebar-title {
+      color: #ffffff;
+      font-size: 18px;
+      font-weight: 900;
+      margin-bottom: 16px;
+    }
+
+    .menu-group {
+      margin-bottom: 10px;
+    }
+
+    .menu-btn,
+    .sub-menu-btn {
       width: 100%;
-    }
-
-    .sub-menu-scroll {
-      flex: 1;
-    }
-
-    .home-menu-scroll::-webkit-scrollbar,
-    .sub-menu-scroll::-webkit-scrollbar {
-      display: none;
-    }
-
-    .main-btn,
-    .selected-main-btn,
-    .sub-btn,
-    .home-btn,
-    .arrow-btn {
-      flex: 0 0 auto;
       border: none;
       cursor: pointer;
+      text-align: left;
       font-weight: 800;
-      white-space: nowrap;
     }
 
-    .main-btn,
-    .selected-main-btn,
-    .home-btn {
+    .menu-btn {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 14px;
+      border-radius: 12px;
       background: #000000;
       color: #ffffff;
-      border-radius: 12px;
-      padding: 14px 24px;
-      font-size: 17px;
-    }
-
-    .home-btn {
-      width: 54px;
-      height: 54px;
-      padding: 0;
-      align-items: center;
-      justify-content: center;
-      border: 2px solid #55f7f7;
-      box-shadow: 0 0 12px rgba(85, 247, 247, 0.6);
-    }
-
-    .home-btn svg {
-      width: 25px;
-      height: 25px;
-      fill: #ffffff;
-    }
-
-    .sub-btn {
-      background: #808080;
-      color: #ffffff;
-      border-radius: 12px;
-      padding: 13px 22px;
       font-size: 16px;
     }
 
-    .arrow-btn {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      background: #000000;
-      color: #ffffff;
-      font-size: 30px;
-      line-height: 1;
+    .menu-btn.active {
+      border: 2px solid #55ffff;
+      box-shadow: 0 0 10px rgba(85, 255, 255, 0.55);
     }
 
-    .menu-divider {
-      flex: 0 0 auto;
-      width: 2px;
-      height: 38px;
-      background: #d1d5db;
-      border-radius: 99px;
+    .sub-menu {
+      display: none;
+      margin-top: 8px;
+      padding-left: 12px;
+      border-left: 2px solid #55ffff;
+    }
+
+    .sub-menu.open {
+      display: block;
+    }
+
+    .sub-menu-btn {
+      display: block;
+      margin: 7px 0;
+      padding: 11px 12px;
+      border-radius: 10px;
+      background: #3a3d40;
+      color: #ffffff;
+      font-size: 14px;
+    }
+
+    .sub-menu-btn:hover,
+    .menu-btn:hover {
+      opacity: 0.88;
+    }
+
+    .overlay {
+      display: none;
     }
 
     .content {
-      max-width: 900px;
+      flex: 1;
+      max-width: 920px;
       margin: 32px auto;
-      padding: 0 20px;
+      padding: 0 22px;
     }
 
     .card {
@@ -185,10 +190,6 @@
       border: 1px solid #e5e7eb;
     }
 
-    .skill-image + .skill-image {
-      margin-top: 18px;
-    }
-
     .guide-table-wrap {
       width: 100%;
       overflow-x: auto;
@@ -197,99 +198,101 @@
 
     .guide-table {
       width: 100%;
-      min-width: 620px;
       border-collapse: collapse;
-      text-align: center;
-      font-size: 17px;
-      font-weight: 700;
       background: #ffffff;
+      min-width: 640px;
     }
 
     .guide-table th,
     .guide-table td {
       border: 1px solid #d1d5db;
       padding: 14px 12px;
+      text-align: center;
+      font-size: 16px;
+      font-weight: 700;
+      vertical-align: middle;
     }
 
     .guide-table .table-title {
       background: #000000;
       color: #ffffff;
-      font-size: 22px;
+      font-size: 20px;
       font-weight: 900;
+      padding: 12px;
     }
 
     .guide-table .total-cell {
       color: #ff0000;
+      font-size: 17px;
       font-weight: 900;
-      font-size: 18px;
     }
 
     @media (max-width: 768px) {
+      .top-bar {
+        height: 52px;
+        padding: 0 12px;
+      }
+
+      .hamburger-btn {
+        width: 36px;
+        height: 36px;
+        font-size: 21px;
+        border-radius: 10px;
+      }
+
+      .top-title {
+        font-size: 17px;
+      }
+
       .header {
-        padding: 36px 18px 32px;
+        padding: 40px 20px 34px;
       }
 
       .logo {
         max-width: 260px;
       }
 
-      .menu-area {
-        min-height: 72px;
-        padding: 12px 10px;
-        gap: 7px;
+      .layout {
+        display: block;
       }
 
-      .home-menu-scroll,
-      .sub-menu-scroll {
-        gap: 8px;
+      .sidebar {
+        position: fixed;
+        top: 0;
+        left: -290px;
+        z-index: 2000;
+        width: 280px;
+        height: 100vh;
+        overflow-y: auto;
+        transition: left 0.25s ease;
       }
 
-      .main-btn,
-      .selected-main-btn {
-        border-radius: 10px;
-        padding: 10px 15px;
-        font-size: 14px;
+      .sidebar.open {
+        left: 0;
       }
 
-      .sub-btn {
-        border-radius: 10px;
-        padding: 10px 14px;
-        font-size: 14px;
+      .overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 1500;
+        background: rgba(0, 0, 0, 0.45);
       }
 
-      .home-btn {
-        width: 42px;
-        height: 42px;
-        border-radius: 10px;
-      }
-
-      .home-btn svg {
-        width: 20px;
-        height: 20px;
-      }
-
-      .arrow-btn {
-        width: 38px;
-        height: 38px;
-        font-size: 24px;
-      }
-
-      .menu-divider {
-        height: 30px;
+      .overlay.show {
+        display: block;
       }
 
       .content {
-        margin: 24px auto;
+        margin: 20px auto;
         padding: 0 14px;
       }
 
       .card {
         padding: 22px;
-        border-radius: 16px;
       }
 
       .card h2 {
-        font-size: 25px;
+        font-size: 24px;
       }
 
       .card p {
@@ -297,17 +300,17 @@
       }
 
       .guide-table {
-        font-size: 14px;
         min-width: 560px;
       }
 
       .guide-table th,
       .guide-table td {
-        padding: 11px 8px;
+        padding: 10px 8px;
+        font-size: 14px;
       }
 
       .guide-table .table-title {
-        font-size: 19px;
+        font-size: 17px;
       }
 
       .guide-table .total-cell {
@@ -318,182 +321,113 @@
 </head>
 
 <body>
+  <div class="top-bar">
+    <button class="hamburger-btn" onclick="toggleSidebar()">☰</button>
+    <div class="top-title">물멍위키</div>
+  </div>
+
   <header class="header">
     <img src="logo.png" alt="물멍위키 로고" class="logo" />
   </header>
 
-  <nav class="menu-area" id="menuArea">
-    <div class="home-menu-scroll" id="homeMenuScroll"></div>
+  <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
 
-    <button
-      class="selected-main-btn hidden"
-      id="selectedMainBtn"
-      onclick="selectedMainClick()"
-    ></button>
+  <div class="layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-title">메뉴</div>
 
-    <div class="menu-divider hidden" id="leftDivider"></div>
+      <div class="menu-group">
+        <button class="menu-btn" onclick="showSection('intro')">
+          들어가며
+        </button>
+      </div>
 
-    <button
-      class="arrow-btn hidden"
-      id="leftArrowBtn"
-      onclick="scrollSubMenu(-1)"
-    >‹</button>
+      <div class="menu-group">
+        <button class="menu-btn" onclick="toggleSubMenu('diamondMenu', this)">
+          다이아 소모처 <span>＋</span>
+        </button>
+        <div class="sub-menu" id="diamondMenu">
+          <button class="sub-menu-btn" onclick="showSection('diamond-roadmap')">다이아 소모처 로드맵</button>
+          <button class="sub-menu-btn" onclick="showSection('diamond-class')">클래스</button>
+          <button class="sub-menu-btn" onclick="showSection('diamond-spirit')">정령</button>
+          <button class="sub-menu-btn" onclick="showSection('diamond-or')">오르</button>
+          <button class="sub-menu-btn" onclick="showSection('diamond-orb')">오브</button>
+          <button class="sub-menu-btn" onclick="showSection('diamond-familiar')">사역마</button>
+          <button class="sub-menu-btn" onclick="showSection('diamond-beast')">비스트</button>
+        </div>
+      </div>
 
-    <div class="sub-menu-scroll hidden" id="subMenuScroll"></div>
+      <div class="menu-group">
+        <button class="menu-btn" onclick="toggleSubMenu('promotionMenu', this)">
+          승급 <span>＋</span>
+        </button>
+        <div class="sub-menu" id="promotionMenu"></div>
+      </div>
 
-    <button
-      class="arrow-btn hidden"
-      id="rightArrowBtn"
-      onclick="scrollSubMenu(1)"
-    >›</button>
+      <div class="menu-group">
+        <button class="menu-btn" onclick="toggleSubMenu('infoMenu', this)">
+          정보 <span>＋</span>
+        </button>
+        <div class="sub-menu" id="infoMenu">
+          <button class="sub-menu-btn" onclick="showSection('skill-learn')">스킬 배우기</button>
+        </div>
+      </div>
+    </aside>
 
-    <div class="menu-divider hidden" id="rightDivider"></div>
+    <main class="content" id="content">
+      <section id="intro" class="card active">
+        <h2>들어가며</h2>
 
-    <button
-      class="home-btn hidden"
-      id="homeBtn"
-      onclick="showHome()"
-      aria-label="홈으로"
-    >
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"></path>
-      </svg>
-    </button>
-  </nav>
+        <p>
+          제가 생각하기에 이 게임의 묘미는 바로 승급의 짜릿함과 사람들과의 소통인 것 같습니다.
+        </p>
 
-  <main class="content" id="content">
-    <section id="intro" class="card">
-      <h2>들어가며</h2>
+        <p>
+          여러 컨텐츠를 즐기며 강화, 합성, 각성을 해 승급을 하고,
+          여러 사람들과 즐거운 소통도 하면서 즐기고 있는 것 같네요 ^^;;
+        </p>
 
-      <p>
-        제가 생각하기에 이 게임의 묘미는 바로 승급의 짜릿함과 사람들과의 소통인 것 같습니다.
-      </p>
+        <p>
+          그리고 처음 시작하시는 분들이나 성장 방향이 고민되시는 분들도
+          조금 더 쉽고 재밌게 즐기실 수 있도록 저 물멍이 하나하나 함께 도와드리겠습니다.
+        </p>
 
-      <p>
-        여러 컨텐츠를 즐기며 강화, 합성, 각성을 해 승급을 하고,
-        여러 사람들과 즐거운 소통도 하면서 즐기고 있는 것 같네요 ^^;;
-      </p>
+        <p>
+          이렇게 재밌는 <strong>“슬레이어 키우기”</strong>
+        </p>
 
-      <p>
-        그리고 처음 시작하시는 분들이나 성장 방향이 고민되시는 분들도
-        조금 더 쉽고 재밌게 즐기실 수 있도록 저 물멍이 하나하나 함께 도와드리겠습니다.
-      </p>
+        <p>
+          <strong>저 물멍과 함께 제.대.로 즐겨보시겠습니까?</strong>
+        </p>
+      </section>
 
-      <p>
-        이렇게 재밌는 <strong>“슬레이어 키우기”</strong>
-      </p>
+      <section id="diamond-roadmap" class="card">
+        <h2>다이아 소모처 로드맵</h2>
 
-      <p>
-        <strong>저 물멍과 함께 제.대.로 즐겨보시겠습니까?</strong>
-      </p>
-    </section>
+        <p>
+          초보자들이 다이아를 어디에 먼저 사용해야 하는지 한눈에 볼 수 있도록 정리한 로드맵입니다.
+          성장 초반에는 무기 소환, 악세 소환, 유물, 클래스, 정령, 오브 제작 등 여러 선택지가 있기 때문에
+          순서를 참고하여 낭비 없이 성장하는 것을 목표로 합니다.
+        </p>
 
-    <section id="diamond-roadmap" class="card">
-      <h2>다이아 소모처 로드맵</h2>
+        <img
+          src="diamond-roadmap.png"
+          alt="다이아 소모처 로드맵"
+          class="roadmap-image"
+        />
+      </section>
 
-      <p>
-        초보자들이 다이아를 어디에 먼저 사용해야 하는지 한눈에 볼 수 있도록 정리한 로드맵입니다.
-        성장 초반에는 무기 소환, 악세 소환, 유물, 클래스, 정령, 오르, 오브, 사역마 등 여러 선택지가 있기 때문에
-        순서를 참고하여 낭비 없이 성장하는 것을 목표로 합니다.
-      </p>
+      <section id="diamond-class" class="card">
+        <h2>클래스</h2>
+        <p>추후 [클래스] 내용을 업데이트 할 예정입니다.</p>
+      </section>
 
-      <img
-        src="diamond-roadmap.png"
-        alt="다이아 소모처 로드맵"
-        class="roadmap-image"
-      />
-    </section>
+      <section id="diamond-spirit" class="card">
+        <h2>정령</h2>
+        <p>추후 [정령] 내용을 업데이트 할 예정입니다.</p>
+      </section>
 
-    <section id="skill-learning" class="card">
-      <h2>스킬 배우기</h2>
-
-      <p>
-        레벨 구간별로 어떤 속성 스킬을 배울 수 있는지 한눈에 확인할 수 있도록 정리한 표입니다.
-        아래 이미지는 순서대로 확인하면 됩니다.
-      </p>
-
-      <img
-        src="skill-learning-1.png"
-        alt="스킬 배우기 표 1"
-        class="skill-image"
-      />
-
-      <img
-        src="skill-learning-2.png"
-        alt="스킬 배우기 표 2"
-        class="skill-image"
-      />
-    </section>
-  </main>
-
-  <script>
-    let currentMainMenu = "home";
-
-    const diamondItems = [
-      ["diamond-class", "클래스"],
-      ["diamond-spirit", "정령"],
-      ["diamond-or", "오르"],
-      ["diamond-orb", "오브"],
-      ["diamond-familiar", "사역마"],
-      ["diamond-beast", "비스트"]
-    ];
-
-    const promotions = [
-      ["stone", "스톤"],
-      ["bronze", "브론즈"],
-      ["iron", "아이언"],
-      ["silver", "실버"],
-      ["gold", "골드"],
-      ["mithril", "미스릴"],
-      ["orichalcon", "오리하르콘"],
-      ["arcanite", "아케이나이트"],
-      ["adamantite", "아다만타이트"],
-      ["ether", "에테르"],
-      ["black-mithril", "블랙미스릴"],
-      ["demon-metal", "데몬메탈"],
-      ["dragonog", "드라고노그"],
-      ["ragnablood", "라그나블러드"],
-      ["war-frost", "워프로스트"],
-      ["dark-nox", "다크녹스"],
-      ["blue-abyss", "블루어비스"],
-      ["infinite", "인피넌트"],
-      ["cyclos", "사이클로스"],
-      ["egation-nine", "에게이션트나인"],
-      ["giga-rock", "기가로크"],
-      ["eisenhart", "아이젠하르트"],
-      ["diamond-dust", "다이아더스트"],
-      ["elden-wood", "엘든우드"],
-      ["blitz-gold", "블리츠골드"]
-    ];
-
-    const mainMenus = {
-      intro: "들어가며",
-      diamond: "다이아 소모처",
-      promotion: "승급",
-      info: "정보"
-    };
-
-    const subMenus = {
-      diamond: [
-        { text: "다이아 소모처 로드맵", target: "diamond-roadmap" },
-        ...diamondItems.map(([id, name]) => ({
-          text: name,
-          target: id
-        }))
-      ],
-
-      promotion: promotions.map(([id, name]) => ({
-        text: name,
-        target: id
-      })),
-
-      info: [
-        { text: "스킬 배우기", target: "skill-learning" }
-      ]
-    };
-
-    const diamondContent = {
-      "diamond-or": `
+      <section id="diamond-or" class="card">
         <h2>오르</h2>
 
         <div class="guide-table-wrap">
@@ -524,9 +458,9 @@
             </tr>
           </table>
         </div>
-      `,
+      </section>
 
-      "diamond-orb": `
+      <section id="diamond-orb" class="card">
         <h2>오브</h2>
 
         <div class="guide-table-wrap">
@@ -553,184 +487,141 @@
             </tr>
           </table>
         </div>
-      `
-    };
+      </section>
 
-    function createAutoSections() {
+      <section id="diamond-familiar" class="card">
+        <h2>사역마</h2>
+        <p>추후 [사역마] 내용을 업데이트 할 예정입니다.</p>
+      </section>
+
+      <section id="diamond-beast" class="card">
+        <h2>비스트</h2>
+        <p>추후 [비스트] 내용을 업데이트 할 예정입니다.</p>
+      </section>
+
+      <section id="skill-learn" class="card">
+        <h2>스킬 배우기</h2>
+
+        <p>
+          속성별 스킬을 레벨 순서대로 확인할 수 있도록 정리한 표입니다.
+        </p>
+
+        <img
+          src="skill-learn-1.png"
+          alt="스킬 배우기 표 1"
+          class="skill-image"
+        />
+
+        <img
+          src="skill-learn-2.png"
+          alt="스킬 배우기 표 2"
+          class="skill-image"
+        />
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const promotions = [
+      ["stone", "스톤"],
+      ["bronze", "브론즈"],
+      ["iron", "아이언"],
+      ["silver", "실버"],
+      ["gold", "골드"],
+      ["mithril", "미스릴"],
+      ["orichalcon", "오리하르콘"],
+      ["arcanite", "아케이나이트"],
+      ["adamantite", "아다만타이트"],
+      ["ether", "에테르"],
+      ["black-mithril", "블랙미스릴"],
+      ["demon-metal", "데몬메탈"],
+      ["dragonog", "드라고노그"],
+      ["ragnablood", "라그나블러드"],
+      ["war-frost", "워프로스트"],
+      ["dark-nox", "다크녹스"],
+      ["blue-abyss", "블루어비스"],
+      ["infinite", "인피넌트"],
+      ["cyclos", "사이클로스"],
+      ["egation-nine", "에게이션트나인"],
+      ["giga-rock", "기가로크"],
+      ["eisenhart", "아이젠하르트"],
+      ["diamond-dust", "다이아더스트"],
+      ["elden-wood", "엘든우드"],
+      ["blitz-gold", "블리츠골드"]
+    ];
+
+    function createPromotionMenuAndSections() {
+      const promotionMenu = document.getElementById("promotionMenu");
       const content = document.getElementById("content");
 
-      diamondItems.forEach(([id, name]) => {
-        if (document.getElementById(id)) return;
-
-        const section = document.createElement("section");
-        section.id = id;
-        section.className = "card";
-
-        if (diamondContent[id]) {
-          section.innerHTML = diamondContent[id];
-        } else {
-          section.innerHTML = `
-            <h2>${name}</h2>
-            <p>추후 [${name}] 내용을 업데이트 할 예정입니다.</p>
-          `;
-        }
-
-        content.appendChild(section);
-      });
-
       promotions.forEach(([id, name]) => {
-        if (document.getElementById(id)) return;
+        const button = document.createElement("button");
+        button.className = "sub-menu-btn";
+        button.textContent = name;
+        button.onclick = () => showSection(id);
+        promotionMenu.appendChild(button);
 
         const section = document.createElement("section");
         section.id = id;
         section.className = "card";
-
         section.innerHTML = `
           <h2>${name}</h2>
           <p>추후 [${name}] 승급의 내용을 업데이트 할 예정입니다.</p>
         `;
-
         content.appendChild(section);
       });
     }
 
-    function renderHomeMenu() {
-      const homeMenuScroll = document.getElementById("homeMenuScroll");
-      homeMenuScroll.innerHTML = "";
+    function toggleSidebar() {
+      document.getElementById("sidebar").classList.toggle("open");
+      document.getElementById("overlay").classList.toggle("show");
+    }
 
-      Object.entries(mainMenus).forEach(([id, name]) => {
-        const button = document.createElement("button");
-        button.className = "main-btn";
-        button.textContent = name;
-        button.onclick = () => openMainMenu(id);
+    function closeSidebar() {
+      document.getElementById("sidebar").classList.remove("open");
+      document.getElementById("overlay").classList.remove("show");
+    }
 
-        homeMenuScroll.appendChild(button);
+    function toggleSubMenu(menuId, button) {
+      const menu = document.getElementById(menuId);
+      const isOpen = menu.classList.contains("open");
+
+      document.querySelectorAll(".sub-menu").forEach(item => {
+        item.classList.remove("open");
       });
 
-      homeMenuScroll.scrollLeft = 0;
-    }
-
-    function renderSubMenu(menuName) {
-      const subMenuScroll = document.getElementById("subMenuScroll");
-      subMenuScroll.innerHTML = "";
-
-      const items = subMenus[menuName] || [];
-
-      items.forEach(item => {
-        const button = document.createElement("button");
-        button.className = "sub-btn";
-        button.textContent = item.text;
-        button.onclick = () => showSection(item.target);
-
-        subMenuScroll.appendChild(button);
+      document.querySelectorAll(".menu-btn").forEach(item => {
+        item.classList.remove("active");
       });
 
-      subMenuScroll.scrollLeft = 0;
-    }
-
-    function openMainMenu(menuName) {
-      if (currentMainMenu === menuName) {
-        showHome();
-        return;
+      if (!isOpen) {
+        menu.classList.add("open");
+        button.classList.add("active");
       }
-
-      currentMainMenu = menuName;
-      hideAllSections();
-
-      document.getElementById("homeMenuScroll").classList.add("hidden");
-
-      const selectedMainBtn = document.getElementById("selectedMainBtn");
-      selectedMainBtn.textContent = mainMenus[menuName];
-      selectedMainBtn.classList.remove("hidden");
-
-      document.getElementById("homeBtn").classList.remove("hidden");
-      document.getElementById("homeBtn").classList.add("visible-flex");
-
-      if (menuName === "intro") {
-        document.getElementById("leftDivider").classList.add("hidden");
-        document.getElementById("rightDivider").classList.add("hidden");
-
-        document.getElementById("leftArrowBtn").classList.add("hidden");
-        document.getElementById("rightArrowBtn").classList.add("hidden");
-        document.getElementById("subMenuScroll").classList.add("hidden");
-
-        showSection("intro");
-        return;
-      }
-
-      renderSubMenu(menuName);
-
-      document.getElementById("leftDivider").classList.remove("hidden");
-      document.getElementById("rightDivider").classList.remove("hidden");
-
-      document.getElementById("leftArrowBtn").classList.remove("hidden");
-      document.getElementById("rightArrowBtn").classList.remove("hidden");
-      document.getElementById("subMenuScroll").classList.remove("hidden");
-    }
-
-    function selectedMainClick() {
-      if (currentMainMenu !== "home") {
-        showHome();
-      }
-    }
-
-    function showHome() {
-      currentMainMenu = "home";
-
-      hideAllSections();
-
-      document.getElementById("homeMenuScroll").classList.remove("hidden");
-      document.getElementById("selectedMainBtn").classList.add("hidden");
-
-      document.getElementById("leftDivider").classList.add("hidden");
-      document.getElementById("rightDivider").classList.add("hidden");
-
-      document.getElementById("leftArrowBtn").classList.add("hidden");
-      document.getElementById("rightArrowBtn").classList.add("hidden");
-      document.getElementById("subMenuScroll").classList.add("hidden");
-
-      document.getElementById("homeBtn").classList.add("hidden");
-      document.getElementById("homeBtn").classList.remove("visible-flex");
-
-      renderHomeMenu();
-
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-      });
     }
 
     function showSection(sectionId) {
-      hideAllSections();
+      document.querySelectorAll(".card").forEach(section => {
+        section.classList.remove("active");
+      });
 
-      const section = document.getElementById(sectionId);
-      if (section) {
-        section.classList.add("active");
-        section.scrollIntoView({
-          behavior: "smooth",
-          block: "start"
+      const target = document.getElementById(sectionId);
+
+      if (target) {
+        target.classList.add("active");
+
+        window.scrollTo({
+          top: target.offsetTop - 70,
+          behavior: "smooth"
         });
+      }
+
+      if (window.innerWidth <= 768) {
+        closeSidebar();
       }
     }
 
-    function hideAllSections() {
-      const sections = document.querySelectorAll(".card");
-      sections.forEach(section => {
-        section.classList.remove("active");
-      });
-    }
-
-    function scrollSubMenu(direction) {
-      const subMenuScroll = document.getElementById("subMenuScroll");
-
-      subMenuScroll.scrollBy({
-        left: direction * 260,
-        behavior: "smooth"
-      });
-    }
-
-    createAutoSections();
-    renderHomeMenu();
+    createPromotionMenuAndSections();
   </script>
 </body>
 </html>
