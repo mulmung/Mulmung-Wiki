@@ -105,7 +105,7 @@
 .promotion-box {
   display: none;
   margin-top: 0;
-  padding: 14px;
+  padding: 10px;
   background: #f3f4f6;
   border-radius: 16px;
   border: 1px solid #e5e7eb;
@@ -125,18 +125,35 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 42px;
-  padding: 8px 4px;
+  min-height: 34px;
+  padding: 6px 4px;
   background: #000000;
-color: #ffffff;
+  color: #ffffff;
   text-align: center;
   text-decoration: none;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 800;
   border-radius: 9px;
-  border: 1px solid #63F4F1;
+  border: 2px solid #63F4F1;
   word-break: keep-all;
-  line-height: 1.2;
+  line-height: 1.1;
+}
+    
+    @media (min-width: 1024px) {
+  .promotion-box {
+    padding: 10px;
+  }
+
+  .promotion-grid {
+    gap: 6px;
+  }
+
+  .promotion-item {
+    min-height: 34px;
+    padding: 5px 4px;
+    font-size: 11px;
+    line-height: 1.1;
+  }
 }
   </style>
 </head>
