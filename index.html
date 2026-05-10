@@ -144,11 +144,30 @@
       display: none;
     }
 
-    .content {
+    .main-area {
       flex: 1;
       max-width: 920px;
-      margin: 32px auto;
+      margin: 0 auto;
       padding: 0 22px;
+    }
+
+    .breadcrumb {
+      margin: 28px 0 0;
+      font-size: 18px;
+      color: #374151;
+    }
+
+    .breadcrumb strong {
+      color: #000000;
+      font-weight: 900;
+    }
+
+    .breadcrumb span {
+      margin-left: 6px;
+    }
+
+    .content {
+      margin: 20px auto 32px;
     }
 
     .card {
@@ -188,6 +207,10 @@
       margin-top: 20px;
       border-radius: 16px;
       border: 1px solid #e5e7eb;
+    }
+
+    .skill-image + .skill-image {
+      margin-top: 18px;
     }
 
     .guide-table-wrap {
@@ -282,9 +305,17 @@
         display: block;
       }
 
-      .content {
-        margin: 20px auto;
+      .main-area {
         padding: 0 14px;
+      }
+
+      .breadcrumb {
+        margin: 20px 0 0;
+        font-size: 15px;
+      }
+
+      .content {
+        margin: 14px auto 24px;
       }
 
       .card {
@@ -346,6 +377,7 @@
         <button class="menu-btn" onclick="toggleSubMenu('diamondMenu', this)">
           다이아 소모처 <span>＋</span>
         </button>
+
         <div class="sub-menu" id="diamondMenu">
           <button class="sub-menu-btn" onclick="showSection('diamond-roadmap')">다이아 소모처 로드맵</button>
           <button class="sub-menu-btn" onclick="showSection('diamond-class')">클래스</button>
@@ -361,6 +393,7 @@
         <button class="menu-btn" onclick="toggleSubMenu('promotionMenu', this)">
           승급 <span>＋</span>
         </button>
+
         <div class="sub-menu" id="promotionMenu"></div>
       </div>
 
@@ -368,157 +401,171 @@
         <button class="menu-btn" onclick="toggleSubMenu('infoMenu', this)">
           정보 <span>＋</span>
         </button>
+
         <div class="sub-menu" id="infoMenu">
           <button class="sub-menu-btn" onclick="showSection('skill-learn')">스킬 배우기</button>
         </div>
       </div>
     </aside>
 
-    <main class="content" id="content">
-      <section id="intro" class="card active">
-        <h2>들어가며</h2>
+    <div class="main-area">
+      <div id="breadcrumb" class="breadcrumb"></div>
 
-        <p>
-          제가 생각하기에 이 게임의 묘미는 바로 승급의 짜릿함과 사람들과의 소통인 것 같습니다.
-        </p>
+      <main class="content" id="content">
+        <section id="intro" class="card active">
+          <h2>들어가며</h2>
 
-        <p>
-          여러 컨텐츠를 즐기며 강화, 합성, 각성을 해 승급을 하고,
-          여러 사람들과 즐거운 소통도 하면서 즐기고 있는 것 같네요 ^^;;
-        </p>
+          <p>
+            제가 생각하기에 이 게임의 묘미는 바로 승급의 짜릿함과 사람들과의 소통인 것 같습니다.
+          </p>
 
-        <p>
-          그리고 처음 시작하시는 분들이나 성장 방향이 고민되시는 분들도
-          조금 더 쉽고 재밌게 즐기실 수 있도록 저 물멍이 하나하나 함께 도와드리겠습니다.
-        </p>
+          <p>
+            여러 컨텐츠를 즐기며 강화, 합성, 각성을 해 승급을 하고,
+            여러 사람들과 즐거운 소통도 하면서 즐기고 있는 것 같네요 ^^;;
+          </p>
 
-        <p>
-          이렇게 재밌는 <strong>“슬레이어 키우기”</strong>
-        </p>
+          <p>
+            그리고 처음 시작하시는 분들이나 성장 방향이 고민되시는 분들도
+            조금 더 쉽고 재밌게 즐기실 수 있도록 저 물멍이 하나하나 함께 도와드리겠습니다.
+          </p>
 
-        <p>
-          <strong>저 물멍과 함께 제.대.로 즐겨보시겠습니까?</strong>
-        </p>
-      </section>
+          <p>
+            이렇게 재밌는 <strong>“슬레이어 키우기”</strong>
+          </p>
 
-      <section id="diamond-roadmap" class="card">
-        <h2>다이아 소모처 로드맵</h2>
+          <p>
+            <strong>저 물멍과 함께 제.대.로 즐겨보시겠습니까?</strong>
+          </p>
+        </section>
 
-        <p>
-          초보자들이 다이아를 어디에 먼저 사용해야 하는지 한눈에 볼 수 있도록 정리한 로드맵입니다.
-          성장 초반에는 무기 소환, 악세 소환, 유물, 클래스, 정령, 오브 제작 등 여러 선택지가 있기 때문에
-          순서를 참고하여 낭비 없이 성장하는 것을 목표로 합니다.
-        </p>
+        <section id="diamond-roadmap" class="card">
+          <h2>다이아 소모처 로드맵</h2>
 
-        <img
-          src="diamond-roadmap.png"
-          alt="다이아 소모처 로드맵"
-          class="roadmap-image"
-        />
-      </section>
+          <p>
+            초보자들이 다이아를 어디에 먼저 사용해야 하는지 한눈에 볼 수 있도록 정리한 로드맵입니다.
+            성장 초반에는 무기 소환, 악세 소환, 유물, 클래스, 정령, 오브 제작 등 여러 선택지가 있기 때문에
+            순서를 참고하여 낭비 없이 성장하는 것을 목표로 합니다.
+          </p>
 
-      <section id="diamond-class" class="card">
-        <h2>클래스</h2>
-        <p>추후 [클래스] 내용을 업데이트 할 예정입니다.</p>
-      </section>
+          <img
+            src="diamond-roadmap.png"
+            alt="다이아 소모처 로드맵"
+            class="roadmap-image"
+          />
+        </section>
 
-      <section id="diamond-spirit" class="card">
-        <h2>정령</h2>
-        <p>추후 [정령] 내용을 업데이트 할 예정입니다.</p>
-      </section>
+        <section id="diamond-class" class="card">
+          <h2>클래스</h2>
+          <p>추후 [클래스] 내용을 업데이트 할 예정입니다.</p>
+        </section>
 
-      <section id="diamond-or" class="card">
-        <h2>오르</h2>
+        <section id="diamond-spirit" class="card">
+          <h2>정령</h2>
+          <p>추후 [정령] 내용을 업데이트 할 예정입니다.</p>
+        </section>
 
-        <div class="guide-table-wrap">
-          <table class="guide-table">
-            <tr>
-              <th colspan="3" class="table-title">오르</th>
-            </tr>
-            <tr>
-              <td>신입 슬레이어</td>
-              <td>신화 1등급 무기 [1개]</td>
-              <td rowspan="5" class="total-cell">총 신화 1등급 무기 5개</td>
-            </tr>
-            <tr>
-              <td>중급 슬레이어</td>
-              <td>신화 1등급 무기 [1개]</td>
-            </tr>
-            <tr>
-              <td>스킬 마스터리</td>
-              <td>신화 1등급 무기 [1개]</td>
-            </tr>
-            <tr>
-              <td>무별 소환 레벨 6</td>
-              <td>신화 1등급 무기 [1개]</td>
-            </tr>
-            <tr>
-              <td>악을 멸하는 검 패키지</td>
-              <td>신화 1등급 무기 [1개]</td>
-            </tr>
-          </table>
-        </div>
-      </section>
+        <section id="diamond-or" class="card">
+          <h2>오르</h2>
 
-      <section id="diamond-orb" class="card">
-        <h2>오브</h2>
+          <div class="guide-table-wrap">
+            <table class="guide-table">
+              <tr>
+                <th colspan="3" class="table-title">오르</th>
+              </tr>
 
-        <div class="guide-table-wrap">
-          <table class="guide-table">
-            <tr>
-              <th colspan="3" class="table-title">오브</th>
-            </tr>
-            <tr>
-              <td>신입 슬레이어</td>
-              <td>신화 1등급 악세 [1개]</td>
-              <td rowspan="4" class="total-cell">총 신화 1등급 악세 5개</td>
-            </tr>
-            <tr>
-              <td>중급 슬레이어</td>
-              <td>신화 1등급 악세 [1개]</td>
-            </tr>
-            <tr>
-              <td>블랙 미스릴 승급 기념 패키지</td>
-              <td>신화 1등급 악세 [2개]</td>
-            </tr>
-            <tr>
-              <td>악을 멸하는 검 패키지</td>
-              <td>신화 1등급 악세 [1개]</td>
-            </tr>
-          </table>
-        </div>
-      </section>
+              <tr>
+                <td>신입 슬레이어</td>
+                <td>신화 1등급 무기 [1개]</td>
+                <td rowspan="5" class="total-cell">총 신화 1등급 무기 5개</td>
+              </tr>
 
-      <section id="diamond-familiar" class="card">
-        <h2>사역마</h2>
-        <p>추후 [사역마] 내용을 업데이트 할 예정입니다.</p>
-      </section>
+              <tr>
+                <td>중급 슬레이어</td>
+                <td>신화 1등급 무기 [1개]</td>
+              </tr>
 
-      <section id="diamond-beast" class="card">
-        <h2>비스트</h2>
-        <p>추후 [비스트] 내용을 업데이트 할 예정입니다.</p>
-      </section>
+              <tr>
+                <td>스킬 마스터리</td>
+                <td>신화 1등급 무기 [1개]</td>
+              </tr>
 
-      <section id="skill-learn" class="card">
-        <h2>스킬 배우기</h2>
+              <tr>
+                <td>무별 소환 레벨 6</td>
+                <td>신화 1등급 무기 [1개]</td>
+              </tr>
 
-        <p>
-          속성별 스킬을 레벨 순서대로 확인할 수 있도록 정리한 표입니다.
-        </p>
+              <tr>
+                <td>악을 멸하는 검 패키지</td>
+                <td>신화 1등급 무기 [1개]</td>
+              </tr>
+            </table>
+          </div>
+        </section>
 
-        <img
-          src="skill-learning-1.png"
-          alt="스킬 배우기 표 1"
-          class="skill-image"
-        />
+        <section id="diamond-orb" class="card">
+          <h2>오브</h2>
 
-        <img
-          src="skill-learning-2.png"
-          alt="스킬 배우기 표 2"
-          class="skill-image"
-        />
-      </section>
-    </main>
+          <div class="guide-table-wrap">
+            <table class="guide-table">
+              <tr>
+                <th colspan="3" class="table-title">오브</th>
+              </tr>
+
+              <tr>
+                <td>신입 슬레이어</td>
+                <td>신화 1등급 악세 [1개]</td>
+                <td rowspan="4" class="total-cell">총 신화 1등급 악세 5개</td>
+              </tr>
+
+              <tr>
+                <td>중급 슬레이어</td>
+                <td>신화 1등급 악세 [1개]</td>
+              </tr>
+
+              <tr>
+                <td>블랙 미스릴 승급 기념 패키지</td>
+                <td>신화 1등급 악세 [2개]</td>
+              </tr>
+
+              <tr>
+                <td>악을 멸하는 검 패키지</td>
+                <td>신화 1등급 악세 [1개]</td>
+              </tr>
+            </table>
+          </div>
+        </section>
+
+        <section id="diamond-familiar" class="card">
+          <h2>사역마</h2>
+          <p>추후 [사역마] 내용을 업데이트 할 예정입니다.</p>
+        </section>
+
+        <section id="diamond-beast" class="card">
+          <h2>비스트</h2>
+          <p>추후 [비스트] 내용을 업데이트 할 예정입니다.</p>
+        </section>
+
+        <section id="skill-learn" class="card">
+          <h2>스킬 배우기</h2>
+
+          <p>
+            속성별 스킬을 레벨 순서대로 확인할 수 있도록 정리한 표입니다.
+          </p>
+
+          <img
+            src="skill-learning-1.png"
+            alt="스킬 배우기 표 1"
+            class="skill-image"
+          />
+
+          <img
+            src="skill-learning-2.png"
+            alt="스킬 배우기 표 2"
+            class="skill-image"
+          />
+        </section>
+      </main>
+    </div>
   </div>
 
   <script>
@@ -550,6 +597,22 @@
       ["blitz-gold", "블리츠골드"]
     ];
 
+    const pageMap = {
+      "intro": ["들어가며", ""],
+      "diamond-roadmap": ["다이아 소모처", "다이아 소모처 로드맵"],
+      "diamond-class": ["다이아 소모처", "클래스"],
+      "diamond-spirit": ["다이아 소모처", "정령"],
+      "diamond-or": ["다이아 소모처", "오르"],
+      "diamond-orb": ["다이아 소모처", "오브"],
+      "diamond-familiar": ["다이아 소모처", "사역마"],
+      "diamond-beast": ["다이아 소모처", "비스트"],
+      "skill-learn": ["정보", "스킬 배우기"]
+    };
+
+    promotions.forEach(([id, name]) => {
+      pageMap[id] = ["승급", name];
+    });
+
     function createPromotionMenuAndSections() {
       const promotionMenu = document.getElementById("promotionMenu");
       const content = document.getElementById("content");
@@ -564,12 +627,37 @@
         const section = document.createElement("section");
         section.id = id;
         section.className = "card";
+
         section.innerHTML = `
           <h2>${name}</h2>
           <p>추후 [${name}] 승급의 내용을 업데이트 할 예정입니다.</p>
         `;
+
         content.appendChild(section);
       });
+    }
+
+    function setBreadcrumb(sectionId) {
+      const breadcrumb = document.getElementById("breadcrumb");
+      const page = pageMap[sectionId];
+
+      if (!page) {
+        breadcrumb.innerHTML = "";
+        return;
+      }
+
+      const parent = page[0];
+      const child = page[1];
+
+      if (child) {
+        breadcrumb.innerHTML = `
+          <strong>${parent}</strong>
+          <span>&gt;</span>
+          <span>${child}</span>
+        `;
+      } else {
+        breadcrumb.innerHTML = `<strong>${parent}</strong>`;
+      }
     }
 
     function toggleSidebar() {
@@ -609,6 +697,7 @@
 
       if (target) {
         target.classList.add("active");
+        setBreadcrumb(sectionId);
 
         window.scrollTo({
           top: target.offsetTop - 70,
@@ -622,6 +711,7 @@
     }
 
     createPromotionMenuAndSections();
+    setBreadcrumb("intro");
   </script>
 </body>
 </html>
