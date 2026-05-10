@@ -21,7 +21,7 @@
 
     .header {
       background: #ffffff;
-      padding: 70px 20px 90px;
+      padding: 60px 20px 55px;
       text-align: center;
       border-bottom: 1px solid #e5e7eb;
     }
@@ -36,11 +36,10 @@
       display: flex;
       align-items: center;
       gap: 14px;
-      min-height: 138px;
-      padding: 32px 24px;
+      padding: 24px 16px;
       background: #ffffff;
       border-bottom: 1px solid #e5e7eb;
-      overflow: hidden;
+      min-height: 112px;
     }
 
     .menu-scroll {
@@ -50,59 +49,69 @@
       overflow-x: auto;
       overflow-y: hidden;
       white-space: nowrap;
-      flex: 1;
       scroll-behavior: smooth;
       -webkit-overflow-scrolling: touch;
+      flex: 1;
     }
 
     .menu-scroll::-webkit-scrollbar {
       display: none;
     }
 
-    .main-menu-btn,
-    .sub-menu-btn,
+    .main-btn,
     .home-btn {
       flex: 0 0 auto;
       background: #000000;
       color: #ffffff;
       border: none;
-      border-radius: 22px;
-      padding: 18px 32px;
-      font-size: 24px;
-      font-weight: 900;
+      border-radius: 14px;
+      padding: 16px 26px;
+      font-size: 18px;
+      font-weight: 800;
       cursor: pointer;
-      height: 78px;
-    }
-
-    .sub-menu-btn {
-      background: #808080;
-      color: #ffffff;
-      border: none;
-      min-width: 180px;
     }
 
     .home-btn {
+      border: 2px solid #55ffff;
+      box-shadow: 0 0 12px rgba(85, 255, 255, 0.7);
       margin-left: auto;
-      border: 3px solid #5ffcff;
-      box-shadow: 0 0 10px rgba(95, 252, 255, 0.7);
+    }
+
+    .sub-btn {
+      flex: 0 0 auto;
+      background: #888888;
+      color: #ffffff;
+      border: none;
+      border-radius: 14px;
+      padding: 16px 26px;
+      font-size: 18px;
+      font-weight: 800;
+      cursor: pointer;
     }
 
     .arrow-btn {
-      flex: 0 0 72px;
-      width: 72px;
-      height: 72px;
+      display: none;
+      flex: 0 0 auto;
+      width: 52px;
+      height: 52px;
       border-radius: 50%;
       border: none;
       background: #000000;
       color: #ffffff;
-      font-size: 34px;
+      font-size: 26px;
       font-weight: 900;
       cursor: pointer;
     }
 
+    .menu-area.menu-open .arrow-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
     .content {
       max-width: 900px;
-      margin: 40px auto;
+      margin: 32px auto;
       padding: 0 20px;
     }
 
@@ -110,7 +119,7 @@
       display: none;
       background: #ffffff;
       border-radius: 18px;
-      padding: 32px;
+      padding: 28px;
       box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
       margin-bottom: 28px;
     }
@@ -120,18 +129,18 @@
     }
 
     .card h2 {
-      font-size: 32px;
-      margin-bottom: 20px;
+      font-size: 30px;
+      margin-bottom: 18px;
       color: #111827;
     }
 
     .card p {
       font-size: 18px;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
 
     .card strong {
-      font-weight: 900;
+      font-weight: 800;
     }
 
     .roadmap-image {
@@ -146,51 +155,40 @@
 
     @media (max-width: 768px) {
       .header {
-        padding: 50px 20px 65px;
+        padding: 46px 20px 40px;
       }
 
       .logo {
-        max-width: 300px;
+        max-width: 280px;
       }
 
       .menu-area {
-        min-height: 112px;
-        padding: 24px 10px;
         gap: 8px;
+        padding: 18px 10px;
+        min-height: 94px;
       }
 
       .menu-scroll {
-        gap: 8px;
+        gap: 10px;
       }
 
-      .main-menu-btn,
-      .sub-menu-btn,
+      .main-btn,
+      .sub-btn,
       .home-btn {
-        height: 58px;
         padding: 12px 18px;
-        font-size: 20px;
-        border-radius: 18px;
-      }
-
-      .sub-menu-btn {
-        min-width: 110px;
-      }
-
-      .home-btn {
-        margin-left: auto;
-        border: 2px solid #5ffcff;
+        font-size: 16px;
+        border-radius: 14px;
       }
 
       .arrow-btn {
-        flex: 0 0 46px;
-        width: 46px;
-        height: 46px;
-        font-size: 24px;
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
       }
 
       .content {
-        margin: 28px auto;
-        padding: 0 14px;
+        margin: 24px auto;
+        padding: 0 16px;
       }
 
       .card {
@@ -198,7 +196,7 @@
       }
 
       .card h2 {
-        font-size: 28px;
+        font-size: 26px;
       }
 
       .card p {
@@ -213,17 +211,16 @@
     <img src="logo.png" alt="물멍위키 로고" class="logo" />
   </header>
 
-  <nav class="menu-area">
+  <nav class="menu-area" id="menuArea">
     <button class="arrow-btn" onclick="scrollMenu(-1)">‹</button>
 
     <div class="menu-scroll" id="menuScroll">
-      <button class="main-menu-btn" onclick="selectMainMenu('intro')">들어가며</button>
-      <button class="main-menu-btn" onclick="selectMainMenu('diamond')">다이아 소모처</button>
-      <button class="main-menu-btn" onclick="selectMainMenu('promotion')">승급</button>
+      <button class="main-btn" onclick="openMainMenu('intro')">들어가며</button>
+      <button class="main-btn" onclick="openMainMenu('diamond')">다이아 소모처</button>
+      <button class="main-btn" onclick="openMainMenu('promotion')">승급</button>
     </div>
 
-    <button class="home-btn" id="homeBtn" onclick="goHome()" style="display: none;">홈으로</button>
-
+    <button class="home-btn" id="homeBtn" onclick="showHome()" style="display: none;">홈으로</button>
     <button class="arrow-btn" onclick="scrollMenu(1)">›</button>
   </nav>
 
@@ -269,117 +266,108 @@
         class="roadmap-image"
       />
     </section>
-
-    <section id="stone" class="card"><h2>스톤</h2><p>스톤 승급 내용을 여기에 작성하면 됩니다.</p></section>
-    <section id="bronze" class="card"><h2>브론즈</h2><p>브론즈 승급 내용을 여기에 작성하면 됩니다.</p></section>
-    <section id="iron" class="card"><h2>아이언</h2><p>아이언 승급 내용을 여기에 작성하면 됩니다.</p></section>
-    <section id="silver" class="card"><h2>실버</h2><p>실버 승급 내용을 여기에 작성하면 됩니다.</p></section>
-    <section id="gold" class="card"><h2>골드</h2><p>골드 승급 내용을 여기에 작성하면 됩니다.</p></section>
-    <section id="mithril" class="card"><h2>미스릴</h2><p>미스릴 승급 내용을 여기에 작성하면 됩니다.</p></section>
-    <section id="orichalcon" class="card"><h2>오리하르콘</h2><p>오리하르콘 승급 내용을 여기에 작성하면 됩니다.</p></section>
-    <section id="arcanite" class="card"><h2>아케이나이트</h2><p>아케이나이트 승급 내용을 여기에 작성하면 됩니다.</p></section>
-    <section id="adamantite" class="card"><h2>아다만타이트</h2><p>아다만타이트 승급 내용을 여기에 작성하면 됩니다.</p></section>
-    <section id="ether" class="card"><h2>에테르</h2><p>에테르 승급 내용을 여기에 작성하면 됩니다.</p></section>
-    <section id="black-mithril" class="card"><h2>블랙미스릴</h2><p>블랙미스릴 승급 내용을 여기에 작성하면 됩니다.</p></section>
-    <section id="demon-metal" class="card"><h2>데몬메탈</h2><p>데몬메탈 승급 내용을 여기에 작성하면 됩니다.</p></section>
-    <section id="dragonog" class="card"><h2>드라고노그</h2><p>드라고노그 승급 내용을 여기에 작성하면 됩니다.</p></section>
-    <section id="ragnablood" class="card"><h2>라그나블러드</h2><p>라그나블러드 승급 내용을 여기에 작성하면 됩니다.</p></section>
-    <section id="war-frost" class="card"><h2>워프로스트</h2><p>워프로스트 승급 내용을 여기에 작성하면 됩니다.</p></section>
-    <section id="dark-nox" class="card"><h2>다크녹스</h2><p>다크녹스 승급 내용을 여기에 작성하면 됩니다.</p></section>
-    <section id="blue-abyss" class="card"><h2>블루어비스</h2><p>블루어비스 승급 내용을 여기에 작성하면 됩니다.</p></section>
-    <section id="infinite" class="card"><h2>인피넌트</h2><p>인피넌트 승급 내용을 여기에 작성하면 됩니다.</p></section>
-    <section id="cyclos" class="card"><h2>사이클로스</h2><p>사이클로스 승급 내용을 여기에 작성하면 됩니다.</p></section>
-    <section id="egation-nine" class="card"><h2>에게이션트나인</h2><p>에게이션트나인 승급 내용을 여기에 작성하면 됩니다.</p></section>
-    <section id="giga-rock" class="card"><h2>기가로크</h2><p>기가로크 승급 내용을 여기에 작성하면 됩니다.</p></section>
-    <section id="eisenhart" class="card"><h2>아이젠하르트</h2><p>아이젠하르트 승급 내용을 여기에 작성하면 됩니다.</p></section>
-    <section id="diamond-dust" class="card"><h2>다이아더스트</h2><p>다이아더스트 승급 내용을 여기에 작성하면 됩니다.</p></section>
-    <section id="elden-wood" class="card"><h2>엘든우드</h2><p>엘든우드 승급 내용을 여기에 작성하면 됩니다.</p></section>
-    <section id="blitz-gold" class="card"><h2>블리츠골드</h2><p>블리츠골드 승급 내용을 여기에 작성하면 됩니다.</p></section>
   </main>
 
   <script>
     let currentMainMenu = "home";
 
-    const menuScroll = document.getElementById("menuScroll");
-    const homeBtn = document.getElementById("homeBtn");
+    const menuData = {
+      home: [
+        { text: "들어가며", type: "main", action: "intro" },
+        { text: "다이아 소모처", type: "main", action: "diamond" },
+        { text: "승급", type: "main", action: "promotion" }
+      ],
 
-    const homeMenu = `
-      <button class="main-menu-btn" onclick="selectMainMenu('intro')">들어가며</button>
-      <button class="main-menu-btn" onclick="selectMainMenu('diamond')">다이아 소모처</button>
-      <button class="main-menu-btn" onclick="selectMainMenu('promotion')">승급</button>
-    `;
+      diamond: [
+        { text: "다이아 소모처", type: "main", action: "diamond" },
+        { text: "다이아 소모처 로드맵", type: "sub", target: "diamond-roadmap" }
+      ],
 
-    const introMenu = `
-      <button class="main-menu-btn" onclick="selectMainMenu('intro')">들어가며</button>
-    `;
+      promotion: [
+        { text: "승급", type: "main", action: "promotion" },
+        { text: "스톤", type: "sub", target: "stone" },
+        { text: "브론즈", type: "sub", target: "bronze" },
+        { text: "아이언", type: "sub", target: "iron" },
+        { text: "실버", type: "sub", target: "silver" },
+        { text: "골드", type: "sub", target: "gold" },
+        { text: "미스릴", type: "sub", target: "mithril" },
+        { text: "오리하르콘", type: "sub", target: "orichalcon" },
+        { text: "아케이나이트", type: "sub", target: "arcanite" },
+        { text: "아다만타이트", type: "sub", target: "adamantite" },
+        { text: "에테르", type: "sub", target: "ether" },
+        { text: "블랙미스릴", type: "sub", target: "black-mithril" },
+        { text: "데몬메탈", type: "sub", target: "demon-metal" },
+        { text: "드라고노그", type: "sub", target: "dragonog" },
+        { text: "라그나블러드", type: "sub", target: "ragnablood" },
+        { text: "워프로스트", type: "sub", target: "war-frost" },
+        { text: "다크녹스", type: "sub", target: "dark-nox" },
+        { text: "블루어비스", type: "sub", target: "blue-abyss" },
+        { text: "인피넌트", type: "sub", target: "infinite" },
+        { text: "사이클로스", type: "sub", target: "cyclos" },
+        { text: "에게이션트나인", type: "sub", target: "egation-nine" },
+        { text: "기가로크", type: "sub", target: "giga-rock" },
+        { text: "아이젠하르트", type: "sub", target: "eisenhart" },
+        { text: "다이아더스트", type: "sub", target: "diamond-dust" },
+        { text: "엘든우드", type: "sub", target: "elden-wood" },
+        { text: "블리츠골드", type: "sub", target: "blitz-gold" }
+      ]
+    };
 
-    const diamondMenu = `
-      <button class="main-menu-btn" onclick="selectMainMenu('diamond')">다이아 소모처</button>
-      <button class="sub-menu-btn" onclick="showSection('diamond-roadmap')">다이아 소모처 로드맵</button>
-    `;
+    function renderMenu(menuName) {
+      const menuScroll = document.getElementById("menuScroll");
+      menuScroll.innerHTML = "";
 
-    const promotionMenu = `
-      <button class="main-menu-btn" onclick="selectMainMenu('promotion')">승급</button>
-      <button class="sub-menu-btn" onclick="showSection('stone')">스톤</button>
-      <button class="sub-menu-btn" onclick="showSection('bronze')">브론즈</button>
-      <button class="sub-menu-btn" onclick="showSection('iron')">아이언</button>
-      <button class="sub-menu-btn" onclick="showSection('silver')">실버</button>
-      <button class="sub-menu-btn" onclick="showSection('gold')">골드</button>
-      <button class="sub-menu-btn" onclick="showSection('mithril')">미스릴</button>
-      <button class="sub-menu-btn" onclick="showSection('orichalcon')">오리하르콘</button>
-      <button class="sub-menu-btn" onclick="showSection('arcanite')">아케이나이트</button>
-      <button class="sub-menu-btn" onclick="showSection('adamantite')">아다만타이트</button>
-      <button class="sub-menu-btn" onclick="showSection('ether')">에테르</button>
-      <button class="sub-menu-btn" onclick="showSection('black-mithril')">블랙미스릴</button>
-      <button class="sub-menu-btn" onclick="showSection('demon-metal')">데몬메탈</button>
-      <button class="sub-menu-btn" onclick="showSection('dragonog')">드라고노그</button>
-      <button class="sub-menu-btn" onclick="showSection('ragnablood')">라그나블러드</button>
-      <button class="sub-menu-btn" onclick="showSection('war-frost')">워프로스트</button>
-      <button class="sub-menu-btn" onclick="showSection('dark-nox')">다크녹스</button>
-      <button class="sub-menu-btn" onclick="showSection('blue-abyss')">블루어비스</button>
-      <button class="sub-menu-btn" onclick="showSection('infinite')">인피넌트</button>
-      <button class="sub-menu-btn" onclick="showSection('cyclos')">사이클로스</button>
-      <button class="sub-menu-btn" onclick="showSection('egation-nine')">에게이션트나인</button>
-      <button class="sub-menu-btn" onclick="showSection('giga-rock')">기가로크</button>
-      <button class="sub-menu-btn" onclick="showSection('eisenhart')">아이젠하르트</button>
-      <button class="sub-menu-btn" onclick="showSection('diamond-dust')">다이아더스트</button>
-      <button class="sub-menu-btn" onclick="showSection('elden-wood')">엘든우드</button>
-      <button class="sub-menu-btn" onclick="showSection('blitz-gold')">블리츠골드</button>
-    `;
+      menuData[menuName].forEach(item => {
+        const button = document.createElement("button");
+        button.textContent = item.text;
 
-    function selectMainMenu(menuName) {
-      if (currentMainMenu === menuName) {
-        goHome();
-        return;
-      }
+        if (item.type === "main") {
+          button.className = "main-btn";
+          button.onclick = () => openMainMenu(item.action);
+        } else {
+          button.className = "sub-btn";
+          button.onclick = () => showSection(item.target);
+        }
 
-      currentMainMenu = menuName;
-      homeBtn.style.display = "block";
-
-      hideAllSections();
-
-      if (menuName === "intro") {
-        menuScroll.innerHTML = introMenu;
-        showSection("intro");
-      }
-
-      if (menuName === "diamond") {
-        menuScroll.innerHTML = diamondMenu;
-      }
-
-      if (menuName === "promotion") {
-        menuScroll.innerHTML = promotionMenu;
-      }
+        menuScroll.appendChild(button);
+      });
 
       menuScroll.scrollLeft = 0;
     }
 
-    function goHome() {
-      currentMainMenu = "home";
-      menuScroll.innerHTML = homeMenu;
-      homeBtn.style.display = "none";
+    function openMainMenu(menuName) {
+      if (currentMainMenu === menuName) {
+        showHome();
+        return;
+      }
+
+      currentMainMenu = menuName;
+
+      document.getElementById("menuArea").classList.add("menu-open");
+      document.getElementById("homeBtn").style.display = "block";
+
       hideAllSections();
-      menuScroll.scrollLeft = 0;
+
+      if (menuName === "intro") {
+        renderMenu("intro");
+        showSection("intro");
+      } else {
+        renderMenu(menuName);
+      }
+    }
+
+    menuData.intro = [
+      { text: "들어가며", type: "main", action: "intro" }
+    ];
+
+    function showSection(sectionId) {
+      hideAllSections();
+
+      const section = document.getElementById(sectionId);
+      if (section) {
+        section.classList.add("active");
+        section.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
     }
 
     function hideAllSections() {
@@ -389,26 +377,26 @@
       });
     }
 
-    function showSection(sectionId) {
-      hideAllSections();
+    function showHome() {
+      currentMainMenu = "home";
 
-      const target = document.getElementById(sectionId);
-      if (target) {
-        target.classList.add("active");
-        target.scrollIntoView({
-          behavior: "smooth",
-          block: "start"
-        });
-      }
+      document.getElementById("menuArea").classList.remove("menu-open");
+      document.getElementById("homeBtn").style.display = "none";
+
+      hideAllSections();
+      renderMenu("home");
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
     function scrollMenu(direction) {
-      const moveAmount = 280;
+      const menuScroll = document.getElementById("menuScroll");
       menuScroll.scrollBy({
-        left: direction * moveAmount,
+        left: direction * 260,
         behavior: "smooth"
       });
     }
+
+    showHome();
   </script>
 </body>
 </html>
