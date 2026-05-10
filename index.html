@@ -380,6 +380,14 @@
         class="roadmap-image"
       />
     </section>
+
+    <section id="skill-learning" class="card">
+      <h2>스킬 배우기</h2>
+
+      <p>
+        추후 [스킬 배우기] 내용을 업데이트 할 예정입니다.
+      </p>
+    </section>
   </main>
 
   <script>
@@ -425,7 +433,8 @@
     const mainMenus = {
       intro: "들어가며",
       diamond: "다이아 소모처",
-      promotion: "승급"
+      promotion: "승급",
+      info: "정보"
     };
 
     const subMenus = {
@@ -440,7 +449,11 @@
       promotion: promotions.map(([id, name]) => ({
         text: name,
         target: id
-      }))
+      })),
+
+      info: [
+        { text: "스킬 배우기", target: "skill-learning" }
+      ]
     };
 
     const diamondContent = {
