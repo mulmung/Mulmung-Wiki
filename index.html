@@ -437,36 +437,20 @@
       </div>
 
       <div class="menu-group">
-  <button class="menu-parent">업데이트</button>
+        <button class="menu-btn" onclick="toggleSubMenu('updateMenu', this)">
+          업데이트 <span>＋</span>
+        </button>
 
-  <button class="menu-item" data-page="update-v0-1-6-beta">
-    v0.1.6-beta
-  </button>
-
-  <button class="menu-item" data-page="update-v0-1-5-beta">
-    v0.1.5-beta
-  </button>
-
-  <button class="menu-item" data-page="update-v0-1-4-beta">
-    v0.1.4-beta
-  </button>
-
-  <button class="menu-item" data-page="update-v0-1-3-beta">
-    v0.1.3-beta
-  </button>
-
-  <button class="menu-item" data-page="update-v0-1-2-beta">
-    v0.1.2-beta
-  </button>
-
-  <button class="menu-item" data-page="update-v0-1-1-beta">
-    v0.1.1-beta
-  </button>
-
-  <button class="menu-item" data-page="update-v0-1-0-beta">
-    v0.1.0-beta
-  </button>
-</div>
+        <div class="sub-menu" id="updateMenu">
+          <button class="sub-menu-btn" onclick="showSection('update-010')">v0.1.0-beta</button>
+          <button class="sub-menu-btn" onclick="showSection('update-011')">v0.1.1-beta</button>
+          <button class="sub-menu-btn" onclick="showSection('update-012')">v0.1.2-beta</button>
+          <button class="sub-menu-btn" onclick="showSection('update-013')">v0.1.3-beta</button>
+          <button class="sub-menu-btn" onclick="showSection('update-014')">v0.1.4-beta</button>
+          <button class="sub-menu-btn" onclick="showSection('update-015')">v0.1.5-beta</button>
+          <button class="sub-menu-btn" onclick="showSection('update-016')">v0.1.6-beta</button>
+        </div>
+      </div>
     </aside>
 
     <div class="main-area">
@@ -626,24 +610,91 @@
           />
         </section>
 
-        <section id="update-history" class="card">
+        <section id="update-010" class="card">
+          <h2>물멍위키 v0.1.0-beta 업데이트 내역</h2>
+
+          <ul class="update-list">
+            <li>물멍위키 사이트 제작 시작</li>
+            <li>기본 HTML/CSS 구조 제작</li>
+            <li>로고 이미지 삽입 구조 적용</li>
+            <li>들어가며 페이지 추가</li>
+            <li>기본 본문 카드 디자인 적용</li>
+          </ul>
+        </section>
+
+        <section id="update-011" class="card">
+          <h2>물멍위키 v0.1.1-beta 업데이트 내역</h2>
+
+          <ul class="update-list">
+            <li>다이아 소모처 메뉴 추가</li>
+            <li>다이아 소모처 로드맵 페이지 추가</li>
+            <li>다이아 로드맵 이미지 삽입 구조 적용</li>
+            <li>이미지 반응형 크기 조정 적용</li>
+          </ul>
+        </section>
+
+        <section id="update-012" class="card">
+          <h2>물멍위키 v0.1.2-beta 업데이트 내역</h2>
+
+          <ul class="update-list">
+            <li>승급 메뉴 추가</li>
+            <li>스톤부터 블리츠골드까지 승급 하위 메뉴 추가</li>
+            <li>승급 페이지 자동 생성 구조 적용</li>
+            <li>각 승급 페이지에 임시 안내 문구 추가</li>
+          </ul>
+        </section>
+
+        <section id="update-013" class="card">
+          <h2>물멍위키 v0.1.3-beta 업데이트 내역</h2>
+
+          <ul class="update-list">
+            <li>다이아 소모처 하위 메뉴 확장</li>
+            <li>클래스, 정령, 오르, 오브, 사역마, 비스트 페이지 추가</li>
+            <li>오르 정보 표 추가</li>
+            <li>오브 정보 표 추가</li>
+            <li>표 상단 제목 칸 검은 배경 및 흰 글씨 적용</li>
+          </ul>
+        </section>
+
+        <section id="update-014" class="card">
+          <h2>물멍위키 v0.1.4-beta 업데이트 내역</h2>
+
+          <ul class="update-list">
+            <li>정보 메뉴 추가</li>
+            <li>정보 &gt; 스킬 배우기 페이지 추가</li>
+            <li>스킬 배우기 이미지 2장 삽입 구조 적용</li>
+            <li>스킬 배우기 설명 문구 추가</li>
+          </ul>
+        </section>
+
+        <section id="update-015" class="card">
           <h2>물멍위키 v0.1.5-beta 업데이트 내역</h2>
 
           <ul class="update-list">
-            <li>사이트 기본 구조 제작</li>
-            <li>승급 정보 페이지 추가</li>
-            <li>상위/하위 메뉴 구조 적용</li>
-            <li>정보 메뉴 추가</li>
-            <li>정보 &gt; 스킬 배우기 페이지 추가</li>
-            <li>스킬 배우기 이미지 삽입 구조 적용</li>
+            <li>상위/하위 메뉴 구조 개선</li>
+            <li>PC 좌측 사이드바 메뉴 적용</li>
+            <li>모바일 햄버거 메뉴 적용</li>
             <li>현재 위치 표시 기능 추가</li>
             <li>현재 위치 표시에서 상위 메뉴 굵은 글씨 구분 적용</li>
+            <li>모든 페이지 하단 현재 버전 표시 추가</li>
+          </ul>
+        </section>
+
+        <section id="update-016" class="card">
+          <h2>물멍위키 v0.1.6-beta 업데이트 내역</h2>
+
+          <ul class="update-list">
+            <li>업데이트 메뉴 구조 변경</li>
+            <li>업데이트 메뉴에 버전별 하위 메뉴 추가</li>
+            <li>v0.1.0-beta부터 v0.1.6-beta까지 업데이트 내역 페이지 분리</li>
+            <li>사이트 하단 현재 버전 표시를 v0.1.6-beta로 변경</li>
+            <li>업데이트 내역을 버전별로 관리할 수 있도록 구조 정리</li>
           </ul>
         </section>
       </main>
 
       <footer class="site-footer">
-        현재 버전: 물멍위키 v0.1.5-beta
+        현재 버전: 물멍위키 v0.1.6-beta
       </footer>
     </div>
   </div>
@@ -687,7 +738,13 @@
       "diamond-familiar": ["다이아 소모처", "사역마"],
       "diamond-beast": ["다이아 소모처", "비스트"],
       "skill-learn": ["정보", "스킬 배우기"],
-      "update-history": ["업데이트", ""]
+      "update-010": ["업데이트", "v0.1.0-beta"],
+      "update-011": ["업데이트", "v0.1.1-beta"],
+      "update-012": ["업데이트", "v0.1.2-beta"],
+      "update-013": ["업데이트", "v0.1.3-beta"],
+      "update-014": ["업데이트", "v0.1.4-beta"],
+      "update-015": ["업데이트", "v0.1.5-beta"],
+      "update-016": ["업데이트", "v0.1.6-beta"]
     };
 
     promotions.forEach(([id, name]) => {
