@@ -330,6 +330,14 @@
   <script>
     let currentMainMenu = "home";
 
+    const diamondItems = [
+      ["diamond-class", "클래스"],
+      ["diamond-spirit", "정령"],
+      ["diamond-or", "오르"],
+      ["diamond-orb", "오브"],
+      ["diamond-familiar", "사역마"]
+    ];
+
     const promotions = [
       ["stone", "스톤"],
       ["bronze", "브론즈"],
@@ -366,7 +374,11 @@
 
     const subMenus = {
       diamond: [
-        { text: "다이아 소모처 로드맵", target: "diamond-roadmap" }
+        { text: "다이아 소모처 로드맵", target: "diamond-roadmap" },
+        ...diamondItems.map(([id, name]) => ({
+          text: name,
+          target: id
+        }))
       ],
 
       promotion: promotions.map(([id, name]) => ({
@@ -375,8 +387,21 @@
       }))
     };
 
-    function createPromotionSections() {
+    function createAutoSections() {
       const content = document.getElementById("content");
+
+      diamondItems.forEach(([id, name]) => {
+        const section = document.createElement("section");
+        section.id = id;
+        section.className = "card";
+
+        section.innerHTML = `
+          <h2>${name}</h2>
+          <p>추후 [${name}] 내용을 업데이트 할 예정입니다.</p>
+        `;
+
+        content.appendChild(section);
+      });
 
       promotions.forEach(([id, name]) => {
         const section = document.createElement("section");
@@ -527,7 +552,7 @@
       });
     }
 
-    createPromotionSections();
+    createAutoSections();
     renderHomeMenu();
   </script>
 </body>
