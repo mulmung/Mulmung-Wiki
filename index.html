@@ -202,6 +202,11 @@
         line-height: 1.1;
       }
     }
+
+    .selected-menu {
+  display: none;
+  justify-content: space-between;
+}
   </style>
 </head>
 
@@ -210,11 +215,16 @@
     <img src="logo.png" alt="물멍위키 로고" class="logo" />
   </header>
 
-  <nav class="menu">
-    <button onclick="showPage('intro')">들어가며</button>
-    <button onclick="toggleDiamond()">다이아 소모처</button>
-    <button onclick="togglePromotion()">승급</button>
-  </nav>
+  <nav class="menu" id="mainMenu">
+  <button onclick="openIntro()">들어가며</button>
+  <button onclick="openDiamond()">다이아 소모처</button>
+  <button onclick="openPromotion()">승급</button>
+</nav>
+
+<nav class="menu selected-menu" id="selectedMenu">
+  <button id="selectedMenuButton">들어가며</button>
+  <button onclick="goHome()">홈으로</button>
+</nav>
 
   <section id="diamondBox" class="sub-box">
     <div class="sub-grid">
@@ -305,51 +315,81 @@
   </main>
 
   <script>
-    function hideSubMenus() {
-      document.getElementById("diamondBox").classList.remove("active");
-      document.getElementById("promotionBox").classList.remove("active");
-    }
+  function hideSubMenus() {
+    document.getElementById("diamondBox").classList.remove("active");
+    document.getElementById("promotionBox").classList.remove("active");
+  }
 
-    function hidePages() {
-      const pages = document.querySelectorAll(".page");
-      pages.forEach(function(page) {
-        page.classList.remove("active");
-      });
-    }
+  function hidePages() {
+    const pages = document.querySelectorAll(".page");
+    pages.forEach(function(page) {
+      page.classList.remove("active");
+    });
+  }
 
-    function showPage(pageId) {
-      hideSubMenus();
-      hidePages();
+  function showSelectedMenu(name) {
+    document.getElementById("mainMenu").style.display = "none";
+    document.getElementById("selectedMenu").style.display = "flex";
+    document.getElementById("selectedMenuButton").innerText = name;
+  }
 
-      const page = document.getElementById(pageId);
-      page.classList.add("active");
-      page.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
+  function goHome() {
+    document.getElementById("mainMenu").style.display = "flex";
+    document.getElementById("selectedMenu").style.display = "none";
 
-    function toggleDiamond() {
-      document.getElementById("promotionBox").classList.remove("active");
-      document.getElementById("diamondBox").classList.toggle("active");
-      hidePages();
-    }
+    hideSubMenus();
+    hidePages();
 
-    function togglePromotion() {
-      document.getElementById("diamondBox").classList.remove("active");
-      document.getElementById("promotionBox").classList.toggle("active");
-      hidePages();
-    }
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  }
 
-    function showPromotion(name) {
-      hideSubMenus();
-      hidePages();
+  function openIntro() {
+    showSelectedMenu("들어가며");
+    hideSubMenus();
+    hidePages();
 
-      document.getElementById("promotion-title").innerText = name;
-      document.getElementById("promotion-description").innerText =
-        name + " 승급 관련 내용은 앞으로 이곳에 정리할 예정입니다.";
+    const page = document.getElementById("intro");
+    page.classList.add("active");
+    page.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
 
-      const page = document.getElementById("promotion-detail");
-      page.classList.add("active");
-      page.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  </script>
+  function openDiamond() {
+    showSelectedMenu("다이아 소모처");
+    document.getElementById("promotionBox").classList.remove("active");
+    document.getElementById("diamondBox").classList.add("active");
+    hidePages();
+  }
+
+  function openPromotion() {
+    showSelectedMenu("승급");
+    document.getElementById("diamondBox").classList.remove("active");
+    document.getElementById("promotionBox").classList.add("active");
+    hidePages();
+  }
+
+  function showPage(pageId) {
+    hidePages();
+
+    const page = document.getElementById(pageId);
+    page.classList.add("active");
+    page.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function showPromotion(name) {
+    hideSubMenus();
+    hidePages();
+
+    document.getElementById("promotion-title").innerText = name;
+    document.getElementById("promotion-description").innerText =
+      name + " 승급 관련 내용은 앞으로 이곳에 정리할 예정입니다.";
+
+    const page = document.getElementById("promotion-detail");
+    page.classList.add("active");
+    page.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+</script>
 </body>
 </html>
