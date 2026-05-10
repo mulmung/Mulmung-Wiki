@@ -118,6 +118,13 @@
       justify-content: center;
     }
 
+    .menu-divider {
+      width: 1px;
+      height: 36px;
+      background: #d1d5db;
+      flex: 0 0 auto;
+    }
+
     .hidden {
       display: none !important;
     }
@@ -212,6 +219,10 @@
         font-size: 20px;
       }
 
+      .menu-divider {
+        height: 30px;
+      }
+
       .content {
         margin: 24px auto;
         padding: 0 16px;
@@ -246,6 +257,8 @@
       onclick="selectedMainClick()"
     ></button>
 
+    <div class="menu-divider hidden" id="leftDivider"></div>
+
     <button
       class="arrow-btn hidden"
       id="leftArrowBtn"
@@ -259,6 +272,8 @@
       id="rightArrowBtn"
       onclick="scrollSubMenu(1)"
     >›</button>
+
+    <div class="menu-divider hidden" id="rightDivider"></div>
 
     <button
       class="home-btn hidden"
@@ -430,6 +445,9 @@
       document.getElementById("homeBtn").classList.add("visible-flex");
 
       if (menuName === "intro") {
+        document.getElementById("leftDivider").classList.add("hidden");
+        document.getElementById("rightDivider").classList.add("hidden");
+
         document.getElementById("leftArrowBtn").classList.add("hidden");
         document.getElementById("rightArrowBtn").classList.add("hidden");
         document.getElementById("subMenuScroll").classList.add("hidden");
@@ -439,6 +457,9 @@
       }
 
       renderSubMenu(menuName);
+
+      document.getElementById("leftDivider").classList.remove("hidden");
+      document.getElementById("rightDivider").classList.remove("hidden");
 
       document.getElementById("leftArrowBtn").classList.remove("hidden");
       document.getElementById("rightArrowBtn").classList.remove("hidden");
@@ -458,6 +479,9 @@
 
       document.getElementById("homeMenuScroll").classList.remove("hidden");
       document.getElementById("selectedMainBtn").classList.add("hidden");
+
+      document.getElementById("leftDivider").classList.add("hidden");
+      document.getElementById("rightDivider").classList.add("hidden");
 
       document.getElementById("leftArrowBtn").classList.add("hidden");
       document.getElementById("rightArrowBtn").classList.add("hidden");
