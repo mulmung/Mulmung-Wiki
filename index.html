@@ -880,6 +880,8 @@ const logoutBtn = document.getElementById("logoutBtn");
 const userInfo = document.getElementById("userInfo");
 
 loginBtn.addEventListener("click", async () => {
+  alert("로그인 버튼 눌림");
+
   try {
     await signInWithPopup(auth, provider);
   } catch (error) {
