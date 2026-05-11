@@ -480,12 +480,20 @@
       text-align: center;
     }
 
-    .skill-setting-board {
+    .setting-guide {
+      text-align: center;
+      font-size: 18px;
+      font-weight: 900;
+      color: #4b5563;
+      margin-bottom: 22px;
+    }
+
+    .setting-slot-grid {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
       gap: 10px;
-      max-width: 520px;
-      margin: 22px auto 28px;
+      max-width: 640px;
+      margin: 0 auto 34px;
     }
 
     .setting-slot {
@@ -494,73 +502,49 @@
       border-radius: 18px;
       background: #f8fafc;
       color: #94a3b8;
-      font-size: 13px;
+      font-size: 15px;
       font-weight: 900;
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 8px;
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
       word-break: keep-all;
+      padding: 8px;
     }
 
     .setting-slot.filled {
-      border: none;
+      border: 3px solid #6b7280;
       color: #ffffff;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.18);
     }
 
-    .skill-pool-title {
-      margin: 26px 0 12px;
-      font-size: 22px;
-      font-weight: 900;
+    .setting-list-title {
       text-align: center;
+      margin: 20px 0 18px;
+      font-size: 28px;
+      font-weight: 900;
     }
 
-    .skill-pool {
+    .setting-skill-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(5, 1fr);
       gap: 10px;
-      margin-top: 14px;
+      margin-top: 18px;
     }
 
-    .skill-square {
+    .setting-skill-btn {
       aspect-ratio: 1 / 1;
       border: none;
       border-radius: 18px;
-      padding: 8px;
-      font-size: 13px;
+      font-size: 15px;
       font-weight: 900;
-      color: #ffffff;
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
       word-break: keep-all;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+      padding: 8px;
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.16);
     }
 
-    .skill-square.selected {
-      outline: 4px solid #111827;
-      opacity: 0.6;
-    }
-
-    .skill-square.empty {
-      background: #f8fafc;
-      color: #94a3b8;
-      border: 2px dashed #cbd5e1;
-      box-shadow: none;
-      cursor: default;
-    }
-
-    .setting-guide {
-      text-align: center;
-      color: #4b5563;
-      font-size: 16px;
-      font-weight: 800;
-      margin-bottom: 10px;
+    .setting-skill-btn.selected {
+      outline: 4px solid #374151;
+      outline-offset: 2px;
     }
 
     .update-list {
@@ -743,34 +727,33 @@
         font-size: 15px;
       }
 
-      .skill-setting-board {
+      .setting-guide {
+        font-size: 15px;
+      }
+
+      .setting-slot-grid {
         gap: 7px;
-        max-width: 100%;
       }
 
       .setting-slot {
-        border-radius: 13px;
-        font-size: 10px;
+        border-radius: 14px;
+        font-size: 11px;
         padding: 4px;
       }
 
-      .skill-pool {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 8px;
+      .setting-list-title {
+        font-size: 24px;
       }
 
-      .skill-square {
+      .setting-skill-grid {
+        grid-template-columns: repeat(5, 1fr);
+        gap: 7px;
+      }
+
+      .setting-skill-btn {
         border-radius: 14px;
-        font-size: 11px;
-        padding: 5px;
-      }
-
-      .skill-pool-title {
-        font-size: 20px;
-      }
-
-      .setting-guide {
-        font-size: 14px;
+        font-size: 10px;
+        padding: 4px;
       }
 
       .update-list li {
@@ -1024,13 +1007,47 @@
           <h2>스킬 세팅</h2>
 
           <p class="setting-guide">
-            아래 스킬 박스를 누르면 첫 번째 빈칸부터 채워집니다. 세팅 칸의 스킬을 누르면 제거됩니다.
+            아래 스킬 박스를 누르면 첫 번째 빈칸부터 채워집니다.<br />
+            세팅 칸의 스킬을 누르면 제거됩니다.
           </p>
 
-          <div id="skillSettingBoard" class="skill-setting-board"></div>
+          <div id="skillSettingSlots" class="setting-slot-grid"></div>
 
-          <h3 class="skill-pool-title">스킬 목록</h3>
-          <div id="skillPool" class="skill-pool"></div>
+          <h3 class="setting-list-title">스킬 목록</h3>
+
+          <input
+            id="settingSkillSearchInput"
+            class="skill-search-box"
+            type="text"
+            placeholder="스킬 이름을 검색하세요. 예: 블리자드"
+            oninput="renderSkillSettingList()"
+          />
+
+          <div class="filter-section">
+            <div class="filter-title">등급</div>
+            <div class="filter-buttons">
+              <button class="filter-btn filter-all active" data-setting-grade-filter="전체" onclick="setSettingGradeFilter('전체')">전체</button>
+              <button class="filter-btn grade-myth" data-setting-grade-filter="신화" onclick="setSettingGradeFilter('신화')">신화</button>
+              <button class="filter-btn grade-legend" data-setting-grade-filter="전설" onclick="setSettingGradeFilter('전설')">전설</button>
+              <button class="filter-btn grade-hero" data-setting-grade-filter="영웅" onclick="setSettingGradeFilter('영웅')">영웅</button>
+              <button class="filter-btn grade-rare" data-setting-grade-filter="레어" onclick="setSettingGradeFilter('레어')">레어</button>
+              <button class="filter-btn grade-advanced" data-setting-grade-filter="고급" onclick="setSettingGradeFilter('고급')">고급</button>
+              <button class="filter-btn grade-normal" data-setting-grade-filter="일반" onclick="setSettingGradeFilter('일반')">일반</button>
+            </div>
+          </div>
+
+          <div class="filter-section">
+            <div class="filter-title">속성</div>
+            <div class="filter-buttons">
+              <button class="filter-btn filter-all active" data-setting-element-filter="전체" onclick="setSettingElementFilter('전체')">전체</button>
+              <button class="filter-btn element-fire" data-setting-element-filter="불" onclick="setSettingElementFilter('불')">불</button>
+              <button class="filter-btn element-water" data-setting-element-filter="물" onclick="setSettingElementFilter('물')">물</button>
+              <button class="filter-btn element-wind" data-setting-element-filter="바람" onclick="setSettingElementFilter('바람')">바람</button>
+              <button class="filter-btn element-earth" data-setting-element-filter="땅" onclick="setSettingElementFilter('땅')">땅</button>
+            </div>
+          </div>
+
+          <div id="settingSkillList" class="setting-skill-grid"></div>
         </section>
 
         <section id="update-010" class="card">
@@ -1128,7 +1145,6 @@
             <li>스킬 속성별 필터 기능 추가</li>
             <li>등급 필터와 속성 필터 동시 적용 기능 추가</li>
             <li>스킬 결과 카드에 등급/속성 배지 표시 추가</li>
-            <li>사이트 하단 현재 버전 표시를 v0.1.7-beta로 변경</li>
           </ul>
         </section>
 
@@ -1137,11 +1153,14 @@
           <p class="update-date">업데이트 날짜: 2026.05.11</p>
           <ul class="update-list">
             <li>정보 &gt; 스킬 세팅 페이지 추가</li>
-            <li>스킬 세팅 10칸 구조 추가</li>
-            <li>스킬 목록에서 선택 시 세팅 칸에 자동 추가 기능 적용</li>
-            <li>세팅된 스킬 클릭 시 제거 기능 적용</li>
-            <li>중복 선택 방지 기능 적용</li>
-            <li>스킬 박스에 속성별 색상 적용</li>
+            <li>스킬 세팅 10칸 배치 기능 추가</li>
+            <li>스킬 목록에서 선택 시 첫 번째 빈칸부터 자동 배치 기능 추가</li>
+            <li>세팅 칸의 스킬 클릭 시 제거 기능 추가</li>
+            <li>스킬 목록 5열 정렬 적용</li>
+            <li>스킬 버튼 등급별 색상 적용</li>
+            <li>스킬 목록 신화부터 일반까지 등급순 정렬 적용</li>
+            <li>같은 등급 내 가나다순 정렬 적용</li>
+            <li>스킬 세팅 페이지 검색, 등급 필터, 속성 필터 추가</li>
             <li>사이트 하단 현재 버전 표시를 v0.1.8-beta로 변경</li>
           </ul>
         </section>
@@ -1235,7 +1254,10 @@
 
     let selectedGrade = "전체";
     let selectedElement = "전체";
-    let selectedSettingSkills = [];
+
+    let selectedSettingGrade = "전체";
+    let selectedSettingElement = "전체";
+    let selectedSettingSkills = Array(10).fill(null);
 
     const skills = [
       { element: "불", level: "Lv.10", name: "불꽃 베기", grade: "일반", material: "-" },
@@ -1268,7 +1290,7 @@
       { element: "바람", level: "Lv.70", name: "천둥 베기", grade: "레어", material: "바람 속성석 20" },
       { element: "바람", level: "Lv.90", name: "고속이동", grade: "고급", material: "악세 고급 4등급 4" },
       { element: "바람", level: "Lv.140", name: "수라 번개 베기", grade: "전설", material: "전설 레어 2등급 4 / 바람 속성석 300" },
-      { element: "바람", level: "Lv.200", name: "적뢰", grade: "전설", material: "무기 전설 1등급 4" },
+      { element: "바람", level: "Lv.200", name: "격류", grade: "신화", material: "무기 전설 1등급 4" },
       { element: "바람", level: "Lv.300", name: "뇌신", grade: "신화", material: "악세 신화 2등급 4" },
       { element: "바람", level: "Lv.450", name: "신속", grade: "신화", material: "무기 신화 4등급 4" },
 
@@ -1282,6 +1304,14 @@
       { element: "땅", level: "Lv.180", name: "기가 스트라이크", grade: "전설", material: "악세 전설 2등급 2 / 땅 속성석 300" },
       { element: "땅", level: "Lv.500", name: "마수 사냥", grade: "신화", material: "무기 신화 1등급 4" }
     ];
+
+    function getSortedSkills(skillList) {
+      return [...skillList].sort((a, b) => {
+        const gradeCompare = gradeOrder.indexOf(a.grade) - gradeOrder.indexOf(b.grade);
+        if (gradeCompare !== 0) return gradeCompare;
+        return a.name.localeCompare(b.name, "ko");
+      });
+    }
 
     function createPromotionMenuAndSections() {
       const promotionMenu = document.getElementById("promotionMenu");
@@ -1378,7 +1408,8 @@
       }
 
       if (sectionId === "skill-setting") {
-        renderSkillSetting();
+        renderSkillSettingSlots();
+        renderSkillSettingList();
       }
 
       if (window.innerWidth <= 768) {
@@ -1416,20 +1447,13 @@
       renderSkills();
     }
 
-    function getSortedSkills() {
-      return [...skills].sort((a, b) => {
-        const gradeCompare = gradeOrder.indexOf(a.grade) - gradeOrder.indexOf(b.grade);
-        if (gradeCompare !== 0) return gradeCompare;
-        return a.name.localeCompare(b.name, "ko");
-      });
-    }
-
     function renderSkills() {
       const resultArea = document.getElementById("skillResultArea");
       const searchInput = document.getElementById("skillSearchInput");
-      const keyword = searchInput ? searchInput.value.trim().toLowerCase() : "";
 
       if (!resultArea) return;
+
+      const keyword = searchInput ? searchInput.value.trim().toLowerCase() : "";
 
       let filteredSkills = skills.filter(skill => {
         const matchesKeyword = skill.name.toLowerCase().includes(keyword);
@@ -1439,11 +1463,7 @@
         return matchesKeyword && matchesGrade && matchesElement;
       });
 
-      filteredSkills.sort((a, b) => {
-        const gradeCompare = gradeOrder.indexOf(a.grade) - gradeOrder.indexOf(b.grade);
-        if (gradeCompare !== 0) return gradeCompare;
-        return a.name.localeCompare(b.name, "ko");
-      });
+      filteredSkills = getSortedSkills(filteredSkills);
 
       if (filteredSkills.length === 0) {
         resultArea.innerHTML = `<div class="empty-result">검색 결과가 없습니다.</div>`;
@@ -1481,61 +1501,112 @@
       resultArea.innerHTML = html;
     }
 
+    function setSettingGradeFilter(grade) {
+      selectedSettingGrade = grade;
+
+      document.querySelectorAll("[data-setting-grade-filter]").forEach(button => {
+        button.classList.toggle("active", button.dataset.settingGradeFilter === grade);
+      });
+
+      renderSkillSettingList();
+    }
+
+    function setSettingElementFilter(element) {
+      selectedSettingElement = element;
+
+      document.querySelectorAll("[data-setting-element-filter]").forEach(button => {
+        button.classList.toggle("active", button.dataset.settingElementFilter === element);
+      });
+
+      renderSkillSettingList();
+    }
+
     function addSkillToSetting(skillName) {
-      if (selectedSettingSkills.includes(skillName)) {
+      const existingIndex = selectedSettingSkills.findIndex(skill => skill && skill.name === skillName);
+
+      if (existingIndex !== -1) {
+        selectedSettingSkills[existingIndex] = null;
+        renderSkillSettingSlots();
+        renderSkillSettingList();
         return;
       }
 
-      if (selectedSettingSkills.length >= 10) {
-        openUnlockPopup("스킬 세팅", "스킬 세팅은 최대 10개까지 가능합니다.");
-        return;
-      }
+      const emptyIndex = selectedSettingSkills.findIndex(skill => skill === null);
+      const skill = skills.find(item => item.name === skillName);
 
-      selectedSettingSkills.push(skillName);
-      renderSkillSetting();
+      if (emptyIndex === -1 || !skill) return;
+
+      selectedSettingSkills[emptyIndex] = skill;
+      renderSkillSettingSlots();
+      renderSkillSettingList();
     }
 
-    function removeSkillFromSetting(skillName) {
-      selectedSettingSkills = selectedSettingSkills.filter(name => name !== skillName);
-      renderSkillSetting();
+    function removeSkillFromSetting(index) {
+      selectedSettingSkills[index] = null;
+      renderSkillSettingSlots();
+      renderSkillSettingList();
     }
 
-    function renderSkillSetting() {
-      const board = document.getElementById("skillSettingBoard");
-      const pool = document.getElementById("skillPool");
+    function renderSkillSettingSlots() {
+      const slotArea = document.getElementById("skillSettingSlots");
 
-      if (!board || !pool) return;
+      if (!slotArea) return;
 
-      let boardHtml = "";
+      let html = "";
 
-      for (let i = 0; i < 10; i++) {
-        const skillName = selectedSettingSkills[i];
-
-        if (skillName) {
-          const skill = skills.find(item => item.name === skillName);
-          boardHtml += `
+      selectedSettingSkills.forEach((skill, index) => {
+        if (skill) {
+          html += `
             <button
-              class="setting-slot filled ${elementClassMap[skill.element]}"
-              onclick="removeSkillFromSetting('${skill.name}')"
+              class="setting-slot filled ${gradeClassMap[skill.grade]}"
+              onclick="removeSkillFromSetting(${index})"
             >
               ${skill.name}
             </button>
           `;
         } else {
-          boardHtml += `<button class="setting-slot empty" type="button">빈칸</button>`;
+          html += `
+            <button class="setting-slot" onclick="removeSkillFromSetting(${index})">
+              빈칸
+            </button>
+          `;
         }
+      });
+
+      slotArea.innerHTML = html;
+    }
+
+    function renderSkillSettingList() {
+      const listArea = document.getElementById("settingSkillList");
+      const searchInput = document.getElementById("settingSkillSearchInput");
+
+      if (!listArea) return;
+
+      const keyword = searchInput ? searchInput.value.trim().toLowerCase() : "";
+
+      let filteredSkills = skills.filter(skill => {
+        const matchesKeyword = skill.name.toLowerCase().includes(keyword);
+        const matchesGrade = selectedSettingGrade === "전체" || skill.grade === selectedSettingGrade;
+        const matchesElement = selectedSettingElement === "전체" || skill.element === selectedSettingElement;
+
+        return matchesKeyword && matchesGrade && matchesElement;
+      });
+
+      filteredSkills = getSortedSkills(filteredSkills);
+
+      if (filteredSkills.length === 0) {
+        listArea.innerHTML = `<div class="empty-result">검색 결과가 없습니다.</div>`;
+        return;
       }
 
-      board.innerHTML = boardHtml;
+      let html = "";
 
-      let poolHtml = "";
+      filteredSkills.forEach(skill => {
+        const isSelected = selectedSettingSkills.some(selectedSkill => selectedSkill && selectedSkill.name === skill.name);
 
-      getSortedSkills().forEach(skill => {
-        const isSelected = selectedSettingSkills.includes(skill.name);
-
-        poolHtml += `
+        html += `
           <button
-            class="skill-square ${elementClassMap[skill.element]} ${isSelected ? "selected" : ""}"
+            class="setting-skill-btn ${gradeClassMap[skill.grade]} ${isSelected ? "selected" : ""}"
             onclick="addSkillToSetting('${skill.name}')"
           >
             ${skill.name}
@@ -1543,13 +1614,14 @@
         `;
       });
 
-      pool.innerHTML = poolHtml;
+      listArea.innerHTML = html;
     }
 
     createPromotionMenuAndSections();
     setBreadcrumb("intro");
     renderSkills();
-    renderSkillSetting();
+    renderSkillSettingSlots();
+    renderSkillSettingList();
   </script>
 </body>
 </html>
