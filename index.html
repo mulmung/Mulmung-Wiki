@@ -491,7 +491,7 @@
 
     .setting-reset-btn {
       display: block;
-      margin: 4px auto 22px;
+      margin: -22px auto 42px;
       padding: 10px 18px;
       border: none;
       border-radius: 999px;
@@ -533,13 +533,45 @@
     }
 
     .setting-slot.filled {
-      border-style: solid;
+      border: none;
       color: #ffffff;
       box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
     }
 
+    .setting-slot.filled.grade-myth {
+      background: #5ac8fa;
+      color: #ffffff;
+      border: none;
+    }
+
+    .setting-slot.filled.grade-legend {
+      background: #ef4444;
+      color: #ffffff;
+      border: none;
+    }
+
+    .setting-slot.filled.grade-hero {
+      background: #a855f7;
+      color: #ffffff;
+      border: none;
+    }
+
+    .setting-slot.filled.grade-rare {
+      background: #fb923c;
+      color: #ffffff;
+      border: none;
+    }
+
+    .setting-slot.filled.grade-advanced {
+      background: #22c55e;
+      color: #ffffff;
+      border: none;
+    }
+
     .setting-slot.filled.grade-normal {
+      background: #ffffff;
       color: #111827;
+      border: 1px solid #d1d5db;
     }
 
     .setting-list-title {
@@ -767,12 +799,17 @@
 
       .skill-setting-grid {
         gap: 8px;
+        margin: 22px auto 38px;
       }
 
       .setting-slot {
         border-radius: 14px;
         font-size: 12px;
         padding: 4px;
+      }
+
+      .setting-reset-btn {
+        margin: -18px auto 38px;
       }
 
       .setting-skill-list {
@@ -1038,9 +1075,9 @@
             세팅 칸의 스킬을 누르면 제거됩니다.
           </p>
 
-          <button class="setting-reset-btn" onclick="resetSkillSetting()">세팅 초기화</button>
-
           <div id="skillSettingSlots" class="skill-setting-grid"></div>
+
+          <button class="setting-reset-btn" onclick="resetSkillSetting()">세팅 초기화</button>
 
           <h2 class="setting-list-title">스킬 목록</h2>
 
@@ -1657,4 +1694,4 @@
     renderSettingSkillList();
   </script>
 </body>
-                                                      </html>
+</html>
