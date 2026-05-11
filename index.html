@@ -1,999 +1,136 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>물멍위키</title>
-
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #f5f5f5;
-      color: #111827;
-      line-height: 1.6;
-    }
-
-    .top-bar {
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      height: 62px;
-      padding: 0 18px;
-      background: #ffffff;
-      border-bottom: 1px solid #e5e7eb;
-    }
-
-    .hamburger-btn {
-      width: 42px;
-      height: 42px;
-      border: none;
-      border-radius: 12px;
-      background: #000000;
-      color: #ffffff;
-      font-size: 24px;
-      font-weight: 900;
-      cursor: pointer;
-      line-height: 1;
-    }
-
-    .top-title {
-      border: none;
-      background: transparent;
-      color: #111827;
-      font-size: 20px;
-      font-weight: 900;
-      cursor: pointer;
-    }
-
-    .header {
-      background: #ffffff;
-      padding: 58px 20px 52px;
-      text-align: center;
-      border-bottom: 1px solid #e5e7eb;
-    }
-
-    .logo {
-      max-width: 420px;
-      width: 100%;
-      height: auto;
-    }
-
-    .layout {
-      display: flex;
-      max-width: 1280px;
-      margin: 0 auto;
-    }
-
-    .sidebar {
-      width: 280px;
-      flex: 0 0 280px;
-      min-height: calc(100vh - 62px);
-      padding: 18px;
-      background: #202326;
-      border-right: 1px solid #111827;
-    }
-
-    .sidebar-title {
-      color: #ffffff;
-      font-size: 18px;
-      font-weight: 900;
-      margin-bottom: 16px;
-    }
-
-    .menu-group {
-      margin-bottom: 10px;
-    }
-
-    .menu-btn,
-    .sub-menu-btn {
-      width: 100%;
-      border: none;
-      cursor: pointer;
-      text-align: left;
-      font-weight: 800;
-    }
-
-    .menu-btn {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 14px;
-      border-radius: 12px;
-      background: #000000;
-      color: #ffffff;
-      font-size: 16px;
-    }
-
-    .menu-btn.active {
-      border: 2px solid #55ffff;
-      box-shadow: 0 0 10px rgba(85, 255, 255, 0.55);
-    }
-
-    .sub-menu {
-      display: none;
-      margin-top: 8px;
-      padding-left: 12px;
-      border-left: 2px solid #55ffff;
-    }
-
-    .sub-menu.open {
-      display: block;
-    }
-
-    .sub-menu-btn {
-      display: block;
-      margin: 7px 0;
-      padding: 11px 12px;
-      border-radius: 10px;
-      background: #3a3d40;
-      color: #ffffff;
-      font-size: 14px;
-    }
-
-    .sub-menu-btn:hover,
-    .menu-btn:hover {
-      opacity: 0.88;
-    }
-
-    .overlay {
-      display: none;
-    }
-
-    .main-area {
-      flex: 1;
-      max-width: 920px;
-      margin: 0 auto;
-      padding: 0 22px;
-    }
-
-    .breadcrumb {
-      margin: 28px 0 0;
-      font-size: 18px;
-      color: #374151;
-    }
-
-    .breadcrumb strong {
-      color: #000000;
-      font-weight: 900;
-    }
-
-    .breadcrumb span {
-      margin-left: 6px;
-    }
-
-    .content {
-      margin: 20px auto 32px;
-    }
-
-    .card {
-      display: none;
-      background: #ffffff;
-      border-radius: 18px;
-      padding: 28px;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
-      margin-bottom: 28px;
-    }
-
-    .card.active {
-      display: block;
-    }
-
-    .card h2 {
-      font-size: 30px;
-      margin-bottom: 18px;
-      color: #111827;
-    }
-
-    .card p {
-      font-size: 18px;
-      margin-bottom: 14px;
-    }
-
-    .card strong {
-      font-weight: 800;
-    }
-
-    .unlock-btn {
-      display: inline-block;
-      margin: 0 0 18px;
-      padding: 7px 15px;
-      border: none;
-      border-radius: 999px;
-      background: #ef4444;
-      color: #ffffff;
-      font-size: 14px;
-      font-weight: 900;
-      cursor: pointer;
-    }
-
-    .unlock-btn:hover {
-      opacity: 0.9;
-    }
-
-    .unlock-popup-bg,
-    .save-popup-bg {
-      display: none;
-      position: fixed;
-      inset: 0;
-      z-index: 3000;
-      background: rgba(0, 0, 0, 0.35);
-      padding: 20px;
-    }
-
-    .unlock-popup-bg.show,
-    .save-popup-bg.show {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .unlock-popup,
-    .save-popup {
-      width: 100%;
-      max-width: 380px;
-      padding: 24px;
-      border-radius: 18px;
-      background: #ffffff;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
-      text-align: center;
-    }
-
-    .unlock-popup h3,
-    .save-popup h3 {
-      font-size: 22px;
-      margin-bottom: 12px;
-      color: #111827;
-    }
-
-    .unlock-popup p,
-    .save-popup p {
-      font-size: 16px;
-      margin-bottom: 14px;
-      color: #374151;
-      font-weight: 800;
-    }
-
-    .save-category-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-      margin-top: 16px;
-    }
-
-    .save-category-btn {
-      border: none;
-      border-radius: 999px;
-      padding: 12px;
-      background: #374151;
-      color: #ffffff;
-      font-size: 15px;
-      font-weight: 900;
-      cursor: pointer;
-    }
-
-    .save-category-btn:hover {
-      opacity: 0.9;
-    }
-
-    .roadmap-image,
-    .skill-image {
-      width: 100%;
-      max-width: 100%;
-      height: auto;
-      display: block;
-      margin-top: 20px;
-      border-radius: 16px;
-      border: 1px solid #e5e7eb;
-    }
-
-    .skill-image + .skill-image {
-      margin-top: 18px;
-    }
-
-    .guide-table-wrap {
-      width: 100%;
-      overflow-x: auto;
-      margin-top: 18px;
-    }
-
-    .guide-table {
-      width: 100%;
-      border-collapse: collapse;
-      background: #ffffff;
-    }
-
-    .guide-table th,
-    .guide-table td {
-      border: 1px solid #d1d5db;
-      padding: 14px 12px;
-      text-align: center;
-      font-size: 16px;
-      font-weight: 700;
-      vertical-align: middle;
-      word-break: keep-all;
-    }
-
-    .guide-table .table-title {
-      background: #000000;
-      color: #ffffff;
-      font-size: 20px;
-      font-weight: 900;
-      padding: 12px;
-    }
-
-    .guide-table .total-cell {
-      color: #ff0000;
-      font-size: 17px;
-      font-weight: 900;
-    }
-
-    .skill-search-box {
-      width: 100%;
-      margin: 18px 0 16px;
-      padding: 16px 18px;
-      border: 2px solid #d1d5db;
-      border-radius: 18px;
-      font-size: 17px;
-      font-weight: 800;
-      outline: none;
-    }
-
-    .skill-search-box:focus {
-      border-color: #111827;
-    }
-
-    .compact-filter-wrap {
-      display: grid;
-      gap: 10px;
-      margin: 14px 0 20px;
-    }
-
-    .compact-filter-row {
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 7px;
-    }
-
-    .compact-filter-label {
-      font-size: 16px;
-      font-weight: 900;
-      color: #111827;
-      margin-right: 2px;
-    }
-
-    .filter-btn,
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      border: none;
-      border-radius: 999px;
-      font-size: 14px;
-      font-weight: 900;
-      line-height: 1;
-      white-space: nowrap;
-    }
-
-    .filter-btn {
-      padding: 9px 12px;
-      cursor: pointer;
-      opacity: 0.78;
-      border: 2px solid transparent;
-    }
-
-    .filter-btn.active {
-      opacity: 1;
-      border-color: #111827;
-      transform: translateY(-1px);
-    }
-
-    .badge {
-      padding: 7px 11px;
-      margin-left: 6px;
-    }
-
-    .grade-normal {
-      background: #ffffff;
-      color: #111827;
-      border: 1px solid #d1d5db;
-    }
-
-    .grade-advanced {
-      background: #22c55e;
-      color: #ffffff;
-    }
-
-    .grade-rare {
-      background: #fb923c;
-      color: #ffffff;
-    }
-
-    .grade-hero {
-      background: #a855f7;
-      color: #ffffff;
-    }
-
-    .grade-legend {
-      background: #ef4444;
-      color: #ffffff;
-    }
-
-    .grade-myth {
-      background: #5ac8fa;
-      color: #ffffff;
-    }
-
-    .filter-all {
-      background: #3f3f46;
-      color: #ffffff;
-    }
-
-    .element-fire {
-      background: #b91c1c;
-      color: #ffffff;
-    }
-
-    .element-water {
-      background: #2563eb;
-      color: #ffffff;
-    }
-
-    .element-wind {
-      background: #16a34a;
-      color: #ffffff;
-    }
-
-    .element-earth {
-      background: #a16207;
-      color: #ffffff;
-    }
-
-    .skill-group-title {
-      margin: 26px 0 14px;
-      font-size: 24px;
-      font-weight: 900;
-      color: #111827;
-    }
-
-    .skill-result-list {
-      display: grid;
-      gap: 14px;
-    }
-
-    .skill-result-card {
-      border: 1px solid #e5e7eb;
-      border-radius: 18px;
-      padding: 18px;
-      background: #ffffff;
-    }
-
-    .skill-name-row {
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-bottom: 12px;
-    }
-
-    .skill-name {
-      font-size: 22px;
-      font-weight: 900;
-      color: #111827;
-      margin-right: 4px;
-    }
-
-    .skill-info {
-      font-size: 16px;
-      font-weight: 800;
-      color: #374151;
-      margin-top: 6px;
-    }
-
-    .empty-result {
-      margin-top: 20px;
-      padding: 18px;
-      border-radius: 16px;
-      background: #f3f4f6;
-      font-size: 16px;
-      font-weight: 800;
-      color: #4b5563;
-      text-align: center;
-    }
-
-    .setting-guide-text {
-      text-align: center;
-      font-weight: 900;
-      color: #4b5563;
-    }
-
-    .setting-action-row {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      margin: -18px auto 34px;
-      flex-wrap: wrap;
-    }
-
-    .setting-reset-btn,
-    .setting-save-btn {
-      display: inline-block;
-      padding: 10px 18px;
-      border: none;
-      border-radius: 999px;
-      color: #ffffff;
-      font-size: 14px;
-      font-weight: 900;
-      cursor: pointer;
-    }
-
-    .setting-reset-btn {
-      background: #111827;
-    }
-
-    .setting-save-btn {
-      background: #22c55e;
-    }
-
-    .setting-reset-btn:hover,
-    .setting-save-btn:hover {
-      opacity: 0.88;
-    }
-
-    .skill-setting-grid {
-      display: grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
-      gap: 10px;
-      max-width: 580px;
-      margin: 22px auto 42px;
-    }
-
-    .setting-slot {
-      aspect-ratio: 1 / 1;
-      border-radius: 16px;
-      border: 2px dashed #cbd5e1;
-      background: #f8fafc;
-      color: #94a3b8;
-      font-size: 14px;
-      font-weight: 900;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 6px;
-      word-break: keep-all;
-      line-height: 1.25;
-    }
-
-    .setting-slot.filled {
-      border-style: solid;
-      color: #ffffff;
-      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
-    }
-
-    .setting-slot.filled.grade-normal {
-      background: #ffffff;
-      color: #111827;
-      border: 1px solid #d1d5db;
-    }
-
-    .setting-slot.filled.grade-advanced {
-      background: #22c55e;
-      color: #ffffff;
-    }
-
-    .setting-slot.filled.grade-rare {
-      background: #fb923c;
-      color: #ffffff;
-    }
-
-    .setting-slot.filled.grade-hero {
-      background: #a855f7;
-      color: #ffffff;
-    }
-
-    .setting-slot.filled.grade-legend {
-      background: #ef4444;
-      color: #ffffff;
-    }
-
-    .setting-slot.filled.grade-myth {
-      background: #5ac8fa;
-      color: #ffffff;
-    }
-
-    .setting-list-title {
-      text-align: center;
-      margin-top: 26px;
-    }
-
-    .setting-skill-list {
-      display: grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
-      gap: 10px;
-      margin-top: 18px;
-    }
-
-    .setting-skill-btn {
-      aspect-ratio: 1 / 1;
-      border: none;
-      border-radius: 16px;
-      font-size: 13px;
-      font-weight: 900;
-      cursor: pointer;
-      padding: 8px;
-      text-align: center;
-      word-break: keep-all;
-      line-height: 1.25;
-      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.10);
-    }
-
-    .setting-skill-btn.selected {
-      outline: 4px solid #6b7280;
-      outline-offset: -4px;
-    }
-
-    .setting-skill-btn.grade-normal {
-      color: #111827;
-    }
-
-    .saved-category {
-      border: 1px solid #e5e7eb;
-      border-radius: 18px;
-      overflow: hidden;
-      margin-bottom: 14px;
-      background: #ffffff;
-    }
-
-    .saved-category-header {
-      width: 100%;
-      border: none;
-      background: #111827;
-      color: #ffffff;
-      padding: 16px;
-      font-size: 18px;
-      font-weight: 900;
-      cursor: pointer;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .saved-category-body {
-      display: none;
-      padding: 18px;
-    }
-
-    .saved-category.open .saved-category-body {
-      display: block;
-    }
-
-    .saved-setting-block {
-      border: 1px solid #e5e7eb;
-      border-radius: 18px;
-      padding: 16px;
-      margin-bottom: 18px;
-      background: #f9fafb;
-    }
-
-    .saved-setting-title {
-      text-align: center;
-      font-size: 22px;
-      font-weight: 900;
-      margin-bottom: 12px;
-      color: #111827;
-    }
-
-    .saved-setting-grid {
-      display: grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
-      gap: 8px;
-      width: 100%;
-      max-width: 560px;
-      margin: 0 auto 16px;
-    }
-
-    .saved-setting-slot {
-      aspect-ratio: 1 / 1;
-      border: none;
-      border-radius: 15px;
-      font-size: 13px;
-      font-weight: 900;
-      padding: 6px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      word-break: keep-all;
-      line-height: 1.25;
-      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.10);
-    }
-
-    .saved-setting-slot.grade-normal {
-      color: #111827;
-    }
-
-    .saved-delete-btn {
-      display: block;
-      margin: 0 auto;
-      border: none;
-      border-radius: 999px;
-      padding: 10px 18px;
-      background: #ef4444;
-      color: #ffffff;
-      font-size: 14px;
-      font-weight: 900;
-      cursor: pointer;
-    }
-
-    .saved-delete-btn:hover {
-      opacity: 0.88;
-    }
-
-    .saved-empty {
-      padding: 16px;
-      border-radius: 14px;
-      background: #f3f4f6;
-      color: #6b7280;
-      font-size: 15px;
-      font-weight: 800;
-      text-align: center;
-    }
-
-    .update-list {
-      padding-left: 22px;
-      margin-top: 14px;
-    }
-
-    .update-list li {
-      font-size: 18px;
-      margin-bottom: 10px;
-    }
-
-    .update-date {
-      display: inline-block;
-      margin-bottom: 14px;
-      padding: 6px 12px;
-      border-radius: 999px;
-      background: #f3f4f6;
-      color: #4b5563;
-      font-size: 14px;
-      font-weight: 800;
-    }
-
-    .site-footer {
-      border-top: 1px solid #d1d5db;
-      margin: 36px 0 28px;
-      padding-top: 18px;
-      text-align: center;
-      color: #6b7280;
-      font-size: 14px;
-      font-weight: 700;
-    }
-
-    @media (max-width: 768px) {
-      .top-bar {
-        height: 52px;
-        padding: 0 12px;
-      }
-
-      .hamburger-btn {
-        width: 36px;
-        height: 36px;
-        font-size: 21px;
-        border-radius: 10px;
-      }
-
-      .top-title {
-        font-size: 17px;
-      }
-
-      .header {
-        padding: 40px 20px 34px;
-      }
-
-      .logo {
-        max-width: 260px;
-      }
-
-      .layout {
-        display: block;
-      }
-
-      .sidebar {
-        position: fixed;
-        top: 0;
-        left: -290px;
-        z-index: 2000;
-        width: 280px;
-        height: 100vh;
-        overflow-y: auto;
-        transition: left 0.25s ease;
-      }
-
-      .sidebar.open {
-        left: 0;
-      }
-
-      .overlay {
-        position: fixed;
-        inset: 0;
-        z-index: 1500;
-        background: rgba(0, 0, 0, 0.45);
-      }
-
-      .overlay.show {
-        display: block;
-      }
-
-      .main-area {
-        padding: 0 14px;
-      }
-
-      .breadcrumb {
-        margin: 20px 0 0;
-        font-size: 15px;
-      }
-
-      .content {
-        margin: 14px auto 24px;
-      }
-
-      .card {
-        padding: 22px;
-      }
-
-      .card h2 {
-        font-size: 24px;
-      }
-
-      .card p {
-        font-size: 16px;
-      }
-
-      .unlock-btn {
-        padding: 6px 13px;
-        font-size: 13px;
-      }
-
-      .unlock-popup,
-      .save-popup {
-        max-width: 320px;
-        padding: 22px;
-      }
-
-      .unlock-popup h3,
-      .save-popup h3 {
-        font-size: 20px;
-      }
-
-      .unlock-popup p,
-      .save-popup p {
-        font-size: 15px;
-      }
-
-      .guide-table-wrap {
-        overflow-x: visible;
-      }
-
-      .guide-table {
-        table-layout: fixed;
-      }
-
-      .guide-table th,
-      .guide-table td {
-        padding: 9px 5px;
-        font-size: 11px;
-        line-height: 1.35;
-      }
-
-      .guide-table .table-title {
-        font-size: 15px;
-        padding: 9px;
-      }
-
-      .guide-table .total-cell {
-        font-size: 11px;
-      }
-
-      .skill-search-box {
-        padding: 13px 14px;
-        font-size: 15px;
-      }
-
-      .compact-filter-row {
-        gap: 6px;
-      }
-
-      .compact-filter-label {
-        font-size: 15px;
-      }
-
-      .filter-btn {
-        padding: 8px 10px;
-        font-size: 13px;
-      }
-
-      .badge {
-        padding: 6px 9px;
-        font-size: 13px;
-      }
-
-      .skill-group-title {
-        font-size: 22px;
-      }
-
-      .skill-name {
-        font-size: 20px;
-      }
-
-      .skill-info {
-        font-size: 15px;
-      }
-
-      .skill-setting-grid {
-        gap: 8px;
-      }
-
-      .setting-slot {
-        border-radius: 14px;
-        font-size: 12px;
-        padding: 4px;
-      }
-
-      .setting-skill-list {
-        gap: 8px;
-      }
-
-      .setting-skill-btn {
-        border-radius: 14px;
-        font-size: 11px;
-        padding: 5px;
-      }
-
-      .saved-category-header {
-        font-size: 16px;
-        padding: 14px;
-      }
-
-      .saved-category-body {
-        padding: 14px;
-      }
-
-      .saved-setting-title {
-        font-size: 20px;
-      }
-
-      .saved-setting-grid {
-        gap: 7px;
-      }
-
-      .saved-setting-slot {
-        border-radius: 12px;
-        font-size: 11px;
-        padding: 4px;
-      }
-
-      .update-list li {
-        font-size: 16px;
-      }
-
-      .site-footer {
-        font-size: 13px;
-        margin: 28px 0 24px;
-      }
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>물멍위키</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f5f5f5;color:#111827;line-height:1.6}
+.top-bar{position:sticky;top:0;z-index:1000;display:flex;align-items:center;gap:12px;height:62px;padding:0 18px;background:#fff;border-bottom:1px solid #e5e7eb}
+.hamburger-btn{width:42px;height:42px;border:none;border-radius:12px;background:#000;color:#fff;font-size:24px;font-weight:900;cursor:pointer}
+.top-title{border:none;background:transparent;color:#111827;font-size:20px;font-weight:900;cursor:pointer}
+.header{background:#fff;padding:58px 20px 52px;text-align:center;border-bottom:1px solid #e5e7eb}
+.logo{max-width:420px;width:100%;height:auto}
+.layout{display:flex;max-width:1280px;margin:0 auto}
+.sidebar{width:280px;flex:0 0 280px;min-height:calc(100vh - 62px);padding:18px;background:#202326;border-right:1px solid #111827}
+.sidebar-title{color:#fff;font-size:18px;font-weight:900;margin-bottom:16px}
+.menu-group{margin-bottom:10px}
+.menu-btn,.sub-menu-btn{width:100%;border:none;cursor:pointer;text-align:left;font-weight:800}
+.menu-btn{display:flex;justify-content:space-between;align-items:center;padding:14px;border-radius:12px;background:#000;color:#fff;font-size:16px}
+.menu-btn.active{border:2px solid #55ffff;box-shadow:0 0 10px rgba(85,255,255,.55)}
+.sub-menu{display:none;margin-top:8px;padding-left:12px;border-left:2px solid #55ffff}
+.sub-menu.open{display:block}
+.sub-menu-btn{display:block;margin:7px 0;padding:11px 12px;border-radius:10px;background:#3a3d40;color:#fff;font-size:14px}
+.overlay{display:none}
+.main-area{flex:1;max-width:920px;margin:0 auto;padding:0 22px}
+.breadcrumb{margin:28px 0 0;font-size:18px;color:#374151}
+.breadcrumb strong{color:#000;font-weight:900}
+.breadcrumb span{margin-left:6px}
+.content{margin:20px auto 32px}
+.card{display:none;background:#fff;border-radius:18px;padding:28px;box-shadow:0 4px 14px rgba(0,0,0,.08);margin-bottom:28px}
+.card.active{display:block}
+.card h2{font-size:30px;margin-bottom:18px;color:#111827}
+.card p{font-size:18px;margin-bottom:14px}
+.unlock-btn{display:inline-block;margin:0 0 18px;padding:7px 15px;border:none;border-radius:999px;background:#ef4444;color:#fff;font-size:14px;font-weight:900;cursor:pointer}
+.unlock-popup-bg,.save-popup-bg{display:none;position:fixed;inset:0;z-index:3000;background:rgba(0,0,0,.35);padding:20px}
+.unlock-popup-bg.show,.save-popup-bg.show{display:flex;align-items:center;justify-content:center}
+.unlock-popup,.save-popup{width:100%;max-width:380px;padding:24px;border-radius:18px;background:#fff;box-shadow:0 10px 30px rgba(0,0,0,.25);text-align:center}
+.save-category-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:16px}
+.save-category-btn{border:none;border-radius:999px;padding:12px;background:#374151;color:#fff;font-size:15px;font-weight:900;cursor:pointer}
+.roadmap-image{width:100%;max-width:100%;height:auto;display:block;margin-top:20px;border-radius:16px;border:1px solid #e5e7eb}
+.guide-table-wrap{width:100%;overflow-x:auto;margin-top:18px}
+.guide-table{width:100%;border-collapse:collapse;background:#fff}
+.guide-table th,.guide-table td{border:1px solid #d1d5db;padding:14px 12px;text-align:center;font-size:16px;font-weight:700;vertical-align:middle;word-break:keep-all}
+.guide-table .table-title{background:#000;color:#fff;font-size:20px;font-weight:900;padding:12px}
+.guide-table .total-cell{color:#f00;font-size:17px;font-weight:900}
+.skill-search-box{width:100%;margin:18px 0 16px;padding:16px 18px;border:2px solid #d1d5db;border-radius:18px;font-size:17px;font-weight:800;outline:none}
+.compact-filter-wrap{display:grid;gap:10px;margin:14px 0 20px}
+.compact-filter-row{display:flex;align-items:center;flex-wrap:wrap;gap:7px}
+.compact-filter-label{font-size:16px;font-weight:900;color:#111827;margin-right:2px}
+.filter-btn,.badge{display:inline-flex;align-items:center;justify-content:center;border:none;border-radius:999px;font-size:14px;font-weight:900;line-height:1;white-space:nowrap}
+.filter-btn{padding:9px 12px;cursor:pointer;opacity:.78;border:2px solid transparent}
+.filter-btn.active{opacity:1;border-color:#111827;transform:translateY(-1px)}
+.badge{padding:7px 11px;margin-left:6px}
+.grade-normal{background:#fff;color:#111827;border:1px solid #d1d5db}
+.grade-advanced{background:#22c55e;color:#fff}
+.grade-rare{background:#fb923c;color:#fff}
+.grade-hero{background:#a855f7;color:#fff}
+.grade-legend{background:#ef4444;color:#fff}
+.grade-myth{background:#5ac8fa;color:#fff}
+.filter-all{background:#3f3f46;color:#fff}
+.element-fire{background:#b91c1c;color:#fff}
+.element-water{background:#2563eb;color:#fff}
+.element-wind{background:#16a34a;color:#fff}
+.element-earth{background:#a16207;color:#fff}
+.skill-group-title{margin:26px 0 14px;font-size:24px;font-weight:900;color:#111827}
+.skill-result-list{display:grid;gap:14px}
+.skill-result-card{border:1px solid #e5e7eb;border-radius:18px;padding:18px;background:#fff}
+.skill-name-row{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.skill-name{font-size:22px;font-weight:900;color:#111827;margin-right:4px}
+.skill-info{font-size:16px;font-weight:800;color:#374151;margin-top:6px}
+.empty-result{margin-top:20px;padding:18px;border-radius:16px;background:#f3f4f6;font-size:16px;font-weight:800;color:#4b5563;text-align:center}
+.setting-guide-text{text-align:center;font-weight:900;color:#4b5563}
+.setting-action-row{display:flex;justify-content:center;gap:10px;margin:-18px auto 34px;flex-wrap:wrap}
+.setting-reset-btn,.setting-save-btn{display:inline-block;padding:10px 18px;border:none;border-radius:999px;color:#fff;font-size:14px;font-weight:900;cursor:pointer}
+.setting-reset-btn{background:#111827}
+.setting-save-btn{background:#22c55e}
+.skill-setting-grid,.setting-skill-list{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.skill-setting-grid{max-width:580px;margin:22px auto 42px}
+.setting-skill-list{margin-top:18px}
+.setting-slot,.setting-skill-btn{aspect-ratio:1/1;border-radius:16px;font-size:13px;font-weight:900;cursor:pointer;display:flex;align-items:center;justify-content:center;text-align:center;padding:6px;word-break:keep-all;line-height:1.25}
+.setting-slot{border:2px dashed #cbd5e1;background:#f8fafc;color:#94a3b8}
+.setting-slot.filled{border-style:solid;color:#fff;box-shadow:0 8px 18px rgba(0,0,0,.12)}
+.setting-slot.filled.grade-normal{background:#fff;color:#111827;border:1px solid #d1d5db}
+.setting-skill-btn{border:none;box-shadow:0 8px 18px rgba(0,0,0,.10)}
+.setting-skill-btn.selected{outline:4px solid #6b7280;outline-offset:-4px}
+.setting-skill-btn.grade-normal{color:#111827}
+.setting-list-title{text-align:center;margin-top:26px}
+.saved-category{border:1px solid #e5e7eb;border-radius:18px;overflow:hidden;margin-bottom:14px;background:#fff}
+.saved-category-header{width:100%;border:none;background:#111827;color:#fff;padding:16px;font-size:18px;font-weight:900;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+.saved-category-body{display:none;padding:18px}
+.saved-category.open .saved-category-body{display:block}
+.saved-setting-block{border:1px solid #e5e7eb;border-radius:18px;padding:16px;margin-bottom:18px;background:#f9fafb}
+.saved-setting-title{text-align:center;font-size:22px;font-weight:900;margin-bottom:12px;color:#111827}
+.saved-setting-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;width:100%;max-width:560px;margin:0 auto 16px}
+.saved-setting-slot{aspect-ratio:1/1;border:none;border-radius:15px;font-size:13px;font-weight:900;padding:6px;display:flex;align-items:center;justify-content:center;text-align:center;word-break:keep-all;line-height:1.25;box-shadow:0 6px 14px rgba(0,0,0,.10)}
+.saved-setting-slot.grade-normal{color:#111827}
+.saved-delete-btn{display:block;margin:0 auto;border:none;border-radius:999px;padding:10px 18px;background:#ef4444;color:#fff;font-size:14px;font-weight:900;cursor:pointer}
+.saved-empty{padding:16px;border-radius:14px;background:#f3f4f6;color:#6b7280;font-size:15px;font-weight:800;text-align:center}
+.update-list{padding-left:22px;margin-top:14px}
+.update-list li{font-size:18px;margin-bottom:10px}
+.update-date{display:inline-block;margin-bottom:14px;padding:6px 12px;border-radius:999px;background:#f3f4f6;color:#4b5563;font-size:14px;font-weight:800}
+.site-footer{border-top:1px solid #d1d5db;margin:36px 0 28px;padding-top:18px;text-align:center;color:#6b7280;font-size:14px;font-weight:700}
+@media(max-width:768px){
+  .top-bar{height:52px;padding:0 12px}
+  .hamburger-btn{width:36px;height:36px;font-size:21px;border-radius:10px}
+  .top-title{font-size:17px}
+  .header{padding:40px 20px 34px}
+  .logo{max-width:260px}
+  .layout{display:block}
+  .sidebar{position:fixed;top:0;left:-290px;z-index:2000;width:280px;height:100vh;overflow-y:auto;transition:left .25s ease}
+  .sidebar.open{left:0}
+  .overlay{position:fixed;inset:0;z-index:1500;background:rgba(0,0,0,.45)}
+  .overlay.show{display:block}
+  .main-area{padding:0 14px}
+  .breadcrumb{margin:20px 0 0;font-size:15px}
+  .content{margin:14px auto 24px}
+  .card{padding:22px}
+  .card h2{font-size:24px}
+  .card p{font-size:16px}
+  .guide-table th,.guide-table td{padding:9px 5px;font-size:11px;line-height:1.35}
+  .guide-table .table-title{font-size:15px;padding:9px}
+  .guide-table .total-cell{font-size:11px}
+  .filter-btn{padding:8px 10px;font-size:13px}
+  .badge{padding:6px 9px;font-size:13px}
+  .setting-slot,.setting-skill-btn,.saved-setting-slot{font-size:11px;border-radius:12px;padding:4px}
+  .saved-category-header{font-size:16px;padding:14px}
+  .saved-category-body{padding:14px}
+  .saved-setting-title{font-size:20px}
+  .update-list li{font-size:16px}
+  .site-footer{font-size:13px;margin:28px 0 24px}
+}
+</style>
 </head>
 
 <body>
@@ -1002,1105 +139,580 @@
     <button class="top-title" onclick="showSection('intro')">물멍위키</button>
   </div>
 
-  <header class="header">
-    <img src="logo.png" alt="물멍위키 로고" class="logo" />
-  </header>
-
+  <header class="header"><img src="logo.png" alt="물멍위키 로고" class="logo" /></header>
   <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
 
   <div class="layout">
     <aside class="sidebar" id="sidebar">
       <div class="sidebar-title">메뉴</div>
-
-      <div class="menu-group">
-        <button class="menu-btn" onclick="showSection('intro')">들어가며</button>
-      </div>
-
-      <div class="menu-group">
-        <button class="menu-btn" onclick="toggleSubMenu('diamondMenu', this)">
-          다이아 소모처 <span>＋</span>
-        </button>
-
-        <div class="sub-menu" id="diamondMenu">
-          <button class="sub-menu-btn" onclick="showSection('diamond-roadmap')">다이아 소모처 로드맵</button>
-          <button class="sub-menu-btn" onclick="showSection('diamond-class')">클래스</button>
-          <button class="sub-menu-btn" onclick="showSection('diamond-spirit')">정령</button>
-          <button class="sub-menu-btn" onclick="showSection('diamond-or')">오르</button>
-          <button class="sub-menu-btn" onclick="showSection('diamond-orb')">오브</button>
-          <button class="sub-menu-btn" onclick="showSection('diamond-familiar')">사역마</button>
-          <button class="sub-menu-btn" onclick="showSection('diamond-beast')">비스트</button>
-        </div>
-      </div>
-
-      <div class="menu-group">
-        <button class="menu-btn" onclick="toggleSubMenu('promotionMenu', this)">
-          승급 <span>＋</span>
-        </button>
-        <div class="sub-menu" id="promotionMenu"></div>
-      </div>
-
-      <div class="menu-group">
-        <button class="menu-btn" onclick="toggleSubMenu('infoMenu', this)">
-          정보 <span>＋</span>
-        </button>
-
-        <div class="sub-menu" id="infoMenu">
-          <button class="sub-menu-btn" onclick="showSection('skill-learn')">스킬 배우기</button>
-          <button class="sub-menu-btn" onclick="showSection('skill-setting')">스킬 세팅</button>
-          <button class="sub-menu-btn" onclick="showSection('skill-setting-collection')">스킬 세팅 모음</button>
-        </div>
-      </div>
-
-      <div class="menu-group">
-        <button class="menu-btn" onclick="toggleSubMenu('updateMenu', this)">
-          업데이트 <span>＋</span>
-        </button>
-
-        <div class="sub-menu" id="updateMenu">
-          <button class="sub-menu-btn" onclick="showSection('update-010')">v0.1.0-beta</button>
-          <button class="sub-menu-btn" onclick="showSection('update-011')">v0.1.1-beta</button>
-          <button class="sub-menu-btn" onclick="showSection('update-012')">v0.1.2-beta</button>
-          <button class="sub-menu-btn" onclick="showSection('update-013')">v0.1.3-beta</button>
-          <button class="sub-menu-btn" onclick="showSection('update-014')">v0.1.4-beta</button>
-          <button class="sub-menu-btn" onclick="showSection('update-015')">v0.1.5-beta</button>
-          <button class="sub-menu-btn" onclick="showSection('update-016')">v0.1.6-beta</button>
-          <button class="sub-menu-btn" onclick="showSection('update-017')">v0.1.7-beta</button>
-          <button class="sub-menu-btn" onclick="showSection('update-018')">v0.1.8-beta</button>
-          <button class="sub-menu-btn" onclick="showSection('update-019')">v0.1.9-beta</button>
-          <button class="sub-menu-btn" onclick="showSection('update-020')">v0.1.10-beta</button>
-        </div>
-      </div>
+      <div class="menu-group"><button class="menu-btn" onclick="showSection('intro')">들어가며</button></div>
+      <div class="menu-group"><button class="menu-btn" onclick="toggleSubMenu('diamondMenu', this)">다이아 소모처 <span>＋</span></button><div class="sub-menu" id="diamondMenu"></div></div>
+      <div class="menu-group"><button class="menu-btn" onclick="toggleSubMenu('promotionMenu', this)">승급 <span>＋</span></button><div class="sub-menu" id="promotionMenu"></div></div>
+      <div class="menu-group"><button class="menu-btn" onclick="toggleSubMenu('infoMenu', this)">정보 <span>＋</span></button><div class="sub-menu" id="infoMenu"></div></div>
+      <div class="menu-group"><button class="menu-btn" onclick="toggleSubMenu('updateMenu', this)">업데이트 <span>＋</span></button><div class="sub-menu" id="updateMenu"></div></div>
     </aside>
 
     <div class="main-area">
       <div id="breadcrumb" class="breadcrumb"></div>
-
-      <main class="content" id="content">
-        <section id="intro" class="card active">
-          <h2>들어가며</h2>
-
-          <p>제가 생각하기에 이 게임의 묘미는 바로 승급의 짜릿함과 사람들과의 소통인 것 같습니다.</p>
-
-          <p>
-            여러 컨텐츠를 즐기며 강화, 합성, 각성을 해 승급을 하고,
-            여러 사람들과 즐거운 소통도 하면서 즐기고 있는 것 같네요 ^^;;
-          </p>
-
-          <p>
-            그리고 처음 시작하시는 분들이나 성장 방향이 고민되시는 분들도
-            조금 더 쉽고 재밌게 즐기실 수 있도록 저 물멍이 하나하나 함께 도와드리겠습니다.
-          </p>
-
-          <p>이렇게 재밌는 <strong>“슬레이어 키우기”</strong></p>
-
-          <p><strong>저 물멍과 함께 제.대.로 즐겨보시겠습니까?</strong></p>
-        </section>
-
-        <section id="diamond-roadmap" class="card">
-          <h2>다이아 소모처 로드맵</h2>
-
-          <p>
-            초보자들이 다이아를 어디에 먼저 사용해야 하는지 한눈에 볼 수 있도록 정리한 로드맵입니다.
-            성장 초반에는 무기 소환, 악세 소환, 유물, 클래스, 정령, 오브 제작 등 여러 선택지가 있기 때문에
-            순서를 참고하여 낭비 없이 성장하는 것을 목표로 합니다.
-          </p>
-
-          <img src="diamond-roadmap.png" alt="다이아 소모처 로드맵" class="roadmap-image" />
-        </section>
-
-        <section id="diamond-class" class="card">
-          <h2>클래스</h2>
-          <button class="unlock-btn" onclick="openUnlockPopup('클래스', '250레벨 달성 / 120 스테이지')">해금</button>
-          <p>추후 [클래스] 내용을 업데이트 할 예정입니다.</p>
-        </section>
-
-        <section id="diamond-spirit" class="card">
-          <h2>정령</h2>
-          <button class="unlock-btn" onclick="openUnlockPopup('정령', '100 스테이지 클리어 시')">해금</button>
-          <p>추후 [정령] 내용을 업데이트 할 예정입니다.</p>
-        </section>
-
-        <section id="diamond-or" class="card">
-          <h2>오르</h2>
-
-          <div class="guide-table-wrap">
-            <table class="guide-table">
-              <tr>
-                <th colspan="3" class="table-title">오르</th>
-              </tr>
-              <tr>
-                <td>신입 슬레이어</td>
-                <td>신화 1등급 무기 [1개]</td>
-                <td rowspan="5" class="total-cell">총 신화 1등급 무기 5개</td>
-              </tr>
-              <tr>
-                <td>중급 슬레이어</td>
-                <td>신화 1등급 무기 [1개]</td>
-              </tr>
-              <tr>
-                <td>스킬 마스터리</td>
-                <td>신화 1등급 무기 [1개]</td>
-              </tr>
-              <tr>
-                <td>무뽑 소환 레벨 6</td>
-                <td>신화 1등급 무기 [1개]</td>
-              </tr>
-              <tr>
-                <td>악을 멸하는 검 패키지</td>
-                <td>신화 1등급 무기 [1개]</td>
-              </tr>
-            </table>
-          </div>
-        </section>
-
-        <section id="diamond-orb" class="card">
-          <h2>오브</h2>
-
-          <div class="guide-table-wrap">
-            <table class="guide-table">
-              <tr>
-                <th colspan="3" class="table-title">오브</th>
-              </tr>
-              <tr>
-                <td>신입 슬레이어</td>
-                <td>신화 1등급 악세 [1개]</td>
-                <td rowspan="4" class="total-cell">총 신화 1등급 악세 5개</td>
-              </tr>
-              <tr>
-                <td>중급 슬레이어</td>
-                <td>신화 1등급 악세 [1개]</td>
-              </tr>
-              <tr>
-                <td>블랙 미스릴 승급 기념 패키지</td>
-                <td>신화 1등급 악세 [2개]</td>
-              </tr>
-              <tr>
-                <td>악뽑 소환 레벨 6</td>
-                <td>신화 1등급 악세 [1개]</td>
-              </tr>
-            </table>
-          </div>
-        </section>
-
-        <section id="diamond-familiar" class="card">
-          <h2>사역마</h2>
-          <button class="unlock-btn" onclick="openUnlockPopup('사역마', '데몬메탈 승급 시')">해금</button>
-          <p>추후 [사역마] 내용을 업데이트 할 예정입니다.</p>
-        </section>
-
-        <section id="diamond-beast" class="card">
-          <h2>비스트</h2>
-          <button class="unlock-btn" onclick="openUnlockPopup('비스트', '워프로스트 승급 시')">해금</button>
-          <p>추후 [비스트] 내용을 업데이트 할 예정입니다.</p>
-        </section>
-
-        <section id="skill-learn" class="card">
-          <h2>스킬 배우기</h2>
-
-          <p>스킬 이름을 검색하거나, 등급과 속성 필터를 함께 사용해 스킬을 확인할 수 있습니다.</p>
-
-          <input
-            id="skillSearchInput"
-            class="skill-search-box"
-            type="text"
-            placeholder="스킬 이름을 검색하세요. 예: 불꽃 베기"
-            oninput="renderSkills()"
-          />
-
-          <div class="compact-filter-wrap">
-            <div class="compact-filter-row">
-              <span class="compact-filter-label">등급</span>
-              <button class="filter-btn filter-all active" data-grade-filter="전체" onclick="setGradeFilter('전체')">전체</button>
-              <button class="filter-btn grade-myth" data-grade-filter="신화" onclick="setGradeFilter('신화')">신화</button>
-              <button class="filter-btn grade-legend" data-grade-filter="전설" onclick="setGradeFilter('전설')">전설</button>
-              <button class="filter-btn grade-hero" data-grade-filter="영웅" onclick="setGradeFilter('영웅')">영웅</button>
-              <button class="filter-btn grade-rare" data-grade-filter="레어" onclick="setGradeFilter('레어')">레어</button>
-              <button class="filter-btn grade-advanced" data-grade-filter="고급" onclick="setGradeFilter('고급')">고급</button>
-              <button class="filter-btn grade-normal" data-grade-filter="일반" onclick="setGradeFilter('일반')">일반</button>
-            </div>
-
-            <div class="compact-filter-row">
-              <span class="compact-filter-label">속성</span>
-              <button class="filter-btn filter-all active" data-element-filter="전체" onclick="setElementFilter('전체')">전체</button>
-              <button class="filter-btn element-fire" data-element-filter="불" onclick="setElementFilter('불')">불</button>
-              <button class="filter-btn element-water" data-element-filter="물" onclick="setElementFilter('물')">물</button>
-              <button class="filter-btn element-wind" data-element-filter="바람" onclick="setElementFilter('바람')">바람</button>
-              <button class="filter-btn element-earth" data-element-filter="땅" onclick="setElementFilter('땅')">땅</button>
-            </div>
-          </div>
-
-          <div id="skillResultArea"></div>
-        </section>
-
-        <section id="skill-setting" class="card">
-          <h2>스킬 세팅</h2>
-
-          <p class="setting-guide-text">
-            아래 스킬 박스를 누르면 첫 번째 빈칸부터 채워집니다.
-            세팅 칸의 스킬을 누르면 제거됩니다.
-          </p>
-
-          <div id="skillSettingSlots" class="skill-setting-grid"></div>
-
-          <div class="setting-action-row">
-            <button class="setting-reset-btn" onclick="resetSkillSetting()">세팅 초기화</button>
-            <button class="setting-save-btn" onclick="openSavePopup()">세팅 저장</button>
-          </div>
-
-          <h2 class="setting-list-title">스킬 목록</h2>
-
-          <input
-            id="settingSearchInput"
-            class="skill-search-box"
-            type="text"
-            placeholder="세팅할 스킬을 검색하세요. 예: 블리자드"
-            oninput="renderSettingSkillList()"
-          />
-
-          <div class="compact-filter-wrap">
-            <div class="compact-filter-row">
-              <span class="compact-filter-label">등급</span>
-              <button class="filter-btn filter-all active" data-setting-grade-filter="전체" onclick="setSettingGradeFilter('전체')">전체</button>
-              <button class="filter-btn grade-myth" data-setting-grade-filter="신화" onclick="setSettingGradeFilter('신화')">신화</button>
-              <button class="filter-btn grade-legend" data-setting-grade-filter="전설" onclick="setSettingGradeFilter('전설')">전설</button>
-              <button class="filter-btn grade-hero" data-setting-grade-filter="영웅" onclick="setSettingGradeFilter('영웅')">영웅</button>
-              <button class="filter-btn grade-rare" data-setting-grade-filter="레어" onclick="setSettingGradeFilter('레어')">레어</button>
-              <button class="filter-btn grade-advanced" data-setting-grade-filter="고급" onclick="setSettingGradeFilter('고급')">고급</button>
-              <button class="filter-btn grade-normal" data-setting-grade-filter="일반" onclick="setSettingGradeFilter('일반')">일반</button>
-            </div>
-
-            <div class="compact-filter-row">
-              <span class="compact-filter-label">속성</span>
-              <button class="filter-btn filter-all active" data-setting-element-filter="전체" onclick="setSettingElementFilter('전체')">전체</button>
-              <button class="filter-btn element-fire" data-setting-element-filter="불" onclick="setSettingElementFilter('불')">불</button>
-              <button class="filter-btn element-water" data-setting-element-filter="물" onclick="setSettingElementFilter('물')">물</button>
-              <button class="filter-btn element-wind" data-setting-element-filter="바람" onclick="setSettingElementFilter('바람')">바람</button>
-              <button class="filter-btn element-earth" data-setting-element-filter="땅" onclick="setSettingElementFilter('땅')">땅</button>
-            </div>
-          </div>
-
-          <div id="settingSkillList" class="setting-skill-list"></div>
-        </section>
-
-        <section id="skill-setting-collection" class="card">
-          <h2>스킬 세팅 모음</h2>
-
-          <p class="setting-guide-text">
-            저장한 스킬 세팅을 용도별로 펼쳐서 확인할 수 있습니다.
-          </p>
-
-          <div id="savedSettingCollection"></div>
-        </section>
-
-        <section id="update-010" class="card">
-          <h2>물멍위키 v0.1.0-beta 업데이트 내역</h2>
-          <p class="update-date">업데이트 날짜: 2026.05.09</p>
-          <ul class="update-list">
-            <li>물멍위키 사이트 제작 시작</li>
-            <li>기본 HTML/CSS 구조 제작</li>
-            <li>로고 이미지 삽입 구조 적용</li>
-            <li>들어가며 페이지 추가</li>
-            <li>기본 본문 카드 디자인 적용</li>
-          </ul>
-        </section>
-
-        <section id="update-011" class="card">
-          <h2>물멍위키 v0.1.1-beta 업데이트 내역</h2>
-          <p class="update-date">업데이트 날짜: 2026.05.09</p>
-          <ul class="update-list">
-            <li>다이아 소모처 메뉴 추가</li>
-            <li>다이아 소모처 로드맵 페이지 추가</li>
-            <li>다이아 로드맵 이미지 삽입 구조 적용</li>
-            <li>이미지 반응형 크기 조정 적용</li>
-          </ul>
-        </section>
-
-        <section id="update-012" class="card">
-          <h2>물멍위키 v0.1.2-beta 업데이트 내역</h2>
-          <p class="update-date">업데이트 날짜: 2026.05.09</p>
-          <ul class="update-list">
-            <li>승급 메뉴 추가</li>
-            <li>스톤부터 블리츠골드까지 승급 하위 메뉴 추가</li>
-            <li>승급 페이지 자동 생성 구조 적용</li>
-            <li>각 승급 페이지에 임시 안내 문구 추가</li>
-          </ul>
-        </section>
-
-        <section id="update-013" class="card">
-          <h2>물멍위키 v0.1.3-beta 업데이트 내역</h2>
-          <p class="update-date">업데이트 날짜: 2026.05.09</p>
-          <ul class="update-list">
-            <li>다이아 소모처 하위 메뉴 확장</li>
-            <li>클래스, 정령, 오르, 오브, 사역마, 비스트 페이지 추가</li>
-            <li>오르 정보 표 추가</li>
-            <li>오브 정보 표 추가</li>
-            <li>표 상단 제목 칸 검은 배경 및 흰 글씨 적용</li>
-          </ul>
-        </section>
-
-        <section id="update-014" class="card">
-          <h2>물멍위키 v0.1.4-beta 업데이트 내역</h2>
-          <p class="update-date">업데이트 날짜: 2026.05.10</p>
-          <ul class="update-list">
-            <li>정보 메뉴 추가</li>
-            <li>정보 &gt; 스킬 배우기 페이지 추가</li>
-            <li>스킬 배우기 이미지 2장 삽입 구조 적용</li>
-            <li>스킬 배우기 설명 문구 추가</li>
-          </ul>
-        </section>
-
-        <section id="update-015" class="card">
-          <h2>물멍위키 v0.1.5-beta 업데이트 내역</h2>
-          <p class="update-date">업데이트 날짜: 2026.05.10</p>
-          <ul class="update-list">
-            <li>상위/하위 메뉴 구조 개선</li>
-            <li>PC 좌측 사이드바 메뉴 적용</li>
-            <li>모바일 햄버거 메뉴 적용</li>
-            <li>현재 위치 표시 기능 추가</li>
-            <li>현재 위치 표시에서 상위 메뉴 굵은 글씨 구분 적용</li>
-            <li>모든 페이지 하단 현재 버전 표시 추가</li>
-          </ul>
-        </section>
-
-        <section id="update-016" class="card">
-          <h2>물멍위키 v0.1.6-beta 업데이트 내역</h2>
-          <p class="update-date">업데이트 날짜: 2026.05.10</p>
-          <ul class="update-list">
-            <li>업데이트 메뉴 구조 변경</li>
-            <li>업데이트 메뉴에 버전별 하위 메뉴 추가</li>
-            <li>v0.1.0-beta부터 v0.1.6-beta까지 업데이트 내역 페이지 분리</li>
-            <li>사이트 하단 현재 버전 표시를 v0.1.6-beta로 변경</li>
-            <li>업데이트 내역을 버전별로 관리할 수 있도록 구조 정리</li>
-          </ul>
-        </section>
-
-        <section id="update-017" class="card">
-          <h2>물멍위키 v0.1.7-beta 업데이트 내역</h2>
-          <p class="update-date">업데이트 날짜: 2026.05.11</p>
-          <ul class="update-list">
-            <li>상단 물멍위키 제목 클릭 시 홈 화면으로 이동 기능 추가</li>
-            <li>클래스, 정령, 사역마, 비스트 해금 조건 버튼 추가</li>
-            <li>해금 버튼 클릭 시 팝업으로 조건 확인 기능 추가</li>
-            <li>팝업 바깥 화면 클릭 시 팝업 닫힘 기능 추가</li>
-            <li>스킬 배우기 페이지 검색 기능 추가</li>
-            <li>스킬 등급별 필터 기능 추가</li>
-            <li>스킬 속성별 필터 기능 추가</li>
-            <li>등급 필터와 속성 필터 동시 적용 기능 추가</li>
-            <li>스킬 결과 카드에 등급/속성 배지 표시 추가</li>
-            <li>사이트 하단 현재 버전 표시를 v0.1.7-beta로 변경</li>
-          </ul>
-        </section>
-
-        <section id="update-018" class="card">
-          <h2>물멍위키 v0.1.8-beta 업데이트 내역</h2>
-          <p class="update-date">업데이트 날짜: 2026.05.11</p>
-          <ul class="update-list">
-            <li>정보 &gt; 스킬 세팅 페이지 추가</li>
-            <li>스킬 세팅 10칸 배치 기능 추가</li>
-            <li>스킬 목록 클릭 시 첫 번째 빈칸부터 자동 배치 기능 추가</li>
-            <li>세팅된 스킬 클릭 시 제거 기능 추가</li>
-            <li>스킬 세팅 초기화 버튼 추가</li>
-            <li>스킬 세팅 칸의 배경색을 스킬 목록 버튼과 동일하게 표시하도록 수정</li>
-            <li>스킬 목록을 5열 구조로 정리</li>
-            <li>스킬 목록 정렬을 신화부터 일반 순, 같은 등급 내 가나다순으로 적용</li>
-            <li>스킬 배우기와 스킬 세팅 필터 UI를 2줄 구조로 압축</li>
-            <li>사이트 하단 현재 버전 표시를 v0.1.8-beta로 변경</li>
-          </ul>
-        </section>
-
-        <section id="update-019" class="card">
-          <h2>물멍위키 v0.1.9-beta 업데이트 내역</h2>
-          <p class="update-date">업데이트 날짜: 2026.05.11</p>
-          <ul class="update-list">
-            <li>정보 &gt; 스킬 세팅 모음 페이지 추가</li>
-            <li>스킬 세팅 저장 기능 추가</li>
-            <li>등반, 4자사, 18자사, 시공, 순숲, 폐광, 수동 용도별 저장 구조 추가</li>
-            <li>저장된 스킬 세팅 삭제 기능 추가</li>
-            <li>저장된 세팅을 브라우저에 유지하는 localStorage 저장 기능 추가</li>
-            <li>사이트 하단 현재 버전 표시를 v0.1.9-beta로 변경</li>
-          </ul>
-        </section>
-
-        <section id="update-020" class="card">
-          <h2>물멍위키 v0.1.10-beta 업데이트 내역</h2>
-          <p class="update-date">업데이트 날짜: 2026.05.11</p>
-          <ul class="update-list">
-            <li>스킬 저장 시 칸 수 선택 단계를 제거</li>
-            <li>현재 세팅된 스킬 개수를 자동으로 계산하여 5칸~10칸 세팅으로 자동 저장</li>
-            <li>스킬 세팅 모음을 카테고리 펼침 방식으로 변경</li>
-            <li>각 카테고리 아래에 저장된 세팅을 모두 확인할 수 있도록 변경</li>
-            <li>모바일 화면에서 저장된 스킬 세팅 박스가 화면 밖으로 튀어나가지 않도록 수정</li>
-            <li>사이트 하단 현재 버전 표시를 v0.1.10-beta로 변경</li>
-          </ul>
-        </section>
-      </main>
-
-      <footer class="site-footer">
-        현재 버전: 물멍위키 v0.1.10-beta
-      </footer>
+      <main class="content" id="content"></main>
+      <footer class="site-footer">현재 버전: 물멍위키 v0.1.10-beta</footer>
     </div>
   </div>
 
   <div class="unlock-popup-bg" id="unlockPopupBg" onclick="closeUnlockPopup()">
-    <div class="unlock-popup" onclick="event.stopPropagation()">
-      <h3 id="unlockPopupTitle">해금 조건</h3>
-      <p id="unlockPopupText"></p>
-    </div>
+    <div class="unlock-popup" onclick="event.stopPropagation()"><h3 id="unlockPopupTitle">해금 조건</h3><p id="unlockPopupText"></p></div>
   </div>
 
   <div class="save-popup-bg" id="savePopupBg" onclick="closeSavePopup()">
     <div class="save-popup" onclick="event.stopPropagation()">
       <h3>스킬 세팅 저장</h3>
       <p id="savePopupText">저장할 용도를 선택하세요.</p>
-
       <div class="save-category-grid" id="saveCategoryGrid"></div>
     </div>
   </div>
 
-  <script>
-    const promotions = [
-      ["stone", "스톤"],
-      ["bronze", "브론즈"],
-      ["iron", "아이언"],
-      ["silver", "실버"],
-      ["gold", "골드"],
-      ["mithril", "미스릴"],
-      ["orichalcon", "오리하르콘"],
-      ["arcanite", "아케이나이트"],
-      ["adamantite", "아다만타이트"],
-      ["ether", "에테르"],
-      ["black-mithril", "블랙미스릴"],
-      ["demon-metal", "데몬메탈"],
-      ["dragonog", "드라고노그"],
-      ["ragnablood", "라그나블러드"],
-      ["war-frost", "워프로스트"],
-      ["dark-nox", "다크녹스"],
-      ["blue-abyss", "블루어비스"],
-      ["infinite", "인피넌트"],
-      ["cyclos", "사이클로스"],
-      ["egation-nine", "에게이션트나인"],
-      ["giga-rock", "기가로크"],
-      ["eisenhart", "아이젠하르트"],
-      ["diamond-dust", "다이아더스트"],
-      ["elden-wood", "엘든우드"],
-      ["blitz-gold", "블리츠골드"]
-    ];
+<script>
+const promotions = [["stone", "스톤"], ["bronze", "브론즈"], ["iron", "아이언"], ["silver", "실버"], ["gold", "골드"], ["mithril", "미스릴"], ["orichalcon", "오리하르콘"], ["arcanite", "아케이나이트"], ["adamantite", "아다만타이트"], ["ether", "에테르"], ["black-mithril", "블랙미스릴"], ["demon-metal", "데몬메탈"], ["dragonog", "드라고노그"], ["ragnablood", "라그나블러드"], ["war-frost", "워프로스트"], ["dark-nox", "다크녹스"], ["blue-abyss", "블루어비스"], ["infinite", "인피넌트"], ["cyclos", "사이클로스"], ["egation-nine", "에게이션트나인"], ["giga-rock", "기가로크"], ["eisenhart", "아이젠하르트"], ["diamond-dust", "다이아더스트"], ["elden-wood", "엘든우드"], ["blitz-gold", "블리츠골드"]];
+const skills = [{"element": "불", "level": "Lv.10", "name": "불꽃 베기", "grade": "일반", "material": "-"}, {"element": "불", "level": "Lv.20", "name": "불의 검", "grade": "일반", "material": "-"}, {"element": "불", "level": "Lv.30", "name": "타오르는 검", "grade": "전설", "material": "불 속성석 10"}, {"element": "불", "level": "Lv.40", "name": "열풍", "grade": "고급", "material": "무기 고급 2등급 4"}, {"element": "불", "level": "Lv.70", "name": "화염 베기", "grade": "레어", "material": "불 속성석 20"}, {"element": "불", "level": "Lv.90", "name": "화염 파동", "grade": "영웅", "material": "무기 영웅 3등급 4"}, {"element": "불", "level": "Lv.120", "name": "연옥 화염 베기", "grade": "전설", "material": "무기 전설 4등급 2 / 불 속성석 300"}, {"element": "불", "level": "Lv.200", "name": "분노", "grade": "전설", "material": "무기 전설 1등급 4 / 불 속성석 100"}, {"element": "불", "level": "Lv.300", "name": "진 열풍", "grade": "전설", "material": "무기 전설 3등급 4"}, {"element": "불", "level": "Lv.400", "name": "불기둥", "grade": "신화", "material": "무기 신화 3등급 4"}, {"element": "물", "level": "Lv.15", "name": "흐르는 칼날", "grade": "레어", "material": "-"}, {"element": "물", "level": "Lv.25", "name": "굽이치는 칼날", "grade": "영웅", "material": "-"}, {"element": "물", "level": "Lv.35", "name": "아이스 스톤", "grade": "일반", "material": "-"}, {"element": "물", "level": "Lv.45", "name": "파도 베기", "grade": "레어", "material": "-"}, {"element": "물", "level": "Lv.60", "name": "아이스 샤워", "grade": "전설", "material": "물 속성석 20"}, {"element": "물", "level": "Lv.80", "name": "춤추는 파도", "grade": "영웅", "material": "악세 영웅 3등급 4"}, {"element": "물", "level": "Lv.100", "name": "메디테이션", "grade": "전설", "material": "악세 전설 3등급 4 / 물 속성석 50"}, {"element": "물", "level": "Lv.160", "name": "아이스 타임", "grade": "전설", "material": "악세 전설 4등급 2 / 물 속성석 300"}, {"element": "물", "level": "Lv.250", "name": "마나의 축복", "grade": "일반", "material": "무기 레어 4등급 4"}, {"element": "물", "level": "Lv.350", "name": "블리자드", "grade": "신화", "material": "무기 신화 2등급 4"}, {"element": "바람", "level": "Lv.15", "name": "가속의 검", "grade": "레어", "material": "무기 레어 4등급 4"}, {"element": "바람", "level": "Lv.25", "name": "번개 베기", "grade": "일반", "material": "무기 일반 4등급 4"}, {"element": "바람", "level": "Lv.35", "name": "바람의 검", "grade": "영웅", "material": "무기 영웅 4등급 4"}, {"element": "바람", "level": "Lv.40", "name": "전광석화", "grade": "영웅", "material": "무기 레어 3등급 4"}, {"element": "바람", "level": "Lv.50", "name": "뇌격", "grade": "일반", "material": "무기 레어 4등급 4"}, {"element": "바람", "level": "Lv.70", "name": "천둥 베기", "grade": "레어", "material": "바람 속성석 20"}, {"element": "바람", "level": "Lv.90", "name": "고속이동", "grade": "일반", "material": "악세 고급 4등급 4"}, {"element": "바람", "level": "Lv.140", "name": "수라 번개 베기", "grade": "전설", "material": "전설 레어 2등급 4 / 바람 속성석 300"}, {"element": "바람", "level": "Lv.200", "name": "격류", "grade": "신화", "material": "무기 전설 1등급 4"}, {"element": "바람", "level": "Lv.300", "name": "뇌신", "grade": "신화", "material": "악세 신화 2등급 4"}, {"element": "바람", "level": "Lv.450", "name": "신속", "grade": "신화", "material": "무기 신화 4등급 4"}, {"element": "땅", "level": "Lv.10", "name": "대지의 축복", "grade": "일반", "material": "-"}, {"element": "땅", "level": "Lv.20", "name": "스톤 스트라이크", "grade": "일반", "material": "악세 일반 4등급 4"}, {"element": "땅", "level": "Lv.30", "name": "땅의 의지", "grade": "레어", "material": "-"}, {"element": "땅", "level": "Lv.50", "name": "강철의 의지", "grade": "영웅", "material": "땅 속성석 20"}, {"element": "땅", "level": "Lv.60", "name": "파워 스트라이크", "grade": "고급", "material": "땅 속성석 20"}, {"element": "땅", "level": "Lv.100", "name": "파워 임팩트", "grade": "고급", "material": "악세 고급 2등급 4"}, {"element": "땅", "level": "Lv.140", "name": "라이프 마나", "grade": "영웅", "material": "땅 속성석 50"}, {"element": "땅", "level": "Lv.180", "name": "기가 스트라이크", "grade": "전설", "material": "악세 전설 2등급 2 / 땅 속성석 300"}, {"element": "땅", "level": "Lv.500", "name": "마수 사냥", "grade": "신화", "material": "무기 신화 1등급 4"}];
 
-    const pageMap = {
-      "intro": ["들어가며", ""],
-      "diamond-roadmap": ["다이아 소모처", "다이아 소모처 로드맵"],
-      "diamond-class": ["다이아 소모처", "클래스"],
-      "diamond-spirit": ["다이아 소모처", "정령"],
-      "diamond-or": ["다이아 소모처", "오르"],
-      "diamond-orb": ["다이아 소모처", "오브"],
-      "diamond-familiar": ["다이아 소모처", "사역마"],
-      "diamond-beast": ["다이아 소모처", "비스트"],
-      "skill-learn": ["정보", "스킬 배우기"],
-      "skill-setting": ["정보", "스킬 세팅"],
-      "skill-setting-collection": ["정보", "스킬 세팅 모음"],
-      "update-010": ["업데이트", "v0.1.0-beta"],
-      "update-011": ["업데이트", "v0.1.1-beta"],
-      "update-012": ["업데이트", "v0.1.2-beta"],
-      "update-013": ["업데이트", "v0.1.3-beta"],
-      "update-014": ["업데이트", "v0.1.4-beta"],
-      "update-015": ["업데이트", "v0.1.5-beta"],
-      "update-016": ["업데이트", "v0.1.6-beta"],
-      "update-017": ["업데이트", "v0.1.7-beta"],
-      "update-018": ["업데이트", "v0.1.8-beta"],
-      "update-019": ["업데이트", "v0.1.9-beta"],
-      "update-020": ["업데이트", "v0.1.10-beta"]
-    };
+const diamondPages = [
+  ["diamond-roadmap","다이아 소모처 로드맵"],["diamond-class","클래스"],["diamond-spirit","정령"],["diamond-or","오르"],["diamond-orb","오브"],["diamond-familiar","사역마"],["diamond-beast","비스트"]
+];
+const infoPages = [["skill-learn","스킬 배우기"],["skill-setting","스킬 세팅"],["skill-setting-collection","스킬 세팅 모음"]];
+const updatePages = [
+  ["update-010","v0.1.0-beta","2026.05.09",["물멍위키 사이트 제작 시작","기본 HTML/CSS 구조 제작","로고 이미지 삽입 구조 적용","들어가며 페이지 추가","기본 본문 카드 디자인 적용"]],
+  ["update-011","v0.1.1-beta","2026.05.09",["다이아 소모처 메뉴 추가","다이아 소모처 로드맵 페이지 추가","다이아 로드맵 이미지 삽입 구조 적용","이미지 반응형 크기 조정 적용"]],
+  ["update-012","v0.1.2-beta","2026.05.09",["승급 메뉴 추가","스톤부터 블리츠골드까지 승급 하위 메뉴 추가","승급 페이지 자동 생성 구조 적용","각 승급 페이지에 임시 안내 문구 추가"]],
+  ["update-013","v0.1.3-beta","2026.05.09",["다이아 소모처 하위 메뉴 확장","클래스, 정령, 오르, 오브, 사역마, 비스트 페이지 추가","오르 정보 표 추가","오브 정보 표 추가","표 상단 제목 칸 검은 배경 및 흰 글씨 적용"]],
+  ["update-014","v0.1.4-beta","2026.05.10",["정보 메뉴 추가","정보 > 스킬 배우기 페이지 추가","스킬 배우기 이미지 2장 삽입 구조 적용","스킬 배우기 설명 문구 추가"]],
+  ["update-015","v0.1.5-beta","2026.05.10",["상위/하위 메뉴 구조 개선","PC 좌측 사이드바 메뉴 적용","모바일 햄버거 메뉴 적용","현재 위치 표시 기능 추가","현재 위치 표시에서 상위 메뉴 굵은 글씨 구분 적용","모든 페이지 하단 현재 버전 표시 추가"]],
+  ["update-016","v0.1.6-beta","2026.05.10",["업데이트 메뉴 구조 변경","업데이트 메뉴에 버전별 하위 메뉴 추가","v0.1.0-beta부터 v0.1.6-beta까지 업데이트 내역 페이지 분리","사이트 하단 현재 버전 표시를 v0.1.6-beta로 변경","업데이트 내역을 버전별로 관리할 수 있도록 구조 정리"]],
+  ["update-017","v0.1.7-beta","2026.05.11",["상단 물멍위키 제목 클릭 시 홈 화면으로 이동 기능 추가","클래스, 정령, 사역마, 비스트 해금 조건 버튼 추가","해금 버튼 클릭 시 팝업으로 조건 확인 기능 추가","팝업 바깥 화면 클릭 시 팝업 닫힘 기능 추가","스킬 배우기 페이지 검색 기능 추가","스킬 등급별 필터 기능 추가","스킬 속성별 필터 기능 추가","등급 필터와 속성 필터 동시 적용 기능 추가","스킬 결과 카드에 등급/속성 배지 표시 추가","사이트 하단 현재 버전 표시를 v0.1.7-beta로 변경"]],
+  ["update-018","v0.1.8-beta","2026.05.11",["정보 > 스킬 세팅 페이지 추가","스킬 세팅 10칸 배치 기능 추가","스킬 목록 클릭 시 첫 번째 빈칸부터 자동 배치 기능 추가","세팅된 스킬 클릭 시 제거 기능 추가","스킬 세팅 초기화 버튼 추가","스킬 세팅 칸의 배경색을 스킬 목록 버튼과 동일하게 표시하도록 수정","스킬 목록을 5열 구조로 정리","스킬 목록 정렬을 신화부터 일반 순, 같은 등급 내 가나다순으로 적용","스킬 배우기와 스킬 세팅 필터 UI를 2줄 구조로 압축","사이트 하단 현재 버전 표시를 v0.1.8-beta로 변경"]],
+  ["update-019","v0.1.9-beta","2026.05.11",["정보 > 스킬 세팅 모음 페이지 추가","스킬 세팅 저장 기능 추가","등반, 4자사, 18자사, 시공, 순숲, 폐광, 수동 용도별 저장 구조 추가","저장된 스킬 세팅 삭제 기능 추가","저장된 세팅을 브라우저에 유지하는 localStorage 저장 기능 추가","사이트 하단 현재 버전 표시를 v0.1.9-beta로 변경"]],
+  ["update-020","v0.1.10-beta","2026.05.11",["스킬 저장 시 칸 수 선택 단계를 제거","현재 세팅된 스킬 개수를 자동으로 계산하여 5칸~10칸 세팅으로 자동 저장","스킬 세팅 모음을 카테고리 펼침 방식으로 변경","각 카테고리 아래에 저장된 세팅을 모두 확인할 수 있도록 변경","모바일 화면에서 저장된 스킬 세팅 박스가 화면 밖으로 튀어나가지 않도록 수정","사이트 하단 현재 버전 표시를 v0.1.10-beta로 변경"]]
+];
 
-    promotions.forEach(([id, name]) => {
-      pageMap[id] = ["승급", name];
+const pageMap = {"intro":["들어가며",""]};
+diamondPages.forEach(([id,name]) => pageMap[id] = ["다이아 소모처", name]);
+promotions.forEach(([id,name]) => pageMap[id] = ["승급", name]);
+infoPages.forEach(([id,name]) => pageMap[id] = ["정보", name]);
+updatePages.forEach(([id,name]) => pageMap[id] = ["업데이트", name]);
+
+const gradeOrder = ["신화","전설","영웅","레어","고급","일반"];
+const gradeClassMap = {"일반":"grade-normal","고급":"grade-advanced","레어":"grade-rare","영웅":"grade-hero","전설":"grade-legend","신화":"grade-myth"};
+const elementClassMap = {"불":"element-fire","물":"element-water","바람":"element-wind","땅":"element-earth"};
+const settingCategories = ["등반","4자사","18자사","시공","순숲","폐광","수동"];
+let selectedGrade = "전체";
+let selectedElement = "전체";
+let selectedSettingGrade = "전체";
+let selectedSettingElement = "전체";
+let selectedSettingSkills = [];
+let openedSavedCategory = "등반";
+
+function addMenuButtons() {
+  diamondPages.forEach(([id,name]) => document.getElementById("diamondMenu").insertAdjacentHTML("beforeend", `<button class="sub-menu-btn" onclick="showSection('${id}')">${name}</button>`));
+  promotions.forEach(([id,name]) => document.getElementById("promotionMenu").insertAdjacentHTML("beforeend", `<button class="sub-menu-btn" onclick="showSection('${id}')">${name}</button>`));
+  infoPages.forEach(([id,name]) => document.getElementById("infoMenu").insertAdjacentHTML("beforeend", `<button class="sub-menu-btn" onclick="showSection('${id}')">${name}</button>`));
+  updatePages.forEach(([id,name]) => document.getElementById("updateMenu").insertAdjacentHTML("beforeend", `<button class="sub-menu-btn" onclick="showSection('${id}')">${name}</button>`));
+}
+
+function filterHtml(type) {
+  const gradeFunction = type === "learn" ? "setGradeFilter" : "setSettingGradeFilter";
+  const elementFunction = type === "learn" ? "setElementFilter" : "setSettingElementFilter";
+  const gradeData = type === "learn" ? "data-grade-filter" : "data-setting-grade-filter";
+  const elementData = type === "learn" ? "data-element-filter" : "data-setting-element-filter";
+  return `
+    <div class="compact-filter-wrap">
+      <div class="compact-filter-row">
+        <span class="compact-filter-label">등급</span>
+        <button class="filter-btn filter-all active" ${gradeData}="전체" onclick="${gradeFunction}('전체')">전체</button>
+        <button class="filter-btn grade-myth" ${gradeData}="신화" onclick="${gradeFunction}('신화')">신화</button>
+        <button class="filter-btn grade-legend" ${gradeData}="전설" onclick="${gradeFunction}('전설')">전설</button>
+        <button class="filter-btn grade-hero" ${gradeData}="영웅" onclick="${gradeFunction}('영웅')">영웅</button>
+        <button class="filter-btn grade-rare" ${gradeData}="레어" onclick="${gradeFunction}('레어')">레어</button>
+        <button class="filter-btn grade-advanced" ${gradeData}="고급" onclick="${gradeFunction}('고급')">고급</button>
+        <button class="filter-btn grade-normal" ${gradeData}="일반" onclick="${gradeFunction}('일반')">일반</button>
+      </div>
+      <div class="compact-filter-row">
+        <span class="compact-filter-label">속성</span>
+        <button class="filter-btn filter-all active" ${elementData}="전체" onclick="${elementFunction}('전체')">전체</button>
+        <button class="filter-btn element-fire" ${elementData}="불" onclick="${elementFunction}('불')">불</button>
+        <button class="filter-btn element-water" ${elementData}="물" onclick="${elementFunction}('물')">물</button>
+        <button class="filter-btn element-wind" ${elementData}="바람" onclick="${elementFunction}('바람')">바람</button>
+        <button class="filter-btn element-earth" ${elementData}="땅" onclick="${elementFunction}('땅')">땅</button>
+      </div>
+    </div>
+  `;
+}
+
+function addSections() {
+  const content = document.getElementById("content");
+  content.insertAdjacentHTML("beforeend", `
+    <section id="intro" class="card active">
+      <h2>들어가며</h2>
+      <p>제가 생각하기에 이 게임의 묘미는 바로 승급의 짜릿함과 사람들과의 소통인 것 같습니다.</p>
+      <p>여러 컨텐츠를 즐기며 강화, 합성, 각성을 해 승급을 하고, 여러 사람들과 즐거운 소통도 하면서 즐기고 있는 것 같네요 ^^;;</p>
+      <p>그리고 처음 시작하시는 분들이나 성장 방향이 고민되시는 분들도 조금 더 쉽고 재밌게 즐기실 수 있도록 저 물멍이 하나하나 함께 도와드리겠습니다.</p>
+      <p>이렇게 재밌는 <strong>“슬레이어 키우기”</strong></p>
+      <p><strong>저 물멍과 함께 제.대.로 즐겨보시겠습니까?</strong></p>
+    </section>
+
+    <section id="diamond-roadmap" class="card">
+      <h2>다이아 소모처 로드맵</h2>
+      <p>초보자들이 다이아를 어디에 먼저 사용해야 하는지 한눈에 볼 수 있도록 정리한 로드맵입니다.</p>
+      <img src="diamond-roadmap.png" alt="다이아 소모처 로드맵" class="roadmap-image" />
+    </section>
+
+    <section id="diamond-class" class="card"><h2>클래스</h2><button class="unlock-btn" onclick="openUnlockPopup('클래스', '250레벨 달성 / 120 스테이지')">해금</button><p>추후 [클래스] 내용을 업데이트 할 예정입니다.</p></section>
+    <section id="diamond-spirit" class="card"><h2>정령</h2><button class="unlock-btn" onclick="openUnlockPopup('정령', '100 스테이지 클리어 시')">해금</button><p>추후 [정령] 내용을 업데이트 할 예정입니다.</p></section>
+
+    <section id="diamond-or" class="card">
+      <h2>오르</h2>
+      <div class="guide-table-wrap"><table class="guide-table">
+        <tr><th colspan="3" class="table-title">오르</th></tr>
+        <tr><td>신입 슬레이어</td><td>신화 1등급 무기 [1개]</td><td rowspan="5" class="total-cell">총 신화 1등급 무기 5개</td></tr>
+        <tr><td>중급 슬레이어</td><td>신화 1등급 무기 [1개]</td></tr>
+        <tr><td>스킬 마스터리</td><td>신화 1등급 무기 [1개]</td></tr>
+        <tr><td>무뽑 소환 레벨 6</td><td>신화 1등급 무기 [1개]</td></tr>
+        <tr><td>악을 멸하는 검 패키지</td><td>신화 1등급 무기 [1개]</td></tr>
+      </table></div>
+    </section>
+
+    <section id="diamond-orb" class="card">
+      <h2>오브</h2>
+      <div class="guide-table-wrap"><table class="guide-table">
+        <tr><th colspan="3" class="table-title">오브</th></tr>
+        <tr><td>신입 슬레이어</td><td>신화 1등급 악세 [1개]</td><td rowspan="4" class="total-cell">총 신화 1등급 악세 5개</td></tr>
+        <tr><td>중급 슬레이어</td><td>신화 1등급 악세 [1개]</td></tr>
+        <tr><td>블랙 미스릴 승급 기념 패키지</td><td>신화 1등급 악세 [2개]</td></tr>
+        <tr><td>악뽑 소환 레벨 6</td><td>신화 1등급 악세 [1개]</td></tr>
+      </table></div>
+    </section>
+
+    <section id="diamond-familiar" class="card"><h2>사역마</h2><button class="unlock-btn" onclick="openUnlockPopup('사역마', '데몬메탈 승급 시')">해금</button><p>추후 [사역마] 내용을 업데이트 할 예정입니다.</p></section>
+    <section id="diamond-beast" class="card"><h2>비스트</h2><button class="unlock-btn" onclick="openUnlockPopup('비스트', '워프로스트 승급 시')">해금</button><p>추후 [비스트] 내용을 업데이트 할 예정입니다.</p></section>
+
+    <section id="skill-learn" class="card">
+      <h2>스킬 배우기</h2>
+      <p>스킬 이름을 검색하거나, 등급과 속성 필터를 함께 사용해 스킬을 확인할 수 있습니다.</p>
+      <input id="skillSearchInput" class="skill-search-box" type="text" placeholder="스킬 이름을 검색하세요. 예: 불꽃 베기" oninput="renderSkills()" />
+      ${filterHtml("learn")}
+      <div id="skillResultArea"></div>
+    </section>
+
+    <section id="skill-setting" class="card">
+      <h2>스킬 세팅</h2>
+      <p class="setting-guide-text">아래 스킬 박스를 누르면 첫 번째 빈칸부터 채워집니다. 세팅 칸의 스킬을 누르면 제거됩니다.</p>
+      <div id="skillSettingSlots" class="skill-setting-grid"></div>
+      <div class="setting-action-row"><button class="setting-reset-btn" onclick="resetSkillSetting()">세팅 초기화</button><button class="setting-save-btn" onclick="openSavePopup()">세팅 저장</button></div>
+      <h2 class="setting-list-title">스킬 목록</h2>
+      <input id="settingSearchInput" class="skill-search-box" type="text" placeholder="세팅할 스킬을 검색하세요. 예: 블리자드" oninput="renderSettingSkillList()" />
+      ${filterHtml("setting")}
+      <div id="settingSkillList" class="setting-skill-list"></div>
+    </section>
+
+    <section id="skill-setting-collection" class="card">
+      <h2>스킬 세팅 모음</h2>
+      <p class="setting-guide-text">저장한 스킬 세팅을 용도별로 펼쳐서 확인할 수 있습니다.</p>
+      <div id="savedSettingCollection"></div>
+    </section>
+  `);
+
+  promotions.forEach(([id,name]) => content.insertAdjacentHTML("beforeend", `<section id="${id}" class="card"><h2>${name}</h2><p>추후 [${name}] 승급의 내용을 업데이트 할 예정입니다.</p></section>`));
+
+  updatePages.forEach(([id,name,date,list]) => {
+    content.insertAdjacentHTML("beforeend", `<section id="${id}" class="card"><h2>물멍위키 ${name} 업데이트 내역</h2><p class="update-date">업데이트 날짜: ${date}</p><ul class="update-list">${list.map(item => `<li>${item}</li>`).join("")}</ul></section>`);
+  });
+}
+
+function getSortedSkills(skillList) {
+  return [...skillList].sort((a,b) => {
+    const gradeCompare = gradeOrder.indexOf(a.grade) - gradeOrder.indexOf(b.grade);
+    if (gradeCompare !== 0) return gradeCompare;
+    return a.name.localeCompare(b.name, "ko");
+  });
+}
+
+function getBaseSavedData() {
+  const baseData = {};
+  settingCategories.forEach(category => baseData[category] = []);
+  return baseData;
+}
+
+function getSavedSettings() {
+  const saved = localStorage.getItem("mulmungSkillSettings");
+  const baseData = getBaseSavedData();
+  if (!saved) return baseData;
+
+  try {
+    const parsed = JSON.parse(saved);
+    settingCategories.forEach(category => {
+      if (!parsed[category]) parsed[category] = [];
+
+      if (!Array.isArray(parsed[category])) {
+        const oldCategoryData = parsed[category];
+        const migratedList = [];
+
+        Object.keys(oldCategoryData).forEach(count => {
+          migratedList.push({
+            id: Date.now() + Math.random(),
+            count: Number(count),
+            createdAt: new Date().toISOString(),
+            skills: oldCategoryData[count]
+          });
+        });
+
+        parsed[category] = migratedList;
+      }
+    });
+    return parsed;
+  } catch {
+    return baseData;
+  }
+}
+
+function saveSavedSettings(data) {
+  localStorage.setItem("mulmungSkillSettings", JSON.stringify(data));
+}
+
+function setBreadcrumb(sectionId) {
+  const breadcrumb = document.getElementById("breadcrumb");
+  const page = pageMap[sectionId];
+  if (!page) {
+    breadcrumb.innerHTML = "";
+    return;
+  }
+  breadcrumb.innerHTML = page[1] ? `<strong>${page[0]}</strong><span>&gt;</span><span>${page[1]}</span>` : `<strong>${page[0]}</strong>`;
+}
+
+function toggleSidebar() {
+  document.getElementById("sidebar").classList.toggle("open");
+  document.getElementById("overlay").classList.toggle("show");
+}
+
+function closeSidebar() {
+  document.getElementById("sidebar").classList.remove("open");
+  document.getElementById("overlay").classList.remove("show");
+}
+
+function toggleSubMenu(menuId, button) {
+  const menu = document.getElementById(menuId);
+  const isOpen = menu.classList.contains("open");
+  document.querySelectorAll(".sub-menu").forEach(item => item.classList.remove("open"));
+  document.querySelectorAll(".menu-btn").forEach(item => item.classList.remove("active"));
+  if (!isOpen) {
+    menu.classList.add("open");
+    button.classList.add("active");
+  }
+}
+
+function showSection(sectionId) {
+  document.querySelectorAll(".card").forEach(section => section.classList.remove("active"));
+  const target = document.getElementById(sectionId);
+
+  if (target) {
+    target.classList.add("active");
+    setBreadcrumb(sectionId);
+    window.scrollTo({ top: target.offsetTop - 70, behavior: "smooth" });
+  }
+
+  if (sectionId === "skill-learn") renderSkills();
+  if (sectionId === "skill-setting") {
+    renderSkillSettingSlots();
+    renderSettingSkillList();
+  }
+  if (sectionId === "skill-setting-collection") renderSavedSettingCollection();
+  if (window.innerWidth <= 768) closeSidebar();
+}
+
+function openUnlockPopup(title, text) {
+  document.getElementById("unlockPopupTitle").textContent = title + " 해금 조건";
+  document.getElementById("unlockPopupText").textContent = text;
+  document.getElementById("unlockPopupBg").classList.add("show");
+}
+
+function closeUnlockPopup() {
+  document.getElementById("unlockPopupBg").classList.remove("show");
+}
+
+function setGradeFilter(grade) {
+  selectedGrade = grade;
+  document.querySelectorAll("[data-grade-filter]").forEach(button => button.classList.toggle("active", button.getAttribute("data-grade-filter") === grade));
+  renderSkills();
+}
+
+function setElementFilter(element) {
+  selectedElement = element;
+  document.querySelectorAll("[data-element-filter]").forEach(button => button.classList.toggle("active", button.getAttribute("data-element-filter") === element));
+  renderSkills();
+}
+
+function renderSkills() {
+  const resultArea = document.getElementById("skillResultArea");
+  const searchInput = document.getElementById("skillSearchInput");
+  if (!resultArea) return;
+
+  const keyword = searchInput ? searchInput.value.trim().toLowerCase() : "";
+  let filteredSkills = skills.filter(skill => skill.name.toLowerCase().includes(keyword) && (selectedGrade === "전체" || skill.grade === selectedGrade) && (selectedElement === "전체" || skill.element === selectedElement));
+  filteredSkills = getSortedSkills(filteredSkills);
+
+  if (filteredSkills.length === 0) {
+    resultArea.innerHTML = `<div class="empty-result">검색 결과가 없습니다.</div>`;
+    return;
+  }
+
+  let html = "";
+  gradeOrder.forEach(grade => {
+    const groupSkills = filteredSkills.filter(skill => skill.grade === grade);
+    if (groupSkills.length === 0) return;
+
+    html += `<h3 class="skill-group-title">${grade} 등급</h3><div class="skill-result-list">`;
+    groupSkills.forEach(skill => {
+      html += `
+        <div class="skill-result-card">
+          <div class="skill-name-row">
+            <span class="skill-name">${skill.name}</span>
+            <span class="badge ${gradeClassMap[skill.grade]}">${skill.grade}</span>
+            <span class="badge ${elementClassMap[skill.element]}">${skill.element}</span>
+          </div>
+          <div class="skill-info">레벨: ${skill.level}</div>
+          <div class="skill-info">필요 재료: ${skill.material}</div>
+        </div>
+      `;
+    });
+    html += `</div>`;
+  });
+
+  resultArea.innerHTML = html;
+}
+
+function setSettingGradeFilter(grade) {
+  selectedSettingGrade = grade;
+  document.querySelectorAll("[data-setting-grade-filter]").forEach(button => button.classList.toggle("active", button.getAttribute("data-setting-grade-filter") === grade));
+  renderSettingSkillList();
+}
+
+function setSettingElementFilter(element) {
+  selectedSettingElement = element;
+  document.querySelectorAll("[data-setting-element-filter]").forEach(button => button.classList.toggle("active", button.getAttribute("data-setting-element-filter") === element));
+  renderSettingSkillList();
+}
+
+function addSettingSkill(skillName) {
+  const skill = skills.find(item => item.name === skillName);
+  if (!skill) return;
+  if (selectedSettingSkills.some(item => item.name === skillName)) return;
+
+  if (selectedSettingSkills.length >= 10) {
+    alert("스킬은 최대 10개까지 세팅할 수 있습니다.");
+    return;
+  }
+
+  selectedSettingSkills.push(skill);
+  renderSkillSettingSlots();
+  renderSettingSkillList();
+}
+
+function removeSettingSkill(index) {
+  selectedSettingSkills.splice(index, 1);
+  renderSkillSettingSlots();
+  renderSettingSkillList();
+}
+
+function resetSkillSetting() {
+  selectedSettingSkills = [];
+  renderSkillSettingSlots();
+  renderSettingSkillList();
+}
+
+function renderSkillSettingSlots() {
+  const slots = document.getElementById("skillSettingSlots");
+  if (!slots) return;
+
+  let html = "";
+  for (let i = 0; i < 10; i++) {
+    const skill = selectedSettingSkills[i];
+    html += skill
+      ? `<button class="setting-slot filled ${gradeClassMap[skill.grade]}" onclick="removeSettingSkill(${i})" title="${skill.name}">${skill.name}</button>`
+      : `<button class="setting-slot" type="button">빈칸</button>`;
+  }
+  slots.innerHTML = html;
+}
+
+function renderSettingSkillList() {
+  const list = document.getElementById("settingSkillList");
+  const searchInput = document.getElementById("settingSearchInput");
+  if (!list) return;
+
+  const keyword = searchInput ? searchInput.value.trim().toLowerCase() : "";
+  let filteredSkills = skills.filter(skill => skill.name.toLowerCase().includes(keyword) && (selectedSettingGrade === "전체" || skill.grade === selectedSettingGrade) && (selectedSettingElement === "전체" || skill.element === selectedSettingElement));
+  filteredSkills = getSortedSkills(filteredSkills);
+
+  if (filteredSkills.length === 0) {
+    list.innerHTML = `<div class="empty-result">검색 결과가 없습니다.</div>`;
+    return;
+  }
+
+  let html = "";
+  filteredSkills.forEach(skill => {
+    const selected = selectedSettingSkills.some(item => item.name === skill.name);
+    html += `<button class="setting-skill-btn ${gradeClassMap[skill.grade]} ${selected ? "selected" : ""}" onclick="addSettingSkill('${skill.name}')" title="${skill.name}">${skill.name}</button>`;
+  });
+
+  list.innerHTML = html;
+}
+
+function openSavePopup() {
+  const skillCount = selectedSettingSkills.length;
+
+  if (skillCount === 0) {
+    alert("저장할 스킬이 없습니다.");
+    return;
+  }
+
+  if (skillCount < 5) {
+    alert("최소 5개 이상 세팅해야 저장할 수 있습니다.");
+    return;
+  }
+
+  document.getElementById("savePopupText").textContent = `현재 ${skillCount}개 스킬이 세팅되어 있습니다. 저장할 용도를 선택하세요.`;
+
+  let html = "";
+  settingCategories.forEach(category => {
+    html += `<button class="save-category-btn" onclick="saveCurrentSkillSetting('${category}')">${category}</button>`;
+  });
+
+  document.getElementById("saveCategoryGrid").innerHTML = html;
+  document.getElementById("savePopupBg").classList.add("show");
+}
+
+function closeSavePopup() {
+  document.getElementById("savePopupBg").classList.remove("show");
+}
+
+function saveCurrentSkillSetting(category) {
+  const skillCount = selectedSettingSkills.length;
+
+  if (skillCount < 5) {
+    alert("최소 5개 이상 세팅해야 저장할 수 있습니다.");
+    closeSavePopup();
+    return;
+  }
+
+  const savedData = getSavedSettings();
+
+  if (!Array.isArray(savedData[category])) {
+    savedData[category] = [];
+  }
+
+  const newSetting = {
+    id: Date.now() + Math.random(),
+    count: skillCount,
+    createdAt: new Date().toISOString(),
+    skills: selectedSettingSkills.map(skill => ({
+      name: skill.name,
+      grade: skill.grade,
+      element: skill.element,
+      level: skill.level,
+      material: skill.material
+    }))
+  };
+
+  savedData[category].push(newSetting);
+  saveSavedSettings(savedData);
+  closeSavePopup();
+  openedSavedCategory = category;
+
+  alert(`${category} ${skillCount}칸 세팅이 추가 저장되었습니다.`);
+
+  if (document.getElementById("skill-setting-collection").classList.contains("active")) {
+    renderSavedSettingCollection();
+  }
+}
+
+function toggleSavedCategory(category) {
+  openedSavedCategory = openedSavedCategory === category ? "" : category;
+  renderSavedSettingCollection();
+}
+
+function deleteSavedSetting(category, settingId) {
+  const savedData = getSavedSettings();
+  if (!savedData[category]) return;
+
+  const confirmDelete = confirm(`${category} 세팅을 삭제할까요?`);
+  if (!confirmDelete) return;
+
+  savedData[category] = savedData[category].filter(setting => String(setting.id) !== String(settingId));
+  saveSavedSettings(savedData);
+  renderSavedSettingCollection();
+}
+
+function renderSavedSettingCollection() {
+  const collection = document.getElementById("savedSettingCollection");
+  if (!collection) return;
+
+  const savedData = getSavedSettings();
+  let html = "";
+
+  settingCategories.forEach(category => {
+    const categoryData = savedData[category] || [];
+    const sortedSettings = [...categoryData].sort((a, b) => {
+      const countA = Number(a.count || 0);
+      const countB = Number(b.count || 0);
+      if (countA !== countB) return countA - countB;
+      return new Date(a.createdAt) - new Date(b.createdAt);
     });
 
-    const gradeOrder = ["신화", "전설", "영웅", "레어", "고급", "일반"];
-
-    const gradeClassMap = {
-      "일반": "grade-normal",
-      "고급": "grade-advanced",
-      "레어": "grade-rare",
-      "영웅": "grade-hero",
-      "전설": "grade-legend",
-      "신화": "grade-myth"
-    };
-
-    const elementClassMap = {
-      "불": "element-fire",
-      "물": "element-water",
-      "바람": "element-wind",
-      "땅": "element-earth"
-    };
-
-    const settingCategories = ["등반", "4자사", "18자사", "시공", "순숲", "폐광", "수동"];
-
-    let selectedGrade = "전체";
-    let selectedElement = "전체";
-    let selectedSettingGrade = "전체";
-    let selectedSettingElement = "전체";
-    let selectedSettingSkills = [];
-    let openedSavedCategory = "등반";
-
-    const skills = [
-      { element: "불", level: "Lv.10", name: "불꽃 베기", grade: "일반", material: "-" },
-      { element: "불", level: "Lv.20", name: "불의 검", grade: "일반", material: "-" },
-      { element: "불", level: "Lv.30", name: "타오르는 검", grade: "전설", material: "불 속성석 10" },
-      { element: "불", level: "Lv.40", name: "열풍", grade: "고급", material: "무기 고급 2등급 4" },
-      { element: "불", level: "Lv.70", name: "화염 베기", grade: "레어", material: "불 속성석 20" },
-      { element: "불", level: "Lv.90", name: "화염 파동", grade: "영웅", material: "무기 영웅 3등급 4" },
-      { element: "불", level: "Lv.120", name: "연옥 화염 베기", grade: "전설", material: "무기 전설 4등급 2 / 불 속성석 300" },
-      { element: "불", level: "Lv.200", name: "분노", grade: "전설", material: "무기 전설 1등급 4 / 불 속성석 100" },
-      { element: "불", level: "Lv.300", name: "진 열풍", grade: "전설", material: "무기 전설 3등급 4" },
-      { element: "불", level: "Lv.400", name: "불기둥", grade: "신화", material: "무기 신화 3등급 4" },
-
-      { element: "물", level: "Lv.15", name: "흐르는 칼날", grade: "레어", material: "-" },
-      { element: "물", level: "Lv.25", name: "굽이치는 칼날", grade: "영웅", material: "-" },
-      { element: "물", level: "Lv.35", name: "아이스 스톤", grade: "일반", material: "-" },
-      { element: "물", level: "Lv.45", name: "파도 베기", grade: "레어", material: "-" },
-      { element: "물", level: "Lv.60", name: "아이스 샤워", grade: "전설", material: "물 속성석 20" },
-      { element: "물", level: "Lv.80", name: "춤추는 파도", grade: "영웅", material: "악세 영웅 3등급 4" },
-      { element: "물", level: "Lv.100", name: "메디테이션", grade: "전설", material: "악세 전설 3등급 4 / 물 속성석 50" },
-      { element: "물", level: "Lv.160", name: "아이스 타임", grade: "전설", material: "악세 전설 4등급 2 / 물 속성석 300" },
-      { element: "물", level: "Lv.250", name: "마나의 축복", grade: "일반", material: "무기 레어 4등급 4" },
-      { element: "물", level: "Lv.350", name: "블리자드", grade: "신화", material: "무기 신화 2등급 4" },
-
-      { element: "바람", level: "Lv.15", name: "가속의 검", grade: "레어", material: "무기 레어 4등급 4" },
-      { element: "바람", level: "Lv.25", name: "번개 베기", grade: "일반", material: "무기 일반 4등급 4" },
-      { element: "바람", level: "Lv.35", name: "바람의 검", grade: "영웅", material: "무기 영웅 4등급 4" },
-      { element: "바람", level: "Lv.40", name: "전광석화", grade: "영웅", material: "무기 레어 3등급 4" },
-      { element: "바람", level: "Lv.50", name: "뇌격", grade: "일반", material: "무기 레어 4등급 4" },
-      { element: "바람", level: "Lv.70", name: "천둥 베기", grade: "레어", material: "바람 속성석 20" },
-      { element: "바람", level: "Lv.90", name: "고속이동", grade: "일반", material: "악세 고급 4등급 4" },
-      { element: "바람", level: "Lv.140", name: "수라 번개 베기", grade: "전설", material: "전설 레어 2등급 4 / 바람 속성석 300" },
-      { element: "바람", level: "Lv.200", name: "격류", grade: "신화", material: "무기 전설 1등급 4" },
-      { element: "바람", level: "Lv.300", name: "뇌신", grade: "신화", material: "악세 신화 2등급 4" },
-      { element: "바람", level: "Lv.450", name: "신속", grade: "신화", material: "무기 신화 4등급 4" },
-
-      { element: "땅", level: "Lv.10", name: "대지의 축복", grade: "일반", material: "-" },
-      { element: "땅", level: "Lv.20", name: "스톤 스트라이크", grade: "일반", material: "악세 일반 4등급 4" },
-      { element: "땅", level: "Lv.30", name: "땅의 의지", grade: "레어", material: "-" },
-      { element: "땅", level: "Lv.50", name: "강철의 의지", grade: "영웅", material: "땅 속성석 20" },
-      { element: "땅", level: "Lv.60", name: "파워 스트라이크", grade: "고급", material: "땅 속성석 20" },
-      { element: "땅", level: "Lv.100", name: "파워 임팩트", grade: "고급", material: "악세 고급 2등급 4" },
-      { element: "땅", level: "Lv.140", name: "라이프 마나", grade: "영웅", material: "땅 속성석 50" },
-      { element: "땅", level: "Lv.180", name: "기가 스트라이크", grade: "전설", material: "악세 전설 2등급 2 / 땅 속성석 300" },
-      { element: "땅", level: "Lv.500", name: "마수 사냥", grade: "신화", material: "무기 신화 1등급 4" }
-    ];
-
-    function createPromotionMenuAndSections() {
-      const promotionMenu = document.getElementById("promotionMenu");
-      const content = document.getElementById("content");
-
-      promotions.forEach(([id, name]) => {
-        const button = document.createElement("button");
-        button.className = "sub-menu-btn";
-        button.textContent = name;
-        button.onclick = () => showSection(id);
-        promotionMenu.appendChild(button);
-
-        const section = document.createElement("section");
-        section.id = id;
-        section.className = "card";
-        section.innerHTML = `
-          <h2>${name}</h2>
-          <p>추후 [${name}] 승급의 내용을 업데이트 할 예정입니다.</p>
-        `;
-        content.appendChild(section);
-      });
-    }
-
-    function getSortedSkills(skillList) {
-      return [...skillList].sort((a, b) => {
-        const gradeCompare = gradeOrder.indexOf(a.grade) - gradeOrder.indexOf(b.grade);
-        if (gradeCompare !== 0) return gradeCompare;
-        return a.name.localeCompare(b.name, "ko");
-      });
-    }
-
-    function getSavedSettings() {
-      const saved = localStorage.getItem("mulmungSkillSettings");
-
-      if (!saved) {
-        const baseData = {};
-        settingCategories.forEach(category => {
-          baseData[category] = {};
-        });
-        return baseData;
-      }
-
-      try {
-        const parsed = JSON.parse(saved);
-
-        settingCategories.forEach(category => {
-          if (!parsed[category]) parsed[category] = {};
-        });
-
-        return parsed;
-      } catch {
-        const baseData = {};
-        settingCategories.forEach(category => {
-          baseData[category] = {};
-        });
-        return baseData;
-      }
-    }
-
-    function saveSavedSettings(data) {
-      localStorage.setItem("mulmungSkillSettings", JSON.stringify(data));
-    }
-
-    function setBreadcrumb(sectionId) {
-      const breadcrumb = document.getElementById("breadcrumb");
-      const page = pageMap[sectionId];
-
-      if (!page) {
-        breadcrumb.innerHTML = "";
-        return;
-      }
-
-      const parent = page[0];
-      const child = page[1];
-
-      if (child) {
-        breadcrumb.innerHTML = `
-          <strong>${parent}</strong>
-          <span>&gt;</span>
-          <span>${child}</span>
-        `;
-      } else {
-        breadcrumb.innerHTML = `<strong>${parent}</strong>`;
-      }
-    }
-
-    function toggleSidebar() {
-      document.getElementById("sidebar").classList.toggle("open");
-      document.getElementById("overlay").classList.toggle("show");
-    }
-
-    function closeSidebar() {
-      document.getElementById("sidebar").classList.remove("open");
-      document.getElementById("overlay").classList.remove("show");
-    }
-
-    function toggleSubMenu(menuId, button) {
-      const menu = document.getElementById(menuId);
-      const isOpen = menu.classList.contains("open");
-
-      document.querySelectorAll(".sub-menu").forEach(item => {
-        item.classList.remove("open");
-      });
-
-      document.querySelectorAll(".menu-btn").forEach(item => {
-        item.classList.remove("active");
-      });
-
-      if (!isOpen) {
-        menu.classList.add("open");
-        button.classList.add("active");
-      }
-    }
-
-    function showSection(sectionId) {
-      document.querySelectorAll(".card").forEach(section => {
-        section.classList.remove("active");
-      });
-
-      const target = document.getElementById(sectionId);
-
-      if (target) {
-        target.classList.add("active");
-        setBreadcrumb(sectionId);
-
-        window.scrollTo({
-          top: target.offsetTop - 70,
-          behavior: "smooth"
-        });
-      }
-
-      if (sectionId === "skill-learn") {
-        renderSkills();
-      }
-
-      if (sectionId === "skill-setting") {
-        renderSkillSettingSlots();
-        renderSettingSkillList();
-      }
-
-      if (sectionId === "skill-setting-collection") {
-        renderSavedSettingCollection();
-      }
-
-      if (window.innerWidth <= 768) {
-        closeSidebar();
-      }
-    }
-
-    function openUnlockPopup(title, text) {
-      document.getElementById("unlockPopupTitle").textContent = title + " 해금 조건";
-      document.getElementById("unlockPopupText").textContent = text;
-      document.getElementById("unlockPopupBg").classList.add("show");
-    }
-
-    function closeUnlockPopup() {
-      document.getElementById("unlockPopupBg").classList.remove("show");
-    }
-
-    function setGradeFilter(grade) {
-      selectedGrade = grade;
-
-      document.querySelectorAll("[data-grade-filter]").forEach(button => {
-        button.classList.toggle("active", button.dataset.gradeFilter === grade);
-      });
-
-      renderSkills();
-    }
-
-    function setElementFilter(element) {
-      selectedElement = element;
-
-      document.querySelectorAll("[data-element-filter]").forEach(button => {
-        button.classList.toggle("active", button.dataset.elementFilter === element);
-      });
-
-      renderSkills();
-    }
-
-    function renderSkills() {
-      const resultArea = document.getElementById("skillResultArea");
-      const searchInput = document.getElementById("skillSearchInput");
-
-      if (!resultArea) return;
-
-      const keyword = searchInput ? searchInput.value.trim().toLowerCase() : "";
-
-      let filteredSkills = skills.filter(skill => {
-        const matchesKeyword = skill.name.toLowerCase().includes(keyword);
-        const matchesGrade = selectedGrade === "전체" || skill.grade === selectedGrade;
-        const matchesElement = selectedElement === "전체" || skill.element === selectedElement;
-
-        return matchesKeyword && matchesGrade && matchesElement;
-      });
-
-      filteredSkills = getSortedSkills(filteredSkills);
-
-      if (filteredSkills.length === 0) {
-        resultArea.innerHTML = `<div class="empty-result">검색 결과가 없습니다.</div>`;
-        return;
-      }
-
-      let html = "";
-
-      gradeOrder.forEach(grade => {
-        const groupSkills = filteredSkills.filter(skill => skill.grade === grade);
-
-        if (groupSkills.length === 0) return;
-
-        html += `<h3 class="skill-group-title">${grade} 등급</h3>`;
-        html += `<div class="skill-result-list">`;
-
-        groupSkills.forEach(skill => {
-          html += `
-            <div class="skill-result-card">
-              <div class="skill-name-row">
-                <span class="skill-name">${skill.name}</span>
-                <span class="badge ${gradeClassMap[skill.grade]}">${skill.grade}</span>
-                <span class="badge ${elementClassMap[skill.element]}">${skill.element}</span>
-              </div>
-
-              <div class="skill-info">레벨: ${skill.level}</div>
-              <div class="skill-info">필요 재료: ${skill.material}</div>
-            </div>
-          `;
-        });
-
-        html += `</div>`;
-      });
-
-      resultArea.innerHTML = html;
-    }
-
-    function setSettingGradeFilter(grade) {
-      selectedSettingGrade = grade;
-
-      document.querySelectorAll("[data-setting-grade-filter]").forEach(button => {
-        button.classList.toggle("active", button.dataset.settingGradeFilter === grade);
-      });
-
-      renderSettingSkillList();
-    }
-
-    function setSettingElementFilter(element) {
-      selectedSettingElement = element;
-
-      document.querySelectorAll("[data-setting-element-filter]").forEach(button => {
-        button.classList.toggle("active", button.dataset.settingElementFilter === element);
-      });
-
-      renderSettingSkillList();
-    }
-
-    function addSettingSkill(skillName) {
-      const skill = skills.find(item => item.name === skillName);
-
-      if (!skill) return;
-
-      const alreadySelected = selectedSettingSkills.some(item => item.name === skillName);
-
-      if (alreadySelected) return;
-
-      if (selectedSettingSkills.length >= 10) {
-        alert("스킬은 최대 10개까지 세팅할 수 있습니다.");
-        return;
-      }
-
-      selectedSettingSkills.push(skill);
-      renderSkillSettingSlots();
-      renderSettingSkillList();
-    }
-
-    function removeSettingSkill(index) {
-      selectedSettingSkills.splice(index, 1);
-      renderSkillSettingSlots();
-      renderSettingSkillList();
-    }
-
-    function resetSkillSetting() {
-      selectedSettingSkills = [];
-      renderSkillSettingSlots();
-      renderSettingSkillList();
-    }
-
-    function renderSkillSettingSlots() {
-      const slots = document.getElementById("skillSettingSlots");
-
-      if (!slots) return;
-
-      let html = "";
-
-      for (let i = 0; i < 10; i++) {
-        const skill = selectedSettingSkills[i];
-
-        if (skill) {
-          html += `
-            <button
-              class="setting-slot filled ${gradeClassMap[skill.grade]}"
-              onclick="removeSettingSkill(${i})"
-              title="${skill.name}"
-            >
-              ${skill.name}
-            </button>
-          `;
-        } else {
-          html += `
-            <button class="setting-slot" type="button">
-              빈칸
-            </button>
-          `;
-        }
-      }
-
-      slots.innerHTML = html;
-    }
-
-    function renderSettingSkillList() {
-      const list = document.getElementById("settingSkillList");
-      const searchInput = document.getElementById("settingSearchInput");
-
-      if (!list) return;
-
-      const keyword = searchInput ? searchInput.value.trim().toLowerCase() : "";
-
-      let filteredSkills = skills.filter(skill => {
-        const matchesKeyword = skill.name.toLowerCase().includes(keyword);
-        const matchesGrade = selectedSettingGrade === "전체" || skill.grade === selectedSettingGrade;
-        const matchesElement = selectedSettingElement === "전체" || skill.element === selectedSettingElement;
-
-        return matchesKeyword && matchesGrade && matchesElement;
-      });
-
-      filteredSkills = getSortedSkills(filteredSkills);
-
-      if (filteredSkills.length === 0) {
-        list.innerHTML = `<div class="empty-result">검색 결과가 없습니다.</div>`;
-        return;
-      }
-
-      let html = "";
-
-      filteredSkills.forEach(skill => {
-        const selected = selectedSettingSkills.some(item => item.name === skill.name);
+    const isOpen = openedSavedCategory === category;
+
+    html += `
+      <div class="saved-category ${isOpen ? "open" : ""}">
+        <button class="saved-category-header" onclick="toggleSavedCategory('${category}')">
+          <span>${category}</span>
+          <span>${isOpen ? "▲" : "▼"}</span>
+        </button>
+        <div class="saved-category-body">
+    `;
+
+    if (sortedSettings.length === 0) {
+      html += `<div class="saved-empty">저장된 세팅이 없습니다.</div>`;
+    } else {
+      sortedSettings.forEach((setting, index) => {
+        const savedSkills = setting.skills || [];
+        const count = setting.count || savedSkills.length;
 
         html += `
-          <button
-            class="setting-skill-btn ${gradeClassMap[skill.grade]} ${selected ? "selected" : ""}"
-            onclick="addSettingSkill('${skill.name}')"
-            title="${skill.name}"
-          >
-            ${skill.name}
-          </button>
-        `;
-      });
-
-      list.innerHTML = html;
-    }
-
-    function openSavePopup() {
-      const skillCount = selectedSettingSkills.length;
-
-      if (skillCount === 0) {
-        alert("저장할 스킬이 없습니다.");
-        return;
-      }
-
-      if (skillCount < 5) {
-        alert("최소 5개 이상 세팅해야 저장할 수 있습니다.");
-        return;
-      }
-
-      const popupText = document.getElementById("savePopupText");
-      const grid = document.getElementById("saveCategoryGrid");
-
-      popupText.textContent = `현재 ${skillCount}개 스킬이 세팅되어 있습니다. 저장할 용도를 선택하세요.`;
-
-      let html = "";
-
-      settingCategories.forEach(category => {
-        html += `
-          <button class="save-category-btn" onclick="saveCurrentSkillSetting('${category}')">
-            ${category}
-          </button>
-        `;
-      });
-
-      grid.innerHTML = html;
-      document.getElementById("savePopupBg").classList.add("show");
-    }
-
-    function closeSavePopup() {
-      document.getElementById("savePopupBg").classList.remove("show");
-    }
-
-    function saveCurrentSkillSetting(category) {
-      const skillCount = selectedSettingSkills.length;
-
-      if (skillCount < 5) {
-        alert("최소 5개 이상 세팅해야 저장할 수 있습니다.");
-        closeSavePopup();
-        return;
-      }
-
-      const savedData = getSavedSettings();
-      const key = String(skillCount);
-
-      savedData[category][key] = selectedSettingSkills.map(skill => ({
-        name: skill.name,
-        grade: skill.grade,
-        element: skill.element,
-        level: skill.level,
-        material: skill.material
-      }));
-
-      saveSavedSettings(savedData);
-      closeSavePopup();
-
-      alert(`${category} ${skillCount}칸 세팅으로 저장되었습니다.`);
-
-      if (document.getElementById("skill-setting-collection").classList.contains("active")) {
-        renderSavedSettingCollection();
-      }
-    }
-
-    function toggleSavedCategory(category) {
-      openedSavedCategory = openedSavedCategory === category ? "" : category;
-      renderSavedSettingCollection();
-    }
-
-    function deleteSavedSetting(category, count) {
-      const savedData = getSavedSettings();
-
-      if (!savedData[category] || !savedData[category][count]) return;
-
-      const confirmDelete = confirm(`${category} ${count}칸 세팅을 삭제할까요?`);
-
-      if (!confirmDelete) return;
-
-      delete savedData[category][count];
-      saveSavedSettings(savedData);
-      renderSavedSettingCollection();
-    }
-
-    function renderSavedSettingCollection() {
-      const collection = document.getElementById("savedSettingCollection");
-
-      if (!collection) return;
-
-      const savedData = getSavedSettings();
-      let html = "";
-
-      settingCategories.forEach(category => {
-        const categoryData = savedData[category] || {};
-        const savedCounts = Object.keys(categoryData)
-          .map(Number)
-          .sort((a, b) => a - b);
-
-        const isOpen = openedSavedCategory === category;
-
-        html += `
-          <div class="saved-category ${isOpen ? "open" : ""}">
-            <button class="saved-category-header" onclick="toggleSavedCategory('${category}')">
-              <span>${category}</span>
-              <span>${isOpen ? "▲" : "▼"}</span>
-            </button>
-
-            <div class="saved-category-body">
+          <div class="saved-setting-block">
+            <div class="saved-setting-title">${category} ${count}칸 세팅 ${index + 1}</div>
+            <div class="saved-setting-grid">
         `;
 
-        if (savedCounts.length === 0) {
-          html += `<div class="saved-empty">저장된 세팅이 없습니다.</div>`;
-        } else {
-          savedCounts.forEach(count => {
-            const savedSkills = categoryData[count];
-
-            html += `
-              <div class="saved-setting-block">
-                <div class="saved-setting-title">${category} ${count}칸 세팅</div>
-                <div class="saved-setting-grid">
-            `;
-
-            savedSkills.forEach(skill => {
-              html += `
-                <div class="saved-setting-slot ${gradeClassMap[skill.grade]}">
-                  ${skill.name}
-                </div>
-              `;
-            });
-
-            html += `
-                </div>
-                <button class="saved-delete-btn" onclick="deleteSavedSetting('${category}', '${count}')">
-                  저장된 세팅 삭제
-                </button>
-              </div>
-            `;
-          });
-        }
+        savedSkills.forEach(skill => {
+          html += `<div class="saved-setting-slot ${gradeClassMap[skill.grade]}">${skill.name}</div>`;
+        });
 
         html += `
             </div>
+            <button class="saved-delete-btn" onclick="deleteSavedSetting('${category}', '${setting.id}')">저장된 세팅 삭제</button>
           </div>
         `;
       });
-
-      collection.innerHTML = html;
     }
 
-    createPromotionMenuAndSections();
-    setBreadcrumb("intro");
-    renderSkills();
-    renderSkillSettingSlots();
-    renderSettingSkillList();
-    renderSavedSettingCollection();
-  </script>
+    html += `</div></div>`;
+  });
+
+  collection.innerHTML = html;
+}
+
+addMenuButtons();
+addSections();
+setBreadcrumb("intro");
+renderSkills();
+renderSkillSettingSlots();
+renderSettingSkillList();
+renderSavedSettingCollection();
+</script>
 </body>
 </html>
