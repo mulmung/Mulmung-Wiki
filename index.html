@@ -15,6 +15,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
 .layout{display:flex;max-width:1280px;margin:0 auto}
 .sidebar{width:280px;flex:0 0 280px;min-height:calc(100vh - 62px);padding:18px;background:#202326;border-right:1px solid #111827}
 .sidebar-title{color:#fff;font-size:18px;font-weight:900;margin-bottom:16px}
+.sidebar-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 0 16px}
+.sidebar-stat-card{border:1px solid rgba(255,255,255,.12);border-radius:16px;background:#111827;padding:12px;text-align:center;color:#fff}
+.sidebar-stat-label{display:block;font-size:12px;font-weight:900;color:#d1d5db;margin-bottom:4px;letter-spacing:-.2px}
+.sidebar-stat-value{display:block;font-size:22px;font-weight:900;line-height:1}
+.sidebar-stat-unit{font-size:13px;font-weight:900;margin-left:2px;color:#e5e7eb}
 .menu-group{margin-bottom:10px}
 .menu-btn,.sub-menu-btn{width:100%;border:none;cursor:pointer;text-align:left;font-weight:800}
 .menu-btn{display:flex;justify-content:space-between;align-items:center;padding:14px;border-radius:12px;background:#000;color:#fff;font-size:16px}
@@ -537,6 +542,16 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
   <div class="layout">
     <aside class="sidebar" id="sidebar">
       <div class="sidebar-title">메뉴</div>
+      <div class="sidebar-stats" id="sidebarStats">
+        <div class="sidebar-stat-card">
+          <span class="sidebar-stat-label">접속 중</span>
+          <span class="sidebar-stat-value"><span id="onlineUserCount">-</span><span class="sidebar-stat-unit">명</span></span>
+        </div>
+        <div class="sidebar-stat-card">
+          <span class="sidebar-stat-label">가입 슬레이어</span>
+          <span class="sidebar-stat-value"><span id="joinedUserCount">-</span><span class="sidebar-stat-unit">명</span></span>
+        </div>
+      </div>
       <div class="sidebar-auth-card">
         <div class="sidebar-auth-title">로그인 정보</div>
         <button id="sidebarLoginBtn" class="sidebar-mini-btn dark">Google 로그인</button>
@@ -1185,9 +1200,98 @@ const sidebarWithdrawBtn = document.getElementById("sidebarWithdrawBtn");
 let currentUser = null;
 let currentNickname = "";
 let currentRole = "user";
+let presenceTimer = null;
+let statsTimer = null;
+
+const ONLINE_LIMIT_MS = 2 * 60 * 1000;
 
 function isAdminUser(user) {
   return user && user.email && user.email.toLowerCase() === ADMIN_EMAIL.toLowerCase();
+}
+
+async function savePublicUserProfile(user, nickname, role) {
+  if (!user) return;
+
+  await setDoc(doc(db, "publicUsers", user.uid), {
+    nickname: nickname || "",
+    role: role || "user",
+    status: role === "withdrawn" ? "withdrawn" : "active",
+    active: role !== "withdrawn",
+    lastActiveAt: Date.now(),
+    updatedAt: serverTimestamp()
+  }, { merge: true });
+}
+
+async function updateMyPresence(user) {
+  if (!user) return;
+
+  await setDoc(doc(db, "publicUsers", user.uid), {
+    lastActiveAt: Date.now(),
+    updatedAt: serverTimestamp()
+  }, { merge: true });
+}
+
+async function markMeOffline() {
+  if (!currentUser) return;
+
+  try {
+    await setDoc(doc(db, "publicUsers", currentUser.uid), {
+      lastActiveAt: 0,
+      updatedAt: serverTimestamp()
+    }, { merge: true });
+  } catch (error) {
+    console.warn("오프라인 표시 오류:", error);
+  }
+}
+
+async function refreshSiteStats() {
+  const onlineCountEl = document.getElementById("onlineUserCount");
+  const joinedCountEl = document.getElementById("joinedUserCount");
+  if (!onlineCountEl || !joinedCountEl) return;
+
+  try {
+    const publicDocs = await getDocs(collection(db, "publicUsers"));
+    const now = Date.now();
+    let onlineCount = 0;
+    let joinedCount = 0;
+
+    publicDocs.forEach(userDoc => {
+      const data = userDoc.data();
+      const nickname = (data.nickname || "").toString().trim();
+      const role = data.role || "user";
+      const status = data.status || "active";
+      const lastActiveAt = Number(data.lastActiveAt || 0);
+
+      if (status !== "withdrawn" && role !== "withdrawn" && nickname) joinedCount += 1;
+      if (status !== "withdrawn" && role !== "withdrawn" && lastActiveAt && now - lastActiveAt <= ONLINE_LIMIT_MS) onlineCount += 1;
+    });
+
+    onlineCountEl.textContent = onlineCount;
+    joinedCountEl.textContent = joinedCount;
+  } catch (error) {
+    console.warn("사이트 통계 불러오기 오류:", error);
+    onlineCountEl.textContent = "-";
+    joinedCountEl.textContent = "-";
+  }
+}
+
+function startPresenceTimer(user) {
+  if (presenceTimer) clearInterval(presenceTimer);
+
+  updateMyPresence(user).then(refreshSiteStats).catch(error => {
+    console.warn("접속 상태 갱신 오류:", error);
+  });
+
+  presenceTimer = setInterval(() => {
+    updateMyPresence(user).then(refreshSiteStats).catch(error => {
+      console.warn("접속 상태 갱신 오류:", error);
+    });
+  }, 45000);
+}
+
+function stopPresenceTimer() {
+  if (presenceTimer) clearInterval(presenceTimer);
+  presenceTimer = null;
 }
 
 function updateSidebarDisplay(user, nickname, role = "user") {
@@ -1242,6 +1346,7 @@ async function handleGoogleLogin() {
 
 async function handleLogout() {
   try {
+    await markMeOffline();
     await signOut(auth);
   } catch (error) {
     console.error("로그아웃 오류:", error);
@@ -1283,6 +1388,7 @@ async function handleWithdraw() {
       updatedAt: serverTimestamp()
     }, { merge: true }).catch(() => {});
 
+    await refreshSiteStats();
     alert("탈퇴 처리가 완료되었습니다.");
     await signOut(auth);
   } catch (error) {
@@ -1322,6 +1428,8 @@ async function handleNicknameSetting() {
     }, { merge: true });
 
     currentNickname = trimmedNickname;
+    await savePublicUserProfile(currentUser, currentNickname, currentRole);
+    await refreshSiteStats();
     updateUserDisplay(currentUser, currentNickname, currentRole);
     alert("닉네임이 저장되었습니다.");
   } catch (error) {
@@ -1344,6 +1452,7 @@ async function getOrCreateUserProfile(user) {
       updatedAt: serverTimestamp()
     }, { merge: true });
 
+    await savePublicUserProfile(user, "물멍", "admin");
     return { nickname: "물멍", role: "admin" };
   }
 
@@ -1358,6 +1467,7 @@ async function getOrCreateUserProfile(user) {
       updatedAt: serverTimestamp()
     });
 
+    await savePublicUserProfile(user, "", "user");
     return { nickname: "", role: "user" };
   }
 
@@ -1373,8 +1483,11 @@ async function getOrCreateUserProfile(user) {
       updatedAt: serverTimestamp()
     }, { merge: true });
 
+    await savePublicUserProfile(user, "", "user");
     return { nickname: "", role: "user" };
   }
+
+  await savePublicUserProfile(user, data.nickname || "", data.role || "user");
 
   return {
     nickname: data.nickname || "",
@@ -1518,6 +1631,13 @@ async function setUserRole(uid, role) {
       updatedAt: serverTimestamp()
     }, { merge: true });
 
+    await setDoc(doc(db, "publicUsers", uid), {
+      role,
+      updatedAt: serverTimestamp()
+    }, { merge: true });
+
+    await refreshSiteStats();
+
     alert(role === "skill_master" ? "스킬 마스터 직책을 부여했습니다." : "직책을 해제했습니다.");
     await openRolePopup();
   } catch (error) {
@@ -1540,6 +1660,8 @@ onAuthStateChanged(auth, async (user) => {
       currentNickname = profile.nickname;
       currentRole = profile.role;
       updateUserDisplay(user, currentNickname, currentRole);
+      startPresenceTimer(user);
+      await refreshSiteStats();
     } catch (error) {
       console.error("유저 정보 불러오기 오류:", error);
       userInfo.textContent = `로그인: ${user.email}`;
@@ -1548,6 +1670,7 @@ onAuthStateChanged(auth, async (user) => {
       updateSidebarDisplay(user, user.email, isAdminUser(user) ? "admin" : "user");
     }
   } else {
+    stopPresenceTimer();
     currentUser = null;
     currentNickname = "";
     currentRole = "user";
@@ -1558,8 +1681,16 @@ onAuthStateChanged(auth, async (user) => {
     logoutBtn.style.display = "none";
     userInfo.textContent = "";
     resetSidebarDisplay();
+    await refreshSiteStats();
   }
 });
+
+window.addEventListener("pagehide", () => {
+  markMeOffline();
+});
+
+refreshSiteStats();
+statsTimer = setInterval(refreshSiteStats, 30000);
 
   console.log("Firebase 연결 완료");
 </script>
