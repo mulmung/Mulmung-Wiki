@@ -1075,9 +1075,18 @@ function setSettingElementFilter(element) {
 }
 
 function addSettingSkill(skillName) {
+  const selectedIndex = selectedSettingSkills.findIndex(item => item.name === skillName);
+
+  // 이미 선택된 스킬을 아래 목록에서 한 번 더 누르면 선택 해제
+  if (selectedIndex !== -1) {
+    selectedSettingSkills.splice(selectedIndex, 1);
+    renderSkillSettingSlots();
+    renderSettingSkillList();
+    return;
+  }
+
   const skill = skills.find(item => item.name === skillName);
   if (!skill) return;
-  if (selectedSettingSkills.some(item => item.name === skillName)) return;
 
   if (selectedSettingSkills.length >= 10) {
     alert("스킬은 최대 10개까지 세팅할 수 있습니다.");
