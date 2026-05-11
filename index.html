@@ -572,7 +572,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
 <body>
   <div class="top-bar">
   <button class="hamburger-btn" onclick="toggleSidebar()">☰</button>
-  <button class="top-title" onclick="showSection('intro')">물멍위키</button>
+  <button class="top-title" onclick="showSection('home')">물멍위키</button>
 
   <div class="auth-box">
     <button id="loginBtn" class="login-btn">Google 로그인</button>
@@ -615,7 +615,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
           </div>
         </div>
       </div>
-      <div class="menu-group"><button class="menu-btn" onclick="showSection('intro')">홈</button></div>
+      <div class="menu-group"><button class="menu-btn" onclick="showSection('home')">홈</button></div>
+      <div class="menu-group"><button class="menu-btn" onclick="showSection('intro')">들어가며</button></div>
       <div class="menu-group"><button class="menu-btn" onclick="toggleSubMenu('diamondMenu', this)">다이아 소모처 <span>＋</span></button><div class="sub-menu" id="diamondMenu"></div></div>
       <div class="menu-group"><button class="menu-btn" onclick="toggleSubMenu('promotionMenu', this)">승급 <span>＋</span></button><div class="sub-menu" id="promotionMenu"></div></div>
       <div class="menu-group"><button class="menu-btn" onclick="toggleSubMenu('infoMenu', this)">스킬 <span>＋</span></button><div class="sub-menu" id="infoMenu"></div></div>
@@ -687,7 +688,7 @@ const updatePages = [
   ["update-020","v0.1.10-beta","2026.05.11",["스킬 저장 시 칸 수 선택 단계를 제거","현재 세팅된 스킬 개수를 자동으로 계산하여 5칸~10칸 세팅으로 자동 저장","스킬 세팅 모음을 카테고리 펼침 방식으로 변경","각 카테고리 아래에 저장된 세팅을 모두 확인할 수 있도록 변경","모바일 화면에서 저장된 스킬 세팅 박스가 화면 밖으로 튀어나가지 않도록 수정","사이트 하단 현재 버전 표시를 v0.1.10-beta로 변경"]]
 ];
 
-const pageMap = {"intro":["홈",""]};
+const pageMap = {"home":["홈",""], "intro":["들어가며",""]};
 diamondPages.forEach(([id,name]) => pageMap[id] = ["다이아 소모처", name]);
 promotions.forEach(([id,name]) => pageMap[id] = ["승급", name]);
 infoPages.forEach(([id,name]) => pageMap[id] = ["스킬", name]);
