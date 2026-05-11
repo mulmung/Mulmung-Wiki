@@ -498,6 +498,17 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
 }
 .sidebar-mini-btn:hover { filter: brightness(.96); }
 
+/* 상단바는 햄버거 / 물멍위키 / 로그인·로그아웃만 표시 */
+.top-bar .user-info,
+.top-bar #nicknameBtn,
+.top-bar #roleManageBtn {
+  display: none !important;
+}
+
+.top-bar .auth-box {
+  margin-left: auto;
+}
+
 </style>
 </head>
 
@@ -1231,7 +1242,7 @@ async function handleLogout() {
 async function handleNicknameSetting() {
   if (!currentUser) return;
 
-  const newNickname = prompt("사용할 닉네임을 입력하세요.", currentNickname || "");
+  const newNickname = prompt("반드시 슬레이어 키우기 닉네임으로 입력해주세요.", currentNickname || "");
   if (newNickname === null) return;
 
   const trimmedNickname = newNickname.trim();
