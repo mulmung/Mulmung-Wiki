@@ -159,6 +159,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
 .saved-setting-block{border:1px solid #e5e7eb;border-radius:18px;padding:16px;margin-bottom:18px;background:#f9fafb}
 .saved-setting-title{display:flex;align-items:center;gap:10px;font-size:22px;font-weight:900;margin-bottom:12px;color:#111827;text-align:left}
 .saved-setting-title::after{content:"";flex:1;height:2px;background:#d1d5db;border-radius:999px}
+.saved-count-group{margin-bottom:22px}
+.saved-count-title{display:flex;align-items:center;gap:10px;font-size:22px;font-weight:900;margin:8px 0 14px;color:#111827;text-align:left}
+.saved-count-title::after{content:"";flex:1;height:2px;background:#d1d5db;border-radius:999px}
+.saved-count-items{display:flex;flex-direction:column;gap:16px}
+.saved-count-items .saved-setting-block{margin-bottom:0}
 .saved-setting-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;width:100%;max-width:560px;margin:0 auto 16px}
 .saved-setting-slot{aspect-ratio:1/1;border:none;border-radius:15px;font-size:13px;font-weight:900;padding:6px;display:flex;align-items:center;justify-content:center;text-align:center;word-break:keep-all;line-height:1.25;box-shadow:0 6px 14px rgba(0,0,0,.10)}
 .saved-setting-slot.grade-normal{color:#111827}
@@ -1313,35 +1318,57 @@ function renderSavedSettingCollection() {
     if (sortedSettings.length === 0) {
       html += `<div class="saved-empty">저장된 세팅이 없습니다.</div>`;
     } else {
-      sortedSettings.forEach(setting => {
+      const groupedByCount = sortedSettings.reduce((groups, setting) => {
         const savedSkills = setting.skills || [];
-        const count = setting.count || savedSkills.length;
-        const uploader = setting.uploaderNickname || setting.nickname || "닉네임 미설정";
-        const dateText = setting.createdDate || formatShortDate(setting.createdAt);
-        const deleteButton = canDeleteSavedSetting(setting)
-          ? `<button class="saved-delete-btn" onclick="deleteSavedSetting('${category}', '${setting.id}')">삭제</button>`
-          : "";
+        const count = Number(setting.count || savedSkills.length || 0);
+        if (!groups[count]) groups[count] = [];
+        groups[count].push(setting);
+        return groups;
+      }, {});
 
-        html += `
-          <div class="saved-setting-block">
-            <div class="saved-setting-title">${count}칸</div>
-            <div class="saved-setting-grid">
-        `;
+      Object.keys(groupedByCount)
+        .map(Number)
+        .sort((a, b) => a - b)
+        .forEach(count => {
+          html += `
+            <div class="saved-count-group">
+              <div class="saved-count-title">${count}칸</div>
+              <div class="saved-count-items">
+          `;
 
-        savedSkills.forEach(skill => {
-          const mode = skill.mode === "manual" ? "manual" : "auto";
-          html += `<div class="saved-setting-slot ${gradeClassMap[skill.grade]}"><span class="saved-mode-dot ${mode}"></span>${skill.name}</div>`;
+          groupedByCount[count].forEach(setting => {
+            const savedSkills = setting.skills || [];
+            const uploader = setting.uploaderNickname || setting.nickname || "닉네임 미설정";
+            const dateText = setting.createdDate || formatShortDate(setting.createdAt);
+            const deleteButton = canDeleteSavedSetting(setting)
+              ? `<button class="saved-delete-btn" onclick="deleteSavedSetting('${category}', '${setting.id}')">삭제</button>`
+              : "";
+
+            html += `
+              <div class="saved-setting-block">
+                <div class="saved-setting-grid">
+            `;
+
+            savedSkills.forEach(skill => {
+              const mode = skill.mode === "manual" ? "manual" : "auto";
+              html += `<div class="saved-setting-slot ${gradeClassMap[skill.grade]}"><span class="saved-mode-dot ${mode}"></span>${skill.name}</div>`;
+            });
+
+            html += `
+                </div>
+                <div class="saved-setting-footer">
+                  <span class="saved-setting-meta">${uploader} · ${dateText}</span>
+                  ${deleteButton}
+                </div>
+              </div>
+            `;
+          });
+
+          html += `
+              </div>
+            </div>
+          `;
         });
-
-        html += `
-            </div>
-            <div class="saved-setting-footer">
-              <span class="saved-setting-meta">${uploader} · ${dateText}</span>
-              ${deleteButton}
-            </div>
-          </div>
-        `;
-      });
     }
 
     html += `</div></div>`;
