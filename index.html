@@ -311,7 +311,7 @@
 
     .skill-search-box {
       width: 100%;
-      margin: 18px 0 12px;
+      margin: 18px 0 16px;
       padding: 16px 18px;
       border: 2px solid #d1d5db;
       border-radius: 18px;
@@ -325,23 +325,23 @@
     }
 
     .compact-filter-wrap {
-      margin: 8px 0 22px;
+      display: grid;
+      gap: 10px;
+      margin: 14px 0 20px;
     }
 
-    .compact-filter {
+    .compact-filter-row {
       display: flex;
       align-items: center;
       flex-wrap: wrap;
-      gap: 6px;
-      margin: 8px 0;
+      gap: 7px;
     }
 
     .compact-filter-label {
-      font-size: 15px;
+      font-size: 16px;
       font-weight: 900;
       color: #111827;
-      margin-right: 4px;
-      flex: 0 0 auto;
+      margin-right: 2px;
     }
 
     .filter-btn,
@@ -358,7 +358,7 @@
     }
 
     .filter-btn {
-      padding: 8px 10px;
+      padding: 9px 12px;
       cursor: pointer;
       opacity: 0.78;
       border: 2px solid transparent;
@@ -483,26 +483,41 @@
       text-align: center;
     }
 
-    .setting-guide {
-      margin: 6px 0 20px;
-      font-size: 17px;
-      font-weight: 800;
-      color: #4b5563;
+    .setting-guide-text {
       text-align: center;
+      font-weight: 900;
+      color: #4b5563;
     }
 
-    .skill-setting-board {
+    .setting-reset-btn {
+      display: block;
+      margin: 4px auto 22px;
+      padding: 10px 18px;
+      border: none;
+      border-radius: 999px;
+      background: #111827;
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .setting-reset-btn:hover {
+      opacity: 0.88;
+    }
+
+    .skill-setting-grid {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
       gap: 10px;
-      max-width: 620px;
-      margin: 0 auto 34px;
+      max-width: 580px;
+      margin: 22px auto 42px;
     }
 
     .setting-slot {
       aspect-ratio: 1 / 1;
+      border-radius: 16px;
       border: 2px dashed #cbd5e1;
-      border-radius: 18px;
       background: #f8fafc;
       color: #94a3b8;
       font-size: 14px;
@@ -514,49 +529,52 @@
       text-align: center;
       padding: 6px;
       word-break: keep-all;
+      line-height: 1.25;
     }
 
     .setting-slot.filled {
-      border: 2px solid #6b7280;
+      border-style: solid;
       color: #ffffff;
       box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
     }
 
-    .setting-title {
-      margin: 32px 0 16px;
-      font-size: 28px;
-      font-weight: 900;
+    .setting-slot.filled.grade-normal {
+      color: #111827;
+    }
+
+    .setting-list-title {
       text-align: center;
+      margin-top: 26px;
     }
 
     .setting-skill-list {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
       gap: 10px;
-      margin-top: 16px;
+      margin-top: 18px;
     }
 
     .setting-skill-btn {
       aspect-ratio: 1 / 1;
       border: none;
-      border-radius: 18px;
-      color: #ffffff;
-      font-size: 14px;
+      border-radius: 16px;
+      font-size: 13px;
       font-weight: 900;
       cursor: pointer;
       padding: 8px;
-      word-break: keep-all;
       text-align: center;
-      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
-    }
-
-    .setting-skill-btn.grade-normal {
-      color: #111827;
+      word-break: keep-all;
+      line-height: 1.25;
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.10);
     }
 
     .setting-skill-btn.selected {
       outline: 4px solid #6b7280;
-      filter: brightness(0.92);
+      outline-offset: -4px;
+    }
+
+    .setting-skill-btn.grade-normal {
+      color: #111827;
     }
 
     .update-list {
@@ -717,18 +735,17 @@
         font-size: 15px;
       }
 
-      .compact-filter {
-        gap: 5px;
-        margin: 7px 0;
+      .compact-filter-row {
+        gap: 6px;
       }
 
       .compact-filter-label {
-        font-size: 14px;
+        font-size: 15px;
       }
 
       .filter-btn {
-        padding: 6px 8px;
-        font-size: 12px;
+        padding: 8px 10px;
+        font-size: 13px;
       }
 
       .badge {
@@ -748,32 +765,23 @@
         font-size: 15px;
       }
 
-      .setting-guide {
-        font-size: 15px;
-      }
-
-      .skill-setting-board {
-        gap: 7px;
+      .skill-setting-grid {
+        gap: 8px;
       }
 
       .setting-slot {
         border-radius: 14px;
-        font-size: 11px;
+        font-size: 12px;
         padding: 4px;
       }
 
-      .setting-title {
-        font-size: 24px;
-      }
-
       .setting-skill-list {
-        grid-template-columns: repeat(5, 1fr);
-        gap: 7px;
+        gap: 8px;
       }
 
       .setting-skill-btn {
         border-radius: 14px;
-        font-size: 10px;
+        font-size: 11px;
         padding: 5px;
       }
 
@@ -998,24 +1006,24 @@
           />
 
           <div class="compact-filter-wrap">
-            <div class="compact-filter">
+            <div class="compact-filter-row">
               <span class="compact-filter-label">등급</span>
-              <button class="filter-btn filter-all active" data-learn-grade-filter="전체" onclick="setLearnGradeFilter('전체')">전체</button>
-              <button class="filter-btn grade-myth" data-learn-grade-filter="신화" onclick="setLearnGradeFilter('신화')">신화</button>
-              <button class="filter-btn grade-legend" data-learn-grade-filter="전설" onclick="setLearnGradeFilter('전설')">전설</button>
-              <button class="filter-btn grade-hero" data-learn-grade-filter="영웅" onclick="setLearnGradeFilter('영웅')">영웅</button>
-              <button class="filter-btn grade-rare" data-learn-grade-filter="레어" onclick="setLearnGradeFilter('레어')">레어</button>
-              <button class="filter-btn grade-advanced" data-learn-grade-filter="고급" onclick="setLearnGradeFilter('고급')">고급</button>
-              <button class="filter-btn grade-normal" data-learn-grade-filter="일반" onclick="setLearnGradeFilter('일반')">일반</button>
+              <button class="filter-btn filter-all active" data-grade-filter="전체" onclick="setGradeFilter('전체')">전체</button>
+              <button class="filter-btn grade-myth" data-grade-filter="신화" onclick="setGradeFilter('신화')">신화</button>
+              <button class="filter-btn grade-legend" data-grade-filter="전설" onclick="setGradeFilter('전설')">전설</button>
+              <button class="filter-btn grade-hero" data-grade-filter="영웅" onclick="setGradeFilter('영웅')">영웅</button>
+              <button class="filter-btn grade-rare" data-grade-filter="레어" onclick="setGradeFilter('레어')">레어</button>
+              <button class="filter-btn grade-advanced" data-grade-filter="고급" onclick="setGradeFilter('고급')">고급</button>
+              <button class="filter-btn grade-normal" data-grade-filter="일반" onclick="setGradeFilter('일반')">일반</button>
             </div>
 
-            <div class="compact-filter">
+            <div class="compact-filter-row">
               <span class="compact-filter-label">속성</span>
-              <button class="filter-btn filter-all active" data-learn-element-filter="전체" onclick="setLearnElementFilter('전체')">전체</button>
-              <button class="filter-btn element-fire" data-learn-element-filter="불" onclick="setLearnElementFilter('불')">불</button>
-              <button class="filter-btn element-water" data-learn-element-filter="물" onclick="setLearnElementFilter('물')">물</button>
-              <button class="filter-btn element-wind" data-learn-element-filter="바람" onclick="setLearnElementFilter('바람')">바람</button>
-              <button class="filter-btn element-earth" data-learn-element-filter="땅" onclick="setLearnElementFilter('땅')">땅</button>
+              <button class="filter-btn filter-all active" data-element-filter="전체" onclick="setElementFilter('전체')">전체</button>
+              <button class="filter-btn element-fire" data-element-filter="불" onclick="setElementFilter('불')">불</button>
+              <button class="filter-btn element-water" data-element-filter="물" onclick="setElementFilter('물')">물</button>
+              <button class="filter-btn element-wind" data-element-filter="바람" onclick="setElementFilter('바람')">바람</button>
+              <button class="filter-btn element-earth" data-element-filter="땅" onclick="setElementFilter('땅')">땅</button>
             </div>
           </div>
 
@@ -1025,24 +1033,27 @@
         <section id="skill-setting" class="card">
           <h2>스킬 세팅</h2>
 
-          <p class="setting-guide">
-            아래 스킬 박스를 누르면 첫 번째 빈칸부터 채워집니다. 세팅 칸의 스킬을 누르면 제거됩니다.
+          <p class="setting-guide-text">
+            아래 스킬 박스를 누르면 첫 번째 빈칸부터 채워집니다.
+            세팅 칸의 스킬을 누르면 제거됩니다.
           </p>
 
-          <div class="skill-setting-board" id="skillSettingBoard"></div>
+          <button class="setting-reset-btn" onclick="resetSkillSetting()">세팅 초기화</button>
 
-          <h3 class="setting-title">스킬 목록</h3>
+          <div id="skillSettingSlots" class="skill-setting-grid"></div>
+
+          <h2 class="setting-list-title">스킬 목록</h2>
 
           <input
             id="settingSearchInput"
             class="skill-search-box"
             type="text"
             placeholder="세팅할 스킬을 검색하세요. 예: 블리자드"
-            oninput="renderSettingSkills()"
+            oninput="renderSettingSkillList()"
           />
 
           <div class="compact-filter-wrap">
-            <div class="compact-filter">
+            <div class="compact-filter-row">
               <span class="compact-filter-label">등급</span>
               <button class="filter-btn filter-all active" data-setting-grade-filter="전체" onclick="setSettingGradeFilter('전체')">전체</button>
               <button class="filter-btn grade-myth" data-setting-grade-filter="신화" onclick="setSettingGradeFilter('신화')">신화</button>
@@ -1053,7 +1064,7 @@
               <button class="filter-btn grade-normal" data-setting-grade-filter="일반" onclick="setSettingGradeFilter('일반')">일반</button>
             </div>
 
-            <div class="compact-filter">
+            <div class="compact-filter-row">
               <span class="compact-filter-label">속성</span>
               <button class="filter-btn filter-all active" data-setting-element-filter="전체" onclick="setSettingElementFilter('전체')">전체</button>
               <button class="filter-btn element-fire" data-setting-element-filter="불" onclick="setSettingElementFilter('불')">불</button>
@@ -1063,7 +1074,7 @@
             </div>
           </div>
 
-          <div class="setting-skill-list" id="settingSkillList"></div>
+          <div id="settingSkillList" class="setting-skill-list"></div>
         </section>
 
         <section id="update-010" class="card">
@@ -1172,12 +1183,12 @@
             <li>정보 &gt; 스킬 세팅 페이지 추가</li>
             <li>스킬 세팅 10칸 배치 기능 추가</li>
             <li>스킬 목록 클릭 시 첫 번째 빈칸부터 자동 배치 기능 추가</li>
-            <li>세팅 칸의 스킬 클릭 시 제거 기능 추가</li>
-            <li>스킬 세팅 목록을 5열 구조로 변경</li>
-            <li>스킬 목록 버튼 색상을 스킬 등급 색상과 동일하게 적용</li>
-            <li>스킬 목록 정렬을 신화부터 일반 순서, 같은 등급 내 가나다순으로 변경</li>
-            <li>스킬 배우기 필터 UI를 압축형 2줄 구조로 변경</li>
-            <li>스킬 세팅 필터 UI를 압축형 2줄 구조로 적용</li>
+            <li>세팅된 스킬 클릭 시 제거 기능 추가</li>
+            <li>스킬 세팅 초기화 버튼 추가</li>
+            <li>스킬 세팅 칸의 배경색을 스킬 목록 버튼과 동일하게 표시하도록 수정</li>
+            <li>스킬 목록을 5열 구조로 정리</li>
+            <li>스킬 목록 정렬을 신화부터 일반 순, 같은 등급 내 가나다순으로 적용</li>
+            <li>스킬 배우기와 스킬 세팅 필터 UI를 2줄 구조로 압축</li>
             <li>사이트 하단 현재 버전 표시를 v0.1.8-beta로 변경</li>
           </ul>
         </section>
@@ -1269,8 +1280,8 @@
       "땅": "element-earth"
     };
 
-    let selectedLearnGrade = "전체";
-    let selectedLearnElement = "전체";
+    let selectedGrade = "전체";
+    let selectedElement = "전체";
     let selectedSettingGrade = "전체";
     let selectedSettingElement = "전체";
     let selectedSettingSkills = [];
@@ -1278,7 +1289,7 @@
     const skills = [
       { element: "불", level: "Lv.10", name: "불꽃 베기", grade: "일반", material: "-" },
       { element: "불", level: "Lv.20", name: "불의 검", grade: "일반", material: "-" },
-      { element: "불", level: "Lv.30", name: "타오르는 검", grade: "레어", material: "불 속성석 10" },
+      { element: "불", level: "Lv.30", name: "타오르는 검", grade: "전설", material: "불 속성석 10" },
       { element: "불", level: "Lv.40", name: "열풍", grade: "고급", material: "무기 고급 2등급 4" },
       { element: "불", level: "Lv.70", name: "화염 베기", grade: "레어", material: "불 속성석 20" },
       { element: "불", level: "Lv.90", name: "화염 파동", grade: "영웅", material: "무기 영웅 3등급 4" },
@@ -1291,7 +1302,7 @@
       { element: "물", level: "Lv.25", name: "굽이치는 칼날", grade: "영웅", material: "-" },
       { element: "물", level: "Lv.35", name: "아이스 스톤", grade: "일반", material: "-" },
       { element: "물", level: "Lv.45", name: "파도 베기", grade: "레어", material: "-" },
-      { element: "물", level: "Lv.60", name: "아이스 샤워", grade: "고급", material: "물 속성석 20" },
+      { element: "물", level: "Lv.60", name: "아이스 샤워", grade: "전설", material: "물 속성석 20" },
       { element: "물", level: "Lv.80", name: "춤추는 파도", grade: "영웅", material: "악세 영웅 3등급 4" },
       { element: "물", level: "Lv.100", name: "메디테이션", grade: "전설", material: "악세 전설 3등급 4 / 물 속성석 50" },
       { element: "물", level: "Lv.160", name: "아이스 타임", grade: "전설", material: "악세 전설 4등급 2 / 물 속성석 300" },
@@ -1302,9 +1313,9 @@
       { element: "바람", level: "Lv.25", name: "번개 베기", grade: "일반", material: "무기 일반 4등급 4" },
       { element: "바람", level: "Lv.35", name: "바람의 검", grade: "영웅", material: "무기 영웅 4등급 4" },
       { element: "바람", level: "Lv.40", name: "전광석화", grade: "영웅", material: "무기 레어 3등급 4" },
-      { element: "바람", level: "Lv.50", name: "뇌격", grade: "고급", material: "무기 레어 4등급 4" },
+      { element: "바람", level: "Lv.50", name: "뇌격", grade: "일반", material: "무기 레어 4등급 4" },
       { element: "바람", level: "Lv.70", name: "천둥 베기", grade: "레어", material: "바람 속성석 20" },
-      { element: "바람", level: "Lv.90", name: "고속이동", grade: "고급", material: "악세 고급 4등급 4" },
+      { element: "바람", level: "Lv.90", name: "고속이동", grade: "일반", material: "악세 고급 4등급 4" },
       { element: "바람", level: "Lv.140", name: "수라 번개 베기", grade: "전설", material: "전설 레어 2등급 4 / 바람 속성석 300" },
       { element: "바람", level: "Lv.200", name: "격류", grade: "신화", material: "무기 전설 1등급 4" },
       { element: "바람", level: "Lv.300", name: "뇌신", grade: "신화", material: "악세 신화 2등급 4" },
@@ -1340,6 +1351,14 @@
           <p>추후 [${name}] 승급의 내용을 업데이트 할 예정입니다.</p>
         `;
         content.appendChild(section);
+      });
+    }
+
+    function getSortedSkills(skillList) {
+      return [...skillList].sort((a, b) => {
+        const gradeCompare = gradeOrder.indexOf(a.grade) - gradeOrder.indexOf(b.grade);
+        if (gradeCompare !== 0) return gradeCompare;
+        return a.name.localeCompare(b.name, "ko");
       });
     }
 
@@ -1416,8 +1435,8 @@
       }
 
       if (sectionId === "skill-setting") {
-        renderSettingBoard();
-        renderSettingSkills();
+        renderSkillSettingSlots();
+        renderSettingSkillList();
       }
 
       if (window.innerWidth <= 768) {
@@ -1435,29 +1454,21 @@
       document.getElementById("unlockPopupBg").classList.remove("show");
     }
 
-    function sortSkills(skillList) {
-      return [...skillList].sort((a, b) => {
-        const gradeCompare = gradeOrder.indexOf(a.grade) - gradeOrder.indexOf(b.grade);
-        if (gradeCompare !== 0) return gradeCompare;
-        return a.name.localeCompare(b.name, "ko");
-      });
-    }
+    function setGradeFilter(grade) {
+      selectedGrade = grade;
 
-    function setLearnGradeFilter(grade) {
-      selectedLearnGrade = grade;
-
-      document.querySelectorAll("[data-learn-grade-filter]").forEach(button => {
-        button.classList.toggle("active", button.dataset.learnGradeFilter === grade);
+      document.querySelectorAll("[data-grade-filter]").forEach(button => {
+        button.classList.toggle("active", button.dataset.gradeFilter === grade);
       });
 
       renderSkills();
     }
 
-    function setLearnElementFilter(element) {
-      selectedLearnElement = element;
+    function setElementFilter(element) {
+      selectedElement = element;
 
-      document.querySelectorAll("[data-learn-element-filter]").forEach(button => {
-        button.classList.toggle("active", button.dataset.learnElementFilter === element);
+      document.querySelectorAll("[data-element-filter]").forEach(button => {
+        button.classList.toggle("active", button.dataset.elementFilter === element);
       });
 
       renderSkills();
@@ -1466,20 +1477,17 @@
     function renderSkills() {
       const resultArea = document.getElementById("skillResultArea");
       const searchInput = document.getElementById("skillSearchInput");
-
-      if (!resultArea) return;
-
       const keyword = searchInput ? searchInput.value.trim().toLowerCase() : "";
 
       let filteredSkills = skills.filter(skill => {
         const matchesKeyword = skill.name.toLowerCase().includes(keyword);
-        const matchesGrade = selectedLearnGrade === "전체" || skill.grade === selectedLearnGrade;
-        const matchesElement = selectedLearnElement === "전체" || skill.element === selectedLearnElement;
+        const matchesGrade = selectedGrade === "전체" || skill.grade === selectedGrade;
+        const matchesElement = selectedElement === "전체" || skill.element === selectedElement;
 
         return matchesKeyword && matchesGrade && matchesElement;
       });
 
-      filteredSkills = sortSkills(filteredSkills);
+      filteredSkills = getSortedSkills(filteredSkills);
 
       if (filteredSkills.length === 0) {
         resultArea.innerHTML = `<div class="empty-result">검색 결과가 없습니다.</div>`;
@@ -1524,7 +1532,7 @@
         button.classList.toggle("active", button.dataset.settingGradeFilter === grade);
       });
 
-      renderSettingSkills();
+      renderSettingSkillList();
     }
 
     function setSettingElementFilter(element) {
@@ -1534,13 +1542,44 @@
         button.classList.toggle("active", button.dataset.settingElementFilter === element);
       });
 
-      renderSettingSkills();
+      renderSettingSkillList();
     }
 
-    function renderSettingBoard() {
-      const board = document.getElementById("skillSettingBoard");
+    function addSettingSkill(skillName) {
+      const skill = skills.find(item => item.name === skillName);
 
-      if (!board) return;
+      if (!skill) return;
+
+      const alreadySelected = selectedSettingSkills.some(item => item.name === skillName);
+
+      if (alreadySelected) return;
+
+      if (selectedSettingSkills.length >= 10) {
+        alert("스킬은 최대 10개까지 세팅할 수 있습니다.");
+        return;
+      }
+
+      selectedSettingSkills.push(skill);
+      renderSkillSettingSlots();
+      renderSettingSkillList();
+    }
+
+    function removeSettingSkill(index) {
+      selectedSettingSkills.splice(index, 1);
+      renderSkillSettingSlots();
+      renderSettingSkillList();
+    }
+
+    function resetSkillSetting() {
+      selectedSettingSkills = [];
+      renderSkillSettingSlots();
+      renderSettingSkillList();
+    }
+
+    function renderSkillSettingSlots() {
+      const slots = document.getElementById("skillSettingSlots");
+
+      if (!slots) return;
 
       let html = "";
 
@@ -1549,44 +1588,27 @@
 
         if (skill) {
           html += `
-            <button class="setting-slot filled ${gradeClassMap[skill.grade]}" onclick="removeSettingSkill(${i})">
+            <button
+              class="setting-slot filled ${gradeClassMap[skill.grade]}"
+              onclick="removeSettingSkill(${i})"
+              title="${skill.name}"
+            >
               ${skill.name}
             </button>
           `;
         } else {
           html += `
-            <button class="setting-slot" onclick="removeSettingSkill(${i})">
+            <button class="setting-slot" type="button">
               빈칸
             </button>
           `;
         }
       }
 
-      board.innerHTML = html;
+      slots.innerHTML = html;
     }
 
-    function addSettingSkill(skillName) {
-      if (selectedSettingSkills.some(skill => skill.name === skillName)) return;
-      if (selectedSettingSkills.length >= 10) return;
-
-      const skill = skills.find(item => item.name === skillName);
-
-      if (!skill) return;
-
-      selectedSettingSkills.push(skill);
-      renderSettingBoard();
-      renderSettingSkills();
-    }
-
-    function removeSettingSkill(index) {
-      if (!selectedSettingSkills[index]) return;
-
-      selectedSettingSkills.splice(index, 1);
-      renderSettingBoard();
-      renderSettingSkills();
-    }
-
-    function renderSettingSkills() {
+    function renderSettingSkillList() {
       const list = document.getElementById("settingSkillList");
       const searchInput = document.getElementById("settingSearchInput");
 
@@ -1602,7 +1624,7 @@
         return matchesKeyword && matchesGrade && matchesElement;
       });
 
-      filteredSkills = sortSkills(filteredSkills);
+      filteredSkills = getSortedSkills(filteredSkills);
 
       if (filteredSkills.length === 0) {
         list.innerHTML = `<div class="empty-result">검색 결과가 없습니다.</div>`;
@@ -1612,12 +1634,13 @@
       let html = "";
 
       filteredSkills.forEach(skill => {
-        const isSelected = selectedSettingSkills.some(item => item.name === skill.name);
+        const selected = selectedSettingSkills.some(item => item.name === skill.name);
 
         html += `
           <button
-            class="setting-skill-btn ${gradeClassMap[skill.grade]} ${isSelected ? "selected" : ""}"
+            class="setting-skill-btn ${gradeClassMap[skill.grade]} ${selected ? "selected" : ""}"
             onclick="addSettingSkill('${skill.name}')"
+            title="${skill.name}"
           >
             ${skill.name}
           </button>
@@ -1630,8 +1653,8 @@
     createPromotionMenuAndSections();
     setBreadcrumb("intro");
     renderSkills();
-    renderSettingBoard();
-    renderSettingSkills();
+    renderSkillSettingSlots();
+    renderSettingSkillList();
   </script>
 </body>
-</html>
+                                                      </html>
