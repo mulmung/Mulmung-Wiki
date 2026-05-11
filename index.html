@@ -1518,11 +1518,44 @@ function updateUserDisplay(user, nickname, role = "user") {
   updateSidebarDisplay(user, displayName, role);
 }
 
+function isInAppBrowser() {
+  const ua = navigator.userAgent.toLowerCase();
+
+  return (
+    ua.includes("kakaotalk") ||
+    ua.includes("instagram") ||
+    ua.includes("fbav") ||
+    ua.includes("fban") ||
+    ua.includes("naver") ||
+    ua.includes("line") ||
+    ua.includes("wv")
+  );
+}
+
 loginBtn.addEventListener("click", async () => {
+  if (isInAppBrowser()) {
+    alert(
+      "Google 로그인은 카카오톡/인스타/네이버앱 같은 앱 안 브라우저에서는 제한될 수 있습니다.\n\n오른쪽 위 점 3개를 눌러 '외부 브라우저에서 열기' 또는 Chrome/Safari/삼성 인터넷으로 접속해주세요."
+    );
+    return;
+  }
+
   try {
     await signInWithPopup(auth, provider);
   } catch (error) {
     console.error("로그인 오류:", error);
+
+    if (
+      error.code === "auth/network-request-failed" ||
+      error.code === "auth/popup-blocked" ||
+      error.code === "auth/cancelled-popup-request"
+    ) {
+      alert(
+        "로그인 창을 열 수 없습니다.\n\n카카오톡/인스타/네이버앱 안에서 접속 중이라면 오른쪽 위 점 3개를 눌러 외부 브라우저에서 열어주세요."
+      );
+      return;
+    }
+
     alert(`로그인 오류: ${error.code}\n${error.message}`);
   }
 });
