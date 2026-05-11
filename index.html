@@ -480,6 +480,89 @@
       text-align: center;
     }
 
+    .skill-setting-board {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      max-width: 520px;
+      margin: 22px auto 28px;
+    }
+
+    .setting-slot {
+      aspect-ratio: 1 / 1;
+      border: 2px dashed #cbd5e1;
+      border-radius: 18px;
+      background: #f8fafc;
+      color: #94a3b8;
+      font-size: 13px;
+      font-weight: 900;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 8px;
+      word-break: keep-all;
+    }
+
+    .setting-slot.filled {
+      border: none;
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    }
+
+    .skill-pool-title {
+      margin: 26px 0 12px;
+      font-size: 22px;
+      font-weight: 900;
+      text-align: center;
+    }
+
+    .skill-pool {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .skill-square {
+      aspect-ratio: 1 / 1;
+      border: none;
+      border-radius: 18px;
+      padding: 8px;
+      font-size: 13px;
+      font-weight: 900;
+      color: #ffffff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      word-break: keep-all;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    }
+
+    .skill-square.selected {
+      outline: 4px solid #111827;
+      opacity: 0.6;
+    }
+
+    .skill-square.empty {
+      background: #f8fafc;
+      color: #94a3b8;
+      border: 2px dashed #cbd5e1;
+      box-shadow: none;
+      cursor: default;
+    }
+
+    .setting-guide {
+      text-align: center;
+      color: #4b5563;
+      font-size: 16px;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
     .update-list {
       padding-left: 22px;
       margin-top: 14px;
@@ -660,6 +743,36 @@
         font-size: 15px;
       }
 
+      .skill-setting-board {
+        gap: 7px;
+        max-width: 100%;
+      }
+
+      .setting-slot {
+        border-radius: 13px;
+        font-size: 10px;
+        padding: 4px;
+      }
+
+      .skill-pool {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+      }
+
+      .skill-square {
+        border-radius: 14px;
+        font-size: 11px;
+        padding: 5px;
+      }
+
+      .skill-pool-title {
+        font-size: 20px;
+      }
+
+      .setting-guide {
+        font-size: 14px;
+      }
+
       .update-list li {
         font-size: 16px;
       }
@@ -722,6 +835,7 @@
 
         <div class="sub-menu" id="infoMenu">
           <button class="sub-menu-btn" onclick="showSection('skill-learn')">스킬 배우기</button>
+          <button class="sub-menu-btn" onclick="showSection('skill-setting')">스킬 세팅</button>
         </div>
       </div>
 
@@ -739,6 +853,7 @@
           <button class="sub-menu-btn" onclick="showSection('update-015')">v0.1.5-beta</button>
           <button class="sub-menu-btn" onclick="showSection('update-016')">v0.1.6-beta</button>
           <button class="sub-menu-btn" onclick="showSection('update-017')">v0.1.7-beta</button>
+          <button class="sub-menu-btn" onclick="showSection('update-018')">v0.1.8-beta</button>
         </div>
       </div>
     </aside>
@@ -781,17 +896,13 @@
 
         <section id="diamond-class" class="card">
           <h2>클래스</h2>
-
           <button class="unlock-btn" onclick="openUnlockPopup('클래스', '250레벨 달성 / 120 스테이지')">해금</button>
-
           <p>추후 [클래스] 내용을 업데이트 할 예정입니다.</p>
         </section>
 
         <section id="diamond-spirit" class="card">
           <h2>정령</h2>
-
           <button class="unlock-btn" onclick="openUnlockPopup('정령', '100 스테이지 클리어 시')">해금</button>
-
           <p>추후 [정령] 내용을 업데이트 할 예정입니다.</p>
         </section>
 
@@ -859,17 +970,13 @@
 
         <section id="diamond-familiar" class="card">
           <h2>사역마</h2>
-
           <button class="unlock-btn" onclick="openUnlockPopup('사역마', '데몬메탈 승급 시')">해금</button>
-
           <p>추후 [사역마] 내용을 업데이트 할 예정입니다.</p>
         </section>
 
         <section id="diamond-beast" class="card">
           <h2>비스트</h2>
-
           <button class="unlock-btn" onclick="openUnlockPopup('비스트', '워프로스트 승급 시')">해금</button>
-
           <p>추후 [비스트] 내용을 업데이트 할 예정입니다.</p>
         </section>
 
@@ -911,6 +1018,19 @@
           </div>
 
           <div id="skillResultArea"></div>
+        </section>
+
+        <section id="skill-setting" class="card">
+          <h2>스킬 세팅</h2>
+
+          <p class="setting-guide">
+            아래 스킬 박스를 누르면 첫 번째 빈칸부터 채워집니다. 세팅 칸의 스킬을 누르면 제거됩니다.
+          </p>
+
+          <div id="skillSettingBoard" class="skill-setting-board"></div>
+
+          <h3 class="skill-pool-title">스킬 목록</h3>
+          <div id="skillPool" class="skill-pool"></div>
         </section>
 
         <section id="update-010" class="card">
@@ -1011,10 +1131,24 @@
             <li>사이트 하단 현재 버전 표시를 v0.1.7-beta로 변경</li>
           </ul>
         </section>
+
+        <section id="update-018" class="card">
+          <h2>물멍위키 v0.1.8-beta 업데이트 내역</h2>
+          <p class="update-date">업데이트 날짜: 2026.05.11</p>
+          <ul class="update-list">
+            <li>정보 &gt; 스킬 세팅 페이지 추가</li>
+            <li>스킬 세팅 10칸 구조 추가</li>
+            <li>스킬 목록에서 선택 시 세팅 칸에 자동 추가 기능 적용</li>
+            <li>세팅된 스킬 클릭 시 제거 기능 적용</li>
+            <li>중복 선택 방지 기능 적용</li>
+            <li>스킬 박스에 속성별 색상 적용</li>
+            <li>사이트 하단 현재 버전 표시를 v0.1.8-beta로 변경</li>
+          </ul>
+        </section>
       </main>
 
       <footer class="site-footer">
-        현재 버전: 물멍위키 v0.1.7-beta
+        현재 버전: 물멍위키 v0.1.8-beta
       </footer>
     </div>
   </div>
@@ -1065,6 +1199,7 @@
       "diamond-familiar": ["다이아 소모처", "사역마"],
       "diamond-beast": ["다이아 소모처", "비스트"],
       "skill-learn": ["정보", "스킬 배우기"],
+      "skill-setting": ["정보", "스킬 세팅"],
       "update-010": ["업데이트", "v0.1.0-beta"],
       "update-011": ["업데이트", "v0.1.1-beta"],
       "update-012": ["업데이트", "v0.1.2-beta"],
@@ -1072,7 +1207,8 @@
       "update-014": ["업데이트", "v0.1.4-beta"],
       "update-015": ["업데이트", "v0.1.5-beta"],
       "update-016": ["업데이트", "v0.1.6-beta"],
-      "update-017": ["업데이트", "v0.1.7-beta"]
+      "update-017": ["업데이트", "v0.1.7-beta"],
+      "update-018": ["업데이트", "v0.1.8-beta"]
     };
 
     promotions.forEach(([id, name]) => {
@@ -1099,6 +1235,7 @@
 
     let selectedGrade = "전체";
     let selectedElement = "전체";
+    let selectedSettingSkills = [];
 
     const skills = [
       { element: "불", level: "Lv.10", name: "불꽃 베기", grade: "일반", material: "-" },
@@ -1240,6 +1377,10 @@
         renderSkills();
       }
 
+      if (sectionId === "skill-setting") {
+        renderSkillSetting();
+      }
+
       if (window.innerWidth <= 768) {
         closeSidebar();
       }
@@ -1275,10 +1416,20 @@
       renderSkills();
     }
 
+    function getSortedSkills() {
+      return [...skills].sort((a, b) => {
+        const gradeCompare = gradeOrder.indexOf(a.grade) - gradeOrder.indexOf(b.grade);
+        if (gradeCompare !== 0) return gradeCompare;
+        return a.name.localeCompare(b.name, "ko");
+      });
+    }
+
     function renderSkills() {
       const resultArea = document.getElementById("skillResultArea");
       const searchInput = document.getElementById("skillSearchInput");
       const keyword = searchInput ? searchInput.value.trim().toLowerCase() : "";
+
+      if (!resultArea) return;
 
       let filteredSkills = skills.filter(skill => {
         const matchesKeyword = skill.name.toLowerCase().includes(keyword);
@@ -1330,9 +1481,75 @@
       resultArea.innerHTML = html;
     }
 
+    function addSkillToSetting(skillName) {
+      if (selectedSettingSkills.includes(skillName)) {
+        return;
+      }
+
+      if (selectedSettingSkills.length >= 10) {
+        openUnlockPopup("스킬 세팅", "스킬 세팅은 최대 10개까지 가능합니다.");
+        return;
+      }
+
+      selectedSettingSkills.push(skillName);
+      renderSkillSetting();
+    }
+
+    function removeSkillFromSetting(skillName) {
+      selectedSettingSkills = selectedSettingSkills.filter(name => name !== skillName);
+      renderSkillSetting();
+    }
+
+    function renderSkillSetting() {
+      const board = document.getElementById("skillSettingBoard");
+      const pool = document.getElementById("skillPool");
+
+      if (!board || !pool) return;
+
+      let boardHtml = "";
+
+      for (let i = 0; i < 10; i++) {
+        const skillName = selectedSettingSkills[i];
+
+        if (skillName) {
+          const skill = skills.find(item => item.name === skillName);
+          boardHtml += `
+            <button
+              class="setting-slot filled ${elementClassMap[skill.element]}"
+              onclick="removeSkillFromSetting('${skill.name}')"
+            >
+              ${skill.name}
+            </button>
+          `;
+        } else {
+          boardHtml += `<button class="setting-slot empty" type="button">빈칸</button>`;
+        }
+      }
+
+      board.innerHTML = boardHtml;
+
+      let poolHtml = "";
+
+      getSortedSkills().forEach(skill => {
+        const isSelected = selectedSettingSkills.includes(skill.name);
+
+        poolHtml += `
+          <button
+            class="skill-square ${elementClassMap[skill.element]} ${isSelected ? "selected" : ""}"
+            onclick="addSkillToSetting('${skill.name}')"
+          >
+            ${skill.name}
+          </button>
+        `;
+      });
+
+      pool.innerHTML = poolHtml;
+    }
+
     createPromotionMenuAndSections();
     setBreadcrumb("intro");
     renderSkills();
+    renderSkillSetting();
   </script>
 </body>
 </html>
