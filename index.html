@@ -134,6 +134,18 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
 .setting-skill-list{margin-top:18px}
 .setting-slot,.setting-skill-btn{aspect-ratio:1/1;border-radius:16px;font-size:13px;font-weight:900;cursor:pointer;display:flex;align-items:center;justify-content:center;text-align:center;padding:6px;word-break:keep-all;line-height:1.25}
 .setting-slot{border:2px dashed #cbd5e1;background:#f8fafc;color:#94a3b8}
+.setting-slot.filled{position:relative;border-style:solid;color:#fff;box-shadow:0 8px 18px rgba(0,0,0,.12)}
+.setting-slot-name{display:flex;align-items:center;justify-content:center;width:100%;height:100%}
+.skill-mode-dot{position:absolute;top:5px;right:5px;width:14px;height:14px;border-radius:999px;border:2px solid rgba(255,255,255,.9);box-shadow:0 2px 6px rgba(0,0,0,.22);cursor:pointer;z-index:2;padding:0}
+.skill-mode-dot.auto{background:#3b82f6}
+.skill-mode-dot.manual{background:#9ca3af}
+.saved-setting-slot{position:relative}
+.saved-mode-dot{position:absolute;top:5px;right:5px;width:12px;height:12px;border-radius:999px;border:2px solid rgba(255,255,255,.9);box-shadow:0 2px 5px rgba(0,0,0,.20)}
+.saved-mode-dot.auto{background:#3b82f6}
+.saved-mode-dot.manual{background:#9ca3af}
+.setting-mode-guide{max-width:580px;margin:-22px auto 18px;text-align:center;font-size:13px;font-weight:900;color:#6b7280;line-height:1.5}
+.setting-mode-guide .auto-text{color:#2563eb}
+.setting-mode-guide .manual-text{color:#6b7280}
 .setting-slot.filled{border-style:solid;color:#fff;box-shadow:0 8px 18px rgba(0,0,0,.12)}
 .setting-slot.filled.grade-normal{background:#fff;color:#111827;border:1px solid #d1d5db}
 .setting-skill-btn{border:none;box-shadow:0 8px 18px rgba(0,0,0,.10)}
@@ -787,6 +799,7 @@ function addSections() {
     <section id="skill-setting" class="card">
       <h2>스킬 세팅</h2>
       <p class="setting-guide-text">아래 스킬 박스를 누르면 첫 번째 빈칸부터 채워집니다. 세팅 칸의 스킬을 누르면 제거됩니다.</p>
+      <p class="setting-mode-guide">스킬칸 오른쪽 위의 작은 점을 누르면 자동/수동이 바뀝니다. <span class="auto-text">파란 점은 자동</span>, <span class="manual-text">회색 점은 수동</span>입니다.</p>
       <div id="skillSettingSlots" class="skill-setting-grid"></div>
       <div class="setting-action-row"><button class="setting-reset-btn" onclick="resetSkillSetting()">세팅 초기화</button><button class="setting-save-btn" onclick="openSavePopup()">세팅 저장</button><button class="setting-collection-btn" onclick="showSection('skill-setting-collection')">모음</button></div>
       <h2 class="setting-list-title">스킬 목록</h2>
@@ -1071,7 +1084,7 @@ function addSettingSkill(skillName) {
     return;
   }
 
-  selectedSettingSkills.push(skill);
+  selectedSettingSkills.push({ ...skill, mode: "auto" });
   renderSkillSettingSlots();
   renderSettingSkillList();
 }
@@ -1080,6 +1093,14 @@ function removeSettingSkill(index) {
   selectedSettingSkills.splice(index, 1);
   renderSkillSettingSlots();
   renderSettingSkillList();
+}
+
+function toggleSkillMode(event, index) {
+  if (event) event.stopPropagation();
+  const skill = selectedSettingSkills[index];
+  if (!skill) return;
+  skill.mode = skill.mode === "manual" ? "auto" : "manual";
+  renderSkillSettingSlots();
 }
 
 function resetSkillSetting() {
@@ -1095,8 +1116,10 @@ function renderSkillSettingSlots() {
   let html = "";
   for (let i = 0; i < 10; i++) {
     const skill = selectedSettingSkills[i];
+    const mode = skill?.mode === "manual" ? "manual" : "auto";
+    const modeTitle = mode === "manual" ? "수동" : "자동";
     html += skill
-      ? `<button class="setting-slot filled ${gradeClassMap[skill.grade]}" onclick="removeSettingSkill(${i})" title="${skill.name}">${skill.name}</button>`
+      ? `<div class="setting-slot filled ${gradeClassMap[skill.grade]}" onclick="removeSettingSkill(${i})" title="${skill.name}"><button class="skill-mode-dot ${mode}" type="button" onclick="toggleSkillMode(event, ${i})" aria-label="${modeTitle} 세팅" title="${modeTitle}"></button><span class="setting-slot-name">${skill.name}</span></div>`
       : `<button class="setting-slot" type="button">빈칸</button>`;
   }
   slots.innerHTML = html;
@@ -1182,7 +1205,8 @@ async function saveCurrentSkillSetting(category) {
       grade: skill.grade,
       element: skill.element,
       level: skill.level,
-      material: skill.material
+      material: skill.material,
+      mode: skill.mode || "auto"
     }))
   };
 
@@ -1288,7 +1312,8 @@ function renderSavedSettingCollection() {
         `;
 
         savedSkills.forEach(skill => {
-          html += `<div class="saved-setting-slot ${gradeClassMap[skill.grade]}">${skill.name}</div>`;
+          const mode = skill.mode === "manual" ? "manual" : "auto";
+          html += `<div class="saved-setting-slot ${gradeClassMap[skill.grade]}"><span class="saved-mode-dot ${mode}"></span>${skill.name}</div>`;
         });
 
         html += `
