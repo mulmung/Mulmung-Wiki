@@ -690,7 +690,7 @@ function filterHtml(type) {
         <button class="filter-btn grade-advanced" ${gradeData}="고급" onclick="${gradeFunction}('고급')">고급</button>
         <button class="filter-btn grade-normal" ${gradeData}="일반" onclick="${gradeFunction}('일반')">일반</button>
       </div>
-      <div class="compact-filter-row">
+      <div class="compact-filter-row" data-element-row="${type}">
         <span class="compact-filter-label">속성</span>
         <button class="filter-btn filter-all active" ${elementData}="전체" onclick="${elementFunction}('전체')">전체</button>
         <button class="filter-btn element-fire" ${elementData}="불" onclick="${elementFunction}('불')">불</button>
@@ -949,9 +949,24 @@ function closeUnlockPopup() {
   document.getElementById("unlockPopupBg").classList.remove("show");
 }
 
+function updateElementFilterVisibility(type, grade) {
+  const row = document.querySelector(`[data-element-row="${type}"]`);
+  if (!row) return;
+
+  const isImmortal = grade === "불멸";
+  row.style.display = isImmortal ? "none" : "";
+}
+
 function setGradeFilter(grade) {
   selectedGrade = grade;
   document.querySelectorAll("[data-grade-filter]").forEach(button => button.classList.toggle("active", button.getAttribute("data-grade-filter") === grade));
+
+  if (grade === "불멸") {
+    selectedElement = "전체";
+    document.querySelectorAll("[data-element-filter]").forEach(button => button.classList.toggle("active", button.getAttribute("data-element-filter") === "전체"));
+  }
+
+  updateElementFilterVisibility("learn", grade);
   renderSkills();
 }
 
@@ -987,7 +1002,7 @@ function renderSkills() {
           <div class="skill-name-row">
             <span class="skill-name">${skill.name}</span>
             <span class="badge ${gradeClassMap[skill.grade]}">${skill.grade}</span>
-            <span class="badge ${elementClassMap[skill.element]}">${skill.element}</span>
+            ${skill.element && skill.element !== "없음" ? `<span class="badge ${elementClassMap[skill.element]}">${skill.element}</span>` : ""}
           </div>
           <div class="skill-info">레벨: ${skill.level}</div>
           <div class="skill-info">필요 재료: ${skill.material}</div>
@@ -1003,6 +1018,13 @@ function renderSkills() {
 function setSettingGradeFilter(grade) {
   selectedSettingGrade = grade;
   document.querySelectorAll("[data-setting-grade-filter]").forEach(button => button.classList.toggle("active", button.getAttribute("data-setting-grade-filter") === grade));
+
+  if (grade === "불멸") {
+    selectedSettingElement = "전체";
+    document.querySelectorAll("[data-setting-element-filter]").forEach(button => button.classList.toggle("active", button.getAttribute("data-setting-element-filter") === "전체"));
+  }
+
+  updateElementFilterVisibility("setting", grade);
   renderSettingSkillList();
 }
 
