@@ -496,6 +496,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
   color: #fff;
   border-color: #f97316;
 }
+.sidebar-mini-btn.danger {
+  background: #dc2626;
+  color: #fff;
+  border-color: #dc2626;
+}
 .sidebar-mini-btn:hover { filter: brightness(.96); }
 
 /* 상단바는 햄버거 / 물멍위키 / 로그인·로그아웃만 표시 */
@@ -544,6 +549,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
             <button id="sidebarNicknameBtn" class="sidebar-mini-btn">닉네임 설정</button>
             <button id="sidebarRoleManageBtn" class="sidebar-mini-btn orange" style="display:none;">직책 관리</button>
             <button id="sidebarLogoutBtn" class="sidebar-mini-btn">로그아웃</button>
+            <button id="sidebarWithdrawBtn" class="sidebar-mini-btn danger">탈퇴하기</button>
           </div>
         </div>
       </div>
@@ -1174,6 +1180,7 @@ const sidebarNickname = document.getElementById("sidebarNickname");
 const sidebarNicknameBtn = document.getElementById("sidebarNicknameBtn");
 const sidebarRoleManageBtn = document.getElementById("sidebarRoleManageBtn");
 const sidebarLogoutBtn = document.getElementById("sidebarLogoutBtn");
+const sidebarWithdrawBtn = document.getElementById("sidebarWithdrawBtn");
 
 let currentUser = null;
 let currentNickname = "";
@@ -1199,6 +1206,7 @@ function updateSidebarDisplay(user, nickname, role = "user") {
     sidebarNickname.textContent = "물멍";
     if (sidebarNicknameBtn) sidebarNicknameBtn.style.display = "none";
     if (sidebarRoleManageBtn) sidebarRoleManageBtn.style.display = "block";
+    if (sidebarWithdrawBtn) sidebarWithdrawBtn.style.display = "none";
     return;
   }
 
@@ -1213,12 +1221,14 @@ function updateSidebarDisplay(user, nickname, role = "user") {
   sidebarNickname.textContent = displayName;
   if (sidebarNicknameBtn) sidebarNicknameBtn.style.display = "block";
   if (sidebarRoleManageBtn) sidebarRoleManageBtn.style.display = "none";
+  if (sidebarWithdrawBtn) sidebarWithdrawBtn.style.display = "block";
 }
 
 function resetSidebarDisplay() {
   if (sidebarLoginBtn) sidebarLoginBtn.style.display = "block";
   if (sidebarProfile) sidebarProfile.style.display = "none";
   if (sidebarRoleManageBtn) sidebarRoleManageBtn.style.display = "none";
+  if (sidebarWithdrawBtn) sidebarWithdrawBtn.style.display = "none";
 }
 
 async function handleGoogleLogin() {
@@ -1236,6 +1246,48 @@ async function handleLogout() {
   } catch (error) {
     console.error("로그아웃 오류:", error);
     alert("로그아웃 중 오류가 발생했습니다.");
+  }
+}
+
+async function handleWithdraw() {
+  if (!currentUser) return;
+
+  if (isAdminUser(currentUser)) {
+    alert("관리자 계정은 탈퇴할 수 없습니다.");
+    return;
+  }
+
+  const confirmed = confirm("정말 탈퇴하시겠습니까?\n닉네임과 직책 정보가 삭제되며 가입자 수에서 제외됩니다.");
+  if (!confirmed) return;
+
+  try {
+    const uid = currentUser.uid;
+
+    await setDoc(doc(db, "users", uid), {
+      email: currentUser.email,
+      nickname: "",
+      role: "withdrawn",
+      status: "withdrawn",
+      active: false,
+      withdrawnAt: serverTimestamp(),
+      updatedAt: serverTimestamp()
+    }, { merge: true });
+
+    await setDoc(doc(db, "publicUsers", uid), {
+      nickname: "",
+      role: "withdrawn",
+      status: "withdrawn",
+      active: false,
+      lastActiveAt: null,
+      withdrawnAt: serverTimestamp(),
+      updatedAt: serverTimestamp()
+    }, { merge: true }).catch(() => {});
+
+    alert("탈퇴 처리가 완료되었습니다.");
+    await signOut(auth);
+  } catch (error) {
+    console.error("탈퇴 처리 오류:", error);
+    alert(`탈퇴 처리 오류: ${error.code || "unknown"}\n${error.message || ""}`);
   }
 }
 
@@ -1264,6 +1316,8 @@ async function handleNicknameSetting() {
       email: currentUser.email,
       nickname: trimmedNickname,
       role: currentRole || "user",
+      status: "active",
+      active: true,
       updatedAt: serverTimestamp()
     }, { merge: true });
 
@@ -1285,6 +1339,8 @@ async function getOrCreateUserProfile(user) {
       email: user.email,
       nickname: "물멍",
       role: "admin",
+      status: "active",
+      active: true,
       updatedAt: serverTimestamp()
     }, { merge: true });
 
@@ -1296,6 +1352,8 @@ async function getOrCreateUserProfile(user) {
       email: user.email,
       nickname: "",
       role: "user",
+      status: "active",
+      active: true,
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp()
     });
@@ -1304,6 +1362,20 @@ async function getOrCreateUserProfile(user) {
   }
 
   const data = userSnap.data();
+
+  if (data.status === "withdrawn" || data.role === "withdrawn") {
+    await setDoc(userRef, {
+      email: user.email,
+      nickname: "",
+      role: "user",
+      status: "active",
+      active: true,
+      updatedAt: serverTimestamp()
+    }, { merge: true });
+
+    return { nickname: "", role: "user" };
+  }
+
   return {
     nickname: data.nickname || "",
     role: data.role || "user"
@@ -1348,6 +1420,7 @@ nicknameBtn.addEventListener("click", handleNicknameSetting);
 
 if (sidebarLoginBtn) sidebarLoginBtn.addEventListener("click", handleGoogleLogin);
 if (sidebarLogoutBtn) sidebarLogoutBtn.addEventListener("click", handleLogout);
+if (sidebarWithdrawBtn) sidebarWithdrawBtn.addEventListener("click", handleWithdraw);
 if (sidebarNicknameBtn) sidebarNicknameBtn.addEventListener("click", handleNicknameSetting);
 if (sidebarRoleManageBtn) sidebarRoleManageBtn.addEventListener("click", async () => {
   if (!currentUser || !isAdminUser(currentUser)) return;
@@ -1378,6 +1451,10 @@ async function openRolePopup() {
     userDocs.forEach(userDoc => {
       users.push({ uid: userDoc.id, ...userDoc.data() });
     });
+
+    const activeUsers = users.filter(userData => userData.status !== "withdrawn" && userData.role !== "withdrawn");
+    users.length = 0;
+    users.push(...activeUsers);
 
     users.sort((a, b) => {
       const nameA = (a.nickname || a.email || "").toString();
