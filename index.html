@@ -860,13 +860,13 @@ renderSavedSettingCollection();
   import { getFirestore } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
 
   const firebaseConfig = {
-    apiKey: "AIzaSyCZvPUhNiU7FbKFofr_Sb4LRgfo0zAjj-U",
-    authDomain: "mulmung-wiki.firebaseapp.com",
-    projectId: "mulmung-wiki",
-    storageBucket: "mulmung-wiki.firebasestorage.app",
-    messagingSenderId: "623574345361",
-    appId: "1:623574345361:web:fe2a3fd1aa136b7031c130"
-  };
+  apiKey: "AIzaSyCZvPUhNiU7rbFKofr_Sb4LRqfo0zAjj-U",
+  authDomain: "mulmung-wiki.firebaseapp.com",
+  projectId: "mulmung-wiki",
+  storageBucket: "mulmung-wiki.firebasestorage.app",
+  messagingSenderId: "623574345361",
+  appId: "1:623574345361:web:fe2a3fd1aa136b7031c130"
+};
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
@@ -880,8 +880,6 @@ const logoutBtn = document.getElementById("logoutBtn");
 const userInfo = document.getElementById("userInfo");
 
 loginBtn.addEventListener("click", async () => {
-  alert("로그인 버튼 눌림");
-
   try {
     await signInWithPopup(auth, provider);
   } catch (error) {
