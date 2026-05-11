@@ -124,9 +124,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
 .empty-result{margin-top:20px;padding:18px;border-radius:16px;background:#f3f4f6;font-size:16px;font-weight:800;color:#4b5563;text-align:center}
 .setting-guide-text{text-align:center;font-weight:900;color:#4b5563}
 .setting-action-row{display:flex;justify-content:center;gap:10px;margin:-18px auto 34px;flex-wrap:wrap}
-.setting-reset-btn,.setting-save-btn{display:inline-block;padding:10px 18px;border:none;border-radius:999px;color:#fff;font-size:14px;font-weight:900;cursor:pointer}
+.setting-reset-btn,.setting-save-btn,.setting-collection-btn{display:inline-block;padding:10px 18px;border:none;border-radius:999px;color:#fff;font-size:14px;font-weight:900;cursor:pointer}
 .setting-reset-btn{background:#111827}
 .setting-save-btn{background:#22c55e}
+.setting-collection-btn{background:#fb923c}
 .skill-setting-grid,.setting-skill-list{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
 .skill-setting-grid{max-width:580px;margin:22px auto 42px}
 .setting-skill-list{margin-top:18px}
@@ -754,7 +755,7 @@ function addSections() {
       <h2>스킬 세팅</h2>
       <p class="setting-guide-text">아래 스킬 박스를 누르면 첫 번째 빈칸부터 채워집니다. 세팅 칸의 스킬을 누르면 제거됩니다.</p>
       <div id="skillSettingSlots" class="skill-setting-grid"></div>
-      <div class="setting-action-row"><button class="setting-reset-btn" onclick="resetSkillSetting()">세팅 초기화</button><button class="setting-save-btn" onclick="openSavePopup()">세팅 저장</button></div>
+      <div class="setting-action-row"><button class="setting-reset-btn" onclick="resetSkillSetting()">세팅 초기화</button><button class="setting-save-btn" onclick="openSavePopup()">세팅 저장</button><button class="setting-collection-btn" onclick="showSection('skill-setting-collection')">모음</button></div>
       <h2 class="setting-list-title">스킬 목록</h2>
       <input id="settingSearchInput" class="skill-search-box" type="text" placeholder="세팅할 스킬을 검색하세요. 예: 블리자드" oninput="renderSettingSkillList()" />
       ${filterHtml("setting")}
@@ -1236,8 +1237,8 @@ function renderSavedSettingCollection() {
         html += `
             </div>
             <div class="saved-setting-footer">
-              ${deleteButton}
               <span class="saved-setting-meta">${uploader} · ${dateText}</span>
+              ${deleteButton}
             </div>
           </div>
         `;
