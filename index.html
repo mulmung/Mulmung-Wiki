@@ -246,9 +246,39 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
 }
 
 .user-info {
-  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 800;
   color: #374151;
   white-space: nowrap;
+}
+
+.role-label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 7px 10px;
+  border-radius: 12px;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.role-label.admin {
+  background: #111827;
+}
+
+.role-label.skill {
+  background: #f97316;
+}
+
+.nickname-text {
+  color: #111827;
+  font-size: 14px;
+  font-weight: 900;
 }
 
 .admin-role-btn {
@@ -390,7 +420,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
 @media(max-width:768px){
   .auth-box{gap:5px}
   .login-btn{padding:7px 8px;font-size:11px;border-radius:8px}
-  .user-info{font-size:11px;max-width:100px;overflow:hidden;text-overflow:ellipsis}
+  .user-info{font-size:11px;max-width:150px;overflow:hidden;text-overflow:ellipsis}.role-label{padding:6px 8px;border-radius:9px;font-size:11px}.nickname-text{font-size:12px;overflow:hidden;text-overflow:ellipsis}
   .role-user-card{grid-template-columns:1fr}
   .role-action-row{justify-content:flex-start}
 }
@@ -406,10 +436,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
 
   <div class="auth-box">
     <button id="loginBtn" class="login-btn">Google 로그인</button>
+    <span id="userInfo" class="user-info"></span>
     <button id="nicknameBtn" class="login-btn" style="display:none;">닉네임 설정</button>
     <button id="roleManageBtn" class="login-btn admin-role-btn" style="display:none;">직책 관리</button>
     <button id="logoutBtn" class="login-btn" style="display:none;">로그아웃</button>
-    <span id="userInfo" class="user-info"></span>
   </div>
 </div>
 
@@ -1084,7 +1114,7 @@ async function getOrCreateUserProfile(user) {
 
 function updateUserDisplay(user, nickname, role = "user") {
   if (isAdminUser(user)) {
-    userInfo.textContent = "관리자: 물멍";
+    userInfo.innerHTML = `<span class="role-label admin">관리자</span><span class="nickname-text">물멍</span>`;
     nicknameBtn.style.display = "none";
     roleManageBtn.style.display = "inline-block";
     return;
@@ -1096,9 +1126,9 @@ function updateUserDisplay(user, nickname, role = "user") {
   const displayName = nickname || "닉네임 미설정";
 
   if (role === "skill_master") {
-    userInfo.textContent = `스킬 마스터: ${displayName}`;
+    userInfo.innerHTML = `<span class="role-label skill">스킬</span><span class="nickname-text">${displayName}</span>`;
   } else {
-    userInfo.textContent = `로그인: ${displayName}`;
+    userInfo.innerHTML = `<span class="nickname-text">${displayName}</span>`;
   }
 }
 
