@@ -860,12 +860,12 @@ renderSavedSettingCollection();
   import { getFirestore } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
 
   const firebaseConfig = {
-  apiKey: "AIzaSyCZvPUhNiU7rbFKofr_Sb4LRqfo0zAjj-U",
-  authDomain: "mulmung-wiki.firebaseapp.com",
-  projectId: "mulmung-wiki",
-  storageBucket: "mulmung-wiki.firebasestorage.app",
-  messagingSenderId: "623574345361",
-  appId: "1:623574345361:web:fe2a3fd1aa136b7031c130"
+  apiKey: "AIzaSyDfcd53sM_tUUp4VVeskZEhKndymzwq6uA",
+  authDomain: "mulmung-wiki-login.firebaseapp.com",
+  projectId: "mulmung-wiki-login",
+  storageBucket: "mulmung-wiki-login.firebasestorage.app",
+  messagingSenderId: "21784626553",
+  appId: "1:21784626553:web:b40f35004a7c2cdd3edba8"
 };
 
   const app = initializeApp(firebaseConfig);
@@ -873,7 +873,7 @@ renderSavedSettingCollection();
   const db = getFirestore(app);
   const provider = new GoogleAuthProvider();
 
-            const ADMIN_EMAIL = "KHU9918@gmail.com";
+            const ADMIN_EMAIL = "khu9918@gmail.com";
 
 const loginBtn = document.getElementById("loginBtn");
 const logoutBtn = document.getElementById("logoutBtn");
@@ -902,7 +902,7 @@ onAuthStateChanged(auth, (user) => {
     loginBtn.style.display = "none";
     logoutBtn.style.display = "inline-block";
 
-    if (user.email === ADMIN_EMAIL) {
+    if (user.email.toLowerCase() === ADMIN_EMAIL.toLowerCase()) {
       userInfo.textContent = `관리자: ${user.displayName || user.email}`;
     } else {
       userInfo.textContent = `로그인: ${user.displayName || user.email}`;
