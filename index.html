@@ -14,7 +14,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
 .logo{max-width:420px;width:100%;height:auto}
 .layout{display:flex;max-width:1280px;margin:0 auto}
 .sidebar{width:280px;flex:0 0 280px;min-height:calc(100vh - 62px);padding:18px;background:#202326;border-right:1px solid #111827}
-.sidebar-title{color:#fff;font-size:18px;font-weight:900;margin-bottom:16px}
+.sidebar-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}.sidebar-title{color:#fff;font-size:18px;font-weight:900;margin:0}.sidebar-home-btn{width:42px;height:42px;border:0;border-radius:14px;background:#000;color:#fff;font-size:24px;font-weight:900;display:flex;align-items:center;justify-content:center;cursor:pointer}.sidebar-home-btn:hover{background:#111827}
 .sidebar-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 0 16px}
 .sidebar-stat-card{border:1px solid rgba(255,255,255,.12);border-radius:16px;background:#111827;padding:12px;text-align:center;color:#fff}
 .sidebar-stat-label{display:block;font-size:12px;font-weight:900;color:#d1d5db;margin-bottom:4px;letter-spacing:-.2px}
@@ -588,7 +588,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
 
   <div class="layout">
     <aside class="sidebar" id="sidebar">
-      <div class="sidebar-title">메뉴</div>
+      <div class="sidebar-head"><div class="sidebar-title">메뉴</div><button class="sidebar-home-btn" type="button" onclick="showSection('home')" aria-label="홈으로 이동">⌂</button></div>
       <div class="sidebar-stats" id="sidebarStats">
         <div class="sidebar-stat-card">
           <span class="sidebar-stat-label">접속 중</span>
