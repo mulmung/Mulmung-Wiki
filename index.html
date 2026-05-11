@@ -219,7 +219,8 @@
       opacity: 0.9;
     }
 
-    .unlock-popup-bg {
+    .unlock-popup-bg,
+    .save-popup-bg {
       display: none;
       position: fixed;
       inset: 0;
@@ -228,15 +229,17 @@
       padding: 20px;
     }
 
-    .unlock-popup-bg.show {
+    .unlock-popup-bg.show,
+    .save-popup-bg.show {
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
-    .unlock-popup {
+    .unlock-popup,
+    .save-popup {
       width: 100%;
-      max-width: 360px;
+      max-width: 420px;
       padding: 24px;
       border-radius: 18px;
       background: #ffffff;
@@ -244,17 +247,56 @@
       text-align: center;
     }
 
-    .unlock-popup h3 {
+    .unlock-popup h3,
+    .save-popup h3 {
       font-size: 22px;
       margin-bottom: 12px;
       color: #111827;
     }
 
-    .unlock-popup p {
+    .unlock-popup p,
+    .save-popup p {
       font-size: 16px;
-      margin: 0;
+      margin: 0 0 14px;
       color: #374151;
       font-weight: 700;
+    }
+
+    .save-popup-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      margin: 12px 0 18px;
+    }
+
+    .save-choice-btn {
+      border: none;
+      border-radius: 999px;
+      padding: 9px 13px;
+      background: #111827;
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 900;
+      cursor: pointer;
+      opacity: 0.82;
+    }
+
+    .save-choice-btn.active {
+      opacity: 1;
+      box-shadow: 0 0 0 3px rgba(85, 255, 255, 0.8);
+    }
+
+    .save-close-btn {
+      margin-top: 8px;
+      border: none;
+      border-radius: 999px;
+      padding: 9px 16px;
+      background: #e5e7eb;
+      color: #111827;
+      font-size: 14px;
+      font-weight: 900;
+      cursor: pointer;
     }
 
     .roadmap-image,
@@ -376,34 +418,34 @@
     }
 
     .grade-normal {
-      background: #ffffff;
-      color: #111827;
-      border: 1px solid #d1d5db;
+      background: #ffffff !important;
+      color: #111827 !important;
+      border: 1px solid #d1d5db !important;
     }
 
     .grade-advanced {
-      background: #22c55e;
-      color: #ffffff;
+      background: #22c55e !important;
+      color: #ffffff !important;
     }
 
     .grade-rare {
-      background: #fb923c;
-      color: #ffffff;
+      background: #fb923c !important;
+      color: #ffffff !important;
     }
 
     .grade-hero {
-      background: #a855f7;
-      color: #ffffff;
+      background: #a855f7 !important;
+      color: #ffffff !important;
     }
 
     .grade-legend {
-      background: #ef4444;
-      color: #ffffff;
+      background: #ef4444 !important;
+      color: #ffffff !important;
     }
 
     .grade-myth {
-      background: #5ac8fa;
-      color: #ffffff;
+      background: #5ac8fa !important;
+      color: #ffffff !important;
     }
 
     .filter-all {
@@ -489,9 +531,17 @@
       color: #4b5563;
     }
 
-    .setting-reset-btn {
-      display: block;
-      margin: -22px auto 42px;
+    .setting-action-wrap {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin: -22px auto 34px;
+      flex-wrap: wrap;
+    }
+
+    .setting-reset-btn,
+    .setting-save-btn {
+      display: inline-block;
       padding: 10px 18px;
       border: none;
       border-radius: 999px;
@@ -502,11 +552,17 @@
       cursor: pointer;
     }
 
-    .setting-reset-btn:hover {
+    .setting-save-btn {
+      background: #2563eb;
+    }
+
+    .setting-reset-btn:hover,
+    .setting-save-btn:hover {
       opacity: 0.88;
     }
 
-    .skill-setting-grid {
+    .skill-setting-grid,
+    .saved-setting-grid {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
       gap: 10px;
@@ -514,7 +570,8 @@
       margin: 22px auto 42px;
     }
 
-    .setting-slot {
+    .setting-slot,
+    .saved-slot {
       aspect-ratio: 1 / 1;
       border-radius: 16px;
       border: 2px dashed #cbd5e1;
@@ -532,46 +589,10 @@
       line-height: 1.25;
     }
 
-    .setting-slot.filled {
-      border: none;
-      color: #ffffff;
+    .setting-slot.filled,
+    .saved-slot.filled {
+      border-style: solid;
       box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
-    }
-
-    .setting-slot.filled.grade-myth {
-      background: #5ac8fa;
-      color: #ffffff;
-      border: none;
-    }
-
-    .setting-slot.filled.grade-legend {
-      background: #ef4444;
-      color: #ffffff;
-      border: none;
-    }
-
-    .setting-slot.filled.grade-hero {
-      background: #a855f7;
-      color: #ffffff;
-      border: none;
-    }
-
-    .setting-slot.filled.grade-rare {
-      background: #fb923c;
-      color: #ffffff;
-      border: none;
-    }
-
-    .setting-slot.filled.grade-advanced {
-      background: #22c55e;
-      color: #ffffff;
-      border: none;
-    }
-
-    .setting-slot.filled.grade-normal {
-      background: #ffffff;
-      color: #111827;
-      border: 1px solid #d1d5db;
     }
 
     .setting-list-title {
@@ -605,8 +626,60 @@
       outline-offset: -4px;
     }
 
-    .setting-skill-btn.grade-normal {
+    .collection-button-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 9px;
+      margin: 20px 0 20px;
+    }
+
+    .collection-main-btn,
+    .collection-count-btn {
+      border: none;
+      border-radius: 999px;
+      padding: 10px 15px;
+      background: #111827;
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 900;
+      cursor: pointer;
+      opacity: 0.78;
+    }
+
+    .collection-main-btn.active,
+    .collection-count-btn.active {
+      opacity: 1;
+      box-shadow: 0 0 0 3px rgba(85, 255, 255, 0.8);
+    }
+
+    .saved-setting-title {
+      margin: 26px 0 8px;
+      text-align: center;
+      font-size: 24px;
+      font-weight: 900;
       color: #111827;
+    }
+
+    .saved-setting-subtitle {
+      text-align: center;
+      font-size: 16px;
+      font-weight: 800;
+      color: #6b7280;
+      margin-bottom: 16px;
+    }
+
+    .saved-delete-btn {
+      display: block;
+      margin: -22px auto 28px;
+      padding: 9px 15px;
+      border: none;
+      border-radius: 999px;
+      background: #ef4444;
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 900;
+      cursor: pointer;
     }
 
     .update-list {
@@ -725,16 +798,19 @@
         font-size: 13px;
       }
 
-      .unlock-popup {
+      .unlock-popup,
+      .save-popup {
         max-width: 320px;
         padding: 22px;
       }
 
-      .unlock-popup h3 {
+      .unlock-popup h3,
+      .save-popup h3 {
         font-size: 20px;
       }
 
-      .unlock-popup p {
+      .unlock-popup p,
+      .save-popup p {
         font-size: 15px;
       }
 
@@ -797,19 +873,16 @@
         font-size: 15px;
       }
 
-      .skill-setting-grid {
+      .skill-setting-grid,
+      .saved-setting-grid {
         gap: 8px;
-        margin: 22px auto 38px;
       }
 
-      .setting-slot {
+      .setting-slot,
+      .saved-slot {
         border-radius: 14px;
         font-size: 12px;
         padding: 4px;
-      }
-
-      .setting-reset-btn {
-        margin: -18px auto 38px;
       }
 
       .setting-skill-list {
@@ -820,6 +893,12 @@
         border-radius: 14px;
         font-size: 11px;
         padding: 5px;
+      }
+
+      .collection-main-btn,
+      .collection-count-btn {
+        padding: 9px 12px;
+        font-size: 13px;
       }
 
       .update-list li {
@@ -885,6 +964,7 @@
         <div class="sub-menu" id="infoMenu">
           <button class="sub-menu-btn" onclick="showSection('skill-learn')">스킬 배우기</button>
           <button class="sub-menu-btn" onclick="showSection('skill-setting')">스킬 세팅</button>
+          <button class="sub-menu-btn" onclick="showSection('skill-setting-collection')">스킬 세팅 모음</button>
         </div>
       </div>
 
@@ -903,6 +983,7 @@
           <button class="sub-menu-btn" onclick="showSection('update-016')">v0.1.6-beta</button>
           <button class="sub-menu-btn" onclick="showSection('update-017')">v0.1.7-beta</button>
           <button class="sub-menu-btn" onclick="showSection('update-018')">v0.1.8-beta</button>
+          <button class="sub-menu-btn" onclick="showSection('update-019')">v0.1.9-beta</button>
         </div>
       </div>
     </aside>
@@ -1077,7 +1158,10 @@
 
           <div id="skillSettingSlots" class="skill-setting-grid"></div>
 
-          <button class="setting-reset-btn" onclick="resetSkillSetting()">세팅 초기화</button>
+          <div class="setting-action-wrap">
+            <button class="setting-reset-btn" onclick="resetSkillSetting()">세팅 초기화</button>
+            <button class="setting-save-btn" onclick="openSavePopup()">세팅 저장</button>
+          </div>
 
           <h2 class="setting-list-title">스킬 목록</h2>
 
@@ -1112,6 +1196,18 @@
           </div>
 
           <div id="settingSkillList" class="setting-skill-list"></div>
+        </section>
+
+        <section id="skill-setting-collection" class="card">
+          <h2>스킬 세팅 모음</h2>
+
+          <p class="setting-guide-text">
+            저장한 스킬 세팅을 용도와 칸 수별로 확인할 수 있습니다.
+          </p>
+
+          <div id="collectionCategoryButtons" class="collection-button-wrap"></div>
+          <div id="collectionCountButtons" class="collection-button-wrap"></div>
+          <div id="savedSettingView"></div>
         </section>
 
         <section id="update-010" class="card">
@@ -1229,10 +1325,25 @@
             <li>사이트 하단 현재 버전 표시를 v0.1.8-beta로 변경</li>
           </ul>
         </section>
+
+        <section id="update-019" class="card">
+          <h2>물멍위키 v0.1.9-beta 업데이트 내역</h2>
+          <p class="update-date">업데이트 날짜: 2026.05.11</p>
+          <ul class="update-list">
+            <li>정보 &gt; 스킬 세팅 모음 페이지 추가</li>
+            <li>스킬 세팅 저장 기능 추가</li>
+            <li>등반 / 4자사 / 18자사 / 시공 / 순숲 / 폐광 / 수동 분류 추가</li>
+            <li>5칸부터 10칸까지 세팅 저장 기능 추가</li>
+            <li>저장된 세팅을 스킬 세팅 모음에서 확인하는 기능 추가</li>
+            <li>localStorage 기반 세팅 유지 기능 추가</li>
+            <li>저장된 세팅 삭제 기능 추가</li>
+            <li>사이트 하단 현재 버전 표시를 v0.1.9-beta로 변경</li>
+          </ul>
+        </section>
       </main>
 
       <footer class="site-footer">
-        현재 버전: 물멍위키 v0.1.8-beta
+        현재 버전: 물멍위키 v0.1.9-beta
       </footer>
     </div>
   </div>
@@ -1241,6 +1352,17 @@
     <div class="unlock-popup" onclick="event.stopPropagation()">
       <h3 id="unlockPopupTitle">해금 조건</h3>
       <p id="unlockPopupText"></p>
+    </div>
+  </div>
+
+  <div class="save-popup-bg" id="savePopupBg" onclick="closeSavePopup()">
+    <div class="save-popup" onclick="event.stopPropagation()">
+      <h3>스킬 세팅 저장</h3>
+      <p>저장할 용도를 선택하세요.</p>
+      <div id="saveCategoryButtons" class="save-popup-buttons"></div>
+      <p id="saveCountText" style="display:none;">저장할 칸 수를 선택하세요.</p>
+      <div id="saveCountButtons" class="save-popup-buttons"></div>
+      <button class="save-close-btn" onclick="closeSavePopup()">닫기</button>
     </div>
   </div>
 
@@ -1284,6 +1406,7 @@
       "diamond-beast": ["다이아 소모처", "비스트"],
       "skill-learn": ["정보", "스킬 배우기"],
       "skill-setting": ["정보", "스킬 세팅"],
+      "skill-setting-collection": ["정보", "스킬 세팅 모음"],
       "update-010": ["업데이트", "v0.1.0-beta"],
       "update-011": ["업데이트", "v0.1.1-beta"],
       "update-012": ["업데이트", "v0.1.2-beta"],
@@ -1292,7 +1415,8 @@
       "update-015": ["업데이트", "v0.1.5-beta"],
       "update-016": ["업데이트", "v0.1.6-beta"],
       "update-017": ["업데이트", "v0.1.7-beta"],
-      "update-018": ["업데이트", "v0.1.8-beta"]
+      "update-018": ["업데이트", "v0.1.8-beta"],
+      "update-019": ["업데이트", "v0.1.9-beta"]
     };
 
     promotions.forEach(([id, name]) => {
@@ -1300,6 +1424,9 @@
     });
 
     const gradeOrder = ["신화", "전설", "영웅", "레어", "고급", "일반"];
+    const settingCategories = ["등반", "4자사", "18자사", "시공", "순숲", "폐광", "수동"];
+    const settingCounts = [5, 6, 7, 8, 9, 10];
+    const storageKey = "mulmungSkillSettingCollection";
 
     const gradeClassMap = {
       "일반": "grade-normal",
@@ -1322,6 +1449,9 @@
     let selectedSettingGrade = "전체";
     let selectedSettingElement = "전체";
     let selectedSettingSkills = [];
+    let selectedSaveCategory = "";
+    let selectedCollectionCategory = "";
+    let selectedCollectionCount = "";
 
     const skills = [
       { element: "불", level: "Lv.10", name: "불꽃 베기", grade: "일반", material: "-" },
@@ -1399,6 +1529,10 @@
       });
     }
 
+    function getSkillByName(name) {
+      return skills.find(skill => skill.name === name);
+    }
+
     function setBreadcrumb(sectionId) {
       const breadcrumb = document.getElementById("breadcrumb");
       const page = pageMap[sectionId];
@@ -1474,6 +1608,12 @@
       if (sectionId === "skill-setting") {
         renderSkillSettingSlots();
         renderSettingSkillList();
+      }
+
+      if (sectionId === "skill-setting-collection") {
+        renderCollectionCategoryButtons();
+        renderCollectionCountButtons();
+        renderSavedSettingView();
       }
 
       if (window.innerWidth <= 768) {
@@ -1583,7 +1723,7 @@
     }
 
     function addSettingSkill(skillName) {
-      const skill = skills.find(item => item.name === skillName);
+      const skill = getSkillByName(skillName);
 
       if (!skill) return;
 
@@ -1687,11 +1827,258 @@
       list.innerHTML = html;
     }
 
+    function getSavedSettings() {
+      const rawData = localStorage.getItem(storageKey);
+
+      if (!rawData) {
+        return {};
+      }
+
+      try {
+        return JSON.parse(rawData);
+      } catch (error) {
+        return {};
+      }
+    }
+
+    function setSavedSettings(data) {
+      localStorage.setItem(storageKey, JSON.stringify(data));
+    }
+
+    function openSavePopup() {
+      if (selectedSettingSkills.length === 0) {
+        alert("저장할 스킬을 먼저 선택해주세요.");
+        return;
+      }
+
+      selectedSaveCategory = "";
+      document.getElementById("savePopupBg").classList.add("show");
+      renderSavePopup();
+    }
+
+    function closeSavePopup() {
+      document.getElementById("savePopupBg").classList.remove("show");
+    }
+
+    function renderSavePopup() {
+      const categoryArea = document.getElementById("saveCategoryButtons");
+      const countArea = document.getElementById("saveCountButtons");
+      const countText = document.getElementById("saveCountText");
+
+      let categoryHtml = "";
+
+      settingCategories.forEach(category => {
+        categoryHtml += `
+          <button
+            class="save-choice-btn ${selectedSaveCategory === category ? "active" : ""}"
+            onclick="selectSaveCategory('${category}')"
+          >
+            ${category}
+          </button>
+        `;
+      });
+
+      categoryArea.innerHTML = categoryHtml;
+
+      if (!selectedSaveCategory) {
+        countText.style.display = "none";
+        countArea.innerHTML = "";
+        return;
+      }
+
+      countText.style.display = "block";
+
+      let countHtml = "";
+
+      settingCounts.forEach(count => {
+        countHtml += `
+          <button
+            class="save-choice-btn"
+            onclick="saveCurrentSetting(${count})"
+          >
+            ${count}칸 세팅
+          </button>
+        `;
+      });
+
+      countArea.innerHTML = countHtml;
+    }
+
+    function selectSaveCategory(category) {
+      selectedSaveCategory = category;
+      renderSavePopup();
+    }
+
+    function saveCurrentSetting(count) {
+      if (!selectedSaveCategory) {
+        alert("저장할 용도를 먼저 선택해주세요.");
+        return;
+      }
+
+      const data = getSavedSettings();
+
+      if (!data[selectedSaveCategory]) {
+        data[selectedSaveCategory] = {};
+      }
+
+      data[selectedSaveCategory][count] = selectedSettingSkills
+        .slice(0, count)
+        .map(skill => skill.name);
+
+      setSavedSettings(data);
+
+      alert(`${selectedSaveCategory} ${count}칸 세팅으로 저장되었습니다.`);
+      closeSavePopup();
+
+      if (document.getElementById("skill-setting-collection").classList.contains("active")) {
+        renderCollectionCategoryButtons();
+        renderCollectionCountButtons();
+        renderSavedSettingView();
+      }
+    }
+
+    function renderCollectionCategoryButtons() {
+      const area = document.getElementById("collectionCategoryButtons");
+
+      if (!area) return;
+
+      let html = "";
+
+      settingCategories.forEach(category => {
+        html += `
+          <button
+            class="collection-main-btn ${selectedCollectionCategory === category ? "active" : ""}"
+            onclick="selectCollectionCategory('${category}')"
+          >
+            ${category}
+          </button>
+        `;
+      });
+
+      area.innerHTML = html;
+    }
+
+    function selectCollectionCategory(category) {
+      selectedCollectionCategory = category;
+      selectedCollectionCount = "";
+      renderCollectionCategoryButtons();
+      renderCollectionCountButtons();
+      renderSavedSettingView();
+    }
+
+    function renderCollectionCountButtons() {
+      const area = document.getElementById("collectionCountButtons");
+
+      if (!area) return;
+
+      if (!selectedCollectionCategory) {
+        area.innerHTML = "";
+        return;
+      }
+
+      let html = "";
+
+      settingCounts.forEach(count => {
+        html += `
+          <button
+            class="collection-count-btn ${Number(selectedCollectionCount) === count ? "active" : ""}"
+            onclick="selectCollectionCount(${count})"
+          >
+            ${count}칸 세팅
+          </button>
+        `;
+      });
+
+      area.innerHTML = html;
+    }
+
+    function selectCollectionCount(count) {
+      selectedCollectionCount = count;
+      renderCollectionCountButtons();
+      renderSavedSettingView();
+    }
+
+    function renderSavedSettingView() {
+      const view = document.getElementById("savedSettingView");
+
+      if (!view) return;
+
+      if (!selectedCollectionCategory) {
+        view.innerHTML = `<div class="empty-result">먼저 용도를 선택해주세요.</div>`;
+        return;
+      }
+
+      if (!selectedCollectionCount) {
+        view.innerHTML = `<div class="empty-result">${selectedCollectionCategory}에서 확인할 칸 수를 선택해주세요.</div>`;
+        return;
+      }
+
+      const data = getSavedSettings();
+      const savedNames = data[selectedCollectionCategory]?.[selectedCollectionCount];
+
+      if (!savedNames || savedNames.length === 0) {
+        view.innerHTML = `<div class="empty-result">저장된 ${selectedCollectionCategory} ${selectedCollectionCount}칸 세팅이 없습니다.</div>`;
+        return;
+      }
+
+      let html = `
+        <h3 class="saved-setting-title">${selectedCollectionCategory} ${selectedCollectionCount}칸 세팅</h3>
+        <p class="saved-setting-subtitle">저장된 스킬 세팅입니다.</p>
+        <div class="saved-setting-grid">
+      `;
+
+      for (let i = 0; i < Number(selectedCollectionCount); i++) {
+        const skillName = savedNames[i];
+        const skill = getSkillByName(skillName);
+
+        if (skill) {
+          html += `
+            <div class="saved-slot filled ${gradeClassMap[skill.grade]}" title="${skill.name}">
+              ${skill.name}
+            </div>
+          `;
+        } else {
+          html += `
+            <div class="saved-slot">
+              빈칸
+            </div>
+          `;
+        }
+      }
+
+      html += `
+        </div>
+        <button class="saved-delete-btn" onclick="deleteSavedSetting()">저장된 세팅 삭제</button>
+      `;
+
+      view.innerHTML = html;
+    }
+
+    function deleteSavedSetting() {
+      if (!selectedCollectionCategory || !selectedCollectionCount) return;
+
+      const check = confirm(`${selectedCollectionCategory} ${selectedCollectionCount}칸 세팅을 삭제할까요?`);
+
+      if (!check) return;
+
+      const data = getSavedSettings();
+
+      if (data[selectedCollectionCategory]) {
+        delete data[selectedCollectionCategory][selectedCollectionCount];
+      }
+
+      setSavedSettings(data);
+      renderSavedSettingView();
+    }
+
     createPromotionMenuAndSections();
     setBreadcrumb("intro");
     renderSkills();
     renderSkillSettingSlots();
     renderSettingSkillList();
+    renderCollectionCategoryButtons();
+    renderCollectionCountButtons();
+    renderSavedSettingView();
   </script>
 </body>
 </html>
