@@ -1167,6 +1167,7 @@ async function saveCurrentSkillSetting(category) {
   if (window.saveSkillSettingToCloud) {
     try {
       await window.saveSkillSettingToCloud(newSetting);
+      await window.loadSkillSettingsFromCloud?.();
     } catch (error) {
       console.warn("스킬 세팅 클라우드 저장 오류:", error);
       alert("세팅은 이 기기에는 저장됐지만, 서버 저장에 실패했습니다. Firestore 규칙을 확인해주세요.");
@@ -1377,43 +1378,30 @@ window.deleteSkillSettingFromCloud = async function(settingId) {
 window.loadSkillSettingsFromCloud = async function() {
   try {
     const docs = await getDocs(collection(db, "skillSettings"));
-    const mergedData = window.getSavedSettings();
+
+    // Firestore를 기준으로 세팅 모음을 새로 만듭니다.
+    // 기존 방식처럼 기기 저장값(localStorage)과 합치면,
+    // 다른 사람이 서버에서 삭제한 세팅이 내 휴대폰 localStorage에 남아 다시 보일 수 있습니다.
+    const cloudData = {};
+    settingCategories.forEach(category => {
+      cloudData[category] = [];
+    });
 
     docs.forEach(settingDoc => {
       const data = settingDoc.data();
       const category = data.category;
-      if (!Object.prototype.hasOwnProperty.call(mergedData, category)) return;
+      if (!Object.prototype.hasOwnProperty.call(cloudData, category)) return;
 
-      const cloudSetting = {
+      cloudData[category].push({
         ...data,
         id: data.id || settingDoc.id,
+        category,
         createdDate: data.createdDate || window.formatShortDate(data.createdAt)
-      };
-
-      const existingIndex = mergedData[category].findIndex(item => String(item.id) === String(cloudSetting.id));
-      if (existingIndex >= 0) {
-        mergedData[category][existingIndex] = cloudSetting;
-      } else {
-        mergedData[category].push(cloudSetting);
-      }
+      });
     });
 
-    if (currentUser) {
-      for (const category of Object.keys(mergedData)) {
-        for (const setting of mergedData[category]) {
-          if (!setting.ownerUid || setting.ownerUid === "local") {
-            setting.category = setting.category || category;
-            setting.ownerUid = currentUser.uid;
-            setting.ownerEmail = currentUser.email;
-            setting.uploaderNickname = currentNickname || (isAdminUser(currentUser) ? "물멍" : "닉네임 미설정");
-            setting.createdDate = setting.createdDate || window.formatShortDate(setting.createdAt);
-            await window.saveSkillSettingToCloud(setting);
-          }
-        }
-      }
-    }
-
-    window.saveSavedSettings(mergedData);
+    // 내 기기 저장값도 서버 기준으로 갈아엎어서 삭제된 세팅이 다시 살아나지 않게 합니다.
+    window.saveSavedSettings(cloudData);
     window.renderSavedSettingCollection();
   } catch (error) {
     console.warn("스킬 세팅 모음 불러오기 오류:", error);
