@@ -106,7 +106,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 14px 14px;
+      padding: 14px;
       border-radius: 12px;
       background: #000000;
       color: #ffffff;
@@ -257,8 +257,7 @@
       font-weight: 700;
     }
 
-    .roadmap-image,
-    .skill-image {
+    .roadmap-image {
       width: 100%;
       max-width: 100%;
       height: auto;
@@ -266,10 +265,6 @@
       margin-top: 20px;
       border-radius: 16px;
       border: 1px solid #e5e7eb;
-    }
-
-    .skill-image + .skill-image {
-      margin-top: 18px;
     }
 
     .skill-search-input {
@@ -294,10 +289,6 @@
       gap: 24px;
     }
 
-    .skill-attribute-section {
-      padding-top: 4px;
-    }
-
     .skill-attribute-title {
       margin-bottom: 12px;
       font-size: 22px;
@@ -320,6 +311,7 @@
     .skill-card-top {
       display: flex;
       align-items: center;
+      flex-wrap: wrap;
       gap: 8px;
       margin-bottom: 8px;
     }
@@ -329,13 +321,15 @@
       font-weight: 900;
     }
 
-    .skill-badge {
+    .skill-badge,
+    .skill-grade-badge {
       display: inline-block;
       padding: 5px 11px;
       border-radius: 999px;
       color: #ffffff;
       font-size: 13px;
       font-weight: 900;
+      border: 1px solid transparent;
     }
 
     .skill-badge.fire {
@@ -352,6 +346,37 @@
 
     .skill-badge.earth {
       background: #a16207;
+    }
+
+    .skill-grade-badge.normal {
+      background: #ffffff;
+      color: #111827;
+      border-color: #d1d5db;
+    }
+
+    .skill-grade-badge.advanced {
+      background: #22c55e;
+      color: #ffffff;
+    }
+
+    .skill-grade-badge.rare {
+      background: #f97316;
+      color: #ffffff;
+    }
+
+    .skill-grade-badge.hero {
+      background: #8b5cf6;
+      color: #ffffff;
+    }
+
+    .skill-grade-badge.legend {
+      background: #ef4444;
+      color: #ffffff;
+    }
+
+    .skill-grade-badge.myth {
+      background: #38bdf8;
+      color: #ffffff;
     }
 
     .skill-info {
@@ -557,7 +582,8 @@
         font-size: 14px;
       }
 
-      .skill-badge {
+      .skill-badge,
+      .skill-grade-badge {
         font-size: 12px;
         padding: 4px 9px;
       }
@@ -848,9 +874,7 @@
 
         <section id="update-010" class="card">
           <h2>물멍위키 v0.1.0-beta 업데이트 내역</h2>
-
           <p class="update-date">업데이트 날짜: 2026.05.09</p>
-
           <ul class="update-list">
             <li>물멍위키 사이트 제작 시작</li>
             <li>기본 HTML/CSS 구조 제작</li>
@@ -862,9 +886,7 @@
 
         <section id="update-011" class="card">
           <h2>물멍위키 v0.1.1-beta 업데이트 내역</h2>
-
           <p class="update-date">업데이트 날짜: 2026.05.09</p>
-
           <ul class="update-list">
             <li>다이아 소모처 메뉴 추가</li>
             <li>다이아 소모처 로드맵 페이지 추가</li>
@@ -875,9 +897,7 @@
 
         <section id="update-012" class="card">
           <h2>물멍위키 v0.1.2-beta 업데이트 내역</h2>
-
           <p class="update-date">업데이트 날짜: 2026.05.09</p>
-
           <ul class="update-list">
             <li>승급 메뉴 추가</li>
             <li>스톤부터 블리츠골드까지 승급 하위 메뉴 추가</li>
@@ -888,9 +908,7 @@
 
         <section id="update-013" class="card">
           <h2>물멍위키 v0.1.3-beta 업데이트 내역</h2>
-
           <p class="update-date">업데이트 날짜: 2026.05.09</p>
-
           <ul class="update-list">
             <li>다이아 소모처 하위 메뉴 확장</li>
             <li>클래스, 정령, 오르, 오브, 사역마, 비스트 페이지 추가</li>
@@ -902,9 +920,7 @@
 
         <section id="update-014" class="card">
           <h2>물멍위키 v0.1.4-beta 업데이트 내역</h2>
-
           <p class="update-date">업데이트 날짜: 2026.05.10</p>
-
           <ul class="update-list">
             <li>정보 메뉴 추가</li>
             <li>정보 &gt; 스킬 배우기 페이지 추가</li>
@@ -915,9 +931,7 @@
 
         <section id="update-015" class="card">
           <h2>물멍위키 v0.1.5-beta 업데이트 내역</h2>
-
           <p class="update-date">업데이트 날짜: 2026.05.10</p>
-
           <ul class="update-list">
             <li>상위/하위 메뉴 구조 개선</li>
             <li>PC 좌측 사이드바 메뉴 적용</li>
@@ -930,9 +944,7 @@
 
         <section id="update-016" class="card">
           <h2>물멍위키 v0.1.6-beta 업데이트 내역</h2>
-
           <p class="update-date">업데이트 날짜: 2026.05.10</p>
-
           <ul class="update-list">
             <li>업데이트 메뉴 구조 변경</li>
             <li>업데이트 메뉴에 버전별 하위 메뉴 추가</li>
@@ -1005,49 +1017,49 @@
     };
 
     const skills = [
-      { attribute: "불", type: "fire", level: "Lv.10", name: "불꽃 베기", material: "-" },
-      { attribute: "불", type: "fire", level: "Lv.20", name: "불의 검", material: "-" },
-      { attribute: "불", type: "fire", level: "Lv.30", name: "타오르는 검", material: "불 속성석 10" },
-      { attribute: "불", type: "fire", level: "Lv.40", name: "열풍", material: "무기 고급 2등급 4" },
-      { attribute: "불", type: "fire", level: "Lv.70", name: "화염 베기", material: "불 속성석 20" },
-      { attribute: "불", type: "fire", level: "Lv.90", name: "화염 파동", material: "무기 영웅 3등급 4" },
-      { attribute: "불", type: "fire", level: "Lv.120", name: "연혹 화염 베기", material: "무기 전설 4등급 2 / 불 속성석 300" },
-      { attribute: "불", type: "fire", level: "Lv.200", name: "분노", material: "무기 전설 1등급 4 / 불 속성석 100" },
-      { attribute: "불", type: "fire", level: "Lv.300", name: "진 열풍", material: "무기 전설 3등급 4" },
-      { attribute: "불", type: "fire", level: "Lv.400", name: "불기둥", material: "무기 신화 3등급 4" },
+      { attribute: "불", type: "fire", level: "Lv.10", name: "불꽃 베기", grade: "일반", gradeType: "normal", material: "-" },
+      { attribute: "불", type: "fire", level: "Lv.20", name: "불의 검", grade: "일반", gradeType: "normal", material: "-" },
+      { attribute: "불", type: "fire", level: "Lv.30", name: "타오르는 검", grade: "전설", gradeType: "legend", material: "불 속성석 10" },
+      { attribute: "불", type: "fire", level: "Lv.40", name: "열풍", grade: "전설", gradeType: "legend", material: "무기 고급 2등급 4" },
+      { attribute: "불", type: "fire", level: "Lv.70", name: "화염 베기", grade: "레어", gradeType: "rare", material: "불 속성석 20" },
+      { attribute: "불", type: "fire", level: "Lv.90", name: "화염 파동", grade: "영웅", gradeType: "hero", material: "무기 영웅 3등급 4" },
+      { attribute: "불", type: "fire", level: "Lv.120", name: "연혹 화염 베기", grade: "전설", gradeType: "legend", material: "무기 전설 4등급 2 / 불 속성석 300" },
+      { attribute: "불", type: "fire", level: "Lv.200", name: "분노", grade: "전설", gradeType: "legend", material: "무기 전설 1등급 4 / 불 속성석 100" },
+      { attribute: "불", type: "fire", level: "Lv.300", name: "진 열풍", grade: "전설", gradeType: "legend", material: "무기 전설 3등급 4" },
+      { attribute: "불", type: "fire", level: "Lv.400", name: "불기둥", grade: "신화", gradeType: "myth", material: "무기 신화 3등급 4" },
 
-      { attribute: "물", type: "water", level: "Lv.15", name: "흐르는 칼날", material: "-" },
-      { attribute: "물", type: "water", level: "Lv.25", name: "굽이치는 칼날", material: "-" },
-      { attribute: "물", type: "water", level: "Lv.35", name: "아이스 스톤", material: "-" },
-      { attribute: "물", type: "water", level: "Lv.45", name: "파도 베기", material: "-" },
-      { attribute: "물", type: "water", level: "Lv.60", name: "아이스 샤워", material: "물 속성석 20" },
-      { attribute: "물", type: "water", level: "Lv.80", name: "춤추는 파도", material: "악세 영웅 3등급 4" },
-      { attribute: "물", type: "water", level: "Lv.100", name: "메디테이션", material: "악세 전설 3등급 4 / 물 속성석 50" },
-      { attribute: "물", type: "water", level: "Lv.160", name: "아이스 타임", material: "악세 전설 4등급 2 / 물 속성석 300" },
-      { attribute: "물", type: "water", level: "Lv.250", name: "마나의 축복", material: "무기 레어 4등급 4" },
-      { attribute: "물", type: "water", level: "Lv.350", name: "블리자드", material: "무기 신화 2등급 4" },
+      { attribute: "물", type: "water", level: "Lv.15", name: "흐르는 칼날", grade: "레어", gradeType: "rare", material: "-" },
+      { attribute: "물", type: "water", level: "Lv.25", name: "굽이치는 칼날", grade: "영웅", gradeType: "hero", material: "-" },
+      { attribute: "물", type: "water", level: "Lv.35", name: "아이스 스톤", grade: "일반", gradeType: "normal", material: "-" },
+      { attribute: "물", type: "water", level: "Lv.45", name: "파도 베기", grade: "레어", gradeType: "rare", material: "-" },
+      { attribute: "물", type: "water", level: "Lv.60", name: "아이스 샤워", grade: "전설", gradeType: "legend", material: "물 속성석 20" },
+      { attribute: "물", type: "water", level: "Lv.80", name: "춤추는 파도", grade: "영웅", gradeType: "hero", material: "악세 영웅 3등급 4" },
+      { attribute: "물", type: "water", level: "Lv.100", name: "메디테이션", grade: "전설", gradeType: "legend", material: "악세 전설 3등급 4 / 물 속성석 50" },
+      { attribute: "물", type: "water", level: "Lv.160", name: "아이스 타임", grade: "전설", gradeType: "legend", material: "악세 전설 4등급 2 / 물 속성석 300" },
+      { attribute: "물", type: "water", level: "Lv.250", name: "마나의 축복", grade: "일반", gradeType: "normal", material: "무기 레어 4등급 4" },
+      { attribute: "물", type: "water", level: "Lv.350", name: "블리자드", grade: "신화", gradeType: "myth", material: "무기 신화 2등급 4" },
 
-      { attribute: "바람", type: "wind", level: "Lv.15", name: "가속의 검", material: "무기 레어 4등급 4" },
-      { attribute: "바람", type: "wind", level: "Lv.25", name: "번개 베기", material: "무기 일반 4등급 4" },
-      { attribute: "바람", type: "wind", level: "Lv.35", name: "바람의 검", material: "무기 영웅 4등급 4" },
-      { attribute: "바람", type: "wind", level: "Lv.40", name: "전광석화", material: "무기 레어 3등급 4" },
-      { attribute: "바람", type: "wind", level: "Lv.50", name: "뇌격", material: "무기 레어 4등급 4" },
-      { attribute: "바람", type: "wind", level: "Lv.70", name: "천둥 베기", material: "바람 속성석 20" },
-      { attribute: "바람", type: "wind", level: "Lv.90", name: "고속이동", material: "악세 고급 4등급 4" },
-      { attribute: "바람", type: "wind", level: "Lv.140", name: "수라 번개 베기", material: "전설 레어 2등급 4 / 바람 속성석 300" },
-      { attribute: "바람", type: "wind", level: "Lv.200", name: "격류", material: "무기 전설 1등급 4" },
-      { attribute: "바람", type: "wind", level: "Lv.300", name: "뇌신", material: "악세 신화 2등급 4" },
-      { attribute: "바람", type: "wind", level: "Lv.450", name: "신속", material: "무기 신화 4등급 4" },
+      { attribute: "바람", type: "wind", level: "Lv.15", name: "가속의 검", grade: "레어", gradeType: "rare", material: "무기 레어 4등급 4" },
+      { attribute: "바람", type: "wind", level: "Lv.25", name: "번개 베기", grade: "일반", gradeType: "normal", material: "무기 일반 4등급 4" },
+      { attribute: "바람", type: "wind", level: "Lv.35", name: "바람의 검", grade: "영웅", gradeType: "hero", material: "무기 영웅 4등급 4" },
+      { attribute: "바람", type: "wind", level: "Lv.40", name: "전광석화", grade: "영웅", gradeType: "hero", material: "무기 레어 3등급 4" },
+      { attribute: "바람", type: "wind", level: "Lv.50", name: "뇌격", grade: "일반", gradeType: "normal", material: "무기 레어 4등급 4" },
+      { attribute: "바람", type: "wind", level: "Lv.70", name: "천둥 베기", grade: "레어", gradeType: "rare", material: "바람 속성석 20" },
+      { attribute: "바람", type: "wind", level: "Lv.90", name: "고속이동", grade: "일반", gradeType: "normal", material: "악세 고급 4등급 4" },
+      { attribute: "바람", type: "wind", level: "Lv.140", name: "수라 번개 베기", grade: "전설", gradeType: "legend", material: "전설 레어 2등급 4 / 바람 속성석 300" },
+      { attribute: "바람", type: "wind", level: "Lv.200", name: "격류", grade: "신화", gradeType: "myth", material: "무기 전설 1등급 4" },
+      { attribute: "바람", type: "wind", level: "Lv.300", name: "뇌신", grade: "신화", gradeType: "myth", material: "악세 신화 2등급 4" },
+      { attribute: "바람", type: "wind", level: "Lv.450", name: "신속", grade: "신화", gradeType: "myth", material: "무기 신화 4등급 4" },
 
-      { attribute: "땅", type: "earth", level: "Lv.10", name: "대지의 축복", material: "-" },
-      { attribute: "땅", type: "earth", level: "Lv.20", name: "스톤 스트라이크", material: "악세 일반 4등급 4" },
-      { attribute: "땅", type: "earth", level: "Lv.30", name: "땅의 의지", material: "-" },
-      { attribute: "땅", type: "earth", level: "Lv.50", name: "강철의 의지", material: "땅 속성석 20" },
-      { attribute: "땅", type: "earth", level: "Lv.60", name: "파워 스트라이크", material: "땅 속성석 20" },
-      { attribute: "땅", type: "earth", level: "Lv.100", name: "파워 임팩트", material: "악세 고급 2등급 4" },
-      { attribute: "땅", type: "earth", level: "Lv.140", name: "라이프 마나", material: "땅 속성석 50" },
-      { attribute: "땅", type: "earth", level: "Lv.180", name: "기가 스트라이크", material: "악세 전설 2등급 2 / 땅 속성석 300" },
-      { attribute: "땅", type: "earth", level: "Lv.500", name: "마수 사냥", material: "무기 신화 1등급 4" }
+      { attribute: "땅", type: "earth", level: "Lv.10", name: "대지의 축복", grade: "일반", gradeType: "normal", material: "-" },
+      { attribute: "땅", type: "earth", level: "Lv.20", name: "스톤 스트라이크", grade: "일반", gradeType: "normal", material: "악세 일반 4등급 4" },
+      { attribute: "땅", type: "earth", level: "Lv.30", name: "땅의 의지", grade: "레어", gradeType: "rare", material: "-" },
+      { attribute: "땅", type: "earth", level: "Lv.50", name: "강철의 의지", grade: "영웅", gradeType: "hero", material: "땅 속성석 20" },
+      { attribute: "땅", type: "earth", level: "Lv.60", name: "파워 스트라이크", grade: "고급", gradeType: "advanced", material: "땅 속성석 20" },
+      { attribute: "땅", type: "earth", level: "Lv.100", name: "파워 임팩트", grade: "고급", gradeType: "advanced", material: "악세 고급 2등급 4" },
+      { attribute: "땅", type: "earth", level: "Lv.140", name: "라이프 마나", grade: "영웅", gradeType: "hero", material: "땅 속성석 50" },
+      { attribute: "땅", type: "earth", level: "Lv.180", name: "기가 스트라이크", grade: "전설", gradeType: "legend", material: "악세 전설 2등급 2 / 땅 속성석 300" },
+      { attribute: "땅", type: "earth", level: "Lv.500", name: "마수 사냥", grade: "신화", gradeType: "myth", material: "무기 신화 1등급 4" }
     ];
 
     promotions.forEach(([id, name]) => {
@@ -1166,6 +1178,7 @@
         <div class="skill-card">
           <div class="skill-card-top">
             <span class="skill-name">${skill.name}</span>
+            <span class="skill-grade-badge ${skill.gradeType}">${skill.grade}</span>
             <span class="skill-badge ${skill.type}">${skill.attribute}</span>
           </div>
           <div class="skill-info">레벨: ${skill.level}</div>
