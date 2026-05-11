@@ -618,7 +618,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
       <div class="menu-group"><button class="menu-btn" onclick="showSection('intro')">들어가며</button></div>
       <div class="menu-group"><button class="menu-btn" onclick="toggleSubMenu('diamondMenu', this)">다이아 소모처 <span>＋</span></button><div class="sub-menu" id="diamondMenu"></div></div>
       <div class="menu-group"><button class="menu-btn" onclick="toggleSubMenu('promotionMenu', this)">승급 <span>＋</span></button><div class="sub-menu" id="promotionMenu"></div></div>
-      <div class="menu-group"><button class="menu-btn" onclick="toggleSubMenu('infoMenu', this)">정보 <span>＋</span></button><div class="sub-menu" id="infoMenu"></div></div>
+      <div class="menu-group"><button class="menu-btn" onclick="toggleSubMenu('infoMenu', this)">스킬 <span>＋</span></button><div class="sub-menu" id="infoMenu"></div></div>
       <div class="menu-group"><button class="menu-btn" onclick="toggleSubMenu('updateMenu', this)">업데이트 <span>＋</span></button><div class="sub-menu" id="updateMenu"></div></div>
     </aside>
 
@@ -672,25 +672,25 @@ const skills = [{"element": "불", "level": "Lv.10", "name": "불꽃 베기", "g
 const diamondPages = [
   ["diamond-roadmap","다이아 소모처 로드맵"],["diamond-class","클래스"],["diamond-spirit","정령"],["diamond-or","오르"],["diamond-orb","오브"],["diamond-familiar","사역마"],["diamond-beast","비스트"]
 ];
-const infoPages = [["skill-learn","스킬 배우기"],["skill-setting","스킬 세팅"],["skill-setting-collection","스킬 세팅 모음"]];
+const infoPages = [["skill-learn","스킬 정보"],["skill-setting","스킬 세팅"],["skill-setting-collection","스킬 세팅 모음"]];
 const updatePages = [
   ["update-010","v0.1.0-beta","2026.05.09",["물멍위키 사이트 제작 시작","기본 HTML/CSS 구조 제작","로고 이미지 삽입 구조 적용","들어가며 페이지 추가","기본 본문 카드 디자인 적용"]],
   ["update-011","v0.1.1-beta","2026.05.09",["다이아 소모처 메뉴 추가","다이아 소모처 로드맵 페이지 추가","다이아 로드맵 이미지 삽입 구조 적용","이미지 반응형 크기 조정 적용"]],
   ["update-012","v0.1.2-beta","2026.05.09",["승급 메뉴 추가","스톤부터 블리츠골드까지 승급 하위 메뉴 추가","승급 페이지 자동 생성 구조 적용","각 승급 페이지에 임시 안내 문구 추가"]],
   ["update-013","v0.1.3-beta","2026.05.09",["다이아 소모처 하위 메뉴 확장","클래스, 정령, 오르, 오브, 사역마, 비스트 페이지 추가","오르 정보 표 추가","오브 정보 표 추가","표 상단 제목 칸 검은 배경 및 흰 글씨 적용"]],
-  ["update-014","v0.1.4-beta","2026.05.10",["정보 메뉴 추가","정보 > 스킬 배우기 페이지 추가","스킬 배우기 이미지 2장 삽입 구조 적용","스킬 배우기 설명 문구 추가"]],
+  ["update-014","v0.1.4-beta","2026.05.10",["정보 메뉴 추가","스킬 > 스킬 정보 페이지 추가","스킬 배우기 이미지 2장 삽입 구조 적용","스킬 정보 설명 문구 추가"]],
   ["update-015","v0.1.5-beta","2026.05.10",["상위/하위 메뉴 구조 개선","PC 좌측 사이드바 메뉴 적용","모바일 햄버거 메뉴 적용","현재 위치 표시 기능 추가","현재 위치 표시에서 상위 메뉴 굵은 글씨 구분 적용","모든 페이지 하단 현재 버전 표시 추가"]],
   ["update-016","v0.1.6-beta","2026.05.10",["업데이트 메뉴 구조 변경","업데이트 메뉴에 버전별 하위 메뉴 추가","v0.1.0-beta부터 v0.1.6-beta까지 업데이트 내역 페이지 분리","사이트 하단 현재 버전 표시를 v0.1.6-beta로 변경","업데이트 내역을 버전별로 관리할 수 있도록 구조 정리"]],
-  ["update-017","v0.1.7-beta","2026.05.11",["상단 물멍위키 제목 클릭 시 홈 화면으로 이동 기능 추가","클래스, 정령, 사역마, 비스트 해금 조건 버튼 추가","해금 버튼 클릭 시 팝업으로 조건 확인 기능 추가","팝업 바깥 화면 클릭 시 팝업 닫힘 기능 추가","스킬 배우기 페이지 검색 기능 추가","스킬 등급별 필터 기능 추가","스킬 속성별 필터 기능 추가","등급 필터와 속성 필터 동시 적용 기능 추가","스킬 결과 카드에 등급/속성 배지 표시 추가","사이트 하단 현재 버전 표시를 v0.1.7-beta로 변경"]],
-  ["update-018","v0.1.8-beta","2026.05.11",["정보 > 스킬 세팅 페이지 추가","스킬 세팅 10칸 배치 기능 추가","스킬 목록 클릭 시 첫 번째 빈칸부터 자동 배치 기능 추가","세팅된 스킬 클릭 시 제거 기능 추가","스킬 세팅 초기화 버튼 추가","스킬 세팅 칸의 배경색을 스킬 목록 버튼과 동일하게 표시하도록 수정","스킬 목록을 5열 구조로 정리","스킬 목록 정렬을 신화부터 일반 순, 같은 등급 내 가나다순으로 적용","스킬 배우기와 스킬 세팅 필터 UI를 2줄 구조로 압축","사이트 하단 현재 버전 표시를 v0.1.8-beta로 변경"]],
-  ["update-019","v0.1.9-beta","2026.05.11",["정보 > 스킬 세팅 모음 페이지 추가","스킬 세팅 저장 기능 추가","등반, 4자사, 18자사, 시공, 순숲, 폐광, 수동 용도별 저장 구조 추가","저장된 스킬 세팅 삭제 기능 추가","저장된 세팅을 브라우저에 유지하는 localStorage 저장 기능 추가","사이트 하단 현재 버전 표시를 v0.1.9-beta로 변경"]],
+  ["update-017","v0.1.7-beta","2026.05.11",["상단 물멍위키 제목 클릭 시 홈 화면으로 이동 기능 추가","클래스, 정령, 사역마, 비스트 해금 조건 버튼 추가","해금 버튼 클릭 시 팝업으로 조건 확인 기능 추가","팝업 바깥 화면 클릭 시 팝업 닫힘 기능 추가","스킬 정보 페이지 검색 기능 추가","스킬 등급별 필터 기능 추가","스킬 속성별 필터 기능 추가","등급 필터와 속성 필터 동시 적용 기능 추가","스킬 결과 카드에 등급/속성 배지 표시 추가","사이트 하단 현재 버전 표시를 v0.1.7-beta로 변경"]],
+  ["update-018","v0.1.8-beta","2026.05.11",["스킬 > 스킬 세팅 페이지 추가","스킬 세팅 10칸 배치 기능 추가","스킬 목록 클릭 시 첫 번째 빈칸부터 자동 배치 기능 추가","세팅된 스킬 클릭 시 제거 기능 추가","스킬 세팅 초기화 버튼 추가","스킬 세팅 칸의 배경색을 스킬 목록 버튼과 동일하게 표시하도록 수정","스킬 목록을 5열 구조로 정리","스킬 목록 정렬을 신화부터 일반 순, 같은 등급 내 가나다순으로 적용","스킬 정보와 스킬 세팅 필터 UI를 2줄 구조로 압축","사이트 하단 현재 버전 표시를 v0.1.8-beta로 변경"]],
+  ["update-019","v0.1.9-beta","2026.05.11",["스킬 > 스킬 세팅 모음 페이지 추가","스킬 세팅 저장 기능 추가","등반, 4자사, 18자사, 시공, 순숲, 폐광, 수동 용도별 저장 구조 추가","저장된 스킬 세팅 삭제 기능 추가","저장된 세팅을 브라우저에 유지하는 localStorage 저장 기능 추가","사이트 하단 현재 버전 표시를 v0.1.9-beta로 변경"]],
   ["update-020","v0.1.10-beta","2026.05.11",["스킬 저장 시 칸 수 선택 단계를 제거","현재 세팅된 스킬 개수를 자동으로 계산하여 5칸~10칸 세팅으로 자동 저장","스킬 세팅 모음을 카테고리 펼침 방식으로 변경","각 카테고리 아래에 저장된 세팅을 모두 확인할 수 있도록 변경","모바일 화면에서 저장된 스킬 세팅 박스가 화면 밖으로 튀어나가지 않도록 수정","사이트 하단 현재 버전 표시를 v0.1.10-beta로 변경"]]
 ];
 
 const pageMap = {"intro":["들어가며",""]};
 diamondPages.forEach(([id,name]) => pageMap[id] = ["다이아 소모처", name]);
 promotions.forEach(([id,name]) => pageMap[id] = ["승급", name]);
-infoPages.forEach(([id,name]) => pageMap[id] = ["정보", name]);
+infoPages.forEach(([id,name]) => pageMap[id] = ["스킬", name]);
 updatePages.forEach(([id,name]) => pageMap[id] = ["업데이트", name]);
 
 const gradeOrder = ["불멸","신화","전설","영웅","레어","고급","일반"];
@@ -789,7 +789,7 @@ function addSections() {
     <section id="diamond-beast" class="card"><h2>비스트</h2><button class="unlock-btn" onclick="openUnlockPopup('비스트', '워프로스트 승급 시')">해금</button><p>추후 [비스트] 내용을 업데이트 할 예정입니다.</p></section>
 
     <section id="skill-learn" class="card">
-      <h2>스킬 배우기</h2>
+      <h2>스킬 정보</h2>
       <p>스킬 이름을 검색하거나, 등급과 속성 필터를 함께 사용해 스킬을 확인할 수 있습니다.</p>
       <input id="skillSearchInput" class="skill-search-box" type="text" placeholder="스킬 이름을 검색하세요. 예: 불꽃 베기" oninput="renderSkills()" />
       ${filterHtml("learn")}
