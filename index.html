@@ -745,11 +745,20 @@ function filterHtml(type) {
 function addSections() {
   const content = document.getElementById("content");
   content.insertAdjacentHTML("beforeend", `
-    <section id="intro" class="card active">
+    <section id="home" class="card active">
       <h2>홈</h2>
       <p><strong>물멍위키에 오신 여러분을 환영합니다.</strong></p>
       <p><strong>고마운 분</strong></p>
       <p>코숑, 예린교수, 쿠키제과, KEY</p>
+    </section>
+
+    <section id="intro" class="card">
+      <h2>들어가며</h2>
+      <p>제가 생각하기에 이 게임의 묘미는 바로 승급의 짜릿함과 사람들과의 소통인 것 같습니다.</p>
+      <p>여러 컨텐츠를 즐기며 강화, 합성, 각성을 해 승급을 하고, 여러 사람들과 즐거운 소통도 하면서 즐기고 있는 것 같네요 ^^;;</p>
+      <p>그리고 처음 시작하시는 분들이나 성장 방향이 고민되시는 분들도 조금 더 쉽고 재밌게 즐기실 수 있도록 저 물멍이 하나하나 함께 도와드리겠습니다.</p>
+      <p>이렇게 재밌는 <strong>“슬레이어 키우기”</strong></p>
+      <p><strong>저 물멍과 함께 제.대.로 즐겨보시겠습니까?</strong></p>
     </section>
 
     <section id="diamond-roadmap" class="card">
@@ -1343,7 +1352,7 @@ function renderSavedSettingCollection() {
 
 addMenuButtons();
 addSections();
-setBreadcrumb("intro");
+setBreadcrumb("home");
 renderSkills();
 renderSkillSettingSlots();
 renderSettingSkillList();
@@ -1990,4 +1999,4 @@ statsTimer = setInterval(refreshSiteStats, 30000);
   console.log("Firebase 연결 완료");
 </script>
 </body>
-      </html>
+</html>
