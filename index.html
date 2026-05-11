@@ -272,6 +272,104 @@
       margin-top: 18px;
     }
 
+    .skill-search-input {
+      width: 100%;
+      margin: 10px 0 22px;
+      padding: 14px 16px;
+      border: 2px solid #d1d5db;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 700;
+      outline: none;
+    }
+
+    .skill-search-input:focus {
+      border-color: #55ffff;
+      box-shadow: 0 0 8px rgba(85, 255, 255, 0.55);
+    }
+
+    .skill-result-area {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .skill-attribute-section {
+      padding-top: 4px;
+    }
+
+    .skill-attribute-title {
+      margin-bottom: 12px;
+      font-size: 22px;
+      font-weight: 900;
+    }
+
+    .skill-list {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    .skill-card {
+      padding: 14px 16px;
+      border: 1px solid #e5e7eb;
+      border-radius: 14px;
+      background: #ffffff;
+    }
+
+    .skill-card-top {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .skill-name {
+      font-size: 18px;
+      font-weight: 900;
+    }
+
+    .skill-badge {
+      display: inline-block;
+      padding: 5px 11px;
+      border-radius: 999px;
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .skill-badge.fire {
+      background: #ef4444;
+    }
+
+    .skill-badge.water {
+      background: #3b82f6;
+    }
+
+    .skill-badge.wind {
+      background: #10b981;
+    }
+
+    .skill-badge.earth {
+      background: #a16207;
+    }
+
+    .skill-info {
+      font-size: 15px;
+      font-weight: 700;
+      color: #374151;
+      margin-bottom: 4px;
+    }
+
+    .skill-empty {
+      padding: 18px;
+      border-radius: 14px;
+      background: #f3f4f6;
+      color: #6b7280;
+      font-weight: 800;
+      text-align: center;
+    }
+
     .guide-table-wrap {
       width: 100%;
       overflow-x: auto;
@@ -436,6 +534,32 @@
 
       .unlock-popup p {
         font-size: 15px;
+      }
+
+      .skill-search-input {
+        padding: 12px 13px;
+        font-size: 14px;
+      }
+
+      .skill-attribute-title {
+        font-size: 19px;
+      }
+
+      .skill-card {
+        padding: 12px 13px;
+      }
+
+      .skill-name {
+        font-size: 16px;
+      }
+
+      .skill-info {
+        font-size: 14px;
+      }
+
+      .skill-badge {
+        font-size: 12px;
+        padding: 4px 9px;
       }
 
       .update-list li {
@@ -708,20 +832,18 @@
           <h2>스킬 배우기</h2>
 
           <p>
-            속성별 스킬을 레벨 순서대로 확인할 수 있도록 정리한 표입니다.
+            스킬 이름을 검색하거나, 속성별 스킬 목록을 확인할 수 있습니다.
           </p>
 
-          <img
-            src="skill-learning-1.png"
-            alt="스킬 배우기 표 1"
-            class="skill-image"
+          <input
+            type="text"
+            id="skillSearchInput"
+            class="skill-search-input"
+            placeholder="스킬 이름을 검색하세요. 예: 불꽃 베기"
+            oninput="renderSkillList()"
           />
 
-          <img
-            src="skill-learning-2.png"
-            alt="스킬 배우기 표 2"
-            class="skill-image"
-          />
+          <div id="skillResultArea" class="skill-result-area"></div>
         </section>
 
         <section id="update-010" class="card">
@@ -882,6 +1004,52 @@
       "update-016": ["업데이트", "v0.1.6-beta"]
     };
 
+    const skills = [
+      { attribute: "불", type: "fire", level: "Lv.10", name: "불꽃 베기", material: "-" },
+      { attribute: "불", type: "fire", level: "Lv.20", name: "불의 검", material: "-" },
+      { attribute: "불", type: "fire", level: "Lv.30", name: "타오르는 검", material: "불 속성석 10" },
+      { attribute: "불", type: "fire", level: "Lv.40", name: "열풍", material: "무기 고급 2등급 4" },
+      { attribute: "불", type: "fire", level: "Lv.70", name: "화염 베기", material: "불 속성석 20" },
+      { attribute: "불", type: "fire", level: "Lv.90", name: "화염 파동", material: "무기 영웅 3등급 4" },
+      { attribute: "불", type: "fire", level: "Lv.120", name: "연혹 화염 베기", material: "무기 전설 4등급 2 / 불 속성석 300" },
+      { attribute: "불", type: "fire", level: "Lv.200", name: "분노", material: "무기 전설 1등급 4 / 불 속성석 100" },
+      { attribute: "불", type: "fire", level: "Lv.300", name: "진 열풍", material: "무기 전설 3등급 4" },
+      { attribute: "불", type: "fire", level: "Lv.400", name: "불기둥", material: "무기 신화 3등급 4" },
+
+      { attribute: "물", type: "water", level: "Lv.15", name: "흐르는 칼날", material: "-" },
+      { attribute: "물", type: "water", level: "Lv.25", name: "굽이치는 칼날", material: "-" },
+      { attribute: "물", type: "water", level: "Lv.35", name: "아이스 스톤", material: "-" },
+      { attribute: "물", type: "water", level: "Lv.45", name: "파도 베기", material: "-" },
+      { attribute: "물", type: "water", level: "Lv.60", name: "아이스 샤워", material: "물 속성석 20" },
+      { attribute: "물", type: "water", level: "Lv.80", name: "춤추는 파도", material: "악세 영웅 3등급 4" },
+      { attribute: "물", type: "water", level: "Lv.100", name: "메디테이션", material: "악세 전설 3등급 4 / 물 속성석 50" },
+      { attribute: "물", type: "water", level: "Lv.160", name: "아이스 타임", material: "악세 전설 4등급 2 / 물 속성석 300" },
+      { attribute: "물", type: "water", level: "Lv.250", name: "마나의 축복", material: "무기 레어 4등급 4" },
+      { attribute: "물", type: "water", level: "Lv.350", name: "블리자드", material: "무기 신화 2등급 4" },
+
+      { attribute: "바람", type: "wind", level: "Lv.15", name: "가속의 검", material: "무기 레어 4등급 4" },
+      { attribute: "바람", type: "wind", level: "Lv.25", name: "번개 베기", material: "무기 일반 4등급 4" },
+      { attribute: "바람", type: "wind", level: "Lv.35", name: "바람의 검", material: "무기 영웅 4등급 4" },
+      { attribute: "바람", type: "wind", level: "Lv.40", name: "전광석화", material: "무기 레어 3등급 4" },
+      { attribute: "바람", type: "wind", level: "Lv.50", name: "뇌격", material: "무기 레어 4등급 4" },
+      { attribute: "바람", type: "wind", level: "Lv.70", name: "천둥 베기", material: "바람 속성석 20" },
+      { attribute: "바람", type: "wind", level: "Lv.90", name: "고속이동", material: "악세 고급 4등급 4" },
+      { attribute: "바람", type: "wind", level: "Lv.140", name: "수라 번개 베기", material: "전설 레어 2등급 4 / 바람 속성석 300" },
+      { attribute: "바람", type: "wind", level: "Lv.200", name: "격류", material: "무기 전설 1등급 4" },
+      { attribute: "바람", type: "wind", level: "Lv.300", name: "뇌신", material: "악세 신화 2등급 4" },
+      { attribute: "바람", type: "wind", level: "Lv.450", name: "신속", material: "무기 신화 4등급 4" },
+
+      { attribute: "땅", type: "earth", level: "Lv.10", name: "대지의 축복", material: "-" },
+      { attribute: "땅", type: "earth", level: "Lv.20", name: "스톤 스트라이크", material: "악세 일반 4등급 4" },
+      { attribute: "땅", type: "earth", level: "Lv.30", name: "땅의 의지", material: "-" },
+      { attribute: "땅", type: "earth", level: "Lv.50", name: "강철의 의지", material: "땅 속성석 20" },
+      { attribute: "땅", type: "earth", level: "Lv.60", name: "파워 스트라이크", material: "땅 속성석 20" },
+      { attribute: "땅", type: "earth", level: "Lv.100", name: "파워 임팩트", material: "악세 고급 2등급 4" },
+      { attribute: "땅", type: "earth", level: "Lv.140", name: "라이프 마나", material: "땅 속성석 50" },
+      { attribute: "땅", type: "earth", level: "Lv.180", name: "기가 스트라이크", material: "악세 전설 2등급 2 / 땅 속성석 300" },
+      { attribute: "땅", type: "earth", level: "Lv.500", name: "마수 사냥", material: "무기 신화 1등급 4" }
+    ];
+
     promotions.forEach(([id, name]) => {
       pageMap[id] = ["승급", name];
     });
@@ -993,8 +1161,64 @@
       document.getElementById("unlockPopupBg").classList.remove("show");
     }
 
+    function createSkillCard(skill) {
+      return `
+        <div class="skill-card">
+          <div class="skill-card-top">
+            <span class="skill-name">${skill.name}</span>
+            <span class="skill-badge ${skill.type}">${skill.attribute}</span>
+          </div>
+          <div class="skill-info">레벨: ${skill.level}</div>
+          <div class="skill-info">필요 재료: ${skill.material}</div>
+        </div>
+      `;
+    }
+
+    function renderSkillList() {
+      const input = document.getElementById("skillSearchInput");
+      const resultArea = document.getElementById("skillResultArea");
+
+      if (!input || !resultArea) return;
+
+      const keyword = input.value.trim().toLowerCase();
+
+      const filteredSkills = skills.filter(skill =>
+        skill.name.toLowerCase().includes(keyword)
+      );
+
+      if (filteredSkills.length === 0) {
+        resultArea.innerHTML = `<div class="skill-empty">검색 결과가 없습니다.</div>`;
+        return;
+      }
+
+      if (keyword) {
+        resultArea.innerHTML = `
+          <div class="skill-list">
+            ${filteredSkills.map(createSkillCard).join("")}
+          </div>
+        `;
+        return;
+      }
+
+      const attributes = ["불", "물", "바람", "땅"];
+
+      resultArea.innerHTML = attributes.map(attribute => {
+        const attributeSkills = skills.filter(skill => skill.attribute === attribute);
+
+        return `
+          <div class="skill-attribute-section">
+            <h3 class="skill-attribute-title">${attribute} 속성</h3>
+            <div class="skill-list">
+              ${attributeSkills.map(createSkillCard).join("")}
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
     createPromotionMenuAndSections();
     setBreadcrumb("intro");
+    renderSkillList();
   </script>
 </body>
 </html>
