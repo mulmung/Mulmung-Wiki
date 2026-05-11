@@ -269,7 +269,7 @@
 
     .skill-search-input {
       width: 100%;
-      margin: 10px 0 22px;
+      margin: 10px 0 14px;
       padding: 14px 16px;
       border: 2px solid #d1d5db;
       border-radius: 14px;
@@ -281,6 +281,64 @@
     .skill-search-input:focus {
       border-color: #55ffff;
       box-shadow: 0 0 8px rgba(85, 255, 255, 0.55);
+    }
+
+    .skill-filter-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 22px;
+    }
+
+    .skill-filter-btn {
+      border: none;
+      border-radius: 999px;
+      padding: 7px 13px;
+      font-size: 13px;
+      font-weight: 900;
+      cursor: pointer;
+      opacity: 0.72;
+    }
+
+    .skill-filter-btn.active {
+      opacity: 1;
+      outline: 3px solid rgba(85, 255, 255, 0.55);
+    }
+
+    .skill-filter-btn.all {
+      background: #000000;
+      color: #ffffff;
+    }
+
+    .skill-filter-btn.normal {
+      background: #ffffff;
+      color: #111827;
+      border: 1px solid #d1d5db;
+    }
+
+    .skill-filter-btn.advanced {
+      background: #22c55e;
+      color: #ffffff;
+    }
+
+    .skill-filter-btn.rare {
+      background: #f97316;
+      color: #ffffff;
+    }
+
+    .skill-filter-btn.hero {
+      background: #8b5cf6;
+      color: #ffffff;
+    }
+
+    .skill-filter-btn.legend {
+      background: #ef4444;
+      color: #ffffff;
+    }
+
+    .skill-filter-btn.myth {
+      background: #38bdf8;
+      color: #ffffff;
     }
 
     .skill-result-area {
@@ -566,6 +624,15 @@
         font-size: 14px;
       }
 
+      .skill-filter-buttons {
+        gap: 6px;
+      }
+
+      .skill-filter-btn {
+        padding: 6px 10px;
+        font-size: 12px;
+      }
+
       .skill-attribute-title {
         font-size: 19px;
       }
@@ -693,6 +760,7 @@
           <button class="sub-menu-btn" onclick="showSection('update-014')">v0.1.4-beta</button>
           <button class="sub-menu-btn" onclick="showSection('update-015')">v0.1.5-beta</button>
           <button class="sub-menu-btn" onclick="showSection('update-016')">v0.1.6-beta</button>
+          <button class="sub-menu-btn" onclick="showSection('update-017')">v0.1.7-beta</button>
         </div>
       </div>
     </aside>
@@ -858,7 +926,7 @@
           <h2>스킬 배우기</h2>
 
           <p>
-            스킬 이름을 검색하거나, 속성별 스킬 목록을 확인할 수 있습니다.
+            스킬 이름을 검색하거나, 등급별 스킬 목록을 확인할 수 있습니다.
           </p>
 
           <input
@@ -868,6 +936,16 @@
             placeholder="스킬 이름을 검색하세요. 예: 불꽃 베기"
             oninput="renderSkillList()"
           />
+
+          <div class="skill-filter-buttons">
+            <button class="skill-filter-btn all active" onclick="setSkillGradeFilter('all', this)">전체</button>
+            <button class="skill-filter-btn myth" onclick="setSkillGradeFilter('myth', this)">신화</button>
+            <button class="skill-filter-btn legend" onclick="setSkillGradeFilter('legend', this)">전설</button>
+            <button class="skill-filter-btn hero" onclick="setSkillGradeFilter('hero', this)">영웅</button>
+            <button class="skill-filter-btn rare" onclick="setSkillGradeFilter('rare', this)">레어</button>
+            <button class="skill-filter-btn advanced" onclick="setSkillGradeFilter('advanced', this)">고급</button>
+            <button class="skill-filter-btn normal" onclick="setSkillGradeFilter('normal', this)">일반</button>
+          </div>
 
           <div id="skillResultArea" class="skill-result-area"></div>
         </section>
@@ -953,10 +1031,24 @@
             <li>업데이트 내역을 버전별로 관리할 수 있도록 구조 정리</li>
           </ul>
         </section>
+
+        <section id="update-017" class="card">
+          <h2>물멍위키 v0.1.7-beta 업데이트 내역</h2>
+          <p class="update-date">업데이트 날짜: 2026.05.11</p>
+          <ul class="update-list">
+            <li>상단 물멍위키 제목 클릭 시 들어가며 화면으로 이동 기능 추가</li>
+            <li>클래스, 정령, 사역마, 비스트 해금 조건 팝업 추가</li>
+            <li>정보 &gt; 스킬 배우기 검색 기능 추가</li>
+            <li>스킬 배우기 등급 배지 추가</li>
+            <li>스킬 배우기 목록을 등급순으로 정렬</li>
+            <li>같은 등급 내 가나다순 정렬 적용</li>
+            <li>스킬 배우기 등급 필터 버튼 추가</li>
+          </ul>
+        </section>
       </main>
 
       <footer class="site-footer">
-        현재 버전: 물멍위키 v0.1.6-beta
+        현재 버전: 물멍위키 v0.1.7-beta
       </footer>
     </div>
   </div>
@@ -1013,8 +1105,29 @@
       "update-013": ["업데이트", "v0.1.3-beta"],
       "update-014": ["업데이트", "v0.1.4-beta"],
       "update-015": ["업데이트", "v0.1.5-beta"],
-      "update-016": ["업데이트", "v0.1.6-beta"]
+      "update-016": ["업데이트", "v0.1.6-beta"],
+      "update-017": ["업데이트", "v0.1.7-beta"]
     };
+
+    const gradeOrder = {
+      myth: 1,
+      legend: 2,
+      hero: 3,
+      rare: 4,
+      advanced: 5,
+      normal: 6
+    };
+
+    const gradeNameMap = {
+      myth: "신화",
+      legend: "전설",
+      hero: "영웅",
+      rare: "레어",
+      advanced: "고급",
+      normal: "일반"
+    };
+
+    let currentSkillGradeFilter = "all";
 
     const skills = [
       { attribute: "불", type: "fire", level: "Lv.10", name: "불꽃 베기", grade: "일반", gradeType: "normal", material: "-" },
@@ -1187,6 +1300,29 @@
       `;
     }
 
+    function sortSkills(skillList) {
+      return [...skillList].sort((a, b) => {
+        const gradeCompare = gradeOrder[a.gradeType] - gradeOrder[b.gradeType];
+
+        if (gradeCompare !== 0) {
+          return gradeCompare;
+        }
+
+        return a.name.localeCompare(b.name, "ko");
+      });
+    }
+
+    function setSkillGradeFilter(gradeType, button) {
+      currentSkillGradeFilter = gradeType;
+
+      document.querySelectorAll(".skill-filter-btn").forEach(btn => {
+        btn.classList.remove("active");
+      });
+
+      button.classList.add("active");
+      renderSkillList();
+    }
+
     function renderSkillList() {
       const input = document.getElementById("skillSearchInput");
       const resultArea = document.getElementById("skillResultArea");
@@ -1195,34 +1331,48 @@
 
       const keyword = input.value.trim().toLowerCase();
 
-      const filteredSkills = skills.filter(skill =>
-        skill.name.toLowerCase().includes(keyword)
-      );
+      let filteredSkills = skills.filter(skill => {
+        const matchesKeyword = skill.name.toLowerCase().includes(keyword);
+        const matchesGrade =
+          currentSkillGradeFilter === "all" ||
+          skill.gradeType === currentSkillGradeFilter;
+
+        return matchesKeyword && matchesGrade;
+      });
+
+      filteredSkills = sortSkills(filteredSkills);
 
       if (filteredSkills.length === 0) {
         resultArea.innerHTML = `<div class="skill-empty">검색 결과가 없습니다.</div>`;
         return;
       }
 
-      if (keyword) {
+      if (currentSkillGradeFilter !== "all") {
         resultArea.innerHTML = `
-          <div class="skill-list">
-            ${filteredSkills.map(createSkillCard).join("")}
+          <div class="skill-attribute-section">
+            <h3 class="skill-attribute-title">${gradeNameMap[currentSkillGradeFilter]} 등급</h3>
+            <div class="skill-list">
+              ${filteredSkills.map(createSkillCard).join("")}
+            </div>
           </div>
         `;
         return;
       }
 
-      const attributes = ["불", "물", "바람", "땅"];
+      const gradeTypes = ["myth", "legend", "hero", "rare", "advanced", "normal"];
 
-      resultArea.innerHTML = attributes.map(attribute => {
-        const attributeSkills = skills.filter(skill => skill.attribute === attribute);
+      resultArea.innerHTML = gradeTypes.map(gradeType => {
+        const gradeSkills = filteredSkills.filter(skill => skill.gradeType === gradeType);
+
+        if (gradeSkills.length === 0) {
+          return "";
+        }
 
         return `
           <div class="skill-attribute-section">
-            <h3 class="skill-attribute-title">${attribute} 속성</h3>
+            <h3 class="skill-attribute-title">${gradeNameMap[gradeType]} 등급</h3>
             <div class="skill-list">
-              ${attributeSkills.map(createSkillCard).join("")}
+              ${gradeSkills.map(createSkillCard).join("")}
             </div>
           </div>
         `;
