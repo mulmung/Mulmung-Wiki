@@ -15,12 +15,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
 .layout{display:flex;max-width:1280px;margin:0 auto}
 .sidebar{width:280px;flex:0 0 280px;min-height:calc(100vh - 62px);padding:18px;background:#202326;border-right:1px solid #111827}
 .sidebar-title{color:#fff;font-size:18px;font-weight:900;margin-bottom:16px}
-
-.sidebar-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 0 16px}
-.sidebar-stat-card{border:1px solid rgba(255,255,255,.12);border-radius:16px;background:#111827;padding:12px;text-align:center;color:#fff}
-.sidebar-stat-label{display:block;font-size:12px;font-weight:900;color:#d1d5db;margin-bottom:4px;letter-spacing:-.2px}
-.sidebar-stat-value{display:block;font-size:22px;font-weight:900;line-height:1}
-.sidebar-stat-unit{font-size:13px;font-weight:900;margin-left:2px;color:#e5e7eb}
 .menu-group{margin-bottom:10px}
 .menu-btn,.sub-menu-btn{width:100%;border:none;cursor:pointer;text-align:left;font-weight:800}
 .menu-btn{display:flex;justify-content:space-between;align-items:center;padding:14px;border-radius:12px;background:#000;color:#fff;font-size:16px}
@@ -191,9 +185,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
   .logo{max-width:260px}
   .layout{display:block}
   .sidebar{position:fixed;top:0;left:-290px;z-index:2000;width:280px;height:100vh;overflow-y:auto;transition:left .25s ease}
-  .sidebar-stats{grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
-  .sidebar-stat-card{padding:10px;border-radius:14px}
-  .sidebar-stat-value{font-size:20px}
   .sidebar.open{left:0}
   .overlay{position:fixed;inset:0;z-index:1500;background:rgba(0,0,0,.45)}
   .overlay.show{display:block}
@@ -435,6 +426,78 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
 }
 
 
+
+
+/* 사이드 메뉴 로그인/직책 표시 */
+.sidebar-auth-card {
+  margin: 0 0 18px;
+  padding: 14px;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 18px;
+  background: rgba(15, 23, 42, .78);
+  color: #fff;
+}
+.sidebar-auth-title {
+  margin-bottom: 8px;
+  font-size: 12px;
+  font-weight: 900;
+  color: rgba(255,255,255,.62);
+}
+.sidebar-user-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+.sidebar-role-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 48px;
+  height: 28px;
+  padding: 0 10px;
+  border-radius: 999px;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 1;
+}
+.sidebar-role-badge.admin { background: #000; }
+.sidebar-role-badge.skill { background: #f97316; }
+.sidebar-role-badge.user { background: #334155; }
+.sidebar-nickname {
+  font-size: 16px;
+  font-weight: 900;
+  color: #fff;
+}
+.sidebar-action-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+.sidebar-mini-btn {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 12px;
+  background: #fff;
+  color: #111827;
+  font-size: 13px;
+  font-weight: 900;
+  cursor: pointer;
+}
+.sidebar-mini-btn.dark {
+  background: #000;
+  color: #fff;
+}
+.sidebar-mini-btn.orange {
+  background: #f97316;
+  color: #fff;
+  border-color: #f97316;
+}
+.sidebar-mini-btn:hover { filter: brightness(.96); }
+
 </style>
 </head>
 
@@ -458,14 +521,19 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
   <div class="layout">
     <aside class="sidebar" id="sidebar">
       <div class="sidebar-title">메뉴</div>
-      <div class="sidebar-stats" id="sidebarStats">
-        <div class="sidebar-stat-card">
-          <span class="sidebar-stat-label">접속 중</span>
-          <span class="sidebar-stat-value"><span id="onlineUserCount">-</span><span class="sidebar-stat-unit">명</span></span>
-        </div>
-        <div class="sidebar-stat-card">
-          <span class="sidebar-stat-label">가입 슬레이어</span>
-          <span class="sidebar-stat-value"><span id="joinedUserCount">-</span><span class="sidebar-stat-unit">명</span></span>
+      <div class="sidebar-auth-card">
+        <div class="sidebar-auth-title">로그인 정보</div>
+        <button id="sidebarLoginBtn" class="sidebar-mini-btn dark">Google 로그인</button>
+        <div id="sidebarProfile" style="display:none;">
+          <div class="sidebar-user-line">
+            <span id="sidebarRoleBadge" class="sidebar-role-badge user">일반</span>
+            <span id="sidebarNickname" class="sidebar-nickname">닉네임 미설정</span>
+          </div>
+          <div class="sidebar-action-row">
+            <button id="sidebarNicknameBtn" class="sidebar-mini-btn">닉네임 설정</button>
+            <button id="sidebarRoleManageBtn" class="sidebar-mini-btn orange" style="display:none;">직책 관리</button>
+            <button id="sidebarLogoutBtn" class="sidebar-mini-btn">로그아웃</button>
+          </div>
         </div>
       </div>
       <div class="menu-group"><button class="menu-btn" onclick="showSection('intro')">들어가며</button></div>
@@ -1088,180 +1156,79 @@ const nicknameBtn = document.getElementById("nicknameBtn");
 const roleManageBtn = document.getElementById("roleManageBtn");
 const logoutBtn = document.getElementById("logoutBtn");
 const userInfo = document.getElementById("userInfo");
+const sidebarLoginBtn = document.getElementById("sidebarLoginBtn");
+const sidebarProfile = document.getElementById("sidebarProfile");
+const sidebarRoleBadge = document.getElementById("sidebarRoleBadge");
+const sidebarNickname = document.getElementById("sidebarNickname");
+const sidebarNicknameBtn = document.getElementById("sidebarNicknameBtn");
+const sidebarRoleManageBtn = document.getElementById("sidebarRoleManageBtn");
+const sidebarLogoutBtn = document.getElementById("sidebarLogoutBtn");
 
 let currentUser = null;
 let currentNickname = "";
 let currentRole = "user";
-let presenceTimer = null;
-let statsTimer = null;
-
-const ONLINE_LIMIT_MS = 2 * 60 * 1000;
 
 function isAdminUser(user) {
   return user && user.email && user.email.toLowerCase() === ADMIN_EMAIL.toLowerCase();
 }
 
-async function savePublicUserProfile(user, nickname, role) {
-  if (!user) return;
+function updateSidebarDisplay(user, nickname, role = "user") {
+  if (!sidebarLoginBtn || !sidebarProfile || !sidebarRoleBadge || !sidebarNickname) return;
 
-  await setDoc(doc(db, "publicUsers", user.uid), {
-    nickname: nickname || "",
-    role: role || "user",
-    lastActiveAt: Date.now(),
-    updatedAt: serverTimestamp()
-  }, { merge: true });
-}
-
-async function updateMyPresence(user) {
-  if (!user) return;
-
-  await setDoc(doc(db, "publicUsers", user.uid), {
-    lastActiveAt: Date.now(),
-    updatedAt: serverTimestamp()
-  }, { merge: true });
-}
-
-async function markMeOffline() {
-  if (!currentUser) return;
-
-  try {
-    await setDoc(doc(db, "publicUsers", currentUser.uid), {
-      lastActiveAt: 0,
-      updatedAt: serverTimestamp()
-    }, { merge: true });
-  } catch (error) {
-    console.warn("오프라인 표시 오류:", error);
-  }
-}
-
-async function refreshSiteStats() {
-  const onlineCountEl = document.getElementById("onlineUserCount");
-  const joinedCountEl = document.getElementById("joinedUserCount");
-  if (!onlineCountEl || !joinedCountEl) return;
-
-  try {
-    const publicDocs = await getDocs(collection(db, "publicUsers"));
-    const now = Date.now();
-    let onlineCount = 0;
-    let joinedCount = 0;
-
-    publicDocs.forEach(userDoc => {
-      const data = userDoc.data();
-      const nickname = (data.nickname || "").toString().trim();
-      const lastActiveAt = Number(data.lastActiveAt || 0);
-
-      if (nickname) joinedCount += 1;
-      if (lastActiveAt && now - lastActiveAt <= ONLINE_LIMIT_MS) onlineCount += 1;
-    });
-
-    onlineCountEl.textContent = onlineCount;
-    joinedCountEl.textContent = joinedCount;
-  } catch (error) {
-    console.warn("사이트 통계 불러오기 오류:", error);
-    onlineCountEl.textContent = "-";
-    joinedCountEl.textContent = "-";
-  }
-}
-
-function startPresenceTimer(user) {
-  if (presenceTimer) clearInterval(presenceTimer);
-
-  updateMyPresence(user).then(refreshSiteStats).catch(error => {
-    console.warn("접속 상태 갱신 오류:", error);
-  });
-
-  presenceTimer = setInterval(() => {
-    updateMyPresence(user).then(refreshSiteStats).catch(error => {
-      console.warn("접속 상태 갱신 오류:", error);
-    });
-  }, 45000);
-}
-
-function stopPresenceTimer() {
-  if (presenceTimer) clearInterval(presenceTimer);
-  presenceTimer = null;
-}
-
-async function getOrCreateUserProfile(user) {
-  const userRef = doc(db, "users", user.uid);
-  const userSnap = await getDoc(userRef);
-
-  if (isAdminUser(user)) {
-    await setDoc(userRef, {
-      email: user.email,
-      nickname: "물멍",
-      role: "admin",
-      updatedAt: serverTimestamp()
-    }, { merge: true });
-    await savePublicUserProfile(user, "물멍", "admin");
-
-    return { nickname: "물멍", role: "admin" };
-  }
-
-  if (!userSnap.exists()) {
-    await setDoc(userRef, {
-      email: user.email,
-      nickname: "",
-      role: "user",
-      createdAt: serverTimestamp(),
-      updatedAt: serverTimestamp()
-    });
-    await savePublicUserProfile(user, "", "user");
-
-    return { nickname: "", role: "user" };
-  }
-
-  const data = userSnap.data();
-  const nickname = data.nickname || "";
-  const role = data.role || "user";
-  await savePublicUserProfile(user, nickname, role);
-
-  return {
-    nickname,
-    role
-  };
-}
-
-function updateUserDisplay(user, nickname, role = "user") {
-  if (isAdminUser(user)) {
-    userInfo.innerHTML = `<span class="role-label admin">관리자</span><span class="nickname-text">물멍</span>`;
-    nicknameBtn.style.display = "none";
-    roleManageBtn.style.display = "inline-block";
-    return;
-  }
-
-  roleManageBtn.style.display = "none";
-  nicknameBtn.style.display = "inline-block";
+  sidebarLoginBtn.style.display = "none";
+  sidebarProfile.style.display = "block";
 
   const displayName = nickname || "닉네임 미설정";
 
-  if (role === "skill_master") {
-    userInfo.innerHTML = `<span class="role-label skill">스킬</span><span class="nickname-text">${displayName}</span>`;
-  } else {
-    userInfo.innerHTML = `<span class="nickname-text">${displayName}</span>`;
+  sidebarRoleBadge.classList.remove("admin", "skill", "user");
+
+  if (isAdminUser(user) || role === "admin") {
+    sidebarRoleBadge.textContent = "관리자";
+    sidebarRoleBadge.classList.add("admin");
+    sidebarNickname.textContent = "물멍";
+    if (sidebarNicknameBtn) sidebarNicknameBtn.style.display = "none";
+    if (sidebarRoleManageBtn) sidebarRoleManageBtn.style.display = "block";
+    return;
   }
+
+  if (role === "skill_master") {
+    sidebarRoleBadge.textContent = "스킬";
+    sidebarRoleBadge.classList.add("skill");
+  } else {
+    sidebarRoleBadge.textContent = "일반";
+    sidebarRoleBadge.classList.add("user");
+  }
+
+  sidebarNickname.textContent = displayName;
+  if (sidebarNicknameBtn) sidebarNicknameBtn.style.display = "block";
+  if (sidebarRoleManageBtn) sidebarRoleManageBtn.style.display = "none";
 }
 
-loginBtn.addEventListener("click", async () => {
+function resetSidebarDisplay() {
+  if (sidebarLoginBtn) sidebarLoginBtn.style.display = "block";
+  if (sidebarProfile) sidebarProfile.style.display = "none";
+  if (sidebarRoleManageBtn) sidebarRoleManageBtn.style.display = "none";
+}
+
+async function handleGoogleLogin() {
   try {
     await signInWithPopup(auth, provider);
   } catch (error) {
     console.error("로그인 오류:", error);
     alert(`로그인 오류: ${error.code}\n${error.message}`);
   }
-});
+}
 
-logoutBtn.addEventListener("click", async () => {
+async function handleLogout() {
   try {
-    await markMeOffline();
     await signOut(auth);
   } catch (error) {
     console.error("로그아웃 오류:", error);
     alert("로그아웃 중 오류가 발생했습니다.");
   }
-});
+}
 
-nicknameBtn.addEventListener("click", async () => {
+async function handleNicknameSetting() {
   if (!currentUser) return;
 
   const newNickname = prompt("사용할 닉네임을 입력하세요.", currentNickname || "");
@@ -1288,16 +1255,92 @@ nicknameBtn.addEventListener("click", async () => {
       role: currentRole || "user",
       updatedAt: serverTimestamp()
     }, { merge: true });
-    await savePublicUserProfile(currentUser, trimmedNickname, currentRole || "user");
 
     currentNickname = trimmedNickname;
     updateUserDisplay(currentUser, currentNickname, currentRole);
-    await refreshSiteStats();
     alert("닉네임이 저장되었습니다.");
   } catch (error) {
     console.error("닉네임 저장 오류:", error);
     alert(`닉네임 저장 오류: ${error.code || "unknown"}\n${error.message || ""}`);
   }
+}
+
+async function getOrCreateUserProfile(user) {
+  const userRef = doc(db, "users", user.uid);
+  const userSnap = await getDoc(userRef);
+
+  if (isAdminUser(user)) {
+    await setDoc(userRef, {
+      email: user.email,
+      nickname: "물멍",
+      role: "admin",
+      updatedAt: serverTimestamp()
+    }, { merge: true });
+
+    return { nickname: "물멍", role: "admin" };
+  }
+
+  if (!userSnap.exists()) {
+    await setDoc(userRef, {
+      email: user.email,
+      nickname: "",
+      role: "user",
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp()
+    });
+
+    return { nickname: "", role: "user" };
+  }
+
+  const data = userSnap.data();
+  return {
+    nickname: data.nickname || "",
+    role: data.role || "user"
+  };
+}
+
+function updateUserDisplay(user, nickname, role = "user") {
+  if (isAdminUser(user)) {
+    userInfo.innerHTML = `<span class="role-label admin">관리자</span><span class="nickname-text">물멍</span>`;
+    nicknameBtn.style.display = "none";
+    roleManageBtn.style.display = "inline-block";
+    updateSidebarDisplay(user, "물멍", "admin");
+    return;
+  }
+
+  roleManageBtn.style.display = "none";
+  nicknameBtn.style.display = "inline-block";
+
+  const displayName = nickname || "닉네임 미설정";
+
+  if (role === "skill_master") {
+    userInfo.innerHTML = `<span class="role-label skill">스킬</span><span class="nickname-text">${displayName}</span>`;
+  } else {
+    userInfo.innerHTML = `<span class="nickname-text">${displayName}</span>`;
+  }
+
+  updateSidebarDisplay(user, displayName, role);
+}
+
+loginBtn.addEventListener("click", async () => {
+  try {
+    await signInWithPopup(auth, provider);
+  } catch (error) {
+    console.error("로그인 오류:", error);
+    alert(`로그인 오류: ${error.code}\n${error.message}`);
+  }
+});
+
+logoutBtn.addEventListener("click", handleLogout);
+
+nicknameBtn.addEventListener("click", handleNicknameSetting);
+
+if (sidebarLoginBtn) sidebarLoginBtn.addEventListener("click", handleGoogleLogin);
+if (sidebarLogoutBtn) sidebarLogoutBtn.addEventListener("click", handleLogout);
+if (sidebarNicknameBtn) sidebarNicknameBtn.addEventListener("click", handleNicknameSetting);
+if (sidebarRoleManageBtn) sidebarRoleManageBtn.addEventListener("click", async () => {
+  if (!currentUser || !isAdminUser(currentUser)) return;
+  await openRolePopup();
 });
 
 roleManageBtn.addEventListener("click", async () => {
@@ -1386,10 +1429,6 @@ async function setUserRole(uid, role) {
       role,
       updatedAt: serverTimestamp()
     }, { merge: true });
-    await setDoc(doc(db, "publicUsers", uid), {
-      role,
-      updatedAt: serverTimestamp()
-    }, { merge: true });
 
     alert(role === "skill_master" ? "스킬 마스터 직책을 부여했습니다." : "직책을 해제했습니다.");
     await openRolePopup();
@@ -1413,16 +1452,14 @@ onAuthStateChanged(auth, async (user) => {
       currentNickname = profile.nickname;
       currentRole = profile.role;
       updateUserDisplay(user, currentNickname, currentRole);
-      startPresenceTimer(user);
-      await refreshSiteStats();
     } catch (error) {
       console.error("유저 정보 불러오기 오류:", error);
       userInfo.textContent = `로그인: ${user.email}`;
       if (!isAdminUser(user)) nicknameBtn.style.display = "inline-block";
       roleManageBtn.style.display = "none";
+      updateSidebarDisplay(user, user.email, isAdminUser(user) ? "admin" : "user");
     }
   } else {
-    stopPresenceTimer();
     currentUser = null;
     currentNickname = "";
     currentRole = "user";
@@ -1432,15 +1469,9 @@ onAuthStateChanged(auth, async (user) => {
     roleManageBtn.style.display = "none";
     logoutBtn.style.display = "none";
     userInfo.textContent = "";
+    resetSidebarDisplay();
   }
 });
-
-window.addEventListener("pagehide", () => {
-  markMeOffline();
-});
-
-refreshSiteStats();
-statsTimer = setInterval(refreshSiteStats, 30000);
 
   console.log("Firebase 연결 완료");
 </script>
