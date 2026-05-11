@@ -817,6 +817,28 @@ renderSkills();
 renderSkillSettingSlots();
 renderSettingSkillList();
 renderSavedSettingCollection();
+      
+</script>
+      <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
+  import { getAuth, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
+  import { getFirestore } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCZvPUhNiU7FbKFofr_Sb4LRgfo0zAjj-U",
+    authDomain: "mulmung-wiki.firebaseapp.com",
+    projectId: "mulmung-wiki",
+    storageBucket: "mulmung-wiki.firebasestorage.app",
+    messagingSenderId: "623574345361",
+    appId: "1:623574345361:web:fe2a3fd1aa136b7031c130"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+  const provider = new GoogleAuthProvider();
+
+  console.log("Firebase 연결 완료");
 </script>
 </body>
 </html>
