@@ -251,11 +251,150 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
   white-space: nowrap;
 }
 
+.admin-role-btn {
+  background: #111827;
+  color: #ffffff;
+  border-color: #111827;
+}
+
+.admin-role-btn:hover {
+  background: #374151;
+}
+
+.role-popup-bg {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 3200;
+  background: rgba(0,0,0,.45);
+  padding: 20px;
+}
+
+.role-popup-bg.show {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.role-popup {
+  width: 100%;
+  max-width: 680px;
+  max-height: 82vh;
+  overflow-y: auto;
+  padding: 22px;
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow: 0 10px 30px rgba(0,0,0,.25);
+}
+
+.role-popup-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.role-popup-head h3 {
+  font-size: 22px;
+  font-weight: 900;
+  color: #111827;
+}
+
+.role-close-btn {
+  border: none;
+  border-radius: 999px;
+  padding: 8px 12px;
+  background: #111827;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.role-help-text {
+  margin-bottom: 14px;
+  color: #4b5563;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.role-user-list {
+  display: grid;
+  gap: 10px;
+}
+
+.role-user-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 14px;
+  background: #f9fafb;
+}
+
+.role-user-name {
+  font-size: 16px;
+  font-weight: 900;
+  color: #111827;
+  word-break: break-all;
+}
+
+.role-user-detail {
+  margin-top: 4px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #6b7280;
+  word-break: break-all;
+}
+
+.role-action-row {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.role-action-btn {
+  border: none;
+  border-radius: 999px;
+  padding: 8px 11px;
+  font-size: 12px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.role-master-btn {
+  background: #7c3aed;
+  color: #ffffff;
+}
+
+.role-user-btn {
+  background: #e5e7eb;
+  color: #111827;
+}
+
+.role-admin-badge {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: #111827;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 900;
+}
+
 @media(max-width:768px){
   .auth-box{gap:5px}
   .login-btn{padding:7px 8px;font-size:11px;border-radius:8px}
   .user-info{font-size:11px;max-width:100px;overflow:hidden;text-overflow:ellipsis}
+  .role-user-card{grid-template-columns:1fr}
+  .role-action-row{justify-content:flex-start}
 }
+
 
 </style>
 </head>
@@ -268,6 +407,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
   <div class="auth-box">
     <button id="loginBtn" class="login-btn">Google 로그인</button>
     <button id="nicknameBtn" class="login-btn" style="display:none;">닉네임 설정</button>
+    <button id="roleManageBtn" class="login-btn admin-role-btn" style="display:none;">직책 관리</button>
     <button id="logoutBtn" class="login-btn" style="display:none;">로그아웃</button>
     <span id="userInfo" class="user-info"></span>
   </div>
@@ -316,6 +456,18 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
       <div class="save-category-grid" id="saveCategoryGrid"></div>
     </div>
   </div>
+
+  <div class="role-popup-bg" id="rolePopupBg" onclick="closeRolePopup()">
+    <div class="role-popup" onclick="event.stopPropagation()">
+      <div class="role-popup-head">
+        <h3>직책 관리</h3>
+        <button class="role-close-btn" onclick="closeRolePopup()">닫기</button>
+      </div>
+      <p class="role-help-text">관리자만 유저에게 스킬 마스터 직책을 부여하거나 해제할 수 있습니다.</p>
+      <div id="roleUserList" class="role-user-list"></div>
+    </div>
+  </div>
+
 
 <script>
 const promotions = [["stone", "스톤"], ["bronze", "브론즈"], ["iron", "아이언"], ["silver", "실버"], ["gold", "골드"], ["mithril", "미스릴"], ["orichalcon", "오리하르콘"], ["arcanite", "아케이나이트"], ["adamantite", "아다만타이트"], ["ether", "에테르"], ["black-mithril", "블랙미스릴"], ["demon-metal", "데몬메탈"], ["dragonog", "드라고노그"], ["ragnablood", "라그나블러드"], ["war-frost", "워프로스트"], ["dark-nox", "다크녹스"], ["blue-abyss", "블루어비스"], ["infinite", "인피넌트"], ["cyclos", "사이클로스"], ["egation-nine", "에게이션트나인"], ["giga-rock", "기가로크"], ["eisenhart", "아이젠하르트"], ["diamond-dust", "다이아더스트"], ["elden-wood", "엘든우드"], ["blitz-gold", "블리츠골드"]];
@@ -864,7 +1016,7 @@ renderSavedSettingCollection();
       <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
   import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
-  import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
+  import { getFirestore, doc, getDoc, setDoc, collection, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
 
   const firebaseConfig = {
   apiKey: "AIzaSyDfcd53sM_tUUp4VVeskZEhKndymzwq6uA",
@@ -884,11 +1036,13 @@ const ADMIN_EMAIL = "khu9918@gmail.com";
 
 const loginBtn = document.getElementById("loginBtn");
 const nicknameBtn = document.getElementById("nicknameBtn");
+const roleManageBtn = document.getElementById("roleManageBtn");
 const logoutBtn = document.getElementById("logoutBtn");
 const userInfo = document.getElementById("userInfo");
 
 let currentUser = null;
 let currentNickname = "";
+let currentRole = "user";
 
 function isAdminUser(user) {
   return user && user.email && user.email.toLowerCase() === ADMIN_EMAIL.toLowerCase();
@@ -906,7 +1060,7 @@ async function getOrCreateUserProfile(user) {
       updatedAt: serverTimestamp()
     }, { merge: true });
 
-    return "물멍";
+    return { nickname: "물멍", role: "admin" };
   }
 
   if (!userSnap.exists()) {
@@ -918,26 +1072,33 @@ async function getOrCreateUserProfile(user) {
       updatedAt: serverTimestamp()
     });
 
-    return "";
+    return { nickname: "", role: "user" };
   }
 
   const data = userSnap.data();
-  return data.nickname || "";
+  return {
+    nickname: data.nickname || "",
+    role: data.role || "user"
+  };
 }
 
-function updateUserDisplay(user, nickname) {
+function updateUserDisplay(user, nickname, role = "user") {
   if (isAdminUser(user)) {
     userInfo.textContent = "관리자: 물멍";
     nicknameBtn.style.display = "none";
+    roleManageBtn.style.display = "inline-block";
     return;
   }
 
+  roleManageBtn.style.display = "none";
   nicknameBtn.style.display = "inline-block";
 
-  if (nickname) {
-    userInfo.textContent = `로그인: ${nickname}`;
+  const displayName = nickname || "닉네임 미설정";
+
+  if (role === "skill_master") {
+    userInfo.textContent = `스킬 마스터: ${displayName}`;
   } else {
-    userInfo.textContent = "로그인: 닉네임 미설정";
+    userInfo.textContent = `로그인: ${displayName}`;
   }
 }
 
@@ -983,7 +1144,7 @@ nicknameBtn.addEventListener("click", async () => {
     await setDoc(userRef, {
       email: currentUser.email,
       nickname: trimmedNickname,
-      role: "user",
+      role: currentRole || "user",
       updatedAt: serverTimestamp()
     }, { merge: true });
 
@@ -996,6 +1157,103 @@ nicknameBtn.addEventListener("click", async () => {
   }
 });
 
+roleManageBtn.addEventListener("click", async () => {
+  if (!currentUser || !isAdminUser(currentUser)) return;
+  await openRolePopup();
+});
+
+function closeRolePopup() {
+  document.getElementById("rolePopupBg").classList.remove("show");
+}
+window.closeRolePopup = closeRolePopup;
+
+async function openRolePopup() {
+  const popup = document.getElementById("rolePopupBg");
+  const list = document.getElementById("roleUserList");
+
+  popup.classList.add("show");
+  list.innerHTML = `<div class="saved-empty">유저 목록을 불러오는 중입니다.</div>`;
+
+  try {
+    const userDocs = await getDocs(collection(db, "users"));
+    const users = [];
+
+    userDocs.forEach(userDoc => {
+      users.push({ uid: userDoc.id, ...userDoc.data() });
+    });
+
+    users.sort((a, b) => {
+      const nameA = (a.nickname || a.email || "").toString();
+      const nameB = (b.nickname || b.email || "").toString();
+      return nameA.localeCompare(nameB, "ko");
+    });
+
+    if (users.length === 0) {
+      list.innerHTML = `<div class="saved-empty">아직 로그인한 유저가 없습니다.</div>`;
+      return;
+    }
+
+    list.innerHTML = users.map(userData => {
+      const nickname = userData.nickname || "닉네임 미설정";
+      const email = userData.email || "이메일 없음";
+      const role = userData.role || "user";
+      const roleLabel = role === "admin" ? "관리자" : role === "skill_master" ? "스킬 마스터" : "일반 유저";
+
+      if (role === "admin") {
+        return `
+          <div class="role-user-card">
+            <div>
+              <div class="role-user-name">${nickname}</div>
+              <div class="role-user-detail">${email}</div>
+              <span class="role-admin-badge">${roleLabel}</span>
+            </div>
+            <div class="role-action-row"></div>
+          </div>
+        `;
+      }
+
+      return `
+        <div class="role-user-card">
+          <div>
+            <div class="role-user-name">${nickname}</div>
+            <div class="role-user-detail">${email}</div>
+            <div class="role-user-detail">현재 직책: ${roleLabel}</div>
+          </div>
+          <div class="role-action-row">
+            <button class="role-action-btn role-master-btn" onclick="setUserRole('${userData.uid}', 'skill_master')">스킬 마스터 부여</button>
+            <button class="role-action-btn role-user-btn" onclick="setUserRole('${userData.uid}', 'user')">직책 해제</button>
+          </div>
+        </div>
+      `;
+    }).join("");
+  } catch (error) {
+    console.error("직책 유저 목록 오류:", error);
+    list.innerHTML = `<div class="saved-empty">유저 목록을 불러오지 못했습니다.<br>${error.code || "unknown"}</div>`;
+  }
+}
+
+async function setUserRole(uid, role) {
+  if (!currentUser || !isAdminUser(currentUser)) {
+    alert("관리자만 직책을 변경할 수 있습니다.");
+    return;
+  }
+
+  try {
+    await setDoc(doc(db, "users", uid), {
+      role,
+      updatedAt: serverTimestamp()
+    }, { merge: true });
+
+    alert(role === "skill_master" ? "스킬 마스터 직책을 부여했습니다." : "직책을 해제했습니다.");
+    await openRolePopup();
+  } catch (error) {
+    console.error("직책 변경 오류:", error);
+    alert(`직책 변경 오류: ${error.code || "unknown"}
+${error.message || ""}`);
+  }
+}
+window.setUserRole = setUserRole;
+
 onAuthStateChanged(auth, async (user) => {
   if (user) {
     currentUser = user;
@@ -1004,19 +1262,24 @@ onAuthStateChanged(auth, async (user) => {
     logoutBtn.style.display = "inline-block";
 
     try {
-      currentNickname = await getOrCreateUserProfile(user);
-      updateUserDisplay(user, currentNickname);
+      const profile = await getOrCreateUserProfile(user);
+      currentNickname = profile.nickname;
+      currentRole = profile.role;
+      updateUserDisplay(user, currentNickname, currentRole);
     } catch (error) {
       console.error("유저 정보 불러오기 오류:", error);
       userInfo.textContent = `로그인: ${user.email}`;
       if (!isAdminUser(user)) nicknameBtn.style.display = "inline-block";
+      roleManageBtn.style.display = "none";
     }
   } else {
     currentUser = null;
     currentNickname = "";
+    currentRole = "user";
 
     loginBtn.style.display = "inline-block";
     nicknameBtn.style.display = "none";
+    roleManageBtn.style.display = "none";
     logoutBtn.style.display = "none";
     userInfo.textContent = "";
   }
