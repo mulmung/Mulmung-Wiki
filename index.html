@@ -856,7 +856,7 @@ renderSavedSettingCollection();
 </script>
       <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
-  import { getAuth, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
+  import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
   import { getFirestore } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
 
   const firebaseConfig = {
@@ -872,6 +872,47 @@ renderSavedSettingCollection();
   const auth = getAuth(app);
   const db = getFirestore(app);
   const provider = new GoogleAuthProvider();
+
+            const ADMIN_EMAIL = "KHU9918@gmail.com";
+
+const loginBtn = document.getElementById("loginBtn");
+const logoutBtn = document.getElementById("logoutBtn");
+const userInfo = document.getElementById("userInfo");
+
+loginBtn.addEventListener("click", async () => {
+  try {
+    await signInWithPopup(auth, provider);
+  } catch (error) {
+    console.error("로그인 오류:", error);
+    alert("로그인 중 오류가 발생했습니다.");
+  }
+});
+
+logoutBtn.addEventListener("click", async () => {
+  try {
+    await signOut(auth);
+  } catch (error) {
+    console.error("로그아웃 오류:", error);
+    alert("로그아웃 중 오류가 발생했습니다.");
+  }
+});
+
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    loginBtn.style.display = "none";
+    logoutBtn.style.display = "inline-block";
+
+    if (user.email === ADMIN_EMAIL) {
+      userInfo.textContent = `관리자: ${user.displayName || user.email}`;
+    } else {
+      userInfo.textContent = `로그인: ${user.displayName || user.email}`;
+    }
+  } else {
+    loginBtn.style.display = "inline-block";
+    logoutBtn.style.display = "none";
+    userInfo.textContent = "";
+  }
+});
 
   console.log("Firebase 연결 완료");
 </script>
