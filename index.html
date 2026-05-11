@@ -45,11 +45,58 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
 .guide-table .table-title{background:#000;color:#fff;font-size:20px;font-weight:900;padding:12px}
 .guide-table .total-cell{color:#f00;font-size:17px;font-weight:900}
 .skill-search-box{width:100%;margin:18px 0 16px;padding:16px 18px;border:2px solid #d1d5db;border-radius:18px;font-size:17px;font-weight:800;outline:none}
-.compact-filter-wrap{display:grid;gap:10px;margin:14px 0 20px}
-.compact-filter-row{display:flex;align-items:center;flex-wrap:nowrap;gap:7px}
-.compact-filter-label{font-size:16px;font-weight:900;color:#111827;margin-right:2px}
-.filter-btn,.badge{display:inline-flex;align-items:center;justify-content:center;border:none;border-radius:999px;font-size:14px;font-weight:900;line-height:1;white-space:nowrap}
-.filter-btn{padding:9px 12px;cursor:pointer;opacity:.78;border:2px solid transparent}
+.compact-filter-wrap {
+      display: grid;
+      gap: 10px;
+      margin: 14px 0 20px;
+      width: 100%;
+      overflow: hidden;
+    }
+.compact-filter-row {
+      display: flex;
+      align-items: center;
+      flex-wrap: nowrap;
+      gap: 6px;
+      width: 100%;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding-bottom: 4px;
+      -webkit-overflow-scrolling: touch;
+    }
+.compact-filter-label {
+      font-size: 15px;
+      font-weight: 900;
+      color: #111827;
+      margin-right: 4px;
+      flex: 0 0 auto;
+      min-width: 34px;
+      white-space: nowrap;
+      word-break: keep-all;
+      line-height: 1.2;
+    }
+.filter-btn,
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 900;
+      line-height: 1;
+      white-space: nowrap;
+      word-break: keep-all;
+      flex: 0 0 auto;
+    }
+.filter-btn {
+      min-width: 44px;
+      height: 34px;
+      padding: 0 10px;
+      cursor: pointer;
+      opacity: 0.78;
+      border: 2px solid transparent;
+      letter-spacing: -0.3px;
+    }
 .filter-btn.active{opacity:1;border-color:#111827;transform:translateY(-1px)}
 .badge{padding:7px 11px;margin-left:6px}
 .grade-normal{background:#fff;color:#111827;border:1px solid #d1d5db}
@@ -102,6 +149,35 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
 .update-date{display:inline-block;margin-bottom:14px;padding:6px 12px;border-radius:999px;background:#f3f4f6;color:#4b5563;font-size:14px;font-weight:800}
 .site-footer{border-top:1px solid #d1d5db;margin:36px 0 28px;padding-top:18px;text-align:center;color:#6b7280;font-size:14px;font-weight:700}
 @media(max-width:768px){
+
+      .compact-filter-wrap {
+        gap: 8px;
+        margin: 12px 0 18px;
+      }
+
+      .compact-filter-row {
+        gap: 5px;
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        padding-bottom: 5px;
+      }
+
+      .compact-filter-label {
+        font-size: 14px;
+        min-width: 32px;
+        margin-right: 2px;
+        white-space: nowrap;
+        word-break: keep-all;
+      }
+
+      .filter-btn {
+        min-width: 39px;
+        height: 31px;
+        padding: 0 8px;
+        font-size: 12px;
+        border-radius: 999px;
+      }
+
   .top-bar{height:52px;padding:0 12px}
   .hamburger-btn{width:36px;height:36px;font-size:21px;border-radius:10px}
   .top-title{font-size:17px}
@@ -170,8 +246,20 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
 
     <div class="main-area">
       <div id="breadcrumb" class="breadcrumb"></div>
-      <main class="content" id="content"></main>
-      <footer class="site-footer">현재 버전: 물멍위키 v0.1.11-beta</footer>
+      <main class="content" id="content">
+        <section id="update-022" class="card">
+          <h2>물멍위키 v0.1.12-beta 업데이트 내역</h2>
+          <p class="update-date">업데이트 날짜: 2026.05.11</p>
+          <ul class="update-list">
+            <li>모바일 화면에서 등급 글자가 세로로 깨지는 문제 수정</li>
+            <li>필터 영역을 가로 스크롤 방식으로 변경하여 버튼이 화면 밖으로 밀리지 않도록 수정</li>
+            <li>등급 / 속성 라벨의 최소 너비를 확보하여 글자 줄바꿈 방지</li>
+            <li>필터 버튼의 글씨 크기와 버튼 크기를 모바일 화면에 맞게 재조정</li>
+            <li>사이트 하단 현재 버전 표시를 v0.1.12-beta로 변경</li>
+          </ul>
+        </section>
+      </main>
+      <footer class="site-footer">현재 버전: 물멍위키 v0.1.12-beta</footer>
     </div>
   </div>
 
