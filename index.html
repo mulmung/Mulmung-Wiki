@@ -884,7 +884,7 @@ loginBtn.addEventListener("click", async () => {
     await signInWithPopup(auth, provider);
   } catch (error) {
     console.error("로그인 오류:", error);
-    alert("로그인 중 오류가 발생했습니다.");
+    alert(`로그인 오류: ${error.code}\n${error.message}`);
   }
 });
 
@@ -903,7 +903,7 @@ onAuthStateChanged(auth, (user) => {
     logoutBtn.style.display = "inline-block";
 
     if (user.email.toLowerCase() === ADMIN_EMAIL.toLowerCase()) {
-      userInfo.textContent = `관리자: ${user.displayName || user.email}`;
+      userInfo.textContent = "관리자: 물멍";
     } else {
       userInfo.textContent = `로그인: ${user.displayName || user.email}`;
     }
@@ -913,7 +913,7 @@ onAuthStateChanged(auth, (user) => {
     userInfo.textContent = "";
   }
 });
-
+            
   console.log("Firebase 연결 완료");
 </script>
 </body>
