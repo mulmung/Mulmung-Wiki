@@ -1802,6 +1802,10 @@ async function openRolePopup() {
         `;
       }
 
+      const actionButton = role === "skill_master"
+        ? `<button class="role-action-btn role-user-btn" onclick="setUserRole('${userData.uid}', 'user')">스킬 마스터 해제</button>`
+        : `<button class="role-action-btn role-master-btn" onclick="setUserRole('${userData.uid}', 'skill_master')">스킬 마스터 부여</button>`;
+
       return `
         <div class="role-user-card">
           <div>
@@ -1810,8 +1814,7 @@ async function openRolePopup() {
             <div class="role-user-detail">현재 직책: ${roleLabel}</div>
           </div>
           <div class="role-action-row">
-            <button class="role-action-btn role-master-btn" onclick="setUserRole('${userData.uid}', 'skill_master')">스킬 마스터 부여</button>
-            <button class="role-action-btn role-user-btn" onclick="setUserRole('${userData.uid}', 'user')">직책 해제</button>
+            ${actionButton}
           </div>
         </div>
       `;
@@ -1841,7 +1844,7 @@ async function setUserRole(uid, role) {
 
     await refreshSiteStats();
 
-    alert(role === "skill_master" ? "스킬 마스터 직책을 부여했습니다." : "직책을 해제했습니다.");
+    alert(role === "skill_master" ? "스킬 마스터 직책을 부여했습니다." : "스킬 마스터 권한을 해제했습니다.");
     await openRolePopup();
   } catch (error) {
     console.error("직책 변경 오류:", error);
