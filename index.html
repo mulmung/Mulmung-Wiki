@@ -1198,18 +1198,19 @@ async function deleteSavedSetting(category, settingId) {
   const confirmDelete = confirm(`${category} 세팅을 삭제할까요?`);
   if (!confirmDelete) return;
 
-  savedData[category] = savedData[category].filter(setting => String(setting.id) !== String(settingId));
-  saveSavedSettings(savedData);
-
   if (window.deleteSkillSettingFromCloud) {
     try {
       await window.deleteSkillSettingFromCloud(settingId);
     } catch (error) {
       console.warn("스킬 세팅 클라우드 삭제 오류:", error);
-      alert("화면에서는 삭제됐지만 서버 삭제에 실패했습니다. 권한 또는 Firestore 규칙을 확인해주세요.");
+      alert("서버 삭제에 실패했습니다. 다른 사람에게도 삭제되게 하려면 Firestore 규칙에서 관리자/스킬 마스터 삭제 권한을 허용해야 합니다.");
+      await window.loadSkillSettingsFromCloud?.();
+      return;
     }
   }
 
+  savedData[category] = savedData[category].filter(setting => String(setting.id) !== String(settingId));
+  saveSavedSettings(savedData);
   renderSavedSettingCollection();
 }
 
