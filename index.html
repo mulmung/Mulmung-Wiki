@@ -799,7 +799,7 @@ updatePages.forEach(([id,name]) => pageMap[id] = ["업데이트", name]);
 const gradeOrder = ["불멸","신화","전설","영웅","레어","고급","일반"];
 const gradeClassMap = {"일반":"grade-normal","고급":"grade-advanced","레어":"grade-rare","영웅":"grade-hero","전설":"grade-legend","신화":"grade-myth","불멸":"grade-immortal"};
 const elementClassMap = {"불":"element-fire","물":"element-water","바람":"element-wind","땅":"element-earth"};
-const settingCategories = ["승급","등반","4자사","18자사","시공","순숲","폐광","수동"];
+const settingCategories = ["등반","4자사","18자사","시공","순숲","폐광","수동"];
 let selectedGrade = "전체";
 let selectedElement = "전체";
 let selectedSettingGrade = "전체";
@@ -807,6 +807,7 @@ let selectedSettingElement = "전체";
 let selectedSettingSkills = [];
 let selectedSavedCategory = "";
 let selectedSavedCount = "";
+let selectedSavedPromotionStage = "";
 let savedCategoryPickerOpen = false;
 let savedCountPickerOpen = false;
 
@@ -1271,48 +1272,43 @@ function renderSettingSkillList() {
 }
 
 function openSavePopup() {
-  const skillCount = selectedSettingSkills.length;
-
-  if (skillCount === 0) {
-    alert("저장할 스킬이 없습니다.");
+  const selectedSkills = currentSetting.filter(Boolean);
+  if (selectedSkills.length === 0) {
+    alert("저장할 스킬을 먼저 선택해주세요.");
     return;
   }
 
-  if (skillCount < 5) {
-    alert("최소 5개 이상 세팅해야 저장할 수 있습니다.");
-    return;
-  }
-
-  document.getElementById("savePopupText").textContent = `현재 ${skillCount}개 스킬이 세팅되어 있습니다. 저장할 용도를 선택하세요.`;
-
-  let html = "";
-  settingCategories.forEach(category => {
-    html += `<button class="save-category-btn" onclick="saveCurrentSkillSetting('${category}')">${category}</button>`;
-  });
-
-  document.getElementById("saveCategoryGrid").innerHTML = html;
-  document.getElementById("savePopupBg").classList.add("show");
+  renderSaveCategoryPopup();
+  savePopup.classList.add("show");
 }
 
-function renderSaveCategoryChoices() {
-  let html = "";
-  settingCategories.forEach(category => {
-    html += `<button class="save-category-btn" onclick="handleSaveCategoryChoice('${category}')">${category}</button>`;
-  });
-  document.getElementById("saveCategoryGrid").innerHTML = html;
+function renderSaveCategoryPopup() {
+  savePopup.innerHTML = `
+    <div class="save-modal">
+      <h3>어떤 용도로 저장할까요?</h3>
+      <div class="save-category-list">
+        ${settingCategories.map(category => `
+          <button onclick="${category === '승급' ? 'renderSavePromotionPopup()' : `saveCurrentSkillSetting('${category}')`}">${category}</button>
+        `).join("")}
+      </div>
+      <button class="save-cancel-btn" onclick="closeSavePopup()">취소</button>
+    </div>
+  `;
 }
 
-function handleSaveCategoryChoice(category) {
-  if (category !== "승급") {
-    saveCurrentSkillSetting(category);
-    return;
-  }
-  document.getElementById("savePopupText").textContent = "저장할 승급 단계를 선택하세요.";
-  let html = `<button class="save-category-btn" onclick="openSavePopup()">← 용도 다시 선택</button>`;
-  promotions.forEach(([id, name]) => {
-    html += `<button class="save-category-btn" onclick="saveCurrentSkillSetting('승급', '${name}')">${name}</button>`;
-  });
-  document.getElementById("saveCategoryGrid").innerHTML = html;
+function renderSavePromotionPopup() {
+  savePopup.innerHTML = `
+    <div class="save-modal">
+      <h3>원하는 승급을 골라주세요</h3>
+      <div class="save-category-list">
+        ${promotionStages.map(stage => `
+          <button onclick="saveCurrentSkillSetting('승급', '${stage}')">${stage}</button>
+        `).join("")}
+      </div>
+      <button class="save-cancel-btn" onclick="renderSaveCategoryPopup()">뒤로</button>
+      <button class="save-cancel-btn" onclick="closeSavePopup()">취소</button>
+    </div>
+  `;
 }
 
 function closeSavePopup() {
@@ -1394,6 +1390,7 @@ function toggleSavedCategoryPicker() {
 function selectSavedCategory(category) {
   selectedSavedCategory = category;
   selectedSavedCount = "";
+  selectedSavedPromotionStage = "";
   savedCategoryPickerOpen = false;
   savedCountPickerOpen = false;
   renderSavedSettingCollection();
@@ -1408,6 +1405,12 @@ function toggleSavedCountPicker() {
 
 function selectSavedCount(count) {
   selectedSavedCount = count;
+  savedCountPickerOpen = false;
+  renderSavedSettingCollection();
+}
+
+function selectSavedPromotionStage(stage) {
+  selectedSavedPromotionStage = stage;
   savedCountPickerOpen = false;
   renderSavedSettingCollection();
 }
@@ -1441,121 +1444,210 @@ async function deleteSavedSetting(category, settingId) {
   renderSavedSettingCollection();
 }
 
-function getSavedPromotionStages(savedData) {
-  const stages = new Set();
-  (savedData["승급"] || []).forEach(setting => {
-    if (setting.promotionStage) stages.add(setting.promotionStage);
-  });
-  return promotions.map(([id, name]) => name).filter(name => stages.has(name));
-}
-
-function getSavedEntriesByPromotion(savedData, stage) {
-  return (savedData["승급"] || []).filter(setting => setting.promotionStage === stage);
-}
-
 function renderSavedSettingCollection() {
-  const container = document.getElementById("savedSettingCollection");
-  if (!container) return;
+  const collection = document.getElementById("savedSettingCollection");
+  if (!collection) return;
 
   const savedData = getSavedSettings();
-  if (!selectedSavedCategory) selectedSavedCategory = settingCategories[0];
-
-  if (selectedSavedCategory === "승급") {
-    const availableStages = getSavedPromotionStages(savedData);
-    if (!selectedSavedCount && availableStages.length > 0) selectedSavedCount = availableStages[0];
-  } else {
-    const availableCounts = getSavedCountsByCategory(savedData, selectedSavedCategory);
-    if (!selectedSavedCount && availableCounts.length > 0) selectedSavedCount = availableCounts[0];
-  }
-
+  const selectorLabel = selectedSavedCategory || "원하는 용도를 골라주세요";
+  const isPromotionCategory = selectedSavedCategory === "승급";
   const categoryOptions = settingCategories.map(category => `
-    <button class="saved-option-btn" onclick="selectSavedCategory('${category}')">${category}</button>
+    <button class="saved-select-option ${selectedSavedCategory === category ? "active" : ""}" onclick="selectSavedCategory('${category}')">${category}</button>
   `).join("");
 
-  let countText = "";
-  let countOptions = "";
-
-  if (selectedSavedCategory === "승급") {
-    countText = selectedSavedCount || "원하는 승급을 선택해주세요";
-    countOptions = promotions.map(([id, name]) => `
-      <button class="saved-option-btn" onclick="selectSavedCount('${name}')">${name}</button>
-    `).join("");
-  } else {
-    const availableCounts = getSavedCountsByCategory(savedData, selectedSavedCategory);
-    countText = selectedSavedCount ? `${selectedSavedCount}칸` : "원하는 칸을 골라주세요";
-    countOptions = availableCounts.length > 0
-      ? availableCounts.map(count => `
-        <button class="saved-option-btn" onclick="selectSavedCount('${count}')">${count}칸</button>
-      `).join("")
-      : `<div class="empty-saved">저장된 칸 수가 없습니다.</div>`;
-  }
-
   let html = `
-    <div class="saved-selector-wrap">
-      <button class="saved-select-btn" onclick="toggleSavedCategoryPicker()">
-        <span>${selectedSavedCategory || "원하는 용도를 골라주세요"}</span>
+    <div class="saved-selector">
+      <button class="saved-select-trigger" onclick="toggleSavedCategoryPicker()">
+        <span>${selectorLabel}</span>
         <span>${savedCategoryPickerOpen ? "▲" : "▼"}</span>
       </button>
-      ${savedCategoryPickerOpen ? `<div class="saved-option-list">${categoryOptions}</div>` : ""}
-    </div>
-    <div class="saved-selector-wrap">
-      <button class="saved-select-btn" onclick="toggleSavedCountPicker()">
-        <span>${countText}</span>
-        <span>${savedCountPickerOpen ? "▲" : "▼"}</span>
-      </button>
-      ${savedCountPickerOpen ? `<div class="saved-option-list">${countOptions}</div>` : ""}
+      <div class="saved-select-options ${savedCategoryPickerOpen ? "open" : ""}">
+        ${categoryOptions}
+      </div>
     </div>
   `;
 
-  if (!selectedSavedCategory || !selectedSavedCount) {
-    html += `<div class="empty-saved">원하는 용도와 ${selectedSavedCategory === "승급" ? "승급" : "칸 수"}를 선택해주세요.</div>`;
-    container.innerHTML = html;
+  if (!selectedSavedCategory) {
+    html += `<p class="empty-text">먼저 확인할 용도를 골라주세요.</p>`;
+    collection.innerHTML = html;
     return;
   }
 
-  let filteredSettings = [];
-  if (selectedSavedCategory === "승급") {
-    filteredSettings = getSavedEntriesByPromotion(savedData, selectedSavedCount);
-  } else {
-    filteredSettings = (savedData[selectedSavedCategory] || []).filter(setting => (setting.count || (setting.skills || []).length) === Number(selectedSavedCount));
+  const category = selectedSavedCategory;
+  const categoryData = savedData[category] || [];
+
+  if (isPromotionCategory) {
+    const stageLabel = selectedSavedPromotionStage || "원하는 승급을 골라주세요";
+    const stageOptions = promotionStages.map(stage => `
+      <button class="saved-select-option ${selectedSavedPromotionStage === stage ? "active" : ""}" onclick="selectSavedPromotionStage('${stage}')">${stage}</button>
+    `).join("");
+
+    html += `
+      <div class="saved-selector">
+        <button class="saved-select-trigger" onclick="toggleSavedCountPicker()">
+          <span>${stageLabel}</span>
+          <span>${savedCountPickerOpen ? "▲" : "▼"}</span>
+        </button>
+        <div class="saved-select-options ${savedCountPickerOpen ? "open" : ""}">
+          ${stageOptions}
+        </div>
+      </div>
+    `;
+
+    if (!selectedSavedPromotionStage) {
+      html += `<p class="empty-text">확인할 승급을 골라주세요.</p>`;
+      collection.innerHTML = html;
+      return;
+    }
+
+    const selectedSettings = [...categoryData]
+      .filter(setting => setting.promotionStage === selectedSavedPromotionStage)
+      .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+
+    if (selectedSettings.length === 0) {
+      html += `<p class="empty-text">${selectedSavedPromotionStage} 승급 세팅이 없습니다.</p>`;
+      collection.innerHTML = html;
+      return;
+    }
+
+    html += `
+      <div class="saved-count-group">
+        <div class="saved-count-title">${selectedSavedPromotionStage}</div>
+        <div class="saved-count-items">
+    `;
+
+    selectedSettings.forEach(setting => {
+      html += renderSavedSettingBlock(setting, category);
+    });
+
+    html += `
+        </div>
+      </div>
+    `;
+
+    collection.innerHTML = html;
+    return;
   }
 
-  filteredSettings.sort((a,b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+  const counts = getSavedCountsByCategory(savedData, selectedSavedCategory);
+  const countLabel = selectedSavedCount ? `${selectedSavedCount}칸` : "원하는 칸을 골라주세요";
+  const countOptions = counts.map(count => `
+    <button class="saved-select-option ${selectedSavedCount === count ? "active" : ""}" onclick="selectSavedCount(${count})">${count}칸</button>
+  `).join("");
 
-  if (filteredSettings.length === 0) {
-    html += `<div class="empty-saved">저장된 스킬 세팅이 없습니다.</div>`;
-    container.innerHTML = html;
+  html += `
+    <div class="saved-selector">
+      <button class="saved-select-trigger" onclick="toggleSavedCountPicker()" ${counts.length ? "" : "disabled"}>
+        <span>${counts.length ? countLabel : "저장된 세팅이 없습니다"}</span>
+        <span>${counts.length ? (savedCountPickerOpen ? "▲" : "▼") : "－"}</span>
+      </button>
+      <div class="saved-select-options ${savedCountPickerOpen ? "open" : ""}">
+        ${countOptions}
+      </div>
+    </div>
+  `;
+
+  if (categoryData.length === 0) {
+    html += `<p class="empty-text">아직 저장된 ${category} 세팅이 없습니다.</p>`;
+    collection.innerHTML = html;
+    return;
+  }
+
+  if (!selectedSavedCount) {
+    html += `<p class="empty-text">확인할 칸 수를 골라주세요.</p>`;
+    collection.innerHTML = html;
+    return;
+  }
+
+  const selectedSettings = [...categoryData]
+    .filter(setting => Number(setting.count || (setting.skills || []).length || 0) === selectedSavedCount)
+    .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+
+  if (selectedSettings.length === 0) {
+    html += `<p class="empty-text">${category} / ${selectedSavedCount}칸 세팅이 없습니다.</p>`;
+    collection.innerHTML = html;
     return;
   }
 
   html += `
     <div class="saved-count-group">
-      <div class="saved-count-title"><span>${selectedSavedCategory === "승급" ? selectedSavedCount : `${selectedSavedCount}칸`}</span></div>
+      <div class="saved-count-title">${selectedSavedCount}칸</div>
+      <div class="saved-count-items">
   `;
 
-  filteredSettings.forEach(setting => {
-    const canDelete = canDeleteSavedSetting(setting);
-    html += `
-      <div class="saved-setting-card">
-        <div class="saved-skill-list">
-          ${(setting.skills || []).map(skill => `
-            <div class="saved-skill-box ${gradeClassMap[skill.grade]}" title="${skill.name}">
-              <span>${skill.name}</span>
-              <span class="mode-dot ${skill.mode === "manual" ? "manual" : "auto"}"></span>
-            </div>
-          `).join("")}
-        </div>
-        <div class="saved-meta">
-          <span>${setting.uploaderNickname || "물멍"} · ${setting.createdDate || formatShortDate(setting.createdAt)}</span>
-          ${canDelete ? `<button class="delete-saved-btn" onclick="deleteSavedSetting('${selectedSavedCategory}','${setting.id}')">삭제</button>` : ""}
-        </div>
-      </div>
-    `;
+  selectedSettings.forEach(setting => {
+    html += renderSavedSettingBlock(setting, category);
   });
 
-  html += `</div>`;
-  container.innerHTML = html;
+  html += `
+      </div>
+    </div>
+  `;
+
+  collection.innerHTML = html;
 }
+
+function renderSavedSettingBlock(setting, category) {
+  const savedSkills = setting.skills || [];
+  const uploader = setting.uploaderNickname || setting.nickname || "닉네임 미설정";
+  const dateText = setting.createdDate || formatShortDate(setting.createdAt);
+  const deleteButton = canDeleteSavedSetting(setting)
+    ? `<button class="saved-delete-btn" onclick="deleteSavedSetting('${category}', '${setting.id}')">삭제</button>`
+    : "";
+
+  return `
+    <div class="saved-setting-block">
+      <div class="saved-setting-grid">
+        ${savedSkills.map(skill=>{
+          const mode = skill.mode === "manual" ? "manual" : "auto";
+          return `<div class="saved-setting-slot ${gradeClassMap[skill.grade]}"><span class="saved-mode-dot ${mode}"></span>${skill.name}</div>`;
+        }).join("")}
+      </div>
+      <div class="saved-setting-footer">
+        <span class="saved-setting-meta">${uploader} · ${dateText}</span>
+        ${deleteButton}
+      </div>
+    </div>
+  `;
+}
+
+addMenuButtons();
+addSections();
+setBreadcrumb("home");
+renderSkills();
+renderSkillSettingSlots();
+renderSettingSkillList();
+renderSavedSettingCollection();
+      
+</script>
+      
+<div id="browserAlertOverlay" class="browser-alert-overlay" aria-hidden="true">
+  <div class="browser-alert-box" role="dialog" aria-modal="true" aria-labelledby="browserAlertTitle">
+    <h2 id="browserAlertTitle" class="browser-alert-title">다른 브라우저로 열어주세요</h2>
+    <p class="browser-alert-text">카카오톡, 인스타그램 같은 앱 안의 브라우저에서는 Google 로그인이 제대로 진행되지 않을 수 있습니다.</p>
+    <p class="browser-alert-guide">오른쪽 위 <strong>⋮</strong> 메뉴를 누른 뒤<br><strong>다른 브라우저로 열기</strong> 또는 <strong>Chrome에서 열기</strong>를 선택해주세요.</p>
+    <button type="button" class="browser-alert-close" onclick="closeBrowserAlert()">확인</button>
+  </div>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
+  import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
+  import { getFirestore, doc, getDoc, setDoc, deleteDoc, collection, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+  apiKey: "AIzaSyDfcd53sM_tUUp4VVeskZEhKndymzwq6uA",
+  authDomain: "mulmung-wiki-login.firebaseapp.com",
+  projectId: "mulmung-wiki-login",
+  storageBucket: "mulmung-wiki-login.firebasestorage.app",
+  messagingSenderId: "21784626553",
+  appId: "1:21784626553:web:b40f35004a7c2cdd3edba8"
+};
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+  const provider = new GoogleAuthProvider();
 
 function isInAppBrowser(){
   const ua = navigator.userAgent.toLowerCase();
