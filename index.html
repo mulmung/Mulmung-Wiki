@@ -1518,9 +1518,10 @@ const spiritDetails = {
     element: "물",
     elementClass: "element-water",
     image: "ark.png",
-    skillName: "스킬 이름 입력 예정",
-    skillEffect: "스킬 내용 입력 예정입니다.",
-    skillLevelText: ""
+    skillName: "타임 프리즈",
+    skillEffect: "전투 시작 8초 후\n시간을 n초동안 정지시킨다 (1회 발동)",
+    skillLevelText: "n : 4 → 5 → 6 → 8 → 10",
+    highlightN: true
   },
   zephy: {
     name: "제피",
@@ -2046,9 +2047,9 @@ function escapeSpiritHtml(value) {
 }
 
 function formatSpiritSkillEffect(data) {
-  let html = escapeSpiritHtml(data.skillEffect);
+  let html = escapeSpiritHtml(data.skillEffect).replace(/\n/g, "<br>");
   if (data.highlightN) {
-    html = html.replace("n%", '<span class="spirit-skill-n">n</span>%');
+    html = html.replace(/n(?=[%초])/g, '<span class="spirit-skill-n">n</span>');
   }
   return html;
 }
