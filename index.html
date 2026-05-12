@@ -798,6 +798,102 @@ button.save-cancel{
   .save-popup .save-cancel-btn{min-height:42px !important;font-size:15px !important;}
 }
 
+
+/* 저장 팝업 3열 선택 버튼 최종 조정 */
+.save-popup-bg.show{
+  align-items:center !important;
+  justify-content:center !important;
+  padding:10px !important;
+}
+.save-popup{
+  width:min(90vw,360px) !important;
+  max-width:360px !important;
+  max-height:78vh !important;
+  overflow:hidden !important;
+  padding:16px 12px 12px !important;
+  border-radius:18px !important;
+  box-sizing:border-box !important;
+}
+.save-popup .save-modal{
+  width:100% !important;
+  max-width:100% !important;
+  padding:0 !important;
+  margin:0 !important;
+  background:transparent !important;
+  box-shadow:none !important;
+  border-radius:0 !important;
+  box-sizing:border-box !important;
+}
+.save-popup .save-modal h3{
+  font-size:18px !important;
+  line-height:1.25 !important;
+  margin:0 0 12px !important;
+  text-align:center !important;
+  word-break:keep-all !important;
+}
+.save-popup .save-category-list{
+  display:grid !important;
+  grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+  gap:6px !important;
+  width:100% !important;
+  max-height:calc(78vh - 108px) !important;
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+  padding:0 2px 2px !important;
+  box-sizing:border-box !important;
+}
+.save-popup .save-category-list button{
+  width:100% !important;
+  min-width:0 !important;
+  min-height:36px !important;
+  padding:7px 4px !important;
+  border-radius:11px !important;
+  font-size:12px !important;
+  line-height:1.15 !important;
+  font-weight:900 !important;
+  white-space:normal !important;
+  word-break:keep-all !important;
+  overflow-wrap:break-word !important;
+  box-sizing:border-box !important;
+}
+.save-popup .save-cancel-btn{
+  width:100% !important;
+  min-height:38px !important;
+  margin-top:8px !important;
+  padding:8px 10px !important;
+  border-radius:12px !important;
+  font-size:14px !important;
+  font-weight:900 !important;
+  box-sizing:border-box !important;
+}
+@media (max-width:480px){
+  .save-popup{
+    width:86vw !important;
+    max-width:340px !important;
+    max-height:76vh !important;
+    padding:15px 11px 11px !important;
+  }
+  .save-popup .save-modal h3{
+    font-size:17px !important;
+    margin-bottom:10px !important;
+  }
+  .save-popup .save-category-list{
+    gap:5px !important;
+    max-height:calc(76vh - 98px) !important;
+  }
+  .save-popup .save-category-list button{
+    min-height:34px !important;
+    padding:6px 3px !important;
+    border-radius:10px !important;
+    font-size:11px !important;
+  }
+  .save-popup .save-cancel-btn{
+    min-height:36px !important;
+    margin-top:7px !important;
+    font-size:13px !important;
+  }
+}
+
 </style>
 </head>
 
