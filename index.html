@@ -806,7 +806,9 @@ let selectedSettingGrade = "전체";
 let selectedSettingElement = "전체";
 let selectedSettingSkills = [];
 let selectedSavedCategory = "";
+let selectedSavedCount = "";
 let savedCategoryPickerOpen = false;
+let savedCountPickerOpen = false;
 
 function addMenuButtons() {
   diamondPages.forEach(([id,name]) => document.getElementById("diamondMenu").insertAdjacentHTML("beforeend", `<button class="sub-menu-btn" onclick="showSection('${id}')">${name}</button>`));
@@ -1352,14 +1354,40 @@ async function saveCurrentSkillSetting(category) {
   }
 }
 
+function getSavedCountsByCategory(savedData, category){
+  const counts = new Set();
+  (savedData[category] || []).forEach(setting=>{
+    const savedSkills = setting.skills || [];
+    const count = Number(setting.count || savedSkills.length || 0);
+    if(count) counts.add(count);
+  });
+  return Array.from(counts).sort((a,b)=>a-b);
+}
+
 function toggleSavedCategoryPicker() {
   savedCategoryPickerOpen = !savedCategoryPickerOpen;
+  if (savedCategoryPickerOpen) savedCountPickerOpen = false;
   renderSavedSettingCollection();
 }
 
 function selectSavedCategory(category) {
   selectedSavedCategory = category;
+  selectedSavedCount = "";
   savedCategoryPickerOpen = false;
+  savedCountPickerOpen = false;
+  renderSavedSettingCollection();
+}
+
+function toggleSavedCountPicker() {
+  if (!selectedSavedCategory) return;
+  savedCountPickerOpen = !savedCountPickerOpen;
+  if (savedCountPickerOpen) savedCategoryPickerOpen = false;
+  renderSavedSettingCollection();
+}
+
+function selectSavedCount(count) {
+  selectedSavedCount = count;
+  savedCountPickerOpen = false;
   renderSavedSettingCollection();
 }
 
@@ -1398,6 +1426,10 @@ function renderSavedSettingCollection() {
 
   const savedData = getSavedSettings();
   const selectorLabel = selectedSavedCategory || "원하는 용도를 골라주세요";
+  const categoryOptions = settingCategories.map(category => `
+    <button class="saved-select-option ${selectedSavedCategory === category ? "active" : ""}" onclick="selectSavedCategory('${category}')">${category}</button>
+  `).join("");
+
   let html = `
     <div class="saved-selector">
       <button class="saved-select-trigger" onclick="toggleSavedCategoryPicker()">
@@ -1405,94 +1437,96 @@ function renderSavedSettingCollection() {
         <span>${savedCategoryPickerOpen ? "▲" : "▼"}</span>
       </button>
       <div class="saved-select-options ${savedCategoryPickerOpen ? "open" : ""}">
-        ${settingCategories.map(category => `<button class="saved-select-option" onclick="selectSavedCategory('${category}')">${category}</button>`).join("")}
+        ${categoryOptions}
       </div>
     </div>
   `;
 
   if (!selectedSavedCategory) {
+    html += `<p class="empty-text">먼저 확인할 용도를 골라주세요.</p>`;
     collection.innerHTML = html;
     return;
   }
 
+  const counts = getSavedCountsByCategory(savedData, selectedSavedCategory);
+  const countLabel = selectedSavedCount ? `${selectedSavedCount}칸` : "원하는 칸을 골라주세요";
+  const countOptions = counts.map(count => `
+    <button class="saved-select-option ${selectedSavedCount === count ? "active" : ""}" onclick="selectSavedCount(${count})">${count}칸</button>
+  `).join("");
+
+  html += `
+    <div class="saved-selector">
+      <button class="saved-select-trigger" onclick="toggleSavedCountPicker()" ${counts.length ? "" : "disabled"}>
+        <span>${counts.length ? countLabel : "저장된 세팅이 없습니다"}</span>
+        <span>${counts.length ? (savedCountPickerOpen ? "▲" : "▼") : "－"}</span>
+      </button>
+      <div class="saved-select-options ${savedCountPickerOpen ? "open" : ""}">
+        ${countOptions}
+      </div>
+    </div>
+  `;
+
   const category = selectedSavedCategory;
   const categoryData = savedData[category] || [];
-  const sortedSettings = [...categoryData].sort((a, b) => {
-    const countA = Number(a.count || 0);
-    const countB = Number(b.count || 0);
-    if (countA !== countB) return countA - countB;
-    return new Date(a.createdAt) - new Date(b.createdAt);
+  if (categoryData.length === 0) {
+    html += `<p class="empty-text">아직 저장된 ${category} 세팅이 없습니다.</p>`;
+    collection.innerHTML = html;
+    return;
+  }
+
+  if (!selectedSavedCount) {
+    html += `<p class="empty-text">확인할 칸 수를 골라주세요.</p>`;
+    collection.innerHTML = html;
+    return;
+  }
+
+  const selectedSettings = [...categoryData]
+    .filter(setting => Number(setting.count || (setting.skills || []).length || 0) === selectedSavedCount)
+    .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+
+  if (selectedSettings.length === 0) {
+    html += `<p class="empty-text">${category} / ${selectedSavedCount}칸 세팅이 없습니다.</p>`;
+    collection.innerHTML = html;
+    return;
+  }
+
+  html += `
+    <div class="saved-count-group">
+      <div class="saved-count-title">${selectedSavedCount}칸</div>
+      <div class="saved-count-items">
+  `;
+
+  selectedSettings.forEach(setting => {
+    const savedSkills = setting.skills || [];
+    const uploader = setting.uploaderNickname || setting.nickname || "닉네임 미설정";
+    const dateText = setting.createdDate || formatShortDate(setting.createdAt);
+    const deleteButton = canDeleteSavedSetting(setting)
+      ? `<button class="saved-delete-btn" onclick="deleteSavedSetting('${category}', '${setting.id}')">삭제</button>`
+      : "";
+
+    html += `
+      <div class="saved-setting-block">
+        <div class="saved-setting-grid">
+          ${savedSkills.map(skill=>{
+            const mode = skill.mode === "manual" ? "manual" : "auto";
+            return `<div class="saved-setting-slot ${gradeClassMap[skill.grade]}"><span class="saved-mode-dot ${mode}"></span>${skill.name}</div>`;
+          }).join("")}
+        </div>
+        <div class="saved-setting-footer">
+          <span class="saved-setting-meta">${uploader} · ${dateText}</span>
+          ${deleteButton}
+        </div>
+      </div>
+    `;
   });
 
   html += `
-    <div class="saved-category-result">
-      <div class="saved-category-header">
-        <span>${category}</span>
-        <span>▲</span>
       </div>
-      <div class="saved-category-body">
+    </div>
   `;
 
-  if (sortedSettings.length === 0) {
-    html += `<div class="saved-empty">저장된 세팅이 없습니다.</div>`;
-  } else {
-    const groupedByCount = sortedSettings.reduce((groups, setting) => {
-      const savedSkills = setting.skills || [];
-      const count = Number(setting.count || savedSkills.length || 0);
-      if (!groups[count]) groups[count] = [];
-      groups[count].push(setting);
-      return groups;
-    }, {});
-
-    Object.keys(groupedByCount)
-      .map(Number)
-      .sort((a, b) => a - b)
-      .forEach(count => {
-        html += `
-          <div class="saved-count-group">
-            <div class="saved-count-title">${count}칸</div>
-            <div class="saved-count-items">
-        `;
-
-        groupedByCount[count].forEach(setting => {
-          const savedSkills = setting.skills || [];
-          const uploader = setting.uploaderNickname || setting.nickname || "닉네임 미설정";
-          const dateText = setting.createdDate || formatShortDate(setting.createdAt);
-          const deleteButton = canDeleteSavedSetting(setting)
-            ? `<button class="saved-delete-btn" onclick="deleteSavedSetting('${category}', '${setting.id}')">삭제</button>`
-            : "";
-
-          html += `
-            <div class="saved-setting-block">
-              <div class="saved-setting-grid">
-          `;
-
-          savedSkills.forEach(skill => {
-            const mode = skill.mode === "manual" ? "manual" : "auto";
-            html += `<div class="saved-setting-slot ${gradeClassMap[skill.grade]}"><span class="saved-mode-dot ${mode}"></span>${skill.name}</div>`;
-          });
-
-          html += `
-              </div>
-              <div class="saved-setting-footer">
-                <span class="saved-setting-meta">${uploader} · ${dateText}</span>
-                ${deleteButton}
-              </div>
-            </div>
-          `;
-        });
-
-        html += `
-            </div>
-          </div>
-        `;
-      });
-  }
-
-  html += `</div></div>`;
   collection.innerHTML = html;
 }
-
 
 addMenuButtons();
 addSections();
