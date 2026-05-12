@@ -1195,6 +1195,10 @@ button.save-cancel{
 .spirit-section-guide{margin:2px 0 14px;font-size:15px;font-weight:800;color:#4b5563}
 .spirit-legend-group{position:relative;margin-top:14px;padding:18px 10px 10px;border:2px solid #ef4444;border-radius:22px;background:#fff}
 .spirit-legend-group::before{content:"전설";position:absolute;top:-12px;left:50%;transform:translateX(-50%);padding:5px 14px;border-radius:999px;background:#ef4444;color:#fff;font-size:12px;font-weight:950;line-height:1;box-shadow:0 6px 14px rgba(239,68,68,.18)}
+.spirit-myth-group{position:relative;margin-top:24px;padding:18px 10px 10px;border:2px solid #2563eb;border-radius:22px;background:#fff}
+.spirit-myth-group::before{content:"신화";position:absolute;top:-12px;left:50%;transform:translateX(-50%);padding:5px 14px;border-radius:999px;background:#2563eb;color:#fff;font-size:12px;font-weight:950;line-height:1;box-shadow:0 6px 14px rgba(37,99,235,.18)}
+.spirit-myth-group .spirit-column{border-color:#bfdbfe;background:#eff6ff}
+.spirit-myth-group .spirit-btn{border-color:#bfdbfe}
 .spirit-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:0}
 .spirit-column{border:1px solid #e5e7eb;border-radius:18px;background:#f9fafb;padding:10px;display:grid;gap:8px;align-content:start}
 .spirit-element-title{display:flex;align-items:center;justify-content:center;min-height:38px;border-radius:999px;font-size:14px;font-weight:950;color:#fff;word-break:keep-all;line-height:1.1;text-align:center}
@@ -1475,6 +1479,8 @@ button.save-cancel{
 @media(max-width:768px){
   .spirit-legend-group{padding:16px 6px 6px;border-radius:18px}
   .spirit-legend-group::before{top:-11px;padding:4px 12px;font-size:11px}
+  .spirit-myth-group{margin-top:22px;padding:16px 6px 6px;border-radius:18px}
+  .spirit-myth-group::before{top:-11px;padding:4px 12px;font-size:11px}
   .spirit-grid{grid-template-columns:repeat(4,minmax(58px,1fr));gap:6px;overflow-x:auto;padding-bottom:4px}
   .spirit-column{min-width:58px;padding:6px;border-radius:14px;gap:6px}
   .spirit-element-title{min-height:32px;font-size:11px;border-radius:999px;padding:0 4px}
@@ -2197,6 +2203,34 @@ function addSections() {
       </div>
       <p class="spirit-section-guide">속성별 정령을 선택해 정보를 확인할 수 있도록 정리할 예정입니다.</p>
       <div class="spirit-legend-group">
+      <div class="spirit-grid">
+        <div class="spirit-column">
+          <div class="spirit-element-title element-fire">불 속성</div>
+          <button class="spirit-btn" type="button" onclick="openSpiritPopup('sala')">살라</button>
+          <button class="spirit-btn" type="button" onclick="openSpiritPopup('mum')">뭄</button>
+          <button class="spirit-btn" type="button" onclick="openSpiritPopup('bo')">보</button>
+        </div>
+        <div class="spirit-column">
+          <div class="spirit-element-title element-water">물 속성</div>
+          <button class="spirit-btn" type="button" onclick="openSpiritPopup('toad')">토드</button>
+          <button class="spirit-btn" type="button" onclick="openSpiritPopup('luga')">루가</button>
+          <button class="spirit-btn" type="button" onclick="openSpiritPopup('ark')">아크</button>
+        </div>
+        <div class="spirit-column">
+          <div class="spirit-element-title element-wind">바람 속성</div>
+          <button class="spirit-btn" type="button" onclick="openSpiritPopup('zephy')">제피</button>
+          <button class="spirit-btn" type="button" onclick="openSpiritPopup('kart')">카트</button>
+          <button class="spirit-btn" type="button" onclick="openSpiritPopup('her')">헤르</button>
+        </div>
+        <div class="spirit-column">
+          <div class="spirit-element-title element-earth">땅 속성</div>
+          <button class="spirit-btn" type="button" onclick="openSpiritPopup('noa')">노아</button>
+          <button class="spirit-btn" type="button" onclick="openSpiritPopup('roar')">로어</button>
+          <button class="spirit-btn" type="button" onclick="openSpiritPopup('radon')">라돈</button>
+        </div>
+      </div>
+      </div>
+      <div class="spirit-myth-group">
       <div class="spirit-grid">
         <div class="spirit-column">
           <div class="spirit-element-title element-fire">불 속성</div>
