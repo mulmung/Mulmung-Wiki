@@ -412,7 +412,42 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
 }
 
 .role-section-title.skill {
-  color: #7c3aed;
+  color: #111827;
+}
+
+.role-master-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: max-content;
+  max-width: 100%;
+  padding: 7px 14px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #f97316, #fb923c);
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 950;
+  line-height: 1;
+  box-shadow: 0 8px 18px rgba(249,115,22,.24);
+}
+
+.role-master-title-badge {
+  font-size: 15px;
+  padding: 7px 14px;
+}
+
+.role-user-role-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.role-user-role-label {
+  color: #6b7280;
+  font-size: 14px;
+  font-weight: 900;
 }
 
 .role-section-title.normal {
@@ -462,7 +497,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
 }
 
 .role-master-btn {
-  background: #7c3aed;
+  background: #f97316;
   color: #ffffff;
 }
 
@@ -2394,6 +2429,7 @@ async function openRolePopup() {
       const email = userData.email || "이메일 없음";
       const role = userData.role || "user";
       const roleLabel = role === "admin" ? "관리자" : role === "skill_master" ? "스킬 마스터" : "일반 유저";
+      const roleLabelHtml = role === "skill_master" ? `<span class="role-master-badge">스킬 마스터</span>` : roleLabel;
 
       if (role === "admin") {
         return `
@@ -2417,7 +2453,7 @@ async function openRolePopup() {
           <div>
             <div class="role-user-name">${nickname}</div>
             <div class="role-user-detail">${email}</div>
-            <div class="role-user-detail">현재 직책: ${roleLabel}</div>
+            <div class="role-user-role-line"><span class="role-user-role-label">현재 직책:</span> ${roleLabelHtml}</div>
           </div>
           <div class="role-action-row">
             ${actionButton}
@@ -2441,7 +2477,7 @@ async function openRolePopup() {
     }
 
     if (skillMasters.length > 0) {
-      roleHtml += `<div class="role-section-title skill">스킬 마스터</div>`;
+      roleHtml += `<div class="role-section-title skill"><span class="role-master-badge role-master-title-badge">스킬 마스터</span></div>`;
       roleHtml += skillMasters.map(renderRoleCard).join("");
     }
 
