@@ -152,10 +152,16 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
 .setting-skill-btn.selected{outline:4px solid #6b7280;outline-offset:-4px}
 .setting-skill-btn.grade-normal{color:#111827}
 .setting-list-title{text-align:center;margin-top:26px}
-.saved-category{border:1px solid #e5e7eb;border-radius:18px;overflow:hidden;margin-bottom:14px;background:#fff}
-.saved-category-header{width:100%;border:none;background:#111827;color:#fff;padding:16px;font-size:18px;font-weight:900;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
-.saved-category-body{display:none;padding:18px}
-.saved-category.open .saved-category-body{display:block}
+.saved-selector{margin-bottom:18px}
+.saved-select-trigger{width:100%;border:none;background:#111827;color:#fff;padding:18px 20px;font-size:18px;font-weight:900;cursor:pointer;display:flex;justify-content:space-between;align-items:center;border-radius:24px}
+.saved-select-options{display:none;margin-top:10px;border:1px solid #e5e7eb;border-radius:22px;background:#fff;overflow:hidden;box-shadow:0 10px 24px rgba(0,0,0,.08)}
+.saved-select-options.open{display:block}
+.saved-select-option{width:100%;border:none;background:#fff;color:#111827;padding:16px 18px;text-align:left;font-size:18px;font-weight:900;cursor:pointer;border-bottom:1px solid #e5e7eb}
+.saved-select-option:last-child{border-bottom:none}
+.saved-select-option:hover{background:#f9fafb}
+.saved-category-result{border:1px solid #e5e7eb;border-radius:18px;overflow:hidden;background:#fff}
+.saved-category-header{width:100%;border:none;background:#111827;color:#fff;padding:16px;font-size:18px;font-weight:900;display:flex;justify-content:space-between;align-items:center}
+.saved-category-body{padding:18px}
 .saved-setting-block{border:1px solid #e5e7eb;border-radius:18px;padding:16px;margin-bottom:18px;background:#f9fafb}
 .saved-setting-title{display:flex;align-items:center;gap:10px;font-size:22px;font-weight:900;margin-bottom:12px;color:#111827;text-align:left}
 .saved-setting-title::after{content:"";flex:1;height:2px;background:#d1d5db;border-radius:999px}
@@ -227,7 +233,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
   .filter-btn{padding:8px 10px;font-size:13px}
   .badge{padding:6px 9px;font-size:13px}
   .setting-slot,.setting-skill-btn,.saved-setting-slot{font-size:11px;border-radius:12px;padding:4px}
-  .saved-category-header{font-size:16px;padding:14px}
+  .saved-select-trigger,.saved-category-header{font-size:16px;padding:14px 16px}
+  .saved-select-option{font-size:16px;padding:14px 16px}
   .saved-category-body{padding:14px}
   .saved-setting-title{font-size:20px}
   .update-list li{font-size:16px}
@@ -600,6 +607,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
 .saved-setting-footer{margin-top:0}
 @media(max-width:768px){
   .saved-category-body{padding:12px 8px}
+  .saved-select-options{margin-top:8px}
   .saved-setting-block{padding:13px 8px 12px}
   .saved-setting-grid{grid-template-columns:repeat(5,50px);gap:6px;margin-bottom:10px}
   .saved-setting-slot{width:50px;height:50px;border-radius:12px;font-size:9.7px;line-height:1.12;padding:2px}
@@ -742,7 +750,8 @@ let selectedElement = "전체";
 let selectedSettingGrade = "전체";
 let selectedSettingElement = "전체";
 let selectedSettingSkills = [];
-let openedSavedCategory = "등반";
+let selectedSavedCategory = "";
+let savedCategoryPickerOpen = false;
 
 function addMenuButtons() {
   diamondPages.forEach(([id,name]) => document.getElementById("diamondMenu").insertAdjacentHTML("beforeend", `<button class="sub-menu-btn" onclick="showSection('${id}')">${name}</button>`));
@@ -857,7 +866,7 @@ function addSections() {
 
     <section id="skill-setting-collection" class="card">
       <h2>스킬 세팅 모음</h2>
-      <p class="setting-guide-text">저장한 스킬 세팅을 용도별로 펼쳐서 확인할 수 있습니다.</p>
+      <p class="setting-guide-text">저장한 스킬 세팅을 원하는 용도별로 골라 확인할 수 있습니다.</p>
       <div id="savedSettingCollection"></div>
     </section>
   `);
@@ -1288,8 +1297,14 @@ async function saveCurrentSkillSetting(category) {
   }
 }
 
-function toggleSavedCategory(category) {
-  openedSavedCategory = openedSavedCategory === category ? "" : category;
+function toggleSavedCategoryPicker() {
+  savedCategoryPickerOpen = !savedCategoryPickerOpen;
+  renderSavedSettingCollection();
+}
+
+function selectSavedCategory(category) {
+  selectedSavedCategory = category;
+  savedCategoryPickerOpen = false;
   renderSavedSettingCollection();
 }
 
@@ -1327,89 +1342,102 @@ function renderSavedSettingCollection() {
   if (!collection) return;
 
   const savedData = getSavedSettings();
-  let html = "";
+  const selectorLabel = selectedSavedCategory || "원하는 용도를 골라주세요";
+  let html = `
+    <div class="saved-selector">
+      <button class="saved-select-trigger" onclick="toggleSavedCategoryPicker()">
+        <span>${selectorLabel}</span>
+        <span>${savedCategoryPickerOpen ? "▲" : "▼"}</span>
+      </button>
+      <div class="saved-select-options ${savedCategoryPickerOpen ? "open" : ""}">
+        ${settingCategories.map(category => `<button class="saved-select-option" onclick="selectSavedCategory('${category}')">${category}</button>`).join("")}
+      </div>
+    </div>
+  `;
 
-  settingCategories.forEach(category => {
-    const categoryData = savedData[category] || [];
-    const sortedSettings = [...categoryData].sort((a, b) => {
-      const countA = Number(a.count || 0);
-      const countB = Number(b.count || 0);
-      if (countA !== countB) return countA - countB;
-      return new Date(a.createdAt) - new Date(b.createdAt);
-    });
+  if (!selectedSavedCategory) {
+    collection.innerHTML = html;
+    return;
+  }
 
-    const isOpen = openedSavedCategory === category;
+  const category = selectedSavedCategory;
+  const categoryData = savedData[category] || [];
+  const sortedSettings = [...categoryData].sort((a, b) => {
+    const countA = Number(a.count || 0);
+    const countB = Number(b.count || 0);
+    if (countA !== countB) return countA - countB;
+    return new Date(a.createdAt) - new Date(b.createdAt);
+  });
 
-    html += `
-      <div class="saved-category ${isOpen ? "open" : ""}">
-        <button class="saved-category-header" onclick="toggleSavedCategory('${category}')">
-          <span>${category}</span>
-          <span>${isOpen ? "▲" : "▼"}</span>
-        </button>
-        <div class="saved-category-body">
-    `;
+  html += `
+    <div class="saved-category-result">
+      <div class="saved-category-header">
+        <span>${category}</span>
+        <span>▲</span>
+      </div>
+      <div class="saved-category-body">
+  `;
 
-    if (sortedSettings.length === 0) {
-      html += `<div class="saved-empty">저장된 세팅이 없습니다.</div>`;
-    } else {
-      const groupedByCount = sortedSettings.reduce((groups, setting) => {
-        const savedSkills = setting.skills || [];
-        const count = Number(setting.count || savedSkills.length || 0);
-        if (!groups[count]) groups[count] = [];
-        groups[count].push(setting);
-        return groups;
-      }, {});
+  if (sortedSettings.length === 0) {
+    html += `<div class="saved-empty">저장된 세팅이 없습니다.</div>`;
+  } else {
+    const groupedByCount = sortedSettings.reduce((groups, setting) => {
+      const savedSkills = setting.skills || [];
+      const count = Number(setting.count || savedSkills.length || 0);
+      if (!groups[count]) groups[count] = [];
+      groups[count].push(setting);
+      return groups;
+    }, {});
 
-      Object.keys(groupedByCount)
-        .map(Number)
-        .sort((a, b) => a - b)
-        .forEach(count => {
+    Object.keys(groupedByCount)
+      .map(Number)
+      .sort((a, b) => a - b)
+      .forEach(count => {
+        html += `
+          <div class="saved-count-group">
+            <div class="saved-count-title">${count}칸</div>
+            <div class="saved-count-items">
+        `;
+
+        groupedByCount[count].forEach(setting => {
+          const savedSkills = setting.skills || [];
+          const uploader = setting.uploaderNickname || setting.nickname || "닉네임 미설정";
+          const dateText = setting.createdDate || formatShortDate(setting.createdAt);
+          const deleteButton = canDeleteSavedSetting(setting)
+            ? `<button class="saved-delete-btn" onclick="deleteSavedSetting('${category}', '${setting.id}')">삭제</button>`
+            : "";
+
           html += `
-            <div class="saved-count-group">
-              <div class="saved-count-title">${count}칸</div>
-              <div class="saved-count-items">
+            <div class="saved-setting-block">
+              <div class="saved-setting-grid">
           `;
 
-          groupedByCount[count].forEach(setting => {
-            const savedSkills = setting.skills || [];
-            const uploader = setting.uploaderNickname || setting.nickname || "닉네임 미설정";
-            const dateText = setting.createdDate || formatShortDate(setting.createdAt);
-            const deleteButton = canDeleteSavedSetting(setting)
-              ? `<button class="saved-delete-btn" onclick="deleteSavedSetting('${category}', '${setting.id}')">삭제</button>`
-              : "";
-
-            html += `
-              <div class="saved-setting-block">
-                <div class="saved-setting-grid">
-            `;
-
-            savedSkills.forEach(skill => {
-              const mode = skill.mode === "manual" ? "manual" : "auto";
-              html += `<div class="saved-setting-slot ${gradeClassMap[skill.grade]}"><span class="saved-mode-dot ${mode}"></span>${skill.name}</div>`;
-            });
-
-            html += `
-                </div>
-                <div class="saved-setting-footer">
-                  <span class="saved-setting-meta">${uploader} · ${dateText}</span>
-                  ${deleteButton}
-                </div>
-              </div>
-            `;
+          savedSkills.forEach(skill => {
+            const mode = skill.mode === "manual" ? "manual" : "auto";
+            html += `<div class="saved-setting-slot ${gradeClassMap[skill.grade]}"><span class="saved-mode-dot ${mode}"></span>${skill.name}</div>`;
           });
 
           html += `
               </div>
+              <div class="saved-setting-footer">
+                <span class="saved-setting-meta">${uploader} · ${dateText}</span>
+                ${deleteButton}
+              </div>
             </div>
           `;
         });
-    }
 
-    html += `</div></div>`;
-  });
+        html += `
+            </div>
+          </div>
+        `;
+      });
+  }
 
+  html += `</div></div>`;
   collection.innerHTML = html;
 }
+
 
 addMenuButtons();
 addSections();
