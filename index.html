@@ -614,6 +614,61 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
   .saved-mode-dot{width:11px;height:11px;top:-4px;right:-4px;border-width:2px;z-index:20}
 }
 
+
+.browser-alert-overlay{
+  position:fixed;
+  inset:0;
+  z-index:5000;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+  background:rgba(17,24,39,.58);
+}
+.browser-alert-overlay.show{display:flex}
+.browser-alert-box{
+  width:min(420px,100%);
+  padding:28px 24px;
+  border-radius:26px;
+  background:#fff;
+  color:#111827;
+  box-shadow:0 24px 70px rgba(0,0,0,.28);
+}
+.browser-alert-title{
+  margin:0 0 14px;
+  font-size:26px;
+  font-weight:900;
+  letter-spacing:-.04em;
+}
+.browser-alert-text{
+  margin:0 0 18px;
+  font-size:17px;
+  line-height:1.65;
+  font-weight:800;
+  color:#4b5563;
+}
+.browser-alert-guide{
+  margin:0 0 22px;
+  padding:14px 16px;
+  border-radius:18px;
+  background:#f3f4f6;
+  color:#111827;
+  font-size:15px;
+  line-height:1.55;
+  font-weight:800;
+}
+.browser-alert-close{
+  width:100%;
+  border:0;
+  border-radius:18px;
+  padding:15px 18px;
+  background:#111827;
+  color:#fff;
+  font-size:18px;
+  font-weight:900;
+  cursor:pointer;
+}
+
 </style>
 </head>
 
@@ -1448,7 +1503,17 @@ renderSettingSkillList();
 renderSavedSettingCollection();
       
 </script>
-      <script type="module">
+      
+<div id="browserAlertOverlay" class="browser-alert-overlay" aria-hidden="true">
+  <div class="browser-alert-box" role="dialog" aria-modal="true" aria-labelledby="browserAlertTitle">
+    <h2 id="browserAlertTitle" class="browser-alert-title">다른 브라우저로 열어주세요</h2>
+    <p class="browser-alert-text">카카오톡, 인스타그램 같은 앱 안의 브라우저에서는 Google 로그인이 제대로 진행되지 않을 수 있습니다.</p>
+    <p class="browser-alert-guide">오른쪽 위 <strong>⋮</strong> 메뉴를 누른 뒤<br><strong>다른 브라우저로 열기</strong> 또는 <strong>Chrome에서 열기</strong>를 선택해주세요.</p>
+    <button type="button" class="browser-alert-close" onclick="closeBrowserAlert()">확인</button>
+  </div>
+</div>
+
+<script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
   import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
   import { getFirestore, doc, getDoc, setDoc, deleteDoc, collection, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
@@ -1466,6 +1531,30 @@ renderSavedSettingCollection();
   const auth = getAuth(app);
   const db = getFirestore(app);
   const provider = new GoogleAuthProvider();
+
+function isInAppBrowser(){
+  const ua = navigator.userAgent.toLowerCase();
+  return /kakaotalk|instagram|fbav|fb_iab|line|naver|daumapps|wv/.test(ua);
+}
+
+window.openBrowserAlert = function(){
+  const overlay = document.getElementById("browserAlertOverlay");
+  if(!overlay) return;
+  overlay.classList.add("show");
+  overlay.setAttribute("aria-hidden", "false");
+};
+
+window.closeBrowserAlert = function(){
+  const overlay = document.getElementById("browserAlertOverlay");
+  if(!overlay) return;
+  overlay.classList.remove("show");
+  overlay.setAttribute("aria-hidden", "true");
+};
+
+window.addEventListener("click", (e) => {
+  const overlay = document.getElementById("browserAlertOverlay");
+  if(overlay && e.target === overlay) closeBrowserAlert();
+});
 
 const ADMIN_EMAIL = "khu9918@gmail.com";
 
@@ -2088,4 +2177,4 @@ statsTimer = setInterval(refreshSiteStats, 30000);
   console.log("Firebase 연결 완료");
 </script>
 </body>
-</html>
+      </html>
