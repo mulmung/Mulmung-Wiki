@@ -15,7 +15,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
 .layout{display:flex;max-width:1280px;margin:0 auto}
 .sidebar{width:280px;flex:0 0 280px;min-height:calc(100vh - 62px);padding:18px;background:#202326;border-right:1px solid #111827}
 .sidebar-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}.sidebar-title{color:#fff;font-size:18px;font-weight:900;margin:0}.sidebar-home-btn{width:42px;height:42px;border:0;border-radius:14px;background:#000;color:#fff;font-size:24px;font-weight:900;display:flex;align-items:center;justify-content:center;cursor:pointer}.sidebar-home-btn:hover{background:#111827}
-.sidebar-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 0 16px}
+.sidebar-stats{display:flex;flex-direction:column;gap:10px;margin:0 0 16px}
 .sidebar-stat-card{border:1px solid rgba(255,255,255,.12);border-radius:16px;background:#111827;padding:12px;text-align:center;color:#fff}
 .sidebar-stat-label{display:block;font-size:12px;font-weight:900;color:#d1d5db;margin-bottom:4px;letter-spacing:-.2px}
 .sidebar-stat-value{display:block;font-size:22px;font-weight:900;line-height:1}
@@ -1221,6 +1221,10 @@ button.save-cancel{
           <span class="sidebar-stat-label">가입 슬레이어</span>
           <span class="sidebar-stat-value"><span id="joinedUserCount">-</span><span class="sidebar-stat-unit">명</span></span>
         </div>
+        <div class="sidebar-stat-card">
+          <span class="sidebar-stat-label">누적 접속</span>
+          <span class="sidebar-stat-value"><span id="totalVisitCount">-</span><span class="sidebar-stat-unit">회</span></span>
+        </div>
       </div>
       <div class="sidebar-auth-card">
         <div class="sidebar-auth-title">로그인 정보</div>
@@ -2308,7 +2312,7 @@ renderSavedSettingCollection();
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
   import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
-  import { getFirestore, doc, getDoc, setDoc, deleteDoc, collection, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
+  import { getFirestore, doc, getDoc, setDoc, deleteDoc, collection, getDocs, serverTimestamp, increment } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
 
   const firebaseConfig = {
   apiKey: "AIzaSyDfcd53sM_tUUp4VVeskZEhKndymzwq6uA",
@@ -2501,10 +2505,27 @@ async function markMeOffline() {
   }
 }
 
+async function registerTotalVisit() {
+  try {
+    const visitSessionKey = "mulmungTotalVisitCounted";
+    if (sessionStorage.getItem(visitSessionKey)) return;
+
+    await setDoc(doc(db, "siteStats", "visits"), {
+      totalVisits: increment(1),
+      updatedAt: serverTimestamp()
+    }, { merge: true });
+
+    sessionStorage.setItem(visitSessionKey, "1");
+  } catch (error) {
+    console.warn("누적 접속 기록 오류:", error);
+  }
+}
+
 async function refreshSiteStats() {
   const onlineCountEl = document.getElementById("onlineUserCount");
   const joinedCountEl = document.getElementById("joinedUserCount");
-  if (!onlineCountEl || !joinedCountEl) return;
+  const totalVisitCountEl = document.getElementById("totalVisitCount");
+  if (!onlineCountEl || !joinedCountEl || !totalVisitCountEl) return;
 
   try {
     const publicDocs = await getDocs(collection(db, "publicUsers"));
@@ -2525,10 +2546,20 @@ async function refreshSiteStats() {
 
     onlineCountEl.textContent = onlineCount;
     joinedCountEl.textContent = joinedCount;
+
+    try {
+      const visitSnap = await getDoc(doc(db, "siteStats", "visits"));
+      const totalVisits = visitSnap.exists() ? Number(visitSnap.data().totalVisits || 0) : 0;
+      totalVisitCountEl.textContent = totalVisits;
+    } catch (visitError) {
+      console.warn("누적 접속 불러오기 오류:", visitError);
+      totalVisitCountEl.textContent = "-";
+    }
   } catch (error) {
     console.warn("사이트 통계 불러오기 오류:", error);
     onlineCountEl.textContent = "-";
     joinedCountEl.textContent = "-";
+    totalVisitCountEl.textContent = "-";
   }
 }
 
@@ -3051,7 +3082,10 @@ window.addEventListener("pagehide", () => {
   markMeOffline();
 });
 
-refreshSiteStats();
+registerTotalVisit().then(refreshSiteStats).catch(error => {
+  console.warn("누적 접속 초기화 오류:", error);
+  refreshSiteStats();
+});
 window.loadSkillSettingsFromCloud();
 statsTimer = setInterval(refreshSiteStats, 30000);
 
