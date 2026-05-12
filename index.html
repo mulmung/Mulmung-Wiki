@@ -1239,7 +1239,7 @@ function addSections() {
       <h2>전체 진로</h2>
       <p>다이아 사용 진로를 한눈에 선택할 수 있도록 정리한 페이지입니다.</p>
       <div class="career-route-grid">
-        <button class="career-route-btn">무기 소환</button>
+        <button class="career-route-btn" onclick="openInfoPopup('무기 소환', '기본 목표는 무기 소환 6레벨입니다.<br><br>신화 1등급 무기를 획득했거나<br>신입 슬레이어 패키지를 구매한 경우에는<br>5레벨까지만 진행해도 됩니다.')">무기 소환</button>
         <button class="career-route-btn">악세 소환</button>
         <button class="career-route-btn">유물 (1차)</button>
         <button class="career-route-btn">클래스 뽑기</button>
@@ -1475,6 +1475,12 @@ function showSection(sectionId) {
 function openUnlockPopup(title, text) {
   document.getElementById("unlockPopupTitle").textContent = title + " 해금 조건";
   document.getElementById("unlockPopupText").textContent = text;
+  document.getElementById("unlockPopupBg").classList.add("show");
+}
+
+function openInfoPopup(title, html) {
+  document.getElementById("unlockPopupTitle").textContent = title;
+  document.getElementById("unlockPopupText").innerHTML = html;
   document.getElementById("unlockPopupBg").classList.add("show");
 }
 
