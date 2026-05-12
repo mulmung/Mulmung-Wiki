@@ -1333,18 +1333,39 @@ function filterHtml(type) {
 }
 
 
+
+const promotionInfoData = {
+  stone: { title: "스톤", stage: null, unlock: "" },
+  bronze: { title: "브론즈", stage: null, unlock: "" },
+  iron: { title: "아이언", stage: null, unlock: "" },
+  silver: { title: "실버", stage: 80, unlock: "길드 가입, 스토리" },
+  gold: { title: "골드", stage: 110, unlock: "길드 생성" },
+  mithril: { title: "미스릴", stage: 135, unlock: "승급 별 츄리닝" },
+  orichalcon: { title: "오리하르콘", stage: 160, unlock: "" },
+  arcanite: { title: "아케이나이트", stage: 210, unlock: "" },
+  adamantite: { title: "아다만타이트", stage: 245, unlock: "" },
+  ether: { title: "에테르", stage: 345, unlock: "스킬 마스터리" },
+  blackMithril: { title: "블랙미스릴", stage: 460, unlock: "블랙 오브" },
+  demonMetal: { title: "데몬메탈", stage: 549, unlock: "사역마" },
+  dragonog: { title: "드라고노그", stage: 605, unlock: "잠재된 힘 각성" },
+  ragnarBlood: { title: "라그나블러드", stage: 705, unlock: "봉인된 신전" },
+  warFrost: { title: "워프로스트", stage: 779, unlock: "비스트" },
+  darkNox: { title: "다크녹스", stage: 859, unlock: "" },
+  blueAbyss: { title: "블루어비스", stage: 955, unlock: "" },
+  infinite: { title: "인피넌트", stage: 1025, unlock: "" },
+  cyclos: { title: "사이클로스", stage: 1119, unlock: "" },
+  ancientNine: { title: "에이션트나인", stage: 1209, unlock: "" },
+  gigaRock: { title: "기가로크", stage: 1310, unlock: "" },
+  eisenHart: { title: "아이젠하르트", stage: 1409, unlock: "" },
+  diamondDust: { title: "다이아더스트", stage: 1495, unlock: "" },
+  eldenWood: { title: "엘든우드", stage: 1585, unlock: "" },
+  blitzGold: { title: "블리츠골드", stage: 1665, unlock: "" }
+};
+
 function showPromotionStage(id, name) {
   document.querySelectorAll(".promotion-stage-btn").forEach(btn => {
     btn.classList.toggle("active", btn.dataset.promotionId === id);
   });
-
-  const detail = document.getElementById("promotionDetail");
-  if (detail) {
-    detail.innerHTML = `
-      <strong>${name}</strong>
-      <p>추후 [${name}] 승급의 내용을 업데이트 할 예정입니다.</p>
-    `;
-  }
 
   openPromotionInfoPopup(id, name);
 }
@@ -1357,9 +1378,21 @@ function openPromotionInfoPopup(id, name) {
 
   if (!popup || !title || !text || !linkBtn) return;
 
-  title.textContent = `${name} 승급 정보`;
-  text.textContent = `추후 [${name}] 승급의 내용을 업데이트 할 예정입니다.`;
-  linkBtn.onclick = () => goToPromotionSkillSettings(name);
+  const data = promotionInfoData[id] || { title: name, stage: null, unlock: "" };
+  const stageText = data.stage ? String(data.stage) : "업데이트 예정";
+  const unlockHtml = data.unlock
+    ? `<div class="promotion-unlock-info"><span class="promotion-unlock-label">해금 콘텐츠</span><br>${data.unlock}</div>`
+    : "";
+
+  title.textContent = `${data.title} 승급 정보`;
+  text.innerHTML = `
+    <div class="promotion-stage-info">
+      <div class="promotion-stage-label">적정 스테이지</div>
+      <div class="promotion-stage-number">${stageText}</div>
+      ${unlockHtml}
+    </div>
+  `;
+  linkBtn.onclick = () => goToPromotionSkillSettings(data.title);
 
   popup.classList.add("show");
 }
@@ -1484,10 +1517,6 @@ function addSections() {
       <p class="guide-text">확인하고 싶은 승급 단계를 선택해주세요.</p>
       <div class="promotion-button-grid">
         ${promotions.map(([id,name]) => `<button class="promotion-stage-btn" data-promotion-id="${id}" onclick="showPromotionStage('${id}', '${name}')">${name}</button>`).join("")}
-      </div>
-      <div id="promotionDetail" class="promotion-detail-box">
-        <strong>승급 단계 선택</strong>
-        <p>위 버튼을 눌러 승급 정보를 확인해주세요.</p>
       </div>
     </section>
   `);
