@@ -1243,6 +1243,17 @@ function addSections() {
         <button class="career-route-btn" onclick="openInfoPopup('악세 소환', '&lt;span style=&quot;color:#2563eb;font-weight:900;&quot;&gt;기본 목표는 악세사리 소환 4레벨입니다.&lt;/span&gt;')">악세 소환</button>
         <button class="career-route-btn" onclick="openInfoPopup('유물 (1차)', '&lt;span style=&quot;color:#2563eb;font-weight:900;&quot;&gt;기본 목표는 유물 전체 평균 레벨 30입니다.&lt;/span&gt;&lt;br&gt;&lt;br&gt;&lt;span style=&quot;color:#dc2626;font-weight:900;&quot;&gt;해금 조건: 스테이지 60 클리어&lt;/span&gt;')">유물 (1차)</button>
         <button class="career-route-btn" onclick="openInfoPopup('클래스 뽑기', '&lt;span style=&quot;color:#2563eb;font-weight:900;&quot;&gt;기본 목표는 17클래스 이상 획득입니다.&lt;/span&gt;&lt;br&gt;&lt;br&gt;소환 레벨 5 이전에&lt;br&gt;17클래스 이상을 획득했다면&lt;br&gt;즉시 멈추고 다음 단계로 넘어가면 됩니다.&lt;br&gt;&lt;br&gt;소환 레벨 5까지&lt;br&gt;17클래스 이상을 획득하지 못했다면&lt;br&gt;추가 진행 없이&lt;br&gt;다음 단계로 넘어가는 것을 권장합니다.&lt;br&gt;&lt;br&gt;&lt;span style=&quot;color:#dc2626;font-weight:900;&quot;&gt;해금 조건: Lv.250 달성 / 스테이지 120 클리어&lt;/span&gt;')">클래스 뽑기</button>
+        <button class="career-route-btn" onclick="openInfoPopup('정령 뽑기', '&lt;span style=&quot;font-weight:900;&quot;&gt;추후 업데이트 예정&lt;/span&gt;')">정령 뽑기</button>
+        <button class="career-route-btn" onclick="openInfoPopup('오르 제작', '&lt;span style=&quot;font-weight:900;&quot;&gt;추후 업데이트 예정&lt;/span&gt;')">오르 제작</button>
+        <button class="career-route-btn" onclick="openInfoPopup('유물 (2차)', '&lt;span style=&quot;font-weight:900;&quot;&gt;추후 업데이트 예정&lt;/span&gt;')">유물 (2차)</button>
+        <button class="career-route-btn" onclick="openInfoPopup('오브 제작', '&lt;span style=&quot;font-weight:900;&quot;&gt;추후 업데이트 예정&lt;/span&gt;')">오브 제작</button>
+        <button class="career-route-btn" onclick="openInfoPopup('유물 (3차)', '&lt;span style=&quot;font-weight:900;&quot;&gt;추후 업데이트 예정&lt;/span&gt;')">유물 (3차)</button>
+        <button class="career-route-btn" onclick="openInfoPopup('사역마 6성', '&lt;span style=&quot;font-weight:900;&quot;&gt;추후 업데이트 예정&lt;/span&gt;')">사역마 6성</button>
+        <button class="career-route-btn" onclick="openInfoPopup('유물 (4차)', '&lt;span style=&quot;font-weight:900;&quot;&gt;추후 업데이트 예정&lt;/span&gt;')">유물 (4차)</button>
+        <button class="career-route-btn" onclick="openInfoPopup('사역마 7성', '&lt;span style=&quot;font-weight:900;&quot;&gt;추후 업데이트 예정&lt;/span&gt;')">사역마 7성</button>
+        <button class="career-route-btn" onclick="openInfoPopup('클래스 뽑기 (20클)', '&lt;span style=&quot;font-weight:900;&quot;&gt;추후 업데이트 예정&lt;/span&gt;')">클래스 뽑기 (20클)</button>
+        <button class="career-route-btn" onclick="openInfoPopup('클래스 뽑기 (테라)', '&lt;span style=&quot;font-weight:900;&quot;&gt;추후 업데이트 예정&lt;/span&gt;')">클래스 뽑기 (테라)</button>
+        <button class="career-route-btn" onclick="openInfoPopup('비스트 뽑기', '&lt;span style=&quot;font-weight:900;&quot;&gt;추후 업데이트 예정&lt;/span&gt;')">비스트 뽑기</button>
       </div>
     </section>
 
@@ -1484,20 +1495,7 @@ function openInfoPopup(title, html) {
   document.getElementById("unlockPopupBg").classList.add("show");
 }
 
-const careerPopupContents = {
-  weapon: {
-    title: "무기 소환",
-    html: `<span style="color:#2563eb;font-weight:900;">기본 목표는 무기 소환 6레벨입니다.</span><br><br>신화 1등급 무기를 획득했거나<br>신입 슬레이어 패키지를 구매한 경우에는<br>5레벨까지만 진행해도 됩니다.`
-  },
-  accessory: {
-    title: "악세 소환",
-    html: `<span style="color:#2563eb;font-weight:900;">기본 목표는 악세사리 소환 4레벨입니다.</span>`
-  },
-  relic1: {
-    title: "유물 (1차)",
-    html: `<span style="color:#2563eb;font-weight:900;">기본 목표는 유물 전체 평균 레벨 30입니다.</span><br><br><span style="color:#dc2626;font-weight:900;">해금 조건: 스테이지 60 클리어</span>`
-  }
-};
+const careerPopupContents = {};
 
 function initCareerPopupButtons() {
   document.querySelectorAll("[data-career-popup]").forEach((button) => {
