@@ -160,6 +160,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
 .setting-guide-text{text-align:center;font-weight:900;color:#4b5563}
 .setting-action-row{display:flex;justify-content:center;gap:10px;margin:-18px auto 34px;flex-wrap:wrap}
 .setting-reset-btn,.setting-save-btn,.setting-collection-btn{display:inline-block;padding:10px 18px;border:none;border-radius:999px;color:#fff;font-size:14px;font-weight:900;cursor:pointer}
+.skill-manage-only{display:none}
+body.skill-can-manage .skill-manage-only{display:inline-block}
 .setting-reset-btn{background:#111827}
 .setting-save-btn{background:#22c55e}
 .setting-collection-btn{background:#fb923c}
@@ -2691,7 +2693,7 @@ function addSections() {
       <p class="setting-guide-text">아래 스킬 박스를 누르면 첫 번째 빈칸부터 채워집니다. 세팅 칸의 스킬을 누르면 제거됩니다.</p>
       <p class="setting-mode-guide">스킬칸 오른쪽 위의 작은 점을 누르면 자동/수동이 바뀝니다. <span class="auto-text">파란 점은 자동</span>, <span class="manual-text">회색 점은 수동</span>입니다.</p>
       <div id="skillSettingSlots" class="skill-setting-grid"></div>
-      <div class="setting-action-row"><button class="setting-reset-btn" onclick="resetSkillSetting()">세팅 초기화</button><button class="setting-save-btn" onclick="openSavePopup()">세팅 저장</button><button class="setting-collection-btn" onclick="showSection('skill-setting-collection')">모음</button></div>
+      <div class="setting-action-row" id="skillSettingActionRow"><button class="setting-reset-btn skill-manage-only" onclick="resetSkillSetting()">세팅 초기화</button><button class="setting-save-btn skill-manage-only" onclick="openSavePopup()">세팅 저장</button><button class="setting-collection-btn" onclick="showSection('skill-setting-collection')">모음</button></div>
       <h2 class="setting-list-title">스킬 목록</h2>
       <input id="settingSearchInput" class="skill-search-box" type="text" placeholder="세팅할 스킬을 검색하세요. 예: 블리자드" oninput="renderSettingSkillList()" />
       ${filterHtml("setting")}
@@ -2824,7 +2826,7 @@ function getSettingOwnerUid() {
 
 function canDeleteSavedSetting(setting) {
   if (window.canManageSavedSetting) return window.canManageSavedSetting(setting);
-  return true;
+  return false;
 }
 
 function setBreadcrumb(sectionId) {
@@ -3038,6 +3040,10 @@ function setSettingElementFilter(element) {
 }
 
 function addSettingSkill(skillName) {
+  if (!canManageSkillSettingsClient()) {
+    alert("스킬 세팅은 관리자와 스킬 마스터만 사용할 수 있습니다.");
+    return;
+  }
   const selectedIndex = selectedSettingSkills.findIndex(item => item.name === skillName);
 
   // 이미 선택된 스킬을 아래 목록에서 한 번 더 누르면 선택 해제
@@ -3062,6 +3068,7 @@ function addSettingSkill(skillName) {
 }
 
 function removeSettingSkill(index) {
+  if (!canManageSkillSettingsClient()) return;
   selectedSettingSkills.splice(index, 1);
   renderSkillSettingSlots();
   renderSettingSkillList();
@@ -3069,6 +3076,7 @@ function removeSettingSkill(index) {
 
 function toggleSkillMode(event, index) {
   if (event) event.stopPropagation();
+  if (!canManageSkillSettingsClient()) return;
   const skill = selectedSettingSkills[index];
   if (!skill) return;
   skill.mode = skill.mode === "manual" ? "auto" : "manual";
@@ -3076,6 +3084,10 @@ function toggleSkillMode(event, index) {
 }
 
 function resetSkillSetting() {
+  if (!canManageSkillSettingsClient()) {
+    alert("스킬 세팅은 관리자와 스킬 마스터만 사용할 수 있습니다.");
+    return;
+  }
   selectedSettingSkills = [];
   renderSkillSettingSlots();
   renderSettingSkillList();
@@ -3084,6 +3096,11 @@ function resetSkillSetting() {
 function renderSkillSettingSlots() {
   const slots = document.getElementById("skillSettingSlots");
   if (!slots) return;
+
+  if (!canManageSkillSettingsClient()) {
+    slots.innerHTML = Array.from({ length: 10 }, () => `<button class="setting-slot" type="button" disabled>잠김</button>`).join("");
+    return;
+  }
 
   let html = "";
   for (let i = 0; i < 10; i++) {
@@ -3101,6 +3118,11 @@ function renderSettingSkillList() {
   const list = document.getElementById("settingSkillList");
   const searchInput = document.getElementById("settingSearchInput");
   if (!list) return;
+
+  if (!canManageSkillSettingsClient()) {
+    list.innerHTML = `<div class="empty-result">스킬 세팅 저장과 관리는 관리자와 스킬 마스터만 사용할 수 있습니다.</div>`;
+    return;
+  }
 
   const keyword = searchInput ? searchInput.value.trim().toLowerCase() : "";
   let filteredSkills = skills.filter(skill => skill.name.toLowerCase().includes(keyword) && (selectedSettingGrade === "전체" || skill.grade === selectedSettingGrade) && (selectedSettingElement === "전체" || skill.element === selectedSettingElement));
@@ -3121,6 +3143,10 @@ function renderSettingSkillList() {
 }
 
 function openSavePopup() {
+  if (!canManageSkillSettingsClient()) {
+    alert("스킬 세팅 저장은 관리자와 스킬 마스터만 사용할 수 있습니다.");
+    return;
+  }
   const selectedSkills = selectedSettingSkills.filter(Boolean);
   if (selectedSkills.length === 0) {
     alert("저장할 스킬을 먼저 선택해주세요.");
@@ -3169,6 +3195,11 @@ function closeSavePopup() {
 }
 
 async function saveCurrentSkillSetting(category, promotionStage = "") {
+  if (!canManageSkillSettingsClient()) {
+    alert("스킬 세팅 저장은 관리자와 스킬 마스터만 사용할 수 있습니다.");
+    closeSavePopup();
+    return;
+  }
   const skillCount = selectedSettingSkills.length;
 
   if (skillCount < 5) {
@@ -3270,12 +3301,16 @@ function selectSavedPromotionStage(stage) {
 }
 
 async function deleteSavedSetting(category, settingId) {
+  if (!canManageSkillSettingsClient()) {
+    alert("스킬 세팅 삭제는 관리자와 스킬 마스터만 사용할 수 있습니다.");
+    return;
+  }
   const savedData = getSavedSettings();
   if (!savedData[category]) return;
 
   const targetSetting = savedData[category].find(setting => String(setting.id) === String(settingId));
   if (targetSetting && !canDeleteSavedSetting(targetSetting)) {
-    alert("본인이 올린 세팅만 삭제할 수 있습니다. 단, 관리자와 스킬 마스터는 모든 세팅을 삭제할 수 있습니다.");
+    alert("스킬 세팅 삭제는 관리자와 스킬 마스터만 할 수 있습니다.");
     return;
   }
 
@@ -3556,6 +3591,20 @@ let statsTimer = null;
 
 const ONLINE_LIMIT_MS = 2 * 60 * 1000;
 
+function canManageSkillSettingsClient() {
+  if (!currentUser) return false;
+  return isAdminUser(currentUser) || currentRole === "skill_master";
+}
+window.canManageSkillSettingsClient = canManageSkillSettingsClient;
+
+function updateSkillSettingPermissionUI() {
+  const canManage = canManageSkillSettingsClient();
+  document.body.classList.toggle("skill-can-manage", canManage);
+  renderSkillSettingSlots?.();
+  renderSettingSkillList?.();
+  renderSavedSettingCollection?.();
+}
+
 window.getCurrentSkillSettingProfile = function() {
   if (!currentUser) return null;
   return {
@@ -3570,14 +3619,15 @@ window.getCurrentSkillSettingProfile = function() {
 
 window.canManageSavedSetting = function(setting) {
   if (!currentUser) return false;
-  if (isAdminUser(currentUser)) return true;
-  if (currentRole === "skill_master") return true;
-  return String(setting.ownerUid || "") === String(currentUser.uid);
+  return isAdminUser(currentUser) || currentRole === "skill_master";
 };
 
 window.saveSkillSettingToCloud = async function(setting) {
   if (!currentUser) {
     throw new Error("로그인이 필요합니다.");
+  }
+  if (!canManageSkillSettingsClient()) {
+    throw new Error("스킬 세팅 저장 권한이 없습니다.");
   }
 
   const cloudSetting = {
@@ -3596,6 +3646,9 @@ window.saveSkillSettingToCloud = async function(setting) {
 window.deleteSkillSettingFromCloud = async function(settingId) {
   if (!currentUser) {
     throw new Error("로그인이 필요합니다.");
+  }
+  if (!canManageSkillSettingsClient()) {
+    throw new Error("스킬 세팅 삭제 권한이 없습니다.");
   }
   await deleteDoc(doc(db, "skillSettings", String(settingId)));
 };
@@ -4066,6 +4119,7 @@ function updateUserDisplay(user, nickname, role = "user", badges = [], promotion
     nicknameBtn.style.display = "inline-block";
     roleManageBtn.style.display = "inline-block";
     updateSidebarDisplay(user, "물멍", "admin", normalizedBadges, promotionStage);
+    updateSkillSettingPermissionUI();
     return;
   }
 
@@ -4082,6 +4136,7 @@ function updateUserDisplay(user, nickname, role = "user", badges = [], promotion
   }
 
   updateSidebarDisplay(user, displayName, role, normalizedBadges, promotionStage);
+  updateSkillSettingPermissionUI();
 }
 
 loginBtn.addEventListener("click", handleGoogleLogin);
@@ -4355,7 +4410,9 @@ onAuthStateChanged(auth, async (user) => {
     currentUser = null;
     currentNickname = "";
     currentRole = "user";
+    currentPromotionStage = "";
     currentBadges = [];
+    updateSkillSettingPermissionUI();
 
     loginBtn.style.display = "inline-block";
     nicknameBtn.style.display = "none";
