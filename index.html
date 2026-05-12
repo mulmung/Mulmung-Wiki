@@ -1191,6 +1191,37 @@ button.save-cancel{
   cursor: pointer;
 }
 
+
+.spirit-section-guide{margin:2px 0 14px;font-size:15px;font-weight:800;color:#4b5563}
+.spirit-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:14px}
+.spirit-column{border:1px solid #e5e7eb;border-radius:18px;background:#f9fafb;padding:10px;display:grid;gap:8px;align-content:start}
+.spirit-element-title{display:flex;align-items:center;justify-content:center;min-height:38px;border-radius:999px;font-size:14px;font-weight:950;color:#fff;word-break:keep-all;line-height:1.1;text-align:center}
+.spirit-btn{width:100%;border:1px solid #e5e7eb;border-radius:14px;background:#fff;color:#111827;padding:12px 6px;min-height:44px;font-size:15px;font-weight:950;cursor:pointer;word-break:keep-all;box-shadow:0 4px 10px rgba(0,0,0,.04)}
+.spirit-btn:hover{background:#f3f4f6;transform:translateY(-1px)}
+.spirit-detail-popup-bg{display:none;position:fixed;inset:0;z-index:3300;background:rgba(0,0,0,.45);padding:20px}
+.spirit-detail-popup-bg.show{display:flex;align-items:center;justify-content:center}
+.spirit-detail-popup{width:100%;max-width:390px;padding:24px 22px 20px;border-radius:24px;background:#fff;box-shadow:0 14px 38px rgba(0,0,0,.28);text-align:center;color:#111827}
+.spirit-image-wrap{display:flex;align-items:center;justify-content:center;margin:0 auto 14px}
+.spirit-image{width:118px;height:118px;object-fit:contain;border-radius:22px;background:#f3f4f6;border:1px solid #e5e7eb;padding:8px}
+.spirit-popup-name-row{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:16px}
+.spirit-popup-name{font-size:26px;font-weight:950;letter-spacing:-.03em;color:#111827}
+.spirit-attribute-badge{display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:26px;padding:0 10px;border-radius:999px;color:#fff;font-size:13px;font-weight:950;line-height:1}
+.spirit-popup-divider{border:0;border-top:1px solid #e5e7eb;margin:0 0 18px}
+.spirit-skill-name{font-size:20px;font-weight:950;color:#111827;margin-bottom:10px;word-break:keep-all}
+.spirit-skill-effect{padding:14px 16px;border-radius:18px;background:#f9fafb;border:1px solid #e5e7eb;font-size:15px;font-weight:800;line-height:1.6;color:#374151;word-break:keep-all;text-align:center}
+.spirit-popup-close-btn{width:100%;margin-top:16px;border:none;border-radius:999px;padding:12px 16px;background:#111827;color:#fff;font-size:14px;font-weight:950;cursor:pointer}
+@media(max-width:768px){
+  .spirit-grid{grid-template-columns:repeat(4,minmax(58px,1fr));gap:6px;overflow-x:auto;padding-bottom:4px}
+  .spirit-column{min-width:58px;padding:6px;border-radius:14px;gap:6px}
+  .spirit-element-title{min-height:32px;font-size:11px;border-radius:999px;padding:0 4px}
+  .spirit-btn{min-height:36px;padding:8px 3px;border-radius:11px;font-size:12px}
+  .spirit-detail-popup{max-width:330px;padding:20px 18px 18px;border-radius:22px}
+  .spirit-image{width:96px;height:96px;border-radius:18px}
+  .spirit-popup-name{font-size:23px}
+  .spirit-skill-name{font-size:18px}
+  .spirit-skill-effect{font-size:14px;padding:12px 14px}
+}
+
 </style>
 </head>
 
@@ -1282,6 +1313,22 @@ button.save-cancel{
     <div class="unlock-popup" onclick="event.stopPropagation()"><h3 id="unlockPopupTitle">해금 조건</h3><p id="unlockPopupText"></p></div>
   </div>
 
+  <div class="spirit-detail-popup-bg" id="spiritDetailPopupBg" onclick="closeSpiritPopup()">
+    <div class="spirit-detail-popup" onclick="event.stopPropagation()">
+      <div class="spirit-image-wrap">
+        <img id="spiritPopupImage" class="spirit-image" src="" alt="정령 이미지" />
+      </div>
+      <div class="spirit-popup-name-row">
+        <span id="spiritPopupName" class="spirit-popup-name">정령 이름</span>
+        <span id="spiritPopupElement" class="spirit-attribute-badge element-fire">불</span>
+      </div>
+      <hr class="spirit-popup-divider" />
+      <div id="spiritPopupSkillName" class="spirit-skill-name">스킬 이름</div>
+      <div id="spiritPopupSkillEffect" class="spirit-skill-effect">스킬 효과</div>
+      <button class="spirit-popup-close-btn" type="button" onclick="closeSpiritPopup()">닫기</button>
+    </div>
+  </div>
+
   <div class="promotion-info-popup-bg" id="promotionInfoPopupBg" onclick="closePromotionInfoPopup()">
     <div class="promotion-info-popup" onclick="event.stopPropagation()">
       <h3 id="promotionInfoTitle">승급 정보</h3>
@@ -1367,6 +1414,17 @@ let selectedSavedCount = "";
 let selectedSavedPromotionStage = "";
 let savedCategoryPickerOpen = false;
 let savedCountPickerOpen = false;
+
+const spiritDetails = {
+  sala: {
+    name: "살라",
+    element: "불",
+    elementClass: "element-fire",
+    image: "sala.png",
+    skillName: "화염의 숨결",
+    skillEffect: "전투 시작 후 12초 마다 보스 몬스터에게 남은 체력의 n%의 피해를 입힌다.<br>n : 6 &gt; 7 &gt; 8 &gt; 9 &gt; 10"
+  }
+};
 
 function addMenuButtons() {
   // 다이아 소모처 상위 메뉴는 제거하고, 전체 진로/정령/사역마/비스트를 상위 메뉴로 표시합니다.
@@ -1553,7 +1611,37 @@ function addSections() {
     </section>
 
     <section id="diamond-class" class="card"><h2>클래스</h2><button class="unlock-btn" onclick="openUnlockPopup('클래스', '250레벨 달성 / 120 스테이지')">해금</button><p>추후 [클래스] 내용을 업데이트 할 예정입니다.</p></section>
-    <section id="diamond-spirit" class="card"><h2>정령</h2><button class="unlock-btn" onclick="openUnlockPopup('정령', '100 스테이지 클리어 시')">해금</button><p>추후 [정령] 내용을 업데이트 할 예정입니다.</p></section>
+    <section id="diamond-spirit" class="card">
+      <h2>정령</h2>
+      <button class="unlock-btn" onclick="openUnlockPopup('정령', '100 스테이지 클리어 시')">해금</button>
+      <p class="spirit-section-guide">속성별 정령을 선택해 정보를 확인할 수 있도록 정리할 예정입니다.</p>
+      <div class="spirit-grid">
+        <div class="spirit-column">
+          <div class="spirit-element-title element-fire">불 속성</div>
+          <button class="spirit-btn" type="button" onclick="openSpiritPopup('sala')">살라</button>
+          <button class="spirit-btn" type="button">뭄</button>
+          <button class="spirit-btn" type="button">보</button>
+        </div>
+        <div class="spirit-column">
+          <div class="spirit-element-title element-water">물 속성</div>
+          <button class="spirit-btn" type="button">토드</button>
+          <button class="spirit-btn" type="button">루가</button>
+          <button class="spirit-btn" type="button">아크</button>
+        </div>
+        <div class="spirit-column">
+          <div class="spirit-element-title element-wind">바람 속성</div>
+          <button class="spirit-btn" type="button">제피</button>
+          <button class="spirit-btn" type="button">카트</button>
+          <button class="spirit-btn" type="button">헤르</button>
+        </div>
+        <div class="spirit-column">
+          <div class="spirit-element-title element-earth">땅 속성</div>
+          <button class="spirit-btn" type="button">노아</button>
+          <button class="spirit-btn" type="button">로어</button>
+          <button class="spirit-btn" type="button">라돈</button>
+        </div>
+      </div>
+    </section>
 
     <section id="diamond-or" class="card">
       <h2>오르</h2>
@@ -1794,6 +1882,28 @@ function openInfoPopup(title, html) {
 
 function closeUnlockPopup() {
   document.getElementById("unlockPopupBg").classList.remove("show");
+}
+
+function openSpiritPopup(spiritId) {
+  const data = spiritDetails[spiritId];
+  if (!data) return;
+  const imageEl = document.getElementById("spiritPopupImage");
+  imageEl.src = data.image;
+  imageEl.alt = data.name + " 이미지";
+  imageEl.style.display = "block";
+  imageEl.onerror = function() { this.style.display = "none"; };
+
+  document.getElementById("spiritPopupName").textContent = data.name;
+  const elementEl = document.getElementById("spiritPopupElement");
+  elementEl.textContent = data.element;
+  elementEl.className = "spirit-attribute-badge " + data.elementClass;
+  document.getElementById("spiritPopupSkillName").textContent = data.skillName;
+  document.getElementById("spiritPopupSkillEffect").textContent = data.skillEffect;
+  document.getElementById("spiritDetailPopupBg").classList.add("show");
+}
+
+function closeSpiritPopup() {
+  document.getElementById("spiritDetailPopupBg").classList.remove("show");
 }
 
 function updateElementFilterVisibility(type, grade) {
