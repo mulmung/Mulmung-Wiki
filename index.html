@@ -1471,6 +1471,22 @@ button.save-cancel{
   .spirit-skill-effect{font-size:14px;padding:12px 14px}
 }
 
+
+.spirit-action-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 14px}
+.spirit-action-row .unlock-btn{margin:0}
+.spirit-awakening-btn{display:inline-block;margin:0;padding:7px 15px;border:none;border-radius:999px;background:#111827;color:#fff;font-size:14px;font-weight:900;cursor:pointer}
+.spirit-awakening-btn:hover{filter:brightness(.94)}
+.spirit-awakening-popup-bg{display:none;position:fixed;inset:0;z-index:3400;background:rgba(0,0,0,.48);padding:18px}
+.spirit-awakening-popup-bg.show{display:flex;align-items:center;justify-content:center}
+.spirit-awakening-popup{width:100%;max-width:780px;max-height:86vh;overflow-y:auto;padding:22px;border-radius:24px;background:#fff;box-shadow:0 14px 42px rgba(0,0,0,.3);color:#111827}
+.spirit-awakening-popup .spirit-awakening-guide{margin:0;border-radius:20px;box-shadow:none}
+.spirit-awakening-close-btn{width:100%;margin-top:14px;border:none;border-radius:999px;padding:12px 16px;background:#111827;color:#fff;font-size:14px;font-weight:950;cursor:pointer}
+@media(max-width:768px){
+  .spirit-action-row{gap:7px;margin-bottom:12px}
+  .spirit-awakening-btn{padding:7px 13px;font-size:13px}
+  .spirit-awakening-popup{max-width:94vw;max-height:84vh;padding:14px;border-radius:20px}
+}
+
 </style>
 </head>
 
@@ -1564,6 +1580,143 @@ button.save-cancel{
       <div id="spiritPopupSkillName" class="spirit-skill-name">스킬 이름</div>
       <div id="spiritPopupSkillEffect" class="spirit-skill-effect">스킬 효과</div>
       <button class="spirit-popup-close-btn" type="button" onclick="closeSpiritPopup()">닫기</button>
+    </div>
+  </div>
+
+  <div class="spirit-awakening-popup-bg" id="spiritAwakeningPopupBg" onclick="closeSpiritAwakeningPopup()">
+    <div class="spirit-awakening-popup" onclick="event.stopPropagation()">
+      <div class="spirit-awakening-guide">
+        <div class="spirit-awakening-head">
+          <div>
+            <div class="spirit-awakening-title">노아 기준 정령 각성 흐름</div>
+            <p class="spirit-awakening-desc">정령 각성은 전설 등급부터 가능하며, 각성 단계에 따라 같은 개체 또는 같은 속성 정령이 필요합니다.</p>
+          </div>
+          <span class="spirit-awakening-badge">예시: 노아 각성</span>
+        </div>
+
+        <div class="spirit-awakening-key">
+          <div class="spirit-key-card">
+            <span class="spirit-key-label">같은 개체</span>
+            <div class="spirit-key-text">노아를 각성한다면 <strong>노아만</strong> 재료로 사용</div>
+          </div>
+          <div class="spirit-key-card">
+            <span class="spirit-key-label">같은 속성</span>
+            <div class="spirit-key-text">땅 속성인 <strong>노아 / 로어 / 라돈</strong> 중 선택</div>
+          </div>
+        </div>
+
+        <div class="spirit-awakening-flow">
+          <div class="spirit-awakening-step">
+            <div class="awakening-step-mark">
+              <div class="awakening-step-name">1각</div>
+              <div class="awakening-step-stars">★</div>
+            </div>
+            <div class="awakening-step-content">
+              <div class="awakening-need-title"><span class="same-one">같은 개체</span> 정령 1마리 필요</div>
+              <div class="awakening-material-row">
+                <div class="awakening-material-card">
+                  <span class="awakening-count-pill">x1</span>
+                  <img src="noa.png" alt="노아" class="awakening-material-img">
+                  <span class="awakening-material-name">노아</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="spirit-awakening-step">
+            <div class="awakening-step-mark">
+              <div class="awakening-step-name">2각</div>
+              <div class="awakening-step-stars">★★</div>
+            </div>
+            <div class="awakening-step-content">
+              <div class="awakening-need-title"><span class="same-element">같은 속성</span> 정령 2마리 필요</div>
+              <div class="awakening-material-row">
+                <div class="awakening-material-card"><img src="noa.png" alt="노아" class="awakening-material-img"><span class="awakening-material-name">노아</span></div>
+                <span class="awakening-choice-text">또는</span>
+                <div class="awakening-material-card"><img src="roar.png" alt="로어" class="awakening-material-img"><span class="awakening-material-name">로어</span></div>
+                <span class="awakening-choice-text">또는</span>
+                <div class="awakening-material-card"><img src="radon.png" alt="라돈" class="awakening-material-img"><span class="awakening-material-name">라돈</span></div>
+                <span class="awakening-total-pill">총 x2</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="spirit-awakening-step">
+            <div class="awakening-step-mark">
+              <div class="awakening-step-name">3각</div>
+              <div class="awakening-step-stars">★★★</div>
+            </div>
+            <div class="awakening-step-content">
+              <div class="awakening-need-title"><span class="same-one">같은 개체</span> 정령 1마리 필요</div>
+              <div class="awakening-material-row">
+                <div class="awakening-material-card">
+                  <span class="awakening-count-pill">x1</span>
+                  <img src="noa.png" alt="노아" class="awakening-material-img">
+                  <span class="awakening-material-name">노아</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="spirit-awakening-step">
+            <div class="awakening-step-mark">
+              <div class="awakening-step-name">4각</div>
+              <div class="awakening-step-stars">★★★★</div>
+            </div>
+            <div class="awakening-step-content">
+              <div class="awakening-need-title"><span class="same-element">같은 속성</span> 정령 2마리 필요</div>
+              <div class="awakening-material-row">
+                <div class="awakening-material-card"><img src="noa.png" alt="노아" class="awakening-material-img"><span class="awakening-material-name">노아</span></div>
+                <span class="awakening-choice-text">또는</span>
+                <div class="awakening-material-card"><img src="roar.png" alt="로어" class="awakening-material-img"><span class="awakening-material-name">로어</span></div>
+                <span class="awakening-choice-text">또는</span>
+                <div class="awakening-material-card"><img src="radon.png" alt="라돈" class="awakening-material-img"><span class="awakening-material-name">라돈</span></div>
+                <span class="awakening-total-pill">총 x2</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="spirit-awakening-step">
+            <div class="awakening-step-mark">
+              <div class="awakening-step-name">5각</div>
+              <div class="awakening-step-stars">★★★★★</div>
+            </div>
+            <div class="awakening-step-content">
+              <div class="awakening-need-title"><span class="same-one">같은 개체</span> 정령 1마리 필요</div>
+              <div class="awakening-material-row">
+                <div class="awakening-material-card">
+                  <span class="awakening-count-pill">x1</span>
+                  <img src="noa.png" alt="노아" class="awakening-material-img">
+                  <span class="awakening-material-name">노아</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="spirit-awakening-step myth">
+            <div class="awakening-step-mark">
+              <div class="awakening-step-name">신화</div>
+              <div class="awakening-step-stars">★★★★★+</div>
+            </div>
+            <div class="awakening-step-content">
+              <div class="awakening-need-title"><span class="same-element">같은 속성</span> 정령 3마리 필요</div>
+              <div class="awakening-material-row">
+                <div class="awakening-material-card"><img src="noa.png" alt="노아" class="awakening-material-img"><span class="awakening-material-name">노아</span></div>
+                <span class="awakening-choice-text">또는</span>
+                <div class="awakening-material-card"><img src="roar.png" alt="로어" class="awakening-material-img"><span class="awakening-material-name">로어</span></div>
+                <span class="awakening-choice-text">또는</span>
+                <div class="awakening-material-card"><img src="radon.png" alt="라돈" class="awakening-material-img"><span class="awakening-material-name">라돈</span></div>
+                <span class="awakening-total-pill">총 x3</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="spirit-awakening-note">
+          노아를 끝까지 각성할 때 확정으로 필요한 노아는 1각, 3각, 5각 재료인 <strong>노아 3마리</strong>이고, 2각/4각/신화 각성은 땅 속성 정령 중에서 재료를 맞추면 됩니다.
+        </div>
+      </div>
+      <button class="spirit-awakening-close-btn" type="button" onclick="closeSpiritAwakeningPopup()">닫기</button>
     </div>
   </div>
 
@@ -2023,7 +2176,10 @@ function addSections() {
     <section id="diamond-class" class="card"><h2>클래스</h2><button class="unlock-btn" onclick="openUnlockPopup('클래스', '250레벨 달성 / 120 스테이지')">해금</button><p>추후 [클래스] 내용을 업데이트 할 예정입니다.</p></section>
     <section id="diamond-spirit" class="card">
       <h2>정령</h2>
-      <button class="unlock-btn" onclick="openUnlockPopup('정령', '100 스테이지 클리어 시')">해금</button>
+      <div class="spirit-action-row">
+        <button class="unlock-btn" onclick="openUnlockPopup('정령', '100 스테이지 클리어 시')">해금</button>
+        <button class="spirit-awakening-btn" type="button" onclick="openSpiritAwakeningPopup()">각성 안내</button>
+      </div>
       <p class="spirit-section-guide">속성별 정령을 선택해 정보를 확인할 수 있도록 정리할 예정입니다.</p>
       <div class="spirit-grid">
         <div class="spirit-column">
@@ -2468,6 +2624,17 @@ function openSpiritPopup(spiritId) {
 
 function closeSpiritPopup() {
   document.getElementById("spiritDetailPopupBg").classList.remove("show");
+}
+
+
+function openSpiritAwakeningPopup() {
+  const popup = document.getElementById("spiritAwakeningPopupBg");
+  if (popup) popup.classList.add("show");
+}
+
+function closeSpiritAwakeningPopup() {
+  const popup = document.getElementById("spiritAwakeningPopupBg");
+  if (popup) popup.classList.remove("show");
 }
 
 function updateElementFilterVisibility(type, grade) {
