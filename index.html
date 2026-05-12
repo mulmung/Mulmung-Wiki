@@ -3531,13 +3531,14 @@ function hasBetaTesterBadge(badges) {
   return normalizeBadges(badges).includes("beta_tester");
 }
 
-async function savePublicUserProfile(user, nickname, role = "user", badges = null) {
+async function savePublicUserProfile(user, nickname, role = "user", badges = null, promotionStage = "") {
   if (!user) return;
 
   const normalizedBadges = normalizeBadges(badges);
   const publicPayload = {
     nickname: nickname || "",
     role: role || "user",
+    promotionStage: promotionStage || currentPromotionStage || "",
     status: role === "withdrawn" ? "withdrawn" : "active",
     active: role !== "withdrawn",
     lastActiveAt: Date.now(),
@@ -3682,7 +3683,10 @@ function updateSidebarDisplay(user, nickname, role = "user", badges = [], promot
     sidebarRoleBadge.classList.add("admin");
     sidebarNickname.textContent = "물멍";
     if (sidebarBetaBadge) sidebarBetaBadge.style.display = hasBetaTesterBadge(normalizedBadges) ? "inline-flex" : "none";
-    if (sidebarNicknameBtn) sidebarNicknameBtn.style.display = "none";
+    if (sidebarNicknameBtn) {
+      sidebarNicknameBtn.textContent = "내 정보 설정";
+      sidebarNicknameBtn.style.display = "block";
+    }
     if (sidebarRoleManageBtn) sidebarRoleManageBtn.style.display = "block";
     if (sidebarWithdrawBtn) sidebarWithdrawBtn.style.display = "none";
     return;
@@ -3698,7 +3702,10 @@ function updateSidebarDisplay(user, nickname, role = "user", badges = [], promot
 
   if (sidebarBetaBadge) sidebarBetaBadge.style.display = hasBetaTesterBadge(normalizedBadges) ? "inline-flex" : "none";
   sidebarNickname.textContent = displayName;
-  if (sidebarNicknameBtn) sidebarNicknameBtn.style.display = "block";
+  if (sidebarNicknameBtn) {
+    sidebarNicknameBtn.textContent = "내 정보 설정";
+    sidebarNicknameBtn.style.display = "block";
+  }
   if (sidebarRoleManageBtn) sidebarRoleManageBtn.style.display = "none";
   if (sidebarWithdrawBtn) sidebarWithdrawBtn.style.display = "block";
 }
@@ -3873,6 +3880,8 @@ async function getOrCreateUserProfile(user) {
   const userSnap = await getDoc(userRef);
 
   if (isAdminUser(user)) {
+    const adminData = userSnap.exists() ? userSnap.data() : {};
+
     await setDoc(userRef, {
       email: user.email,
       nickname: "물멍",
@@ -3882,9 +3891,8 @@ async function getOrCreateUserProfile(user) {
       updatedAt: serverTimestamp()
     }, { merge: true });
 
-    await savePublicUserProfile(user, "물멍", "admin", normalizeBadges((userSnap.exists() ? userSnap.data() : {}).badges));
-    const adminData = userSnap.exists() ? userSnap.data() : {};
-    return { nickname: "물멍", role: "admin", badges: normalizeBadges(adminData.badges) };
+    await savePublicUserProfile(user, "물멍", "admin", normalizeBadges(adminData.badges), adminData.promotionStage || "");
+    return { nickname: "물멍", role: "admin", badges: normalizeBadges(adminData.badges), promotionStage: adminData.promotionStage || "" };
   }
 
   if (!userSnap.exists()) {
@@ -3916,11 +3924,11 @@ async function getOrCreateUserProfile(user) {
     }, { merge: true });
 
     const restoredBadges = normalizeBadges(data.badges);
-    await savePublicUserProfile(user, "", "user", restoredBadges);
+    await savePublicUserProfile(user, "", "user", restoredBadges, "");
     return { nickname: "", role: "user", badges: restoredBadges };
   }
 
-  await savePublicUserProfile(user, data.nickname || "", data.role || "user", normalizeBadges(data.badges));
+  await savePublicUserProfile(user, data.nickname || "", data.role || "user", normalizeBadges(data.badges), data.promotionStage || "");
 
   return {
     nickname: data.nickname || "",
@@ -3935,7 +3943,8 @@ function updateUserDisplay(user, nickname, role = "user", badges = [], promotion
   if (isAdminUser(user)) {
     const betaHtml = hasBetaTesterBadge(normalizedBadges) ? `<span class="role-label beta">베타</span>` : "";
     userInfo.innerHTML = `<span class="role-label admin">관리자</span>${betaHtml}<span class="nickname-text">물멍</span>`;
-    nicknameBtn.style.display = "none";
+    nicknameBtn.textContent = "내 정보 설정";
+    nicknameBtn.style.display = "inline-block";
     roleManageBtn.style.display = "inline-block";
     updateSidebarDisplay(user, "물멍", "admin", normalizedBadges, promotionStage);
     return;
