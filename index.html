@@ -313,6 +313,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
   background: #f97316;
 }
 
+.role-label.beta {
+  background: #facc15;
+}
+
 .nickname-text {
   color: #111827;
   font-size: 14px;
@@ -434,6 +438,33 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
 .role-master-title-badge {
   font-size: 15px;
   padding: 7px 14px;
+}
+
+.role-beta-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: max-content;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: #facc15;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 950;
+  line-height: 1;
+  box-shadow: 0 8px 18px rgba(250,204,21,.24);
+}
+.role-medal-line {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 6px;
+}
+.role-medal-label {
+  font-size: 12px;
+  font-weight: 900;
+  color: #6b7280;
 }
 
 .role-user-role-line {
@@ -566,6 +597,23 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
 .sidebar-role-badge.admin { background: #000; }
 .sidebar-role-badge.skill { background: #f97316; }
 .sidebar-role-badge.user { background: #334155; }
+.sidebar-medal-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 42px;
+  height: 26px;
+  padding: 0 10px;
+  border-radius: 999px;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 950;
+  line-height: 1;
+}
+.sidebar-medal-badge.beta {
+  background: #facc15;
+  box-shadow: 0 6px 14px rgba(250,204,21,.24);
+}
 .sidebar-nickname {
   font-size: 16px;
   font-weight: 900;
@@ -968,6 +1016,7 @@ button.save-cancel{
         <div id="sidebarProfile" style="display:none;">
           <div class="sidebar-user-line">
             <span id="sidebarRoleBadge" class="sidebar-role-badge user">일반</span>
+            <span id="sidebarBetaBadge" class="sidebar-medal-badge beta" style="display:none;">베타</span>
             <span id="sidebarNickname" class="sidebar-nickname">닉네임 미설정</span>
           </div>
           <div class="sidebar-action-row">
@@ -1949,6 +1998,7 @@ const userInfo = document.getElementById("userInfo");
 const sidebarLoginBtn = document.getElementById("sidebarLoginBtn");
 const sidebarProfile = document.getElementById("sidebarProfile");
 const sidebarRoleBadge = document.getElementById("sidebarRoleBadge");
+const sidebarBetaBadge = document.getElementById("sidebarBetaBadge");
 const sidebarNickname = document.getElementById("sidebarNickname");
 const sidebarNicknameBtn = document.getElementById("sidebarNicknameBtn");
 const sidebarRoleManageBtn = document.getElementById("sidebarRoleManageBtn");
@@ -1958,6 +2008,7 @@ const sidebarWithdrawBtn = document.getElementById("sidebarWithdrawBtn");
 let currentUser = null;
 let currentNickname = "";
 let currentRole = "user";
+let currentBadges = [];
 let presenceTimer = null;
 let statsTimer = null;
 
@@ -1969,7 +2020,8 @@ window.getCurrentSkillSettingProfile = function() {
     uid: currentUser.uid,
     email: currentUser.email,
     nickname: currentNickname || (isAdminUser(currentUser) ? "물멍" : "닉네임 미설정"),
-    role: isAdminUser(currentUser) ? "admin" : currentRole
+    role: isAdminUser(currentUser) ? "admin" : currentRole,
+    badges: currentBadges
   };
 };
 
@@ -2040,6 +2092,18 @@ window.loadSkillSettingsFromCloud = async function() {
 
 function isAdminUser(user) {
   return user && user.email && user.email.toLowerCase() === ADMIN_EMAIL.toLowerCase();
+}
+
+function normalizeBadges(badges) {
+  if (Array.isArray(badges)) return badges.filter(Boolean);
+  if (badges && typeof badges === "object") {
+    return Object.keys(badges).filter(key => badges[key]);
+  }
+  return [];
+}
+
+function hasBetaTesterBadge(badges) {
+  return normalizeBadges(badges).includes("beta_tester");
 }
 
 async function savePublicUserProfile(user, nickname, role) {
@@ -2127,13 +2191,14 @@ function stopPresenceTimer() {
   presenceTimer = null;
 }
 
-function updateSidebarDisplay(user, nickname, role = "user") {
+function updateSidebarDisplay(user, nickname, role = "user", badges = []) {
   if (!sidebarLoginBtn || !sidebarProfile || !sidebarRoleBadge || !sidebarNickname) return;
 
   sidebarLoginBtn.style.display = "none";
   sidebarProfile.style.display = "block";
 
   const displayName = nickname || "닉네임 미설정";
+  const normalizedBadges = normalizeBadges(badges);
 
   sidebarRoleBadge.classList.remove("admin", "skill", "user");
 
@@ -2141,6 +2206,7 @@ function updateSidebarDisplay(user, nickname, role = "user") {
     sidebarRoleBadge.textContent = "관리자";
     sidebarRoleBadge.classList.add("admin");
     sidebarNickname.textContent = "물멍";
+    if (sidebarBetaBadge) sidebarBetaBadge.style.display = hasBetaTesterBadge(normalizedBadges) ? "inline-flex" : "none";
     if (sidebarNicknameBtn) sidebarNicknameBtn.style.display = "none";
     if (sidebarRoleManageBtn) sidebarRoleManageBtn.style.display = "block";
     if (sidebarWithdrawBtn) sidebarWithdrawBtn.style.display = "none";
@@ -2155,6 +2221,7 @@ function updateSidebarDisplay(user, nickname, role = "user") {
     sidebarRoleBadge.classList.add("user");
   }
 
+  if (sidebarBetaBadge) sidebarBetaBadge.style.display = hasBetaTesterBadge(normalizedBadges) ? "inline-flex" : "none";
   sidebarNickname.textContent = displayName;
   if (sidebarNicknameBtn) sidebarNicknameBtn.style.display = "block";
   if (sidebarRoleManageBtn) sidebarRoleManageBtn.style.display = "none";
@@ -2164,6 +2231,7 @@ function updateSidebarDisplay(user, nickname, role = "user") {
 function resetSidebarDisplay() {
   if (sidebarLoginBtn) sidebarLoginBtn.style.display = "block";
   if (sidebarProfile) sidebarProfile.style.display = "none";
+  if (sidebarBetaBadge) sidebarBetaBadge.style.display = "none";
   if (sidebarRoleManageBtn) sidebarRoleManageBtn.style.display = "none";
   if (sidebarWithdrawBtn) sidebarWithdrawBtn.style.display = "none";
 }
@@ -2304,7 +2372,8 @@ async function getOrCreateUserProfile(user) {
     }, { merge: true });
 
     await savePublicUserProfile(user, "물멍", "admin");
-    return { nickname: "물멍", role: "admin" };
+    const adminData = userSnap.exists() ? userSnap.data() : {};
+    return { nickname: "물멍", role: "admin", badges: normalizeBadges(adminData.badges) };
   }
 
   if (!userSnap.exists()) {
@@ -2319,7 +2388,7 @@ async function getOrCreateUserProfile(user) {
     });
 
     await savePublicUserProfile(user, "", "user");
-    return { nickname: "", role: "user" };
+    return { nickname: "", role: "user", badges: [] };
   }
 
   const data = userSnap.data();
@@ -2335,23 +2404,27 @@ async function getOrCreateUserProfile(user) {
     }, { merge: true });
 
     await savePublicUserProfile(user, "", "user");
-    return { nickname: "", role: "user" };
+    return { nickname: "", role: "user", badges: normalizeBadges(data.badges) };
   }
 
   await savePublicUserProfile(user, data.nickname || "", data.role || "user");
 
   return {
     nickname: data.nickname || "",
-    role: data.role || "user"
+    role: data.role || "user",
+    badges: normalizeBadges(data.badges)
   };
 }
 
-function updateUserDisplay(user, nickname, role = "user") {
+function updateUserDisplay(user, nickname, role = "user", badges = []) {
+  const normalizedBadges = normalizeBadges(badges);
+
   if (isAdminUser(user)) {
-    userInfo.innerHTML = `<span class="role-label admin">관리자</span><span class="nickname-text">물멍</span>`;
+    const betaHtml = hasBetaTesterBadge(normalizedBadges) ? `<span class="role-label beta">베타</span>` : "";
+    userInfo.innerHTML = `<span class="role-label admin">관리자</span>${betaHtml}<span class="nickname-text">물멍</span>`;
     nicknameBtn.style.display = "none";
     roleManageBtn.style.display = "inline-block";
-    updateSidebarDisplay(user, "물멍", "admin");
+    updateSidebarDisplay(user, "물멍", "admin", normalizedBadges);
     return;
   }
 
@@ -2359,14 +2432,15 @@ function updateUserDisplay(user, nickname, role = "user") {
   nicknameBtn.style.display = "inline-block";
 
   const displayName = nickname || "닉네임 미설정";
+  const betaHtml = hasBetaTesterBadge(normalizedBadges) ? `<span class="role-label beta">베타</span>` : "";
 
   if (role === "skill_master") {
-    userInfo.innerHTML = `<span class="role-label skill">스킬</span><span class="nickname-text">${displayName}</span>`;
+    userInfo.innerHTML = `<span class="role-label skill">스킬</span>${betaHtml}<span class="nickname-text">${displayName}</span>`;
   } else {
-    userInfo.innerHTML = `<span class="nickname-text">${displayName}</span>`;
+    userInfo.innerHTML = `${betaHtml}<span class="nickname-text">${displayName}</span>`;
   }
 
-  updateSidebarDisplay(user, displayName, role);
+  updateSidebarDisplay(user, displayName, role, normalizedBadges);
 }
 
 loginBtn.addEventListener("click", handleGoogleLogin);
@@ -2430,6 +2504,12 @@ async function openRolePopup() {
       const role = userData.role || "user";
       const roleLabel = role === "admin" ? "관리자" : role === "skill_master" ? "스킬 마스터" : "일반 유저";
       const roleLabelHtml = role === "skill_master" ? `<span class="role-master-badge">스킬 마스터</span>` : roleLabel;
+      const badges = normalizeBadges(userData.badges);
+      const hasBeta = hasBetaTesterBadge(badges);
+      const betaBadgeHtml = hasBeta ? `<div class="role-medal-line"><span class="role-medal-label">훈장:</span><span class="role-beta-badge">베타 테스터</span></div>` : "";
+      const betaActionButton = hasBeta
+        ? `<button class="role-action-btn role-user-btn" onclick="setUserBetaTester('${userData.uid}', false)">베타 테스터 해제</button>`
+        : `<button class="role-action-btn role-master-btn" onclick="setUserBetaTester('${userData.uid}', true)">베타 테스터 부여</button>`;
 
       if (role === "admin") {
         return `
@@ -2438,8 +2518,11 @@ async function openRolePopup() {
               <div class="role-user-name">${nickname}</div>
               <div class="role-user-detail">${email}</div>
               <span class="role-admin-badge">${roleLabel}</span>
+              ${betaBadgeHtml}
             </div>
-            <div class="role-action-row"></div>
+            <div class="role-action-row">
+              ${betaActionButton}
+            </div>
           </div>
         `;
       }
@@ -2454,9 +2537,11 @@ async function openRolePopup() {
             <div class="role-user-name">${nickname}</div>
             <div class="role-user-detail">${email}</div>
             <div class="role-user-role-line"><span class="role-user-role-label">현재 직책:</span> ${roleLabelHtml}</div>
+            ${betaBadgeHtml}
           </div>
           <div class="role-action-row">
             ${actionButton}
+            ${betaActionButton}
           </div>
         </div>
       `;
@@ -2522,6 +2607,45 @@ ${error.message || ""}`);
 }
 window.setUserRole = setUserRole;
 
+async function setUserBetaTester(uid, enabled) {
+  if (!currentUser || !isAdminUser(currentUser)) {
+    alert("관리자만 훈장을 변경할 수 있습니다.");
+    return;
+  }
+
+  try {
+    const userRef = doc(db, "users", uid);
+    const userSnap = await getDoc(userRef);
+    const userData = userSnap.exists() ? userSnap.data() : {};
+    const badges = normalizeBadges(userData.badges);
+    const nextBadges = enabled
+      ? Array.from(new Set([...badges, "beta_tester"]))
+      : badges.filter(badge => badge !== "beta_tester");
+
+    await setDoc(userRef, {
+      badges: nextBadges,
+      updatedAt: serverTimestamp()
+    }, { merge: true });
+
+    await setDoc(doc(db, "publicUsers", uid), {
+      badges: nextBadges,
+      updatedAt: serverTimestamp()
+    }, { merge: true });
+
+    if (currentUser && currentUser.uid === uid) {
+      currentBadges = nextBadges;
+      updateUserDisplay(currentUser, currentNickname, currentRole, currentBadges);
+    }
+
+    alert(enabled ? "베타 테스터 훈장을 부여했습니다." : "베타 테스터 훈장을 해제했습니다.");
+    await openRolePopup();
+  } catch (error) {
+    console.error("훈장 변경 오류:", error);
+    alert(`훈장 변경 오류: ${error.code || "unknown"}\n${error.message || ""}`);
+  }
+}
+window.setUserBetaTester = setUserBetaTester;
+
 onAuthStateChanged(auth, async (user) => {
   if (user) {
     currentUser = user;
@@ -2533,7 +2657,8 @@ onAuthStateChanged(auth, async (user) => {
       const profile = await getOrCreateUserProfile(user);
       currentNickname = profile.nickname;
       currentRole = profile.role;
-      updateUserDisplay(user, currentNickname, currentRole);
+      currentBadges = normalizeBadges(profile.badges);
+      updateUserDisplay(user, currentNickname, currentRole, currentBadges);
       startPresenceTimer(user);
       await refreshSiteStats();
       await window.loadSkillSettingsFromCloud();
@@ -2542,13 +2667,14 @@ onAuthStateChanged(auth, async (user) => {
       userInfo.textContent = `로그인: ${user.email}`;
       if (!isAdminUser(user)) nicknameBtn.style.display = "inline-block";
       roleManageBtn.style.display = "none";
-      updateSidebarDisplay(user, user.email, isAdminUser(user) ? "admin" : "user");
+      updateSidebarDisplay(user, user.email, isAdminUser(user) ? "admin" : "user", []);
     }
   } else {
     stopPresenceTimer();
     currentUser = null;
     currentNickname = "";
     currentRole = "user";
+    currentBadges = [];
 
     loginBtn.style.display = "inline-block";
     nicknameBtn.style.display = "none";
