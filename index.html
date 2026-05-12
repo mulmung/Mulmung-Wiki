@@ -1193,9 +1193,10 @@ button.save-cancel{
 
 
 .spirit-section-guide{margin:2px 0 14px;font-size:15px;font-weight:800;color:#4b5563}
-.spirit-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:14px}
-.spirit-column{position:relative;border:2px solid #ef4444;border-radius:18px;background:#f9fafb;padding:18px 10px 10px;display:grid;gap:8px;align-content:start}
-.spirit-column::before{content:"전설";position:absolute;top:-12px;left:50%;transform:translateX(-50%);padding:5px 12px;border-radius:999px;background:#ef4444;color:#fff;font-size:12px;font-weight:950;line-height:1;box-shadow:0 6px 14px rgba(239,68,68,.18)}
+.spirit-legend-group{position:relative;margin-top:14px;padding:18px 10px 10px;border:2px solid #ef4444;border-radius:22px;background:#fff}
+.spirit-legend-group::before{content:"전설";position:absolute;top:-12px;left:50%;transform:translateX(-50%);padding:5px 14px;border-radius:999px;background:#ef4444;color:#fff;font-size:12px;font-weight:950;line-height:1;box-shadow:0 6px 14px rgba(239,68,68,.18)}
+.spirit-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:0}
+.spirit-column{border:1px solid #e5e7eb;border-radius:18px;background:#f9fafb;padding:10px;display:grid;gap:8px;align-content:start}
 .spirit-element-title{display:flex;align-items:center;justify-content:center;min-height:38px;border-radius:999px;font-size:14px;font-weight:950;color:#fff;word-break:keep-all;line-height:1.1;text-align:center}
 .spirit-btn{width:100%;border:1px solid #e5e7eb;border-radius:14px;background:#fff;color:#111827;padding:12px 6px;min-height:44px;font-size:15px;font-weight:950;cursor:pointer;word-break:keep-all;box-shadow:0 4px 10px rgba(0,0,0,.04)}
 .spirit-btn:hover{background:#f3f4f6;transform:translateY(-1px)}
@@ -1469,9 +1470,10 @@ button.save-cancel{
 }
 
 @media(max-width:768px){
+  .spirit-legend-group{padding:16px 6px 6px;border-radius:18px}
+  .spirit-legend-group::before{top:-11px;padding:4px 12px;font-size:11px}
   .spirit-grid{grid-template-columns:repeat(4,minmax(58px,1fr));gap:6px;overflow-x:auto;padding-bottom:4px}
-  .spirit-column{min-width:58px;padding:16px 6px 6px;border-radius:14px;gap:6px}
-  .spirit-column::before{top:-11px;padding:4px 10px;font-size:11px}
+  .spirit-column{min-width:58px;padding:6px;border-radius:14px;gap:6px}
   .spirit-element-title{min-height:32px;font-size:11px;border-radius:999px;padding:0 4px}
   .spirit-btn{min-height:36px;padding:8px 3px;border-radius:11px;font-size:12px}
   .spirit-detail-popup{max-width:330px;padding:20px 18px 18px;border-radius:22px}
@@ -2191,6 +2193,7 @@ function addSections() {
         <button class="spirit-awakening-btn" type="button" onclick="openSpiritAwakeningPopup()">각성 안내</button>
       </div>
       <p class="spirit-section-guide">속성별 정령을 선택해 정보를 확인할 수 있도록 정리할 예정입니다.</p>
+      <div class="spirit-legend-group">
       <div class="spirit-grid">
         <div class="spirit-column">
           <div class="spirit-element-title element-fire">불 속성</div>
@@ -2216,6 +2219,7 @@ function addSections() {
           <button class="spirit-btn" type="button" onclick="openSpiritPopup('roar')">로어</button>
           <button class="spirit-btn" type="button" onclick="openSpiritPopup('radon')">라돈</button>
         </div>
+      </div>
       </div>
     
 
