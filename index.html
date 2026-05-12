@@ -1335,6 +1335,7 @@ async function saveCurrentSkillSetting(category, promotionStage = "") {
   const newSetting = {
     id: String(Date.now()) + "-" + Math.random().toString(36).slice(2),
     category,
+    promotionStage,
     count: skillCount,
     createdAt,
     createdDate: formatShortDate(createdAt),
@@ -1365,7 +1366,7 @@ async function saveCurrentSkillSetting(category, promotionStage = "") {
     }
   }
 
-  alert(`${category} / ${skillCount}칸 세팅이 저장되었습니다.`);
+  alert(`${category}${promotionStage ? " / " + promotionStage : ""} / ${skillCount}칸 세팅이 저장되었습니다.`);
 
   if (document.getElementById("skill-setting-collection").classList.contains("active")) {
     renderSavedSettingCollection();
