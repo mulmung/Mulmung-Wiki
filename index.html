@@ -3250,17 +3250,39 @@ function hasBetaTesterBadge(badges) {
   return normalizeBadges(badges).includes("beta_tester");
 }
 
-async function savePublicUserProfile(user, nickname, role) {
+async function savePublicUserProfile(user, nickname, role = "user", badges = null) {
   if (!user) return;
 
-  await setDoc(doc(db, "publicUsers", user.uid), {
+  const normalizedBadges = normalizeBadges(badges);
+  const publicPayload = {
     nickname: nickname || "",
     role: role || "user",
     status: role === "withdrawn" ? "withdrawn" : "active",
     active: role !== "withdrawn",
     lastActiveAt: Date.now(),
     updatedAt: serverTimestamp()
-  }, { merge: true });
+  };
+
+  // 닉네임 재설정 후에도 베타 테스터 같은 훈장이 화면에서 사라져 보이지 않도록 보존합니다.
+  // 빈 배열은 오래된 publicUsers 문서와 규칙 충돌을 피하기 위해 기록하지 않습니다.
+  if (normalizedBadges.length > 0) {
+    publicPayload.badges = normalizedBadges;
+  }
+
+  try {
+    await setDoc(doc(db, "publicUsers", user.uid), publicPayload, { merge: true });
+  } catch (error) {
+    // 오래된 publicUsers 문서에 badges 필드가 없으면 현재 보안 규칙에서 사용자가 badges를 새로 쓰지 못할 수 있습니다.
+    // 이 경우 닉네임 저장 자체가 막히지 않도록 badges만 제외하고 한 번 더 저장합니다.
+    if (publicPayload.badges) {
+      const retryPayload = { ...publicPayload };
+      delete retryPayload.badges;
+      await setDoc(doc(db, "publicUsers", user.uid), retryPayload, { merge: true });
+      console.warn("공개 유저 훈장 동기화는 건너뛰고 닉네임만 저장했습니다:", error);
+      return;
+    }
+    throw error;
+  }
 }
 
 async function updateMyPresence(user) {
@@ -3490,7 +3512,7 @@ async function handleWithdraw() {
 async function handleNicknameSetting() {
   if (!currentUser) return;
 
-  const newNickname = prompt("반드시 슬레이어 키우기 닉네임으로 입력해주세요.", currentNickname || "");
+  const newNickname = prompt("다른 사람이 알아볼 수 있는 닉네임을 입력해주세요.", currentNickname || "");
   if (newNickname === null) return;
 
   const trimmedNickname = newNickname.trim();
@@ -3507,24 +3529,40 @@ async function handleNicknameSetting() {
 
   try {
     const userRef = doc(db, "users", currentUser.uid);
+    const latestUserSnap = await getDoc(userRef);
+    const latestUserData = latestUserSnap.exists() ? latestUserSnap.data() : {};
+    const preservedRole = latestUserData.role || currentRole || "user";
+    const preservedBadges = normalizeBadges(latestUserData.badges || currentBadges);
 
-    await setDoc(userRef, {
+    const nicknamePayload = {
       email: currentUser.email,
       nickname: trimmedNickname,
-      role: currentRole || "user",
+      role: preservedRole,
       status: "active",
       active: true,
       updatedAt: serverTimestamp()
-    }, { merge: true });
+    };
+
+    // 기존 문서에 badges 필드가 있던 경우에는 같은 값으로 함께 저장해 Firestore 규칙을 통과시키고,
+    // 화면에서도 훈장 표시가 유지되도록 합니다.
+    if (Object.prototype.hasOwnProperty.call(latestUserData, "badges")) {
+      nicknamePayload.badges = preservedBadges;
+    }
+
+    await setDoc(userRef, nicknamePayload, { merge: true });
 
     currentNickname = trimmedNickname;
-    await savePublicUserProfile(currentUser, currentNickname, currentRole);
+    currentRole = preservedRole;
+    currentBadges = preservedBadges;
+
+    await savePublicUserProfile(currentUser, currentNickname, currentRole, currentBadges);
     await refreshSiteStats();
-    updateUserDisplay(currentUser, currentNickname, currentRole);
+    updateUserDisplay(currentUser, currentNickname, currentRole, currentBadges);
     alert("닉네임이 저장되었습니다.");
   } catch (error) {
     console.error("닉네임 저장 오류:", error);
-    alert(`닉네임 저장 오류: ${error.code || "unknown"}\n${error.message || ""}`);
+    alert(`닉네임 저장 오류: ${error.code || "unknown"}
+${error.message || ""}`);
   }
 }
 
@@ -3542,7 +3580,7 @@ async function getOrCreateUserProfile(user) {
       updatedAt: serverTimestamp()
     }, { merge: true });
 
-    await savePublicUserProfile(user, "물멍", "admin");
+    await savePublicUserProfile(user, "물멍", "admin", normalizeBadges((userSnap.exists() ? userSnap.data() : {}).badges));
     const adminData = userSnap.exists() ? userSnap.data() : {};
     return { nickname: "물멍", role: "admin", badges: normalizeBadges(adminData.badges) };
   }
@@ -3554,11 +3592,12 @@ async function getOrCreateUserProfile(user) {
       role: "user",
       status: "active",
       active: true,
+      badges: [],
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp()
     });
 
-    await savePublicUserProfile(user, "", "user");
+    await savePublicUserProfile(user, "", "user", []);
     return { nickname: "", role: "user", badges: [] };
   }
 
@@ -3574,11 +3613,12 @@ async function getOrCreateUserProfile(user) {
       updatedAt: serverTimestamp()
     }, { merge: true });
 
-    await savePublicUserProfile(user, "", "user");
-    return { nickname: "", role: "user", badges: normalizeBadges(data.badges) };
+    const restoredBadges = normalizeBadges(data.badges);
+    await savePublicUserProfile(user, "", "user", restoredBadges);
+    return { nickname: "", role: "user", badges: restoredBadges };
   }
 
-  await savePublicUserProfile(user, data.nickname || "", data.role || "user");
+  await savePublicUserProfile(user, data.nickname || "", data.role || "user", normalizeBadges(data.badges));
 
   return {
     nickname: data.nickname || "",
