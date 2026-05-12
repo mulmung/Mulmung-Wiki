@@ -1239,9 +1239,9 @@ function addSections() {
       <h2>전체 진로</h2>
       <p>다이아 사용 진로를 한눈에 선택할 수 있도록 정리한 페이지입니다.</p>
       <div class="career-route-grid">
-        <button class="career-route-btn" onclick="openInfoPopup('무기 소환', '<span style="color:#2563eb;font-weight:900;">기본 목표는 무기 소환 6레벨입니다.</span><br><br>신화 1등급 무기를 획득했거나<br>신입 슬레이어 패키지를 구매한 경우에는<br>5레벨까지만 진행해도 됩니다.')">무기 소환</button>
-        <button class="career-route-btn" onclick="openInfoPopup('악세 소환', '<span style=&quot;color:#2563eb;font-weight:900;&quot;>기본 목표는 악세사리 소환 4레벨입니다.</span>')">악세 소환</button>
-        <button class="career-route-btn">유물 (1차)</button>
+        <button class="career-route-btn" data-career-popup="weapon">무기 소환</button>
+        <button class="career-route-btn" data-career-popup="accessory">악세 소환</button>
+        <button class="career-route-btn" data-career-popup="relic1">유물 (1차)</button>
         <button class="career-route-btn">클래스 뽑기</button>
       </div>
     </section>
@@ -1483,6 +1483,34 @@ function openInfoPopup(title, html) {
   document.getElementById("unlockPopupText").innerHTML = html;
   document.getElementById("unlockPopupBg").classList.add("show");
 }
+
+const careerPopupContents = {
+  weapon: {
+    title: "무기 소환",
+    html: `<span style="color:#2563eb;font-weight:900;">기본 목표는 무기 소환 6레벨입니다.</span><br><br>신화 1등급 무기를 획득했거나<br>신입 슬레이어 패키지를 구매한 경우에는<br>5레벨까지만 진행해도 됩니다.`
+  },
+  accessory: {
+    title: "악세 소환",
+    html: `<span style="color:#2563eb;font-weight:900;">기본 목표는 악세사리 소환 4레벨입니다.</span>`
+  },
+  relic1: {
+    title: "유물 (1차)",
+    html: `<span style="color:#2563eb;font-weight:900;">기본 목표는 유물 전체 평균 레벨 30입니다.</span><br><br><span style="color:#dc2626;font-weight:900;">해금 조건: 스테이지 60 클리어</span>`
+  }
+};
+
+function initCareerPopupButtons() {
+  document.querySelectorAll("[data-career-popup]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const key = button.dataset.careerPopup;
+      const popup = careerPopupContents[key];
+      if (!popup) return;
+      openInfoPopup(popup.title, popup.html);
+    });
+  });
+}
+
+initCareerPopupButtons();
 
 function closeUnlockPopup() {
   document.getElementById("unlockPopupBg").classList.remove("show");
