@@ -1692,30 +1692,81 @@ button.save-cancel{
   .spirit-awakening-popup{max-width:94vw;max-height:84vh;padding:14px;border-radius:20px}
 }
 
-.sidebar-name-line{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  flex-wrap:wrap;
-}
 .sidebar-promotion-badge{
   display:inline-flex;
   align-items:center;
   justify-content:center;
-  width:max-content;
+  width:auto;
   min-width:0;
-  max-width:100%;
-  height:26px;
-  padding:0 10px;
+  height:34px;
+  padding:0 16px;
   border-radius:999px;
-  font-size:12px;
-  font-weight:950;
+  font-size:16px;
+  font-weight:900;
   color:#fff;
   line-height:1;
   white-space:nowrap;
-  box-shadow:0 6px 14px rgba(0,0,0,.16);
-  flex:0 0 auto;
+  box-shadow:0 10px 18px rgba(255,255,255,.12);
 }
+
+
+/* 직책 관리: 여러 명 보기 쉬운 compact 리스트형 */
+.role-popup{max-width:720px;padding:20px;border-radius:22px}
+.role-help-text{font-size:13px;font-weight:800;margin-bottom:12px}
+.role-user-list{display:grid;gap:8px}
+.role-section-title{margin:14px 2px 6px;font-size:14px}
+.role-compact-row{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  align-items:center;
+  gap:10px;
+  padding:10px 12px;
+  border:1px solid #e5e7eb;
+  border-radius:16px;
+  background:#f9fafb;
+}
+.role-compact-main{min-width:0}
+.role-compact-top{display:flex;align-items:center;gap:7px;min-width:0;flex-wrap:wrap}
+.role-compact-name{font-size:15px;font-weight:950;color:#111827;line-height:1.2;word-break:keep-all}
+.role-compact-email{margin-top:3px;font-size:12px;font-weight:800;color:#6b7280;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.role-compact-badges{display:inline-flex;align-items:center;gap:5px;flex-wrap:wrap}
+.role-compact-badge{display:inline-flex;align-items:center;justify-content:center;height:24px;padding:0 10px;border-radius:999px;color:#fff;font-size:11px;font-weight:950;line-height:1;white-space:nowrap}
+.role-compact-badge.admin{background:#111827}
+.role-compact-badge.skill{background:#f97316;box-shadow:0 5px 12px rgba(249,115,22,.16)}
+.role-compact-badge.user{background:#64748b}
+.role-compact-badge.beta{background:#facc15;box-shadow:0 5px 12px rgba(250,204,21,.16)}
+.role-manage-small-btn{border:none;border-radius:999px;padding:8px 12px;background:#111827;color:#fff;font-size:12px;font-weight:950;cursor:pointer;white-space:nowrap}
+.role-manage-small-btn:hover{background:#374151}
+.role-manage-popup-bg{display:none;position:fixed;inset:0;z-index:3450;background:rgba(0,0,0,.45);padding:20px}
+.role-manage-popup-bg.show{display:flex;align-items:center;justify-content:center}
+.role-manage-popup{width:100%;max-width:360px;padding:22px 20px 18px;border-radius:24px;background:#fff;box-shadow:0 14px 38px rgba(0,0,0,.28);color:#111827;text-align:center}
+.role-manage-popup h3{font-size:22px;font-weight:950;margin:0 0 6px}
+.role-manage-email{font-size:12px;font-weight:800;color:#6b7280;margin-bottom:14px;word-break:break-all}
+.role-manage-status{display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.role-manage-group{padding:14px;border:1px solid #e5e7eb;border-radius:18px;background:#f9fafb;margin-bottom:10px;text-align:left}
+.role-manage-group-title{font-size:13px;font-weight:950;color:#6b7280;margin-bottom:9px}
+.role-manage-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.role-manage-actions.single{grid-template-columns:1fr}
+.role-manage-action-btn{border:none;border-radius:14px;padding:11px 8px;font-size:13px;font-weight:950;cursor:pointer;background:#e5e7eb;color:#111827}
+.role-manage-action-btn.primary{background:#f97316;color:#fff}
+.role-manage-action-btn.beta{background:#facc15;color:#fff}
+.role-manage-action-btn.dark{background:#111827;color:#fff}
+.role-manage-action-btn:disabled{opacity:.38;cursor:not-allowed}
+.role-manage-close-btn{width:100%;margin-top:4px;border:none;border-radius:999px;padding:11px 14px;background:#111827;color:#fff;font-size:13px;font-weight:950;cursor:pointer}
+@media(max-width:768px){
+  .role-popup{width:92vw;max-width:430px;max-height:78vh;padding:18px 14px;border-radius:22px}
+  .role-popup-head h3{font-size:21px}
+  .role-close-btn{padding:7px 11px;font-size:13px}
+  .role-help-text{font-size:12px;line-height:1.45}
+  .role-section-title{font-size:13px;margin:12px 2px 6px}
+  .role-compact-row{grid-template-columns:minmax(0,1fr) auto;padding:9px 10px;border-radius:15px;gap:8px}
+  .role-compact-name{font-size:14px}
+  .role-compact-email{font-size:11px;max-width:185px}
+  .role-compact-badge{height:22px;padding:0 8px;font-size:10px}
+  .role-manage-small-btn{padding:7px 10px;font-size:11px}
+  .role-manage-popup{max-width:330px;padding:20px 17px 17px;border-radius:22px}
+}
+
 </style>
 </head>
 
@@ -1982,8 +2033,34 @@ button.save-cancel{
         <h3>직책 관리</h3>
         <button class="role-close-btn" onclick="closeRolePopup()">닫기</button>
       </div>
-      <p class="role-help-text">관리자만 유저에게 스킬 마스터 직책을 부여하거나 해제할 수 있습니다.</p>
+      <p class="role-help-text">목록에서는 상태만 확인하고, 수정은 오른쪽 관리 버튼으로 진행합니다.</p>
       <div id="roleUserList" class="role-user-list"></div>
+    </div>
+  </div>
+
+
+  <div class="role-manage-popup-bg" id="roleManagePopupBg" onclick="closeRoleUserManagePopup()">
+    <div class="role-manage-popup" onclick="event.stopPropagation()">
+      <h3 id="roleManageTargetName">유저 관리</h3>
+      <div id="roleManageTargetEmail" class="role-manage-email"></div>
+      <div id="roleManageTargetStatus" class="role-manage-status"></div>
+
+      <div class="role-manage-group">
+        <div class="role-manage-group-title">직책 변경</div>
+        <div class="role-manage-actions">
+          <button id="roleSetUserBtn" class="role-manage-action-btn" type="button">일반 유저</button>
+          <button id="roleSetSkillBtn" class="role-manage-action-btn primary" type="button">스킬 마스터</button>
+        </div>
+      </div>
+
+      <div class="role-manage-group">
+        <div class="role-manage-group-title">훈장 변경</div>
+        <div class="role-manage-actions single">
+          <button id="roleToggleBetaBtn" class="role-manage-action-btn beta" type="button">베타 테스터 변경</button>
+        </div>
+      </div>
+
+      <button class="role-manage-close-btn" type="button" onclick="closeRoleUserManagePopup()">닫기</button>
     </div>
   </div>
 
@@ -3441,6 +3518,7 @@ const ADMIN_EMAIL = "khu9918@gmail.com";
 const loginBtn = document.getElementById("loginBtn");
 const nicknameBtn = document.getElementById("nicknameBtn");
 const roleManageBtn = document.getElementById("roleManageBtn");
+let roleManageUsersById = {};
 const logoutBtn = document.getElementById("logoutBtn");
 const userInfo = document.getElementById("userInfo");
 const sidebarLoginBtn = document.getElementById("sidebarLoginBtn");
@@ -4016,6 +4094,68 @@ function closeRolePopup() {
 }
 window.closeRolePopup = closeRolePopup;
 
+function escapeRoleHtml(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+function roleCompactBadgeHtml(role, hasBeta) {
+  const roleBadge = role === "admin"
+    ? `<span class="role-compact-badge admin">관리자</span>`
+    : role === "skill_master"
+      ? `<span class="role-compact-badge skill">스킬 마스터</span>`
+      : `<span class="role-compact-badge user">일반</span>`;
+  const betaBadge = hasBeta ? `<span class="role-compact-badge beta">베타</span>` : "";
+  return `${roleBadge}${betaBadge}`;
+}
+
+function closeRoleUserManagePopup() {
+  document.getElementById("roleManagePopupBg").classList.remove("show");
+}
+window.closeRoleUserManagePopup = closeRoleUserManagePopup;
+
+function openRoleUserManagePopup(uid) {
+  const userData = roleManageUsersById[uid];
+  if (!userData) return;
+
+  const nickname = userData.nickname || "닉네임 미설정";
+  const email = userData.email || "이메일 없음";
+  const role = userData.role || "user";
+  const badges = normalizeBadges(userData.badges);
+  const hasBeta = hasBetaTesterBadge(badges);
+
+  document.getElementById("roleManageTargetName").textContent = nickname;
+  document.getElementById("roleManageTargetEmail").textContent = email;
+  document.getElementById("roleManageTargetStatus").innerHTML = roleCompactBadgeHtml(role, hasBeta);
+
+  const setUserBtn = document.getElementById("roleSetUserBtn");
+  const setSkillBtn = document.getElementById("roleSetSkillBtn");
+  const betaBtn = document.getElementById("roleToggleBetaBtn");
+
+  setUserBtn.disabled = role === "admin" || role === "user";
+  setSkillBtn.disabled = role === "admin" || role === "skill_master";
+  setUserBtn.onclick = async () => {
+    await setUserRole(uid, "user");
+    closeRoleUserManagePopup();
+  };
+  setSkillBtn.onclick = async () => {
+    await setUserRole(uid, "skill_master");
+    closeRoleUserManagePopup();
+  };
+  betaBtn.textContent = hasBeta ? "베타 테스터 해제" : "베타 테스터 부여";
+  betaBtn.onclick = async () => {
+    await setUserBetaTester(uid, !hasBeta);
+    closeRoleUserManagePopup();
+  };
+
+  document.getElementById("roleManagePopupBg").classList.add("show");
+}
+window.openRoleUserManagePopup = openRoleUserManagePopup;
+
 async function openRolePopup() {
   const popup = document.getElementById("rolePopupBg");
   const list = document.getElementById("roleUserList");
@@ -4046,51 +4186,28 @@ async function openRolePopup() {
       return;
     }
 
+    roleManageUsersById = {};
+    users.forEach(userData => {
+      roleManageUsersById[userData.uid] = userData;
+    });
+
     const renderRoleCard = (userData) => {
-      const nickname = userData.nickname || "닉네임 미설정";
-      const email = userData.email || "이메일 없음";
+      const nickname = escapeRoleHtml(userData.nickname || "닉네임 미설정");
+      const email = escapeRoleHtml(userData.email || "이메일 없음");
       const role = userData.role || "user";
-      const roleLabel = role === "admin" ? "관리자" : role === "skill_master" ? "스킬 마스터" : "일반 유저";
-      const roleLabelHtml = role === "skill_master" ? `<span class="role-master-badge">스킬 마스터</span>` : roleLabel;
       const badges = normalizeBadges(userData.badges);
       const hasBeta = hasBetaTesterBadge(badges);
-      const betaBadgeHtml = hasBeta ? `<div class="role-medal-line"><span class="role-medal-label">훈장:</span><span class="role-beta-badge">베타 테스터</span></div>` : "";
-      const betaActionButton = hasBeta
-        ? `<button class="role-action-btn role-user-btn" onclick="setUserBetaTester('${userData.uid}', false)">베타 테스터 해제</button>`
-        : `<button class="role-action-btn role-master-btn" onclick="setUserBetaTester('${userData.uid}', true)">베타 테스터 부여</button>`;
-
-      if (role === "admin") {
-        return `
-          <div class="role-user-card">
-            <div>
-              <div class="role-user-name">${nickname}</div>
-              <div class="role-user-detail">${email}</div>
-              <span class="role-admin-badge">${roleLabel}</span>
-              ${betaBadgeHtml}
-            </div>
-            <div class="role-action-row">
-              ${betaActionButton}
-            </div>
-          </div>
-        `;
-      }
-
-      const actionButton = role === "skill_master"
-        ? `<button class="role-action-btn role-user-btn" onclick="setUserRole('${userData.uid}', 'user')">스킬 마스터 해제</button>`
-        : `<button class="role-action-btn role-master-btn" onclick="setUserRole('${userData.uid}', 'skill_master')">스킬 마스터 부여</button>`;
 
       return `
-        <div class="role-user-card">
-          <div>
-            <div class="role-user-name">${nickname}</div>
-            <div class="role-user-detail">${email}</div>
-            <div class="role-user-role-line"><span class="role-user-role-label">현재 직책:</span> ${roleLabelHtml}</div>
-            ${betaBadgeHtml}
+        <div class="role-compact-row">
+          <div class="role-compact-main">
+            <div class="role-compact-top">
+              <span class="role-compact-name">${nickname}</span>
+              <span class="role-compact-badges">${roleCompactBadgeHtml(role, hasBeta)}</span>
+            </div>
+            <div class="role-compact-email">${email}</div>
           </div>
-          <div class="role-action-row">
-            ${actionButton}
-            ${betaActionButton}
-          </div>
+          <button class="role-manage-small-btn" type="button" onclick="openRoleUserManagePopup('${userData.uid}')">관리</button>
         </div>
       `;
     };
