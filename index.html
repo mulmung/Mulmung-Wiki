@@ -1201,6 +1201,7 @@ button.save-cancel{
 .spirit-detail-popup{width:100%;max-width:390px;padding:24px 22px 20px;border-radius:24px;background:#fff;box-shadow:0 14px 38px rgba(0,0,0,.28);text-align:center;color:#111827}
 .spirit-image-wrap{display:flex;align-items:center;justify-content:center;margin:0 auto 14px}
 .spirit-image{width:118px;height:118px;object-fit:contain;border-radius:22px;background:#f3f4f6;border:2px solid #ef4444;box-shadow:0 0 0 3px rgba(239,68,68,.10);padding:8px}
+.spirit-image.myth-image{border-color:#2563eb;box-shadow:0 0 0 3px rgba(37,99,235,.12)}
 .spirit-popup-name-row{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:16px}
 .spirit-popup-name{font-size:26px;font-weight:950;letter-spacing:-.03em;color:#111827}
 .spirit-attribute-badge{display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:26px;padding:0 10px;border-radius:999px;color:#fff;font-size:13px;font-weight:950;line-height:1}
@@ -2226,27 +2227,27 @@ function addSections() {
       <div class="spirit-grid">
         <div class="spirit-column">
           <div class="spirit-element-title element-fire">불 속성</div>
-          <button class="spirit-btn" type="button" onclick="openSpiritPopup('sala')">살라</button>
-          <button class="spirit-btn" type="button" onclick="openSpiritPopup('mum')">뭄</button>
-          <button class="spirit-btn" type="button" onclick="openSpiritPopup('bo')">보</button>
+          <button class="spirit-btn" type="button" onclick="openSpiritPopup('sala', 'myth')">살라</button>
+          <button class="spirit-btn" type="button" onclick="openSpiritPopup('mum', 'myth')">뭄</button>
+          <button class="spirit-btn" type="button" onclick="openSpiritPopup('bo', 'myth')">보</button>
         </div>
         <div class="spirit-column">
           <div class="spirit-element-title element-water">물 속성</div>
-          <button class="spirit-btn" type="button" onclick="openSpiritPopup('toad')">토드</button>
-          <button class="spirit-btn" type="button" onclick="openSpiritPopup('luga')">루가</button>
-          <button class="spirit-btn" type="button" onclick="openSpiritPopup('ark')">아크</button>
+          <button class="spirit-btn" type="button" onclick="openSpiritPopup('toad', 'myth')">토드</button>
+          <button class="spirit-btn" type="button" onclick="openSpiritPopup('luga', 'myth')">루가</button>
+          <button class="spirit-btn" type="button" onclick="openSpiritPopup('ark', 'myth')">아크</button>
         </div>
         <div class="spirit-column">
           <div class="spirit-element-title element-wind">바람 속성</div>
-          <button class="spirit-btn" type="button" onclick="openSpiritPopup('zephy')">제피</button>
-          <button class="spirit-btn" type="button" onclick="openSpiritPopup('kart')">카트</button>
-          <button class="spirit-btn" type="button" onclick="openSpiritPopup('her')">헤르</button>
+          <button class="spirit-btn" type="button" onclick="openSpiritPopup('zephy', 'myth')">제피</button>
+          <button class="spirit-btn" type="button" onclick="openSpiritPopup('kart', 'myth')">카트</button>
+          <button class="spirit-btn" type="button" onclick="openSpiritPopup('her', 'myth')">헤르</button>
         </div>
         <div class="spirit-column">
           <div class="spirit-element-title element-earth">땅 속성</div>
-          <button class="spirit-btn" type="button" onclick="openSpiritPopup('noa')">노아</button>
-          <button class="spirit-btn" type="button" onclick="openSpiritPopup('roar')">로어</button>
-          <button class="spirit-btn" type="button" onclick="openSpiritPopup('radon')">라돈</button>
+          <button class="spirit-btn" type="button" onclick="openSpiritPopup('noa', 'myth')">노아</button>
+          <button class="spirit-btn" type="button" onclick="openSpiritPopup('roar', 'myth')">로어</button>
+          <button class="spirit-btn" type="button" onclick="openSpiritPopup('radon', 'myth')">라돈</button>
         </div>
       </div>
       </div>
@@ -2512,12 +2513,17 @@ function formatSpiritSkillEffect(data) {
   return html;
 }
 
-function openSpiritPopup(spiritId) {
+function openSpiritPopup(spiritId, rarity = "legend") {
   const data = spiritDetails[spiritId];
   if (!data) return;
+
+  const isMyth = rarity === "myth";
+  const imageSrc = isMyth ? data.image.replace(/\.png$/i, "-myth.png") : data.image;
+
   const imageEl = document.getElementById("spiritPopupImage");
-  imageEl.src = data.image;
-  imageEl.alt = data.name + " 이미지";
+  imageEl.src = imageSrc;
+  imageEl.alt = data.name + (isMyth ? " 신화 이미지" : " 전설 이미지");
+  imageEl.className = isMyth ? "spirit-image myth-image" : "spirit-image";
   imageEl.style.display = "block";
   imageEl.onerror = function() { this.style.display = "none"; };
 
