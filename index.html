@@ -675,6 +675,103 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
   background: #facc15;
   box-shadow: 0 6px 14px rgba(250,204,21,.24);
 }
+
+.sidebar-promotion-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: max-content;
+  max-width: 100%;
+  height: 26px;
+  padding: 0 10px;
+  border-radius: 999px;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 950;
+  line-height: 1;
+  box-shadow: 0 6px 14px rgba(0,0,0,.16);
+  white-space: nowrap;
+}
+.profile-popup-bg {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 3400;
+  background: rgba(0,0,0,.45);
+  padding: 20px;
+}
+.profile-popup-bg.show {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.profile-popup {
+  width: 100%;
+  max-width: 390px;
+  padding: 24px 22px 20px;
+  border-radius: 24px;
+  background: #ffffff;
+  box-shadow: 0 14px 38px rgba(0,0,0,.28);
+  color: #111827;
+}
+.profile-popup h3 {
+  margin: 0 0 16px;
+  font-size: 24px;
+  font-weight: 950;
+  text-align: center;
+}
+.profile-field { margin-bottom: 14px; }
+.profile-field label {
+  display: block;
+  margin-bottom: 7px;
+  font-size: 14px;
+  font-weight: 950;
+  color: #374151;
+}
+.profile-input,
+.profile-select {
+  width: 100%;
+  border: 2px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 13px 14px;
+  background: #ffffff;
+  color: #111827;
+  font-size: 16px;
+  font-weight: 900;
+  outline: none;
+}
+.profile-input:focus,
+.profile-select:focus { border-color: #111827; }
+.profile-help {
+  margin: -4px 0 16px;
+  font-size: 13px;
+  font-weight: 800;
+  color: #6b7280;
+  line-height: 1.45;
+  text-align: center;
+}
+.profile-action-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 9px;
+}
+.profile-save-btn,
+.profile-cancel-btn {
+  border: none;
+  border-radius: 999px;
+  padding: 12px 14px;
+  font-size: 14px;
+  font-weight: 950;
+  cursor: pointer;
+}
+.profile-save-btn { background: #111827; color: #ffffff; }
+.profile-cancel-btn { background: #e5e7eb; color: #111827; }
+@media(max-width:768px){
+  .profile-popup{max-width:330px;padding:20px 18px 18px;border-radius:22px}
+  .profile-popup h3{font-size:22px}
+  .profile-input,.profile-select{font-size:15px;padding:12px 13px;border-radius:15px}
+}
+
 .sidebar-nickname {
   font-size: 16px;
   font-weight: 900;
@@ -1606,7 +1703,7 @@ button.save-cancel{
   <div class="auth-box">
     <button id="loginBtn" class="login-btn">Google 로그인</button>
     <span id="userInfo" class="user-info"></span>
-    <button id="nicknameBtn" class="login-btn" style="display:none;">닉네임 설정</button>
+    <button id="nicknameBtn" class="login-btn" style="display:none;">내 정보 설정</button>
     <button id="roleManageBtn" class="login-btn admin-role-btn" style="display:none;">직책 관리</button>
     <button id="logoutBtn" class="login-btn" style="display:none;">로그아웃</button>
   </div>
@@ -1643,10 +1740,11 @@ button.save-cancel{
             <div class="sidebar-badge-line">
               <span id="sidebarRoleBadge" class="sidebar-role-badge user">일반</span>
               <span id="sidebarBetaBadge" class="sidebar-medal-badge beta" style="display:none;">베타</span>
+              <span id="sidebarPromotionBadge" class="sidebar-promotion-badge" style="display:none;"></span>
             </div>
           </div>
           <div class="sidebar-action-row">
-            <button id="sidebarNicknameBtn" class="sidebar-mini-btn">닉네임 설정</button>
+            <button id="sidebarNicknameBtn" class="sidebar-mini-btn">내 정보 설정</button>
             <button id="sidebarRoleManageBtn" class="sidebar-mini-btn orange" style="display:none;">직책 관리</button>
             <button id="sidebarLogoutBtn" class="sidebar-mini-btn">로그아웃</button>
             <button id="sidebarWithdrawBtn" class="sidebar-mini-btn danger">탈퇴하기</button>
@@ -1863,6 +1961,25 @@ button.save-cancel{
     </div>
   </div>
 
+  <div class="profile-popup-bg" id="profilePopupBg" onclick="closeProfilePopup()">
+    <div class="profile-popup" onclick="event.stopPropagation()">
+      <h3>내 정보 설정</h3>
+      <div class="profile-field">
+        <label for="profileNicknameInput">닉네임</label>
+        <input id="profileNicknameInput" class="profile-input" type="text" maxlength="12" placeholder="슬레이어 키우기 닉네임" />
+      </div>
+      <div class="profile-field">
+        <label for="profilePromotionSelect">내 승급</label>
+        <select id="profilePromotionSelect" class="profile-select"></select>
+      </div>
+      <p class="profile-help">닉네임은 기존 값이 자동으로 들어가며, 승급만 바꿔도 저장할 수 있습니다.</p>
+      <div class="profile-action-row">
+        <button class="profile-cancel-btn" type="button" onclick="closeProfilePopup()">취소</button>
+        <button class="profile-save-btn" type="button" onclick="saveProfileSetting()">저장</button>
+      </div>
+    </div>
+  </div>
+
 
 <script>
 const promotions = [["stone", "스톤"], ["bronze", "브론즈"], ["iron", "아이언"], ["silver", "실버"], ["gold", "골드"], ["mithril", "미스릴"], ["orichalcum", "오리하르콘"], ["arcanite", "아케이나이트"], ["adamantite", "아다만타이트"], ["ether", "에테르"], ["black-mithril", "블랙미스릴"], ["demon-metal", "데몬메탈"], ["dragonos", "드라고노스"], ["ragnablood", "라그나블러드"], ["warfrost", "워프로스트"], ["darknox", "다크녹스"], ["blueabyss", "블루어비스"], ["infinent", "인피넌트"], ["cyclos", "사이클로스"], ["ecationnine", "에케이션트나인"], ["gigarock", "기가로크"], ["eisenhart", "아이젠하르트"], ["diamondust", "다이아더스트"], ["eldenwood", "엘든우드"], ["blitzgold", "블리츠골드"]];
@@ -1978,6 +2095,55 @@ let selectedSavedCount = "";
 let selectedSavedPromotionStage = "";
 let savedCategoryPickerOpen = false;
 let savedCountPickerOpen = false;
+
+const promotionColorMap = {
+  "스톤": "#7D8083",
+  "브론즈": "#A56A3A",
+  "아이언": "#A4ABB3",
+  "실버": "#D9E2EC",
+  "골드": "#D9A11F",
+  "미스릴": "#58D2F0",
+  "오리하르콘": "#7D2CE8",
+  "아케이나이트": "#8B5624",
+  "아다만타이트": "#D81F63",
+  "에테르": "#2D78E8",
+  "블랙미스릴": "#56CFE1",
+  "데몬메탈": "#41B642",
+  "드라고노스": "#AD8C45",
+  "라그나블러드": "#A7353D",
+  "워프로스트": "#E3E6F2",
+  "다크녹스": "#5916AE",
+  "블루어비스": "#4474AF",
+  "인피넌트": "#D93C8A",
+  "사이클로스": "#5C9D8E",
+  "에케이션트나인": "#A52413",
+  "기가로크": "#C08A24",
+  "아이젠하르트": "#18B977",
+  "다이아더스트": "#8FB7E8",
+  "엘든우드": "#7B8C32",
+  "블리츠골드": "#B9AE74"
+};
+const darkTextPromotionStages = ["실버", "워프로스트", "다이아더스트", "블리츠골드"];
+function getPromotionColor(stageName) {
+  return promotionColorMap[stageName] || "#111827";
+}
+function getPromotionTextColor(stageName) {
+  return darkTextPromotionStages.includes(stageName) ? "#111827" : "#ffffff";
+}
+function updateSidebarPromotionBadge(stageName) {
+  const badge = document.getElementById("sidebarPromotionBadge");
+  if (!badge) return;
+  if (!stageName) {
+    badge.style.display = "none";
+    badge.textContent = "";
+    return;
+  }
+  badge.textContent = stageName;
+  badge.style.display = "inline-flex";
+  badge.style.background = getPromotionColor(stageName);
+  badge.style.color = getPromotionTextColor(stageName);
+}
+
 
 const spiritDetails = {
   sala: {
@@ -3255,6 +3421,7 @@ const sidebarLoginBtn = document.getElementById("sidebarLoginBtn");
 const sidebarProfile = document.getElementById("sidebarProfile");
 const sidebarRoleBadge = document.getElementById("sidebarRoleBadge");
 const sidebarBetaBadge = document.getElementById("sidebarBetaBadge");
+const sidebarPromotionBadge = document.getElementById("sidebarPromotionBadge");
 const sidebarNickname = document.getElementById("sidebarNickname");
 const sidebarNicknameBtn = document.getElementById("sidebarNicknameBtn");
 const sidebarRoleManageBtn = document.getElementById("sidebarRoleManageBtn");
@@ -3264,6 +3431,7 @@ const sidebarWithdrawBtn = document.getElementById("sidebarWithdrawBtn");
 let currentUser = null;
 let currentNickname = "";
 let currentRole = "user";
+let currentPromotionStage = "";
 let currentBadges = [];
 let presenceTimer = null;
 let statsTimer = null;
@@ -3277,6 +3445,7 @@ window.getCurrentSkillSettingProfile = function() {
     email: currentUser.email,
     nickname: currentNickname || (isAdminUser(currentUser) ? "물멍" : "닉네임 미설정"),
     role: isAdminUser(currentUser) ? "admin" : currentRole,
+    promotionStage: currentPromotionStage,
     badges: currentBadges
   };
 };
@@ -3496,7 +3665,7 @@ function stopPresenceTimer() {
   presenceTimer = null;
 }
 
-function updateSidebarDisplay(user, nickname, role = "user", badges = []) {
+function updateSidebarDisplay(user, nickname, role = "user", badges = [], promotionStage = "") {
   if (!sidebarLoginBtn || !sidebarProfile || !sidebarRoleBadge || !sidebarNickname) return;
 
   sidebarLoginBtn.style.display = "none";
@@ -3504,6 +3673,7 @@ function updateSidebarDisplay(user, nickname, role = "user", badges = []) {
 
   const displayName = nickname || "닉네임 미설정";
   const normalizedBadges = normalizeBadges(badges);
+  updateSidebarPromotionBadge(promotionStage);
 
   sidebarRoleBadge.classList.remove("admin", "skill", "user");
 
@@ -3537,6 +3707,7 @@ function resetSidebarDisplay() {
   if (sidebarLoginBtn) sidebarLoginBtn.style.display = "block";
   if (sidebarProfile) sidebarProfile.style.display = "none";
   if (sidebarBetaBadge) sidebarBetaBadge.style.display = "none";
+  updateSidebarPromotionBadge("");
   if (sidebarRoleManageBtn) sidebarRoleManageBtn.style.display = "none";
   if (sidebarWithdrawBtn) sidebarWithdrawBtn.style.display = "none";
 }
@@ -3621,13 +3792,34 @@ async function handleWithdraw() {
   }
 }
 
-async function handleNicknameSetting() {
+function openProfilePopup() {
   if (!currentUser) return;
 
-  const newNickname = prompt("다른 사람이 알아볼 수 있는 닉네임을 입력해주세요.", currentNickname || "");
-  if (newNickname === null) return;
+  const popup = document.getElementById("profilePopupBg");
+  const nicknameInput = document.getElementById("profileNicknameInput");
+  const promotionSelect = document.getElementById("profilePromotionSelect");
+  if (!popup || !nicknameInput || !promotionSelect) return;
 
-  const trimmedNickname = newNickname.trim();
+  nicknameInput.value = currentNickname || "";
+  promotionSelect.innerHTML = `<option value="">승급 미설정</option>` + promotionStages.map(stage => `<option value="${stage}" ${stage === currentPromotionStage ? "selected" : ""}>${stage}</option>`).join("");
+  popup.classList.add("show");
+}
+
+function closeProfilePopup() {
+  const popup = document.getElementById("profilePopupBg");
+  if (popup) popup.classList.remove("show");
+}
+window.closeProfilePopup = closeProfilePopup;
+
+async function saveProfileSetting() {
+  if (!currentUser) return;
+
+  const nicknameInput = document.getElementById("profileNicknameInput");
+  const promotionSelect = document.getElementById("profilePromotionSelect");
+  if (!nicknameInput || !promotionSelect) return;
+
+  const trimmedNickname = nicknameInput.value.trim();
+  const selectedPromotionStage = promotionSelect.value;
 
   if (!trimmedNickname) {
     alert("닉네임을 입력해주세요.");
@@ -3641,41 +3833,39 @@ async function handleNicknameSetting() {
 
   try {
     const userRef = doc(db, "users", currentUser.uid);
-    const latestUserSnap = await getDoc(userRef);
-    const latestUserData = latestUserSnap.exists() ? latestUserSnap.data() : {};
-    const preservedRole = latestUserData.role || currentRole || "user";
-    const preservedBadges = normalizeBadges(latestUserData.badges || currentBadges);
-
-    const nicknamePayload = {
+    const userProfile = {
       email: currentUser.email,
       nickname: trimmedNickname,
-      role: preservedRole,
+      role: currentRole || "user",
+      promotionStage: selectedPromotionStage || "",
       status: "active",
       active: true,
       updatedAt: serverTimestamp()
     };
 
-    // 기존 문서에 badges 필드가 있던 경우에는 같은 값으로 함께 저장해 Firestore 규칙을 통과시키고,
-    // 화면에서도 훈장 표시가 유지되도록 합니다.
-    if (Object.prototype.hasOwnProperty.call(latestUserData, "badges")) {
-      nicknamePayload.badges = preservedBadges;
+    if (currentBadges.length > 0) {
+      userProfile.badges = currentBadges;
     }
 
-    await setDoc(userRef, nicknamePayload, { merge: true });
+    await setDoc(userRef, userProfile, { merge: true });
 
     currentNickname = trimmedNickname;
-    currentRole = preservedRole;
-    currentBadges = preservedBadges;
-
-    await savePublicUserProfile(currentUser, currentNickname, currentRole, currentBadges);
+    currentPromotionStage = selectedPromotionStage || "";
+    await savePublicUserProfile(currentUser, currentNickname, currentRole, currentBadges, currentPromotionStage);
     await refreshSiteStats();
-    updateUserDisplay(currentUser, currentNickname, currentRole, currentBadges);
-    alert("닉네임이 저장되었습니다.");
+    updateUserDisplay(currentUser, currentNickname, currentRole, currentBadges, currentPromotionStage);
+    closeProfilePopup();
+    alert("내 정보가 저장되었습니다.");
   } catch (error) {
-    console.error("닉네임 저장 오류:", error);
-    alert(`닉네임 저장 오류: ${error.code || "unknown"}
+    console.error("내 정보 저장 오류:", error);
+    alert(`내 정보 저장 오류: ${error.code || "unknown"}
 ${error.message || ""}`);
   }
+}
+window.saveProfileSetting = saveProfileSetting;
+
+function handleNicknameSetting() {
+  openProfilePopup();
 }
 
 async function getOrCreateUserProfile(user) {
@@ -3709,8 +3899,8 @@ async function getOrCreateUserProfile(user) {
       updatedAt: serverTimestamp()
     });
 
-    await savePublicUserProfile(user, "", "user", []);
-    return { nickname: "", role: "user", badges: [] };
+    await savePublicUserProfile(user, "", "user", [], "");
+    return { nickname: "", role: "user", badges: [], promotionStage: "" };
   }
 
   const data = userSnap.data();
@@ -3739,7 +3929,7 @@ async function getOrCreateUserProfile(user) {
   };
 }
 
-function updateUserDisplay(user, nickname, role = "user", badges = []) {
+function updateUserDisplay(user, nickname, role = "user", badges = [], promotionStage = "") {
   const normalizedBadges = normalizeBadges(badges);
 
   if (isAdminUser(user)) {
@@ -3747,7 +3937,7 @@ function updateUserDisplay(user, nickname, role = "user", badges = []) {
     userInfo.innerHTML = `<span class="role-label admin">관리자</span>${betaHtml}<span class="nickname-text">물멍</span>`;
     nicknameBtn.style.display = "none";
     roleManageBtn.style.display = "inline-block";
-    updateSidebarDisplay(user, "물멍", "admin", normalizedBadges);
+    updateSidebarDisplay(user, "물멍", "admin", normalizedBadges, promotionStage);
     return;
   }
 
@@ -3763,7 +3953,7 @@ function updateUserDisplay(user, nickname, role = "user", badges = []) {
     userInfo.innerHTML = `${betaHtml}<span class="nickname-text">${displayName}</span>`;
   }
 
-  updateSidebarDisplay(user, displayName, role, normalizedBadges);
+  updateSidebarDisplay(user, displayName, role, normalizedBadges, promotionStage);
 }
 
 loginBtn.addEventListener("click", handleGoogleLogin);
@@ -3957,7 +4147,7 @@ async function setUserBetaTester(uid, enabled) {
 
     if (currentUser && currentUser.uid === uid) {
       currentBadges = nextBadges;
-      updateUserDisplay(currentUser, currentNickname, currentRole, currentBadges);
+      updateUserDisplay(currentUser, currentNickname, currentRole, currentBadges, currentPromotionStage);
     }
 
     alert(enabled ? "베타 테스터 훈장을 부여했습니다." : "베타 테스터 훈장을 해제했습니다.");
@@ -3981,7 +4171,8 @@ onAuthStateChanged(auth, async (user) => {
       currentNickname = profile.nickname;
       currentRole = profile.role;
       currentBadges = normalizeBadges(profile.badges);
-      updateUserDisplay(user, currentNickname, currentRole, currentBadges);
+      currentPromotionStage = profile.promotionStage || "";
+      updateUserDisplay(user, currentNickname, currentRole, currentBadges, currentPromotionStage);
       startPresenceTimer(user);
       await refreshSiteStats();
       await window.loadSkillSettingsFromCloud();
@@ -3990,7 +4181,7 @@ onAuthStateChanged(auth, async (user) => {
       userInfo.textContent = `로그인: ${user.email}`;
       if (!isAdminUser(user)) nicknameBtn.style.display = "inline-block";
       roleManageBtn.style.display = "none";
-      updateSidebarDisplay(user, user.email, isAdminUser(user) ? "admin" : "user", []);
+      updateSidebarDisplay(user, user.email, isAdminUser(user) ? "admin" : "user", [], "");
     }
   } else {
     stopPresenceTimer();
