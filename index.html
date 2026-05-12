@@ -1751,6 +1751,7 @@ button.save-cancel{
 .role-compact-badge.skill{background:#f97316;box-shadow:0 5px 12px rgba(249,115,22,.16)}
 .role-compact-badge.user{background:#64748b}
 .role-compact-badge.beta{background:#facc15;box-shadow:0 5px 12px rgba(250,204,21,.16)}
+.role-compact-badge.promotion{box-shadow:0 5px 12px rgba(0,0,0,.14)}
 .role-manage-small-btn{border:none;border-radius:999px;padding:8px 12px;background:#111827;color:#fff;font-size:12px;font-weight:950;cursor:pointer;white-space:nowrap}
 .role-manage-small-btn:hover{background:#374151}
 .role-manage-popup-bg{display:none;position:fixed;inset:0;z-index:3450;background:rgba(0,0,0,.45);padding:20px}
@@ -4170,6 +4171,14 @@ function escapeRoleHtml(value) {
     .replace(/'/g, "&#039;");
 }
 
+function rolePromotionBadgeHtml(stageName) {
+  if (!stageName) return "";
+  const safeStageName = escapeRoleHtml(stageName);
+  const bgColor = getPromotionColor(stageName);
+  const textColor = getPromotionTextColor(stageName);
+  return `<span class="role-compact-badge promotion" style="background:${bgColor};color:${textColor};">${safeStageName}</span>`;
+}
+
 function roleCompactBadgeHtml(role, hasBeta) {
   const roleBadge = role === "admin"
     ? `<span class="role-compact-badge admin">관리자</span>`
@@ -4194,10 +4203,11 @@ function openRoleUserManagePopup(uid) {
   const role = userData.role || "user";
   const badges = normalizeBadges(userData.badges);
   const hasBeta = hasBetaTesterBadge(badges);
+  const promotionStage = userData.promotionStage || "";
 
   document.getElementById("roleManageTargetName").textContent = nickname;
   document.getElementById("roleManageTargetEmail").textContent = email;
-  document.getElementById("roleManageTargetStatus").innerHTML = roleCompactBadgeHtml(role, hasBeta);
+  document.getElementById("roleManageTargetStatus").innerHTML = `${rolePromotionBadgeHtml(promotionStage)}${roleCompactBadgeHtml(role, hasBeta)}`;
 
   const setUserBtn = document.getElementById("roleSetUserBtn");
   const setSkillBtn = document.getElementById("roleSetSkillBtn");
@@ -4264,13 +4274,14 @@ async function openRolePopup() {
       const role = userData.role || "user";
       const badges = normalizeBadges(userData.badges);
       const hasBeta = hasBetaTesterBadge(badges);
+      const promotionStage = userData.promotionStage || "";
 
       return `
         <div class="role-compact-row">
           <div class="role-compact-main">
             <div class="role-compact-top">
               <span class="role-compact-name">${nickname}</span>
-              <span class="role-compact-badges">${roleCompactBadgeHtml(role, hasBeta)}</span>
+              <span class="role-compact-badges">${rolePromotionBadgeHtml(promotionStage)}${roleCompactBadgeHtml(role, hasBeta)}</span>
             </div>
             <div class="role-compact-email">${email}</div>
           </div>
