@@ -576,10 +576,16 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
 }
 .sidebar-user-line {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
   gap: 8px;
-  flex-wrap: wrap;
   margin-bottom: 12px;
+}
+.sidebar-badge-line {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex-wrap: wrap;
 }
 .sidebar-role-badge {
   display: inline-flex;
@@ -1015,9 +1021,11 @@ button.save-cancel{
         <button id="sidebarLoginBtn" class="sidebar-mini-btn dark">Google 로그인</button>
         <div id="sidebarProfile" style="display:none;">
           <div class="sidebar-user-line">
-            <span id="sidebarRoleBadge" class="sidebar-role-badge user">일반</span>
-            <span id="sidebarBetaBadge" class="sidebar-medal-badge beta" style="display:none;">베타</span>
             <span id="sidebarNickname" class="sidebar-nickname">닉네임 미설정</span>
+            <div class="sidebar-badge-line">
+              <span id="sidebarRoleBadge" class="sidebar-role-badge user">일반</span>
+              <span id="sidebarBetaBadge" class="sidebar-medal-badge beta" style="display:none;">베타</span>
+            </div>
           </div>
           <div class="sidebar-action-row">
             <button id="sidebarNicknameBtn" class="sidebar-mini-btn">닉네임 설정</button>
