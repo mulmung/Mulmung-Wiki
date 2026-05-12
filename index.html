@@ -484,9 +484,16 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
   padding: 7px 14px;
 }
 .home-beta-list {
-  margin-top: 8px;
-  font-weight: 700;
-  line-height: 1.8;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-weight: 800;
+  line-height: 1.4;
+}
+
+.home-beta-list span {
+  display: block;
 }
 
 .role-user-role-line {
@@ -1272,7 +1279,20 @@ function addSections() {
       <div class="home-beta-title">
         <span class="role-beta-badge">베타 테스터</span>
       </div>
-      <p class="home-beta-list">agoong, 싸미곰, Saver, 타이, 이걸못잡아, 시콘, 예린교수, 포쿠, adws, 쫜, 곰팡이, 쿠키제과</p>
+      <div class="home-beta-list">
+        <span>agoong</span>
+        <span>싸미곰</span>
+        <span>Saver</span>
+        <span>타이</span>
+        <span>이걸못잡아</span>
+        <span>시콘</span>
+        <span>예린교수</span>
+        <span>포쿠</span>
+        <span>adws</span>
+        <span>쫜</span>
+        <span>곰팡이</span>
+        <span>쿠키제과</span>
+      </div>
     </section>
 
     <section id="intro" class="card">
