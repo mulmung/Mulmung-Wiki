@@ -1273,14 +1273,14 @@ function renderSettingSkillList() {
 }
 
 function openSavePopup() {
-  const selectedSkills = currentSetting.filter(Boolean);
+  const selectedSkills = selectedSettingSkills.filter(Boolean);
   if (selectedSkills.length === 0) {
     alert("저장할 스킬을 먼저 선택해주세요.");
     return;
   }
 
   renderSaveCategoryPopup();
-  savePopup.classList.add("show");
+  document.getElementById("savePopupBg").classList.add("show");
 }
 
 function renderSaveCategoryPopup() {
