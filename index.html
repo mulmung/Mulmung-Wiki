@@ -1209,6 +1209,8 @@ button.save-cancel{
 .spirit-popup-divider{border:0;border-top:1px solid #e5e7eb;margin:0 0 18px}
 .spirit-skill-name{font-size:20px;font-weight:950;color:#111827;margin-bottom:10px;word-break:keep-all}
 .spirit-skill-effect{padding:14px 16px;border-radius:18px;background:#f9fafb;border:1px solid #e5e7eb;font-size:15px;font-weight:800;line-height:1.6;color:#374151;word-break:keep-all;text-align:center}
+.spirit-skill-level{margin-top:8px;font-size:13px;font-weight:950;color:#14b8a6;word-break:keep-all}
+.spirit-skill-n{color:#14b8a6;font-weight:950}
 .spirit-popup-close-btn{width:100%;margin-top:16px;border:none;border-radius:999px;padding:12px 16px;background:#111827;color:#fff;font-size:14px;font-weight:950;cursor:pointer}
 @media(max-width:768px){
   .spirit-grid{grid-template-columns:repeat(4,minmax(58px,1fr));gap:6px;overflow-x:auto;padding-bottom:4px}
@@ -1422,7 +1424,108 @@ const spiritDetails = {
     elementClass: "element-fire",
     image: "sala.png",
     skillName: "화염의 숨결",
-    skillEffect: "전투 시작 후 12초 마다 보스 몬스터에게 남은 체력의 n%의 피해를 입힌다.<br>n : 6 &gt; 7 &gt; 8 &gt; 9 &gt; 10"
+    skillEffect: "전투 시작 후 12초 마다 보스 몬스터에게 남은 체력의 n%의 피해를 입힌다.",
+    skillLevelText: "n : 6 → 7 → 8 → 9 → 10",
+    highlightN: true
+  },
+  mum: {
+    name: "뭄",
+    element: "불",
+    elementClass: "element-fire",
+    image: "mum.png",
+    skillName: "스킬 이름 입력 예정",
+    skillEffect: "스킬 내용 입력 예정입니다.",
+    skillLevelText: ""
+  },
+  bo: {
+    name: "보",
+    element: "불",
+    elementClass: "element-fire",
+    image: "bo.png",
+    skillName: "스킬 이름 입력 예정",
+    skillEffect: "스킬 내용 입력 예정입니다.",
+    skillLevelText: ""
+  },
+  toad: {
+    name: "토드",
+    element: "물",
+    elementClass: "element-water",
+    image: "toad.png",
+    skillName: "스킬 이름 입력 예정",
+    skillEffect: "스킬 내용 입력 예정입니다.",
+    skillLevelText: ""
+  },
+  luga: {
+    name: "루가",
+    element: "물",
+    elementClass: "element-water",
+    image: "luga.png",
+    skillName: "스킬 이름 입력 예정",
+    skillEffect: "스킬 내용 입력 예정입니다.",
+    skillLevelText: ""
+  },
+  ark: {
+    name: "아크",
+    element: "물",
+    elementClass: "element-water",
+    image: "ark.png",
+    skillName: "스킬 이름 입력 예정",
+    skillEffect: "스킬 내용 입력 예정입니다.",
+    skillLevelText: ""
+  },
+  zephy: {
+    name: "제피",
+    element: "바람",
+    elementClass: "element-wind",
+    image: "zephy.png",
+    skillName: "스킬 이름 입력 예정",
+    skillEffect: "스킬 내용 입력 예정입니다.",
+    skillLevelText: ""
+  },
+  kart: {
+    name: "카트",
+    element: "바람",
+    elementClass: "element-wind",
+    image: "kart.png",
+    skillName: "스킬 이름 입력 예정",
+    skillEffect: "스킬 내용 입력 예정입니다.",
+    skillLevelText: ""
+  },
+  her: {
+    name: "헤르",
+    element: "바람",
+    elementClass: "element-wind",
+    image: "her.png",
+    skillName: "스킬 이름 입력 예정",
+    skillEffect: "스킬 내용 입력 예정입니다.",
+    skillLevelText: ""
+  },
+  noa: {
+    name: "노아",
+    element: "땅",
+    elementClass: "element-earth",
+    image: "noa.png",
+    skillName: "스킬 이름 입력 예정",
+    skillEffect: "스킬 내용 입력 예정입니다.",
+    skillLevelText: ""
+  },
+  roar: {
+    name: "로어",
+    element: "땅",
+    elementClass: "element-earth",
+    image: "roar.png",
+    skillName: "스킬 이름 입력 예정",
+    skillEffect: "스킬 내용 입력 예정입니다.",
+    skillLevelText: ""
+  },
+  radon: {
+    name: "라돈",
+    element: "땅",
+    elementClass: "element-earth",
+    image: "radon.png",
+    skillName: "스킬 이름 입력 예정",
+    skillEffect: "스킬 내용 입력 예정입니다.",
+    skillLevelText: ""
   }
 };
 
@@ -1619,26 +1722,26 @@ function addSections() {
         <div class="spirit-column">
           <div class="spirit-element-title element-fire">불 속성</div>
           <button class="spirit-btn" type="button" onclick="openSpiritPopup('sala')">살라</button>
-          <button class="spirit-btn" type="button">뭄</button>
-          <button class="spirit-btn" type="button">보</button>
+          <button class="spirit-btn" type="button" onclick="openSpiritPopup('mum')">뭄</button>
+          <button class="spirit-btn" type="button" onclick="openSpiritPopup('bo')">보</button>
         </div>
         <div class="spirit-column">
           <div class="spirit-element-title element-water">물 속성</div>
-          <button class="spirit-btn" type="button">토드</button>
-          <button class="spirit-btn" type="button">루가</button>
-          <button class="spirit-btn" type="button">아크</button>
+          <button class="spirit-btn" type="button" onclick="openSpiritPopup('toad')">토드</button>
+          <button class="spirit-btn" type="button" onclick="openSpiritPopup('luga')">루가</button>
+          <button class="spirit-btn" type="button" onclick="openSpiritPopup('ark')">아크</button>
         </div>
         <div class="spirit-column">
           <div class="spirit-element-title element-wind">바람 속성</div>
-          <button class="spirit-btn" type="button">제피</button>
-          <button class="spirit-btn" type="button">카트</button>
-          <button class="spirit-btn" type="button">헤르</button>
+          <button class="spirit-btn" type="button" onclick="openSpiritPopup('zephy')">제피</button>
+          <button class="spirit-btn" type="button" onclick="openSpiritPopup('kart')">카트</button>
+          <button class="spirit-btn" type="button" onclick="openSpiritPopup('her')">헤르</button>
         </div>
         <div class="spirit-column">
           <div class="spirit-element-title element-earth">땅 속성</div>
-          <button class="spirit-btn" type="button">노아</button>
-          <button class="spirit-btn" type="button">로어</button>
-          <button class="spirit-btn" type="button">라돈</button>
+          <button class="spirit-btn" type="button" onclick="openSpiritPopup('noa')">노아</button>
+          <button class="spirit-btn" type="button" onclick="openSpiritPopup('roar')">로어</button>
+          <button class="spirit-btn" type="button" onclick="openSpiritPopup('radon')">라돈</button>
         </div>
       </div>
     </section>
@@ -1884,6 +1987,23 @@ function closeUnlockPopup() {
   document.getElementById("unlockPopupBg").classList.remove("show");
 }
 
+function escapeSpiritHtml(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+function formatSpiritSkillEffect(data) {
+  let html = escapeSpiritHtml(data.skillEffect);
+  if (data.highlightN) {
+    html = html.replace("n%", '<span class="spirit-skill-n">n</span>%');
+  }
+  return html;
+}
+
 function openSpiritPopup(spiritId) {
   const data = spiritDetails[spiritId];
   if (!data) return;
@@ -1898,7 +2018,11 @@ function openSpiritPopup(spiritId) {
   elementEl.textContent = data.element;
   elementEl.className = "spirit-attribute-badge " + data.elementClass;
   document.getElementById("spiritPopupSkillName").textContent = data.skillName;
-  document.getElementById("spiritPopupSkillEffect").textContent = data.skillEffect;
+  const effectEl = document.getElementById("spiritPopupSkillEffect");
+  effectEl.innerHTML = `
+    <div>${formatSpiritSkillEffect(data)}</div>
+    ${data.skillLevelText ? `<div class="spirit-skill-level">${escapeSpiritHtml(data.skillLevelText)}</div>` : ""}
+  `;
   document.getElementById("spiritDetailPopupBg").classList.add("show");
 }
 
