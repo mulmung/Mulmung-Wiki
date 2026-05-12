@@ -467,6 +467,28 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
   color: #6b7280;
 }
 
+.home-beta-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 18px 0 10px;
+}
+.home-beta-title::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: #d1d5db;
+}
+.home-beta-title .role-beta-badge {
+  font-size: 14px;
+  padding: 7px 14px;
+}
+.home-beta-list {
+  margin-top: 8px;
+  font-weight: 700;
+  line-height: 1.8;
+}
+
 .role-user-role-line {
   display: flex;
   align-items: center;
@@ -1172,8 +1194,10 @@ function addSections() {
     <section id="home" class="card active">
       <h2>홈</h2>
       <p><strong>물멍위키에 오신 여러분을 환영합니다.</strong></p>
-      <p><strong>고마운 분</strong></p>
-      <p>코숑, 예린교수, 쿠키제과, KEY</p>
+      <div class="home-beta-title">
+        <span class="role-beta-badge">베타 테스터</span>
+      </div>
+      <p class="home-beta-list">agoong, 싸미곰, Saver, 타이, 이걸못잡아, 시콘, 예린교수, 포쿠, adws, 쫜, 곰팡이, 쿠키제과</p>
     </section>
 
     <section id="intro" class="card">
