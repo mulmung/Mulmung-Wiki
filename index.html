@@ -600,6 +600,10 @@ body.skill-can-manage .skill-manage-only{display:inline-block}
 .faq-step-num{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:999px;background:#111827;color:#fff;font-size:13px;font-weight:950}
 .faq-flow-box{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:12px 0 18px;padding:14px;border-radius:18px;background:#f9fafb;border:1px solid #e5e7eb}
 .faq-flow-item{display:inline-flex;align-items:center;justify-content:center;min-height:34px;padding:0 12px;border-radius:999px;background:#fff;border:1px solid #e5e7eb;color:#111827;font-size:13px;font-weight:950;line-height:1;word-break:keep-all}
+button.faq-flow-item{cursor:pointer;-webkit-tap-highlight-color:transparent;font-family:inherit;box-shadow:0 4px 10px rgba(15,23,42,.04);transition:transform .12s ease,box-shadow .12s ease,border-color .12s ease}
+button.faq-flow-item:hover{border-color:#111827;box-shadow:0 6px 14px rgba(15,23,42,.10)}
+button.faq-flow-item:active{transform:translateY(1px)}
+button.faq-flow-item:focus,button.faq-flow-item:focus-visible{outline:none;border-color:#111827}
 .faq-flow-arrow{color:#9ca3af;font-size:15px;font-weight:950}
 .faq-reason-list{margin:8px 0 18px;padding-left:20px}
 .faq-reason-list li{margin-bottom:8px;font-size:16px;font-weight:800;color:#374151;line-height:1.6;word-break:keep-all}
@@ -624,6 +628,15 @@ body.skill-can-manage .skill-manage-only{display:inline-block}
 .faq-effect-detail-row:last-child{border-bottom:none}
 .faq-effect-detail-label{font-weight:950;color:#111827}
 .faq-effect-detail-text{font-weight:850;color:#374151}
+.faq-flow-popup-bg{display:none;position:fixed;inset:0;z-index:3480;background:rgba(0,0,0,.48);padding:18px}
+.faq-flow-popup-bg.show{display:flex;align-items:center;justify-content:center}
+.faq-flow-popup{position:relative;width:100%;max-width:620px;max-height:84vh;overflow-y:auto;padding:22px 18px 20px;border-radius:24px;background:#fff;box-shadow:0 16px 42px rgba(0,0,0,.28);color:#111827;text-align:center}
+.faq-flow-popup-badge{display:inline-flex;align-items:center;justify-content:center;min-height:42px;margin:4px 42px 16px;padding:0 22px;border-radius:999px;background:#111827;color:#fff;font-size:17px;font-weight:950;line-height:1;word-break:keep-all}
+.faq-flow-popup-card{padding:16px;border-radius:20px;background:#f9fafb;border:1px solid #e5e7eb;text-align:left}
+.faq-flow-popup-row{display:grid;grid-template-columns:80px 1fr;gap:10px;padding:10px 0;border-bottom:1px solid #e5e7eb;line-height:1.55;word-break:keep-all}
+.faq-flow-popup-row:last-child{border-bottom:none}
+.faq-flow-popup-label{font-size:15px;font-weight:950;color:#111827}
+.faq-flow-popup-text{font-size:15px;font-weight:850;color:#374151}
 @media(max-width:768px){.faq-effect-button-card{margin:18px 0;padding:14px;border-radius:22px}.faq-effect-button-title{font-size:14px}.faq-effect-button-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.faq-effect-detail-row{grid-template-columns:72px 1fr;font-size:14px}}
 .faq-effect-popup-bg{display:none;position:fixed;inset:0;z-index:3470;background:rgba(0,0,0,.48);padding:18px}
 .faq-effect-popup-bg.show{display:flex;align-items:center;justify-content:center}
@@ -2660,6 +2673,18 @@ function addSections() {
         </div>
       </div>
 
+      <div id="faqFlowPopupBg" class="faq-flow-popup-bg" onclick="closeFaqFlowPopup(event)">
+        <div class="faq-flow-popup" onclick="event.stopPropagation()">
+          <button class="popup-floating-close-btn" type="button" onclick="closeFaqFlowPopup()" aria-label="닫기">×</button>
+          <div class="faq-flow-popup-badge" id="faqFlowPopupBadge">흐름 요약</div>
+          <div class="faq-flow-popup-card">
+            <div class="faq-flow-popup-row"><div class="faq-flow-popup-label">역할</div><div class="faq-flow-popup-text" id="faqFlowPopupRole"></div></div>
+            <div class="faq-flow-popup-row"><div class="faq-flow-popup-label">이유</div><div class="faq-flow-popup-text" id="faqFlowPopupReason"></div></div>
+            <div class="faq-flow-popup-row"><div class="faq-flow-popup-label">핵심</div><div class="faq-flow-popup-text" id="faqFlowPopupPoint"></div></div>
+          </div>
+        </div>
+      </div>
+
       <div class="faq-highlight-box">
         <div class="faq-highlight-title">먼저 알아야 하는 원칙</div>
         <ul class="faq-reason-list">
@@ -2692,14 +2717,9 @@ function addSections() {
       </div>
       <div class="faq-small-title">흐름 요약</div>
       <div class="faq-flow-box">
-        <span class="faq-flow-item">강화큐브 스크롤</span><span class="faq-flow-arrow">→</span><span class="faq-flow-item">시공</span><span class="faq-flow-arrow">→</span><span class="faq-flow-item">핫타임</span><span class="faq-flow-arrow">→</span><span class="faq-flow-item">경험치 스크롤</span><span class="faq-flow-arrow">→</span><span class="faq-flow-item">수련</span><span class="faq-flow-arrow">→</span><span class="faq-flow-item">골드 이벤트</span><span class="faq-flow-arrow">→</span><span class="faq-flow-item">골드 스크롤</span><span class="faq-flow-arrow">→</span><span class="faq-flow-item">용협</span><span class="faq-flow-arrow">→</span><span class="faq-flow-item">폐광</span><span class="faq-flow-arrow">→</span><span class="faq-flow-item">장비 스크롤 자사</span>
+        <button class="faq-flow-item" type="button" onclick="openFaqFlowPopup('강화큐브 스크롤')">강화큐브 스크롤</button><span class="faq-flow-arrow">→</span><button class="faq-flow-item" type="button" onclick="openFaqFlowPopup('시공')">시공</button><span class="faq-flow-arrow">→</span><button class="faq-flow-item" type="button" onclick="openFaqFlowPopup('핫타임')">핫타임</button><span class="faq-flow-arrow">→</span><button class="faq-flow-item" type="button" onclick="openFaqFlowPopup('경험치 스크롤')">경험치 스크롤</button><span class="faq-flow-arrow">→</span><button class="faq-flow-item" type="button" onclick="openFaqFlowPopup('수련')">수련</button><span class="faq-flow-arrow">→</span><button class="faq-flow-item" type="button" onclick="openFaqFlowPopup('골드 이벤트')">골드 이벤트</button><span class="faq-flow-arrow">→</span><button class="faq-flow-item" type="button" onclick="openFaqFlowPopup('골드 스크롤')">골드 스크롤</button><span class="faq-flow-arrow">→</span><button class="faq-flow-item" type="button" onclick="openFaqFlowPopup('용협')">용협</button><span class="faq-flow-arrow">→</span><button class="faq-flow-item" type="button" onclick="openFaqFlowPopup('폐광')">폐광</button><span class="faq-flow-arrow">→</span><button class="faq-flow-item" type="button" onclick="openFaqFlowPopup('장비 스크롤 자사')">장비 스크롤 자사</button>
       </div>
-      <ul class="faq-reason-list">
-        <li>시공은 핫타임 영향을 크게 받는 구간이 아니므로 핫타임 전에 먼저 빼서 시간을 아낍니다.</li>
-        <li>수련 동굴은 핫타임 2배와 경험치 스크롤 3배를 겹쳐 경험치 6배로 먼저 처리합니다.</li>
-        <li>골드 이벤트 버프는 수련 이후에 선택해야, 골드 12배 시간을 용협과 폐광에 온전히 사용할 수 있습니다.</li>
-        <li>용의 협곡은 기간이 정해진 골드 콘텐츠라, 용협 기간에는 폐광보다 먼저 3회를 진행하는 것이 좋습니다.</li>
-      </ul>
+      <p class="faq-effect-help">흐름 버튼을 누르면 해당 순서가 필요한 이유를 확인할 수 있습니다.</p>
 
       <div class="faq-route-title">2. 버프 이벤트 + 주말 핫타임</div>
       <p>용의 협곡 기간이 아닐 때 사용하는 루트입니다. 용협은 없지만 폐쇄된 대광산을 골드 12배로 진행할 수 있습니다.</p>
@@ -2722,13 +2742,9 @@ function addSections() {
       </div>
       <div class="faq-small-title">흐름 요약</div>
       <div class="faq-flow-box">
-        <span class="faq-flow-item">강화큐브 스크롤</span><span class="faq-flow-arrow">→</span><span class="faq-flow-item">시공</span><span class="faq-flow-arrow">→</span><span class="faq-flow-item">핫타임</span><span class="faq-flow-arrow">→</span><span class="faq-flow-item">경험치 스크롤</span><span class="faq-flow-arrow">→</span><span class="faq-flow-item">수련</span><span class="faq-flow-arrow">→</span><span class="faq-flow-item">골드 이벤트</span><span class="faq-flow-arrow">→</span><span class="faq-flow-item">골드 스크롤</span><span class="faq-flow-arrow">→</span><span class="faq-flow-item">폐광</span><span class="faq-flow-arrow">→</span><span class="faq-flow-item">장비 스크롤 자사</span>
+        <button class="faq-flow-item" type="button" onclick="openFaqFlowPopup('강화큐브 스크롤')">강화큐브 스크롤</button><span class="faq-flow-arrow">→</span><button class="faq-flow-item" type="button" onclick="openFaqFlowPopup('시공')">시공</button><span class="faq-flow-arrow">→</span><button class="faq-flow-item" type="button" onclick="openFaqFlowPopup('핫타임')">핫타임</button><span class="faq-flow-arrow">→</span><button class="faq-flow-item" type="button" onclick="openFaqFlowPopup('경험치 스크롤')">경험치 스크롤</button><span class="faq-flow-arrow">→</span><button class="faq-flow-item" type="button" onclick="openFaqFlowPopup('수련')">수련</button><span class="faq-flow-arrow">→</span><button class="faq-flow-item" type="button" onclick="openFaqFlowPopup('골드 이벤트')">골드 이벤트</button><span class="faq-flow-arrow">→</span><button class="faq-flow-item" type="button" onclick="openFaqFlowPopup('골드 스크롤')">골드 스크롤</button><span class="faq-flow-arrow">→</span><button class="faq-flow-item" type="button" onclick="openFaqFlowPopup('폐광')">폐광</button><span class="faq-flow-arrow">→</span><button class="faq-flow-item" type="button" onclick="openFaqFlowPopup('장비 스크롤 자사')">장비 스크롤 자사</button>
       </div>
-      <ul class="faq-reason-list">
-        <li>용협이 없는 날은 골드 12배를 몰아줄 핵심 콘텐츠가 폐쇄된 대광산입니다.</li>
-        <li>수련 동굴을 먼저 끝내고 골드 이벤트 버프를 켜야, 골드 버프 시간이 폐광에 더 많이 남습니다.</li>
-        <li>골드/핫타임 시간이 끝난 뒤에는 장비 스크롤을 사용하고 자사 방치로 장비 파밍을 이어갑니다.</li>
-      </ul>
+      <p class="faq-effect-help">흐름 버튼을 누르면 해당 순서가 필요한 이유를 확인할 수 있습니다.</p>
 
       <div class="faq-small-title">두 루트 차이</div>
       <table class="faq-difference-table">
