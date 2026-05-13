@@ -1986,7 +1986,16 @@ updatePages.forEach(([id,name]) => pageMap[id] = ["업데이트", name]);
 const gradeOrder = ["불멸","신화","전설","영웅","레어","고급","일반"];
 const gradeClassMap = {"일반":"grade-normal","고급":"grade-advanced","레어":"grade-rare","영웅":"grade-hero","전설":"grade-legend","신화":"grade-myth","불멸":"grade-immortal"};
 const elementClassMap = {"불":"element-fire","물":"element-water","바람":"element-wind","땅":"element-earth"};
-const settingCategories = ["승급","등반","4자사","18자사","시공","순숲","폐광","수동"];
+const settingCategories = ["승급","등반","4자사","18자사","시공의 균열","순환의 숲","폐쇄된 대광산","수련 동굴","용의 협곡"];
+const settingCategoryAliases = {
+  "시공": "시공의 균열",
+  "순숲": "순환의 숲",
+  "폐광": "폐쇄된 대광산",
+  "수동": "수련 동굴"
+};
+function normalizeSettingCategory(category) {
+  return settingCategoryAliases[category] || category;
+}
 const promotionStages = ["스톤","브론즈","아이언","실버","골드","미스릴","오리하르콘","아케이나이트","아다만타이트","에테르","블랙미스릴","데몬메탈","드라고노스","라그나블러드","워프로스트","다크녹스","블루어비스","인피넌트","사이클로스","에케이션트나인","기가로크","아이젠하르트","다이아더스트","엘든우드","블리츠골드"];
 let selectedGrade = "전체";
 let selectedElement = "전체";
@@ -2579,28 +2588,36 @@ function normalizeSavedSettings(rawData) {
   const baseData = getBaseSavedData();
   const source = rawData && typeof rawData === "object" ? rawData : {};
   settingCategories.forEach(category => {
-    if (!source[category]) {
-      baseData[category] = [];
-      return;
-    }
-    if (Array.isArray(source[category])) {
-      baseData[category] = source[category];
-      return;
-    }
-    const oldCategoryData = source[category];
-    const migratedList = [];
-    Object.keys(oldCategoryData).forEach(count => {
-      migratedList.push({
-        id: String(Date.now() + Math.random()),
-        category,
-        count: Number(count),
-        createdAt: new Date().toISOString(),
-        uploaderNickname: "이전 저장",
-        ownerUid: "local",
-        skills: oldCategoryData[count]
+    const possibleKeys = [
+      category,
+      ...Object.keys(settingCategoryAliases).filter(oldName => settingCategoryAliases[oldName] === category)
+    ];
+    const mergedList = [];
+    possibleKeys.forEach(sourceKey => {
+      if (!source[sourceKey]) return;
+      if (Array.isArray(source[sourceKey])) {
+        source[sourceKey].forEach(setting => {
+          mergedList.push({
+            ...setting,
+            category: normalizeSettingCategory(setting.category || sourceKey)
+          });
+        });
+        return;
+      }
+      const oldCategoryData = source[sourceKey];
+      Object.keys(oldCategoryData).forEach(count => {
+        mergedList.push({
+          id: String(Date.now() + Math.random()),
+          category,
+          count: Number(count),
+          createdAt: new Date().toISOString(),
+          uploaderNickname: "이전 저장",
+          ownerUid: "local",
+          skills: oldCategoryData[count]
+        });
       });
     });
-    baseData[category] = migratedList;
+    baseData[category] = mergedList;
   });
   return baseData;
 }
@@ -3344,6 +3361,7 @@ window.renderSavedSettingCollection = renderSavedSettingCollection;
 window.saveSavedSettings = saveSavedSettings;
 window.formatShortDate = formatShortDate;
 window.settingCategories = settingCategories;
+window.normalizeSettingCategory = normalizeSettingCategory;
 addMenuButtons();
 addSections();
 setBreadcrumb("home");
@@ -3504,7 +3522,7 @@ window.loadSkillSettingsFromCloud = async function() {
     });
     docs.forEach(settingDoc => {
       const data = settingDoc.data();
-      const category = data.category;
+      const category = window.normalizeSettingCategory ? window.normalizeSettingCategory(data.category) : data.category;
       if (!Object.prototype.hasOwnProperty.call(cloudData, category)) return;
       cloudData[category].push({
         ...data,
