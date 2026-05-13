@@ -591,6 +591,44 @@ body.skill-can-manage .skill-manage-only{display:inline-block}
 .adventure-popup h3{font-size:22px}
 .adventure-popup p{font-size:14px}
 }
+
+/* 스킬 스톤 설정 */
+.skill-stone-section{max-width:640px;margin:-20px auto 34px;padding:18px 16px;border-radius:22px;background:linear-gradient(180deg,#fff,#f8fafc);border:1px solid #e5e7eb;box-shadow:0 8px 22px rgba(0,0,0,.05)}
+.skill-stone-title{display:flex;align-items:center;gap:10px;margin-bottom:8px;font-size:20px;font-weight:950;color:#111827;line-height:1}
+.skill-stone-title::after{content:"";flex:1;height:2px;border-radius:999px;background:linear-gradient(90deg,#111827,#d1d5db)}
+.skill-stone-guide{margin:0 0 16px!important;text-align:center;font-size:13px!important;font-weight:900;color:#6b7280;line-height:1.45}
+.skill-stone-slot-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;align-items:start}
+.skill-stone-slot-btn{min-height:92px;border:2px dashed #cbd5e1;border-radius:18px;background:#f8fafc;color:#94a3b8;font-size:13px;font-weight:950;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;word-break:keep-all}
+.skill-stone-slot-btn.filled{border-style:solid;background:#fff;color:#111827;border-color:#e5e7eb;box-shadow:0 8px 16px rgba(0,0,0,.06)}
+.skill-stone-slot-btn:disabled{cursor:not-allowed;opacity:.75}
+.stone-shape{position:relative;display:flex;align-items:center;justify-content:center;width:52px;height:52px;color:#fff;font-size:22px;font-weight:950;text-shadow:0 1px 2px rgba(0,0,0,.22);box-shadow:0 8px 16px rgba(0,0,0,.14)}
+.stone-shape.triangle{clip-path:polygon(50% 92%,6% 12%,94% 12%);border-radius:12px}
+.stone-shape.square{border-radius:14px}
+.stone-shape.diamond{transform:rotate(45deg);border-radius:12px}
+.stone-shape.diamond span{transform:rotate(-45deg)}
+.stone-shape.empty{background:#e5e7eb;color:#94a3b8;text-shadow:none;box-shadow:none}
+.stone-shape.fire{background:linear-gradient(135deg,#ef4444,#b91c1c)}
+.stone-shape.water{background:linear-gradient(135deg,#60a5fa,#2563eb)}
+.stone-shape.wind{background:linear-gradient(135deg,#34d399,#16a34a)}
+.stone-shape.earth{background:linear-gradient(135deg,#d97706,#92400e)}
+.skill-stone-label{font-size:13px;font-weight:950;color:#111827;line-height:1.2}
+.skill-stone-picked{font-size:12px;font-weight:900;color:#6b7280;line-height:1.2}
+.stone-popup-bg{display:none;position:fixed;inset:0;z-index:3200;background:rgba(0,0,0,.38);padding:20px}
+.stone-popup-bg.show{display:flex;align-items:center;justify-content:center}
+.stone-popup{width:100%;max-width:420px;padding:24px;border-radius:22px;background:#fff;box-shadow:0 16px 38px rgba(0,0,0,.25);text-align:center}
+.stone-popup h3{font-size:22px;font-weight:950;margin-bottom:8px;color:#111827}
+.stone-popup-guide{font-size:14px!important;font-weight:850;color:#6b7280;margin-bottom:16px!important;line-height:1.45}
+.stone-option-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:16px 0 18px}
+.stone-option-btn{border:1px solid #e5e7eb;border-radius:16px;background:#f9fafb;min-height:82px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;font-size:12px;font-weight:950;color:#111827;cursor:pointer;box-shadow:0 5px 12px rgba(0,0,0,.05)}
+.stone-option-btn:hover{transform:translateY(-1px);box-shadow:0 8px 16px rgba(0,0,0,.08)}
+.stone-popup-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.stone-clear-btn,.stone-close-btn{border:none;border-radius:999px;padding:11px 18px;font-size:14px;font-weight:950;color:#fff;cursor:pointer}
+.stone-clear-btn{background:#6b7280}.stone-close-btn{background:#111827}
+.saved-stone-row{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin:14px 0 4px;padding-top:12px;border-top:1px solid #e5e7eb}
+.saved-stone-mini{display:flex;align-items:center;gap:6px;padding:6px 8px;border-radius:999px;background:#f8fafc;border:1px solid #e5e7eb;font-size:12px;font-weight:900;color:#374151}
+.saved-stone-mini .stone-shape{width:24px;height:24px;font-size:12px;border-radius:7px;box-shadow:none}.saved-stone-mini .stone-shape.square{border-radius:6px}.saved-stone-mini .stone-shape.diamond{border-radius:5px}
+@media(max-width:768px){.skill-stone-section{margin:-18px auto 30px;padding:16px 13px;border-radius:18px}.skill-stone-title{font-size:18px}.skill-stone-guide{font-size:12px!important}.skill-stone-slot-row{gap:8px}.skill-stone-slot-btn{min-height:82px;border-radius:15px;font-size:12px;gap:6px}.stone-shape{width:44px;height:44px;font-size:19px}.skill-stone-label{font-size:12px}.skill-stone-picked{font-size:11px}.stone-popup{padding:22px 16px;border-radius:20px}.stone-option-grid{gap:8px}.stone-option-btn{min-height:76px;border-radius:14px;font-size:11px}.stone-option-btn .stone-shape{width:40px;height:40px;font-size:17px}}
+
 </style>
 </head>
 <body>
@@ -827,6 +865,17 @@ body.skill-can-manage .skill-manage-only{display:inline-block}
       </div>
     </div>
   </div>
+  <div class="stone-popup-bg" id="stonePopupBg" onclick="closeSkillStonePopup()">
+    <div class="stone-popup" onclick="event.stopPropagation()">
+      <h3 id="stonePopupTitle">스킬 스톤 선택</h3>
+      <p class="stone-popup-guide">속성과 A/B 타입을 선택하세요.</p>
+      <div id="stoneOptionGrid" class="stone-option-grid"></div>
+      <div class="stone-popup-actions">
+        <button class="stone-clear-btn" type="button" onclick="clearCurrentSkillStone()">비우기</button>
+        <button class="stone-close-btn" type="button" onclick="closeSkillStonePopup()">닫기</button>
+      </div>
+    </div>
+  </div>
   <div class="save-popup-bg" id="savePopupBg" onclick="closeSavePopup()">
     <div class="save-popup" onclick="event.stopPropagation()">
       <h3>스킬 세팅 저장</h3>
@@ -992,6 +1041,20 @@ let selectedElement = "전체";
 let selectedSettingGrade = "전체";
 let selectedSettingElement = "전체";
 let selectedSettingSkills = [];
+let selectedSkillStones = { triangle: null, square: null, diamond: null };
+let currentSkillStoneShape = "";
+const skillStoneShapeList = [
+  { key: "triangle", label: "역삼각형", className: "triangle" },
+  { key: "square", label: "정사각형", className: "square" },
+  { key: "diamond", label: "마름모", className: "diamond" }
+];
+const skillStoneElementList = [
+  { key: "fire", label: "불" },
+  { key: "water", label: "물" },
+  { key: "wind", label: "바람" },
+  { key: "earth", label: "땅" }
+];
+const skillStoneTypeList = ["A", "B"];
 let selectedSavedCategory = "";
 let selectedSavedCount = "";
 let selectedSavedPromotionStage = "";
@@ -1473,6 +1536,11 @@ function addSections() {
       <p class="setting-guide-text">아래 스킬 박스를 누르면 첫 번째 빈칸부터 채워집니다. 세팅 칸의 스킬을 누르면 제거됩니다.</p>
       <p class="setting-mode-guide">스킬칸 오른쪽 위의 작은 점을 누르면 자동/수동이 바뀝니다. <span class="auto-text">파란 점은 자동</span>, <span class="manual-text">회색 점은 수동</span>입니다.</p>
       <div id="skillSettingSlots" class="skill-setting-grid"></div>
+      <div class="skill-stone-section">
+        <div class="skill-stone-title">스킬 스톤</div>
+        <p class="skill-stone-guide">도형을 누르면 속성별 A/B 스톤을 선택할 수 있습니다.</p>
+        <div id="skillStoneSlots" class="skill-stone-slot-row"></div>
+      </div>
       <div class="setting-action-row" id="skillSettingActionRow"><button class="setting-reset-btn skill-manage-only" onclick="resetSkillSetting()">세팅 초기화</button><button class="setting-save-btn skill-manage-only" onclick="openSavePopup()">세팅 저장</button><button class="setting-collection-btn" onclick="showSection('skill-setting-collection')">모음</button></div>
       <h2 class="setting-list-title">스킬 목록</h2>
       <input id="settingSearchInput" class="skill-search-box" type="text" placeholder="세팅할 스킬을 검색하세요. 예: 블리자드" oninput="renderSettingSkillList()" />
@@ -1787,6 +1855,82 @@ function setSettingElementFilter(element) {
   document.querySelectorAll("[data-setting-element-filter]").forEach(button => button.classList.toggle("active", button.getAttribute("data-setting-element-filter") === element));
   renderSettingSkillList();
 }
+function getSkillStoneShapeInfo(shape) {
+  return skillStoneShapeList.find(item => item.key === shape) || skillStoneShapeList[0];
+}
+function getSkillStoneElementInfo(element) {
+  return skillStoneElementList.find(item => item.key === element) || skillStoneElementList[0];
+}
+function renderStoneShape(shape, stone, extraClass = "") {
+  const shapeInfo = getSkillStoneShapeInfo(shape);
+  const elementClass = stone ? stone.element : "empty";
+  const text = stone ? stone.type : "";
+  return `<span class="stone-shape ${shapeInfo.className} ${elementClass} ${extraClass}"><span>${text}</span></span>`;
+}
+function renderSkillStoneSlots() {
+  const wrap = document.getElementById("skillStoneSlots");
+  if (!wrap) return;
+  const canManage = canManageSkillSettingsClient();
+  wrap.innerHTML = skillStoneShapeList.map(shape => {
+    const stone = selectedSkillStones[shape.key];
+    if (!canManage) {
+      return `<button class="skill-stone-slot-btn" type="button" disabled>${renderStoneShape(shape.key, null)}<span class="skill-stone-label">${shape.label}</span><span class="skill-stone-picked">잠김</span></button>`;
+    }
+    const pickedText = stone ? `${getSkillStoneElementInfo(stone.element).label} ${stone.type}` : "선택";
+    return `<button class="skill-stone-slot-btn ${stone ? "filled" : ""}" type="button" onclick="openSkillStonePopup('${shape.key}')">${renderStoneShape(shape.key, stone)}<span class="skill-stone-label">${shape.label}</span><span class="skill-stone-picked">${pickedText}</span></button>`;
+  }).join("");
+}
+function openSkillStonePopup(shape) {
+  if (!canManageSkillSettingsClient()) {
+    alert("스킬 스톤 설정은 관리자와 스킬 마스터만 사용할 수 있습니다.");
+    return;
+  }
+  currentSkillStoneShape = shape;
+  const shapeInfo = getSkillStoneShapeInfo(shape);
+  const title = document.getElementById("stonePopupTitle");
+  const grid = document.getElementById("stoneOptionGrid");
+  if (title) title.textContent = `${shapeInfo.label} 스톤 선택`;
+  if (grid) {
+    let html = "";
+    skillStoneTypeList.forEach(type => {
+      skillStoneElementList.forEach(element => {
+        html += `<button class="stone-option-btn" type="button" onclick="selectSkillStone('${shape}', '${element.key}', '${type}')">${renderStoneShape(shape, { element: element.key, type })}<span>${element.label} ${type}</span></button>`;
+      });
+    });
+    grid.innerHTML = html;
+  }
+  document.getElementById("stonePopupBg")?.classList.add("show");
+}
+function closeSkillStonePopup() {
+  document.getElementById("stonePopupBg")?.classList.remove("show");
+  currentSkillStoneShape = "";
+}
+function selectSkillStone(shape, element, type) {
+  if (!canManageSkillSettingsClient()) return;
+  selectedSkillStones[shape] = { shape, element, type };
+  renderSkillStoneSlots();
+  closeSkillStonePopup();
+}
+function clearCurrentSkillStone() {
+  if (!canManageSkillSettingsClient() || !currentSkillStoneShape) return;
+  selectedSkillStones[currentSkillStoneShape] = null;
+  renderSkillStoneSlots();
+  closeSkillStonePopup();
+}
+function getSelectedSkillStonesForSave() {
+  const result = {};
+  skillStoneShapeList.forEach(shape => {
+    if (selectedSkillStones[shape.key]) result[shape.key] = selectedSkillStones[shape.key];
+  });
+  return result;
+}
+function renderSavedSkillStones(stones = {}) {
+  const entries = skillStoneShapeList
+    .map(shape => ({ shape, stone: stones?.[shape.key] }))
+    .filter(item => item.stone);
+  if (entries.length === 0) return "";
+  return `<div class="saved-stone-row">${entries.map(({ shape, stone }) => `<div class="saved-stone-mini">${renderStoneShape(shape.key, stone)}<span>${shape.label} · ${getSkillStoneElementInfo(stone.element).label} ${stone.type}</span></div>`).join("")}</div>`;
+}
 function addSettingSkill(skillName) {
   if (!canManageSkillSettingsClient()) {
     alert("스킬 세팅은 관리자와 스킬 마스터만 사용할 수 있습니다.");
@@ -1830,7 +1974,9 @@ function resetSkillSetting() {
     return;
   }
   selectedSettingSkills = [];
+  selectedSkillStones = { triangle: null, square: null, diamond: null };
   renderSkillSettingSlots();
+  renderSkillStoneSlots();
   renderSettingSkillList();
 }
 function renderSkillSettingSlots() {
@@ -1944,6 +2090,7 @@ async function saveCurrentSkillSetting(category, promotionStage = "") {
     count: skillCount,
     createdAt,
     createdDate: formatShortDate(createdAt),
+    stones: getSelectedSkillStonesForSave(),
     ownerUid: getSettingOwnerUid(),
     uploaderNickname: getSettingOwnerNickname(),
     skills: selectedSettingSkills.map(skill => ({
@@ -2173,6 +2320,7 @@ function renderSavedSettingBlock(setting, category) {
           return `<div class="saved-setting-slot ${gradeClassMap[skill.grade]}"><span class="saved-mode-dot ${mode}"></span>${skill.name}</div>`;
         }).join("")}
       </div>
+      ${renderSavedSkillStones(setting.stones)}
       <div class="saved-setting-footer">
         <span class="saved-setting-meta">${uploader} · ${dateText}</span>
         ${deleteButton}
@@ -2185,6 +2333,7 @@ addSections();
 setBreadcrumb("home");
 renderSkills();
 renderSkillSettingSlots();
+renderSkillStoneSlots();
 renderSettingSkillList();
 renderSavedSettingCollection();
 </script>
@@ -2273,6 +2422,7 @@ function updateSkillSettingPermissionUI() {
   const canManage = canManageSkillSettingsClient();
   document.body.classList.toggle("skill-can-manage", canManage);
   renderSkillSettingSlots?.();
+  renderSkillStoneSlots?.();
   renderSettingSkillList?.();
   renderSavedSettingCollection?.();
 }
