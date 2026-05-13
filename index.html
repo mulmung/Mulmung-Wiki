@@ -83,7 +83,7 @@ button:focus,button:focus-visible,a:focus,a:focus-visible,[role="button"]:focus,
 .element-fire{background:var(--fire-color);border-color:var(--fire-color);color:#fff}
 .element-water{background:var(--water-color);border-color:var(--water-color);color:#fff}
 .element-wind{background:var(--wind-color);border-color:var(--wind-color);color:#fff}
-.element-earth{background:var(--earth-color);border-color:var(--earth-color);color:#fff}
+.element-earth{background:var(--earth-color);border-color:var(--earth-color);color:#111827}
 .skill-group-title{margin:26px 0 14px;font-size:24px;font-weight:900;color:#111827}
 .skill-result-list{display:grid;gap:14px}
 .skill-result-card{border:1px solid #e5e7eb;border-radius:18px;padding:18px;background:#fff}
@@ -614,7 +614,7 @@ body.skill-can-manage .skill-manage-only{display:inline-block}
 .stone-shape.fire{background:var(--fire-color)}
 .stone-shape.water{background:var(--water-color)}
 .stone-shape.wind{background:var(--wind-color)}
-.stone-shape.earth{background:var(--earth-color)}
+.stone-shape.earth{background:var(--earth-color);color:#111827;text-shadow:none}
 .skill-stone-label{font-size:13px;font-weight:950;color:#111827;line-height:1.2}
 .skill-stone-picked{font-size:12px;font-weight:900;color:#6b7280;line-height:1.2}
 .stone-popup-bg{display:none;position:fixed;inset:0;z-index:3200;background:rgba(0,0,0,.38);padding:20px}
@@ -1407,6 +1407,9 @@ function addSections() {
           <div class="home-beta-grid">
             <div class="home-beta-name-btn">연수</div>
             <div class="home-beta-name-btn">SATAN</div>
+            <div class="home-beta-name-btn">코숑</div>
+            <div class="home-beta-name-btn">라비</div>
+            <div class="home-beta-name-btn">르웬</div>
             <div class="home-beta-name-btn empty">추가 예정</div>
           </div>
         </div>
@@ -2358,6 +2361,13 @@ function renderSavedSettingBlock(setting, category) {
     </div>
   `;
 }
+window.renderSkillSettingSlots = renderSkillSettingSlots;
+window.renderSkillStoneSlots = renderSkillStoneSlots;
+window.renderSettingSkillList = renderSettingSkillList;
+window.renderSavedSettingCollection = renderSavedSettingCollection;
+window.saveSavedSettings = saveSavedSettings;
+window.formatShortDate = formatShortDate;
+window.settingCategories = settingCategories;
 addMenuButtons();
 addSections();
 setBreadcrumb("home");
@@ -2452,10 +2462,10 @@ window.canManageSkillSettingsClient = canManageSkillSettingsClient;
 function updateSkillSettingPermissionUI() {
   const canManage = canManageSkillSettingsClient();
   document.body.classList.toggle("skill-can-manage", canManage);
-  renderSkillSettingSlots?.();
-  renderSkillStoneSlots?.();
-  renderSettingSkillList?.();
-  renderSavedSettingCollection?.();
+  window.renderSkillSettingSlots?.();
+  window.renderSkillStoneSlots?.();
+  window.renderSettingSkillList?.();
+  window.renderSavedSettingCollection?.();
 }
 window.getCurrentSkillSettingProfile = function() {
   if (!currentUser) return null;
@@ -2506,7 +2516,7 @@ window.loadSkillSettingsFromCloud = async function() {
     // 기존 방식처럼 기기 저장값(localStorage)과 합치면,
     // 다른 사람이 서버에서 삭제한 세팅이 내 휴대폰 localStorage에 남아 다시 보일 수 있습니다.
     const cloudData = {};
-    settingCategories.forEach(category => {
+    window.settingCategories.forEach(category => {
       cloudData[category] = [];
     });
     docs.forEach(settingDoc => {
