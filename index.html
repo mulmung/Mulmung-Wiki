@@ -1847,11 +1847,12 @@ button.save-cancel{
       </div>
       <div class="menu-group"><button class="menu-btn" onclick="showSection('intro')">들어가며</button></div>
       <div class="menu-group"><button class="menu-btn" onclick="showSection('diamond-career')">전체 진로</button></div>
+      <div class="menu-group"><button class="menu-btn" onclick="showSection('promotion')">승급</button></div>
+      <div class="menu-group"><button class="menu-btn" onclick="toggleSubMenu('infoMenu', this)">스킬 <span>＋</span></button><div class="sub-menu" id="infoMenu"></div></div>
       <div class="menu-group"><button class="menu-btn" onclick="showSection('diamond-spirit')">정령</button></div>
       <div class="menu-group"><button class="menu-btn" onclick="showSection('diamond-familiar')">사역마</button></div>
       <div class="menu-group"><button class="menu-btn" onclick="showSection('diamond-beast')">비스트</button></div>
-      <div class="menu-group"><button class="menu-btn" onclick="showSection('promotion')">승급</button></div>
-      <div class="menu-group"><button class="menu-btn" onclick="toggleSubMenu('infoMenu', this)">스킬 <span>＋</span></button><div class="sub-menu" id="infoMenu"></div></div>
+      <div class="menu-group"><button class="menu-btn" onclick="showSection('adventure')">모험</button></div>
       <div class="menu-group"><button class="menu-btn" onclick="toggleSubMenu('faqMenu', this)">FAQ <span>＋</span></button><div class="sub-menu" id="faqMenu"></div></div>
       <div class="menu-group"><button class="menu-btn" onclick="toggleSubMenu('updateMenu', this)">업데이트 <span>＋</span></button><div class="sub-menu" id="updateMenu"></div></div>
     </aside>
@@ -2192,6 +2193,7 @@ const pageMap = {
   "diamond-spirit":["정령",""],
   "diamond-familiar":["사역마",""],
   "diamond-beast":["비스트",""],
+  "adventure":["모험",""],
   "diamond-roadmap":["전체 진로","다이아 소모처 로드맵"],
   "diamond-class":["전체 진로","클래스"],
   "diamond-or":["전체 진로","오르"],
@@ -2709,6 +2711,11 @@ function addSections() {
       <h2>스킬 세팅 모음</h2>
       <p class="setting-guide-text">저장한 스킬 세팅을 원하는 용도별로 골라 확인할 수 있습니다.</p>
       <div id="savedSettingCollection"></div>
+    </section>
+
+    <section id="adventure" class="card">
+      <h2>모험</h2>
+      <p class="guide-text">모험 관련 정보는 추후 정리해서 추가할 예정입니다.</p>
     </section>
 
     <section id="faq-auto-hunt" class="card">
