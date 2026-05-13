@@ -597,6 +597,7 @@ body.skill-can-manage .skill-manage-only{display:inline-block}
 .adventure-scroll-badge{display:inline-flex;align-items:center;justify-content:center;min-width:78px;height:38px;padding:0 16px;border-radius:999px;color:#fff;font-size:15px;font-weight:950;line-height:1;white-space:nowrap;box-shadow:0 7px 16px rgba(0,0,0,.10)}
 .adventure-scroll-badge.gold{background:linear-gradient(135deg,#facc15,#eab308,#d97706)}
 .adventure-scroll-badge.exp{background:linear-gradient(135deg,#7dd3fc,#38bdf8,#2563eb)}
+.adventure-scroll-badge.enhance-cube{background:linear-gradient(135deg,#a855f7,#7c3aed,#4c1d95)}
 .adventure-popup-actions{display:flex;justify-content:center;margin-top:18px}
 .adventure-skill-link-btn{display:inline-flex;align-items:center;justify-content:center;text-align:center;border:none;border-radius:999px;padding:12px 18px;background:#111827;color:#ffffff;font-size:14px;font-weight:950;line-height:1.2;cursor:pointer;min-width:180px}
 .adventure-skill-link-btn:hover{filter:brightness(.94)}
@@ -4221,13 +4222,19 @@ const adventureInfo = {
   },
   timeRift: {
     title: "시공의 균열",
-    text: "시공의 균열 설명은 추후 추가 예정입니다.",
-    settingCategory: "시공의 균열"
+    text: "시공의 균열에서 사용하기 좋은 추천 스크롤입니다.",
+    settingCategory: "시공의 균열",
+    scrolls: [
+      { label: "강화 큐브", className: "enhance-cube" }
+    ]
   },
   trainingCave: {
     title: "수련 동굴",
-    text: "수련 동굴 설명은 추후 추가 예정입니다.",
-    settingCategory: "수련 동굴"
+    text: "수련 동굴에서 사용하기 좋은 추천 스크롤입니다.",
+    settingCategory: "수련 동굴",
+    scrolls: [
+      { label: "경험치", className: "exp" }
+    ]
   },
   cycleForest: {
     title: "순환의 숲",
@@ -4241,8 +4248,11 @@ const adventureInfo = {
   },
   dragonValley: {
     title: "용의 협곡",
-    text: "용의 협곡 설명은 추후 추가 예정입니다.",
-    settingCategory: "용의 협곡"
+    text: "용의 협곡에서 사용하기 좋은 추천 스크롤입니다.",
+    settingCategory: "용의 협곡",
+    scrolls: [
+      { label: "골드", className: "gold" }
+    ]
   }
 };
 function openAdventurePopup(key) {
