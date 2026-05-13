@@ -1784,6 +1784,128 @@ button.save-cancel{
   .role-manage-popup{max-width:330px;padding:20px 17px 17px;border-radius:22px}
 }
 
+
+/* 모험 버튼 영역 */
+.adventure-guide-text {
+  margin-bottom: 18px;
+  color: #4b5563;
+}
+.adventure-button-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 18px;
+}
+.adventure-btn {
+  min-height: 68px;
+  padding: 14px 10px;
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+  background: #ffffff;
+  color: #111827;
+  font-size: 15px;
+  font-weight: 950;
+  line-height: 1.25;
+  cursor: pointer;
+  box-shadow: 0 5px 14px rgba(0,0,0,.07);
+  transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+  word-break: keep-all;
+}
+.adventure-btn:hover {
+  transform: translateY(-2px);
+  border-color: #111827;
+  box-shadow: 0 9px 20px rgba(0,0,0,.12);
+}
+.adventure-divider {
+  margin: 22px 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #ef4444;
+  font-size: 14px;
+  font-weight: 950;
+  letter-spacing: .04em;
+}
+.adventure-divider::before,
+.adventure-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: #fecaca;
+}
+.adventure-event-grid {
+  margin-top: 12px;
+}
+.adventure-popup-bg {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 3450;
+  background: rgba(0,0,0,.48);
+  padding: 18px;
+}
+.adventure-popup-bg.show {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.adventure-popup {
+  width: 100%;
+  max-width: 430px;
+  padding: 24px 22px 20px;
+  border-radius: 24px;
+  background: #ffffff;
+  box-shadow: 0 14px 42px rgba(0,0,0,.30);
+  color: #111827;
+  text-align: center;
+}
+.adventure-popup h3 {
+  margin: 0 0 12px;
+  font-size: 24px;
+  font-weight: 950;
+}
+.adventure-popup p {
+  margin: 0 0 18px;
+  font-size: 16px;
+  font-weight: 800;
+  color: #4b5563;
+  line-height: 1.55;
+}
+.adventure-popup-close-btn {
+  width: 100%;
+  border: none;
+  border-radius: 999px;
+  padding: 12px 16px;
+  background: #111827;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 950;
+  cursor: pointer;
+}
+@media(max-width:768px) {
+  .adventure-button-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+  .adventure-btn {
+    min-height: 58px;
+    padding: 11px 6px;
+    border-radius: 14px;
+    font-size: 12px;
+  }
+  .adventure-popup {
+    max-width: 330px;
+    padding: 21px 18px 18px;
+    border-radius: 22px;
+  }
+  .adventure-popup h3 {
+    font-size: 22px;
+  }
+  .adventure-popup p {
+    font-size: 14px;
+  }
+}
+
 </style>
 </head>
 
@@ -2397,9 +2519,15 @@ function addMenuButtons() {
   // 다이아 소모처 상위 메뉴는 제거하고, 전체 진로/정령/사역마/비스트를 상위 메뉴로 표시합니다.
   // 클래스, 오르, 오브는 사이드 하위 메뉴에서 제외하고 기존 페이지는 유지합니다.
   // 승급 하위 메뉴는 만들지 않습니다.
-  infoPages.forEach(([id,name]) => document.getElementById("infoMenu").insertAdjacentHTML("beforeend", `<button class="sub-menu-btn" onclick="showSection('${id}')">${name}</button>`));
-  faqPages.forEach(([id,name]) => document.getElementById("faqMenu").insertAdjacentHTML("beforeend", `<button class="sub-menu-btn" onclick="showSection('${id}')">${name}</button>`));
-  updatePages.forEach(([id,name]) => document.getElementById("updateMenu").insertAdjacentHTML("beforeend", `<button class="sub-menu-btn" onclick="showSection('${id}')">${name}</button>`));
+  infoPages.forEach(([id,name]) => {
+    document.getElementById("infoMenu").insertAdjacentHTML("beforeend", `<button class="sub-menu-btn" onclick="showSection('${id}')">${name}</button>`);
+  });
+  faqPages.forEach(([id,name]) => {
+    document.getElementById("faqMenu").insertAdjacentHTML("beforeend", `<button class="sub-menu-btn" onclick="showSection('${id}')">${name}</button>`);
+  });
+  updatePages.forEach(([id,name]) => {
+    document.getElementById("updateMenu").insertAdjacentHTML("beforeend", `<button class="sub-menu-btn" onclick="showSection('${id}')">${name}</button>`);
+  });
 }
 
 function filterHtml(type) {
@@ -2715,7 +2843,21 @@ function addSections() {
 
     <section id="adventure" class="card">
       <h2>모험</h2>
-      <p class="guide-text">모험 관련 정보는 추후 정리해서 추가할 예정입니다.</p>
+      <p class="adventure-guide-text">모험 콘텐츠별 설명을 확인할 수 있습니다. 각 버튼을 누르면 설명 팝업이 표시됩니다.</p>
+
+      <div class="adventure-button-grid">
+        <button class="adventure-btn" type="button" onclick="openAdventurePopup('closedMine')">폐쇄된 대광산</button>
+        <button class="adventure-btn" type="button" onclick="openAdventurePopup('timeRift')">시공의 균열</button>
+        <button class="adventure-btn" type="button" onclick="openAdventurePopup('trainingCave')">수련 동굴</button>
+        <button class="adventure-btn" type="button" onclick="openAdventurePopup('cycleForest')">순환의 숲</button>
+        <button class="adventure-btn" type="button" onclick="openAdventurePopup('flameHideout')">잠자는 화염의 은신처</button>
+      </div>
+
+      <div class="adventure-divider">이벤트</div>
+
+      <div class="adventure-button-grid adventure-event-grid">
+        <button class="adventure-btn" type="button" onclick="openAdventurePopup('dragonValley')">용의 협곡</button>
+      </div>
     </section>
 
     <section id="faq-auto-hunt" class="card">
@@ -3544,6 +3686,14 @@ renderSavedSettingCollection();
     <button type="button" class="browser-alert-close" onclick="closeBrowserAlert()">확인</button>
   </div>
 </div>
+
+  <div class="adventure-popup-bg" id="adventurePopupBg" onclick="closeAdventurePopup()">
+    <div class="adventure-popup" onclick="event.stopPropagation()">
+      <h3 id="adventurePopupTitle">모험</h3>
+      <p id="adventurePopupText">내용은 추후 추가 예정입니다.</p>
+      <button class="adventure-popup-close-btn" type="button" onclick="closeAdventurePopup()">닫기</button>
+    </div>
+  </div>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
@@ -4471,6 +4621,47 @@ window.loadSkillSettingsFromCloud();
 statsTimer = setInterval(refreshSiteStats, 30000);
 
   console.log("Firebase 연결 완료");
+
+const adventureInfo = {
+  closedMine: {
+    title: "폐쇄된 대광산",
+    text: "폐쇄된 대광산 설명은 추후 추가 예정입니다."
+  },
+  timeRift: {
+    title: "시공의 균열",
+    text: "시공의 균열 설명은 추후 추가 예정입니다."
+  },
+  trainingCave: {
+    title: "수련 동굴",
+    text: "수련 동굴 설명은 추후 추가 예정입니다."
+  },
+  cycleForest: {
+    title: "순환의 숲",
+    text: "순환의 숲 설명은 추후 추가 예정입니다."
+  },
+  flameHideout: {
+    title: "잠자는 화염의 은신처",
+    text: "잠자는 화염의 은신처 설명은 추후 추가 예정입니다."
+  },
+  dragonValley: {
+    title: "용의 협곡",
+    text: "용의 협곡 설명은 추후 추가 예정입니다."
+  }
+};
+
+function openAdventurePopup(key) {
+  const data = adventureInfo[key];
+  if (!data) return;
+
+  document.getElementById("adventurePopupTitle").textContent = data.title;
+  document.getElementById("adventurePopupText").textContent = data.text;
+  document.getElementById("adventurePopupBg").classList.add("show");
+}
+
+function closeAdventurePopup() {
+  document.getElementById("adventurePopupBg").classList.remove("show");
+}
+
 </script>
 </body>
 </html>
