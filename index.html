@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>물멍위키</title>
 <style>
-:root{--stone-color:#7D8083;--bronze-color:#A56A3A;--iron-color:#A4ABB3;--silver-color:#D9E2EC;--gold-color:#D9A11F;--mithril-color:#58D2F0;--orichalcum-color:#7D2CE8;--arcanite-color:#8B5624;--adamantite-color:#D81F63;--ether-color:#2D78E8;--black-mithril-color:#56CFE1;--demon-metal-color:#41B642;--dragonos-color:#AD8C45;--ragnablood-color:#A7353D;--warfrost-color:#E3E6F2;--darknox-color:#5916AE;--blueabyss-color:#4474AF;--infinent-color:#D93C8A;--cyclos-color:#5C9D8E;--ecationnine-color:#A52413;--gigarock-color:#C08A24;--eisenhart-color:#18B977;--diamondust-color:#8FB7E8;--eldenwood-color:#7B8C32;--blitzgold-color:#B9AE74}
+:root{--stone-color:#7D8083;--bronze-color:#A56A3A;--iron-color:#A4ABB3;--silver-color:#D9E2EC;--gold-color:#D9A11F;--mithril-color:#58D2F0;--orichalcum-color:#7D2CE8;--arcanite-color:#8B5624;--adamantite-color:#D81F63;--ether-color:#2D78E8;--black-mithril-color:#56CFE1;--demon-metal-color:#41B642;--dragonos-color:#AD8C45;--ragnablood-color:#A7353D;--warfrost-color:#E3E6F2;--darknox-color:#5916AE;--blueabyss-color:#4474AF;--infinent-color:#D93C8A;--cyclos-color:#5C9D8E;--ecationnine-color:#A52413;--gigarock-color:#C08A24;--eisenhart-color:#18B977;--diamondust-color:#8FB7E8;--eldenwood-color:#7B8C32;--blitzgold-color:#B9AE74;--water-color:#4D7FD5;--wind-color:#14E6D1;--fire-color:#D07A2D;--earth-color:#D7A55C}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f5f5f5;color:#111827;line-height:1.6}
 button,a,[role="button"],input,select,textarea{-webkit-tap-highlight-color:transparent}
@@ -80,10 +80,10 @@ button:focus,button:focus-visible,a:focus,a:focus-visible,[role="button"]:focus,
 .grade-myth{background:#5ac8fa;color:#fff}
 .grade-immortal{background:#facc15;color:#fff}
 .filter-all{background:#3f3f46;color:#fff}
-.element-fire{background:#b91c1c;color:#fff}
-.element-water{background:#2563eb;color:#fff}
-.element-wind{background:#16a34a;color:#fff}
-.element-earth{background:#a16207;color:#fff}
+.element-fire{background:var(--fire-color);border-color:var(--fire-color);color:#fff}
+.element-water{background:var(--water-color);border-color:var(--water-color);color:#fff}
+.element-wind{background:var(--wind-color);border-color:var(--wind-color);color:#fff}
+.element-earth{background:var(--earth-color);border-color:var(--earth-color);color:#fff}
 .skill-group-title{margin:26px 0 14px;font-size:24px;font-weight:900;color:#111827}
 .skill-result-list{display:grid;gap:14px}
 .skill-result-card{border:1px solid #e5e7eb;border-radius:18px;padding:18px;background:#fff}
@@ -611,10 +611,10 @@ body.skill-can-manage .skill-manage-only{display:inline-block}
 .stone-shape.diamond{transform:rotate(45deg);border-radius:12px}
 .stone-shape.diamond span{transform:rotate(-45deg)}
 .stone-shape.empty{background:#e5e7eb;color:#94a3b8;text-shadow:none;box-shadow:none}
-.stone-shape.fire{background:linear-gradient(135deg,#ef4444,#b91c1c)}
-.stone-shape.water{background:linear-gradient(135deg,#60a5fa,#2563eb)}
-.stone-shape.wind{background:linear-gradient(135deg,#34d399,#16a34a)}
-.stone-shape.earth{background:linear-gradient(135deg,#d97706,#92400e)}
+.stone-shape.fire{background:var(--fire-color)}
+.stone-shape.water{background:var(--water-color)}
+.stone-shape.wind{background:var(--wind-color)}
+.stone-shape.earth{background:var(--earth-color)}
 .skill-stone-label{font-size:13px;font-weight:950;color:#111827;line-height:1.2}
 .skill-stone-picked{font-size:12px;font-weight:900;color:#6b7280;line-height:1.2}
 .stone-popup-bg{display:none;position:fixed;inset:0;z-index:3200;background:rgba(0,0,0,.38);padding:20px}
