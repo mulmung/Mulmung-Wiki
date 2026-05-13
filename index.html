@@ -267,12 +267,13 @@ body.skill-can-manage .skill-manage-only{display:inline-block}
 .sidebar-auth-title{margin-bottom:8px;font-size:12px;font-weight:900;color:rgba(255,255,255,.62)}
 .sidebar-user-line{display:flex;flex-direction:column;align-items:flex-start;gap:8px;margin-bottom:12px}
 .sidebar-badge-line{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
-.sidebar-role-badge,.sidebar-medal-badge{display:inline-flex;align-items:center;justify-content:center;width:max-content;max-width:100%;min-width:0;height:32px;padding:0 14px;border-radius:999px;color:#fff;font-size:13px;font-weight:950;line-height:1;text-align:center;white-space:nowrap;flex:0 0 auto}
+.server-badge,.sidebar-role-badge,.sidebar-medal-badge,.sidebar-promotion-badge{display:inline-flex;align-items:center;justify-content:center;width:max-content;max-width:100%;min-width:0;height:32px;padding:0 14px;border-radius:999px;color:#fff;font-size:14px;font-weight:950;line-height:1;text-align:center;white-space:nowrap;flex:0 0 auto}
+.server-badge{background:#000;box-shadow:0 8px 18px rgba(0,0,0,.18)}
 .sidebar-role-badge.admin{background:#000}
 .sidebar-role-badge.skill{background:#f97316}
 .sidebar-role-badge.user{background:#334155}
 .sidebar-medal-badge.beta{background:#facc15;box-shadow:0 6px 14px rgba(250,204,21,.24)}
-.sidebar-promotion-badge{display:inline-flex;align-items:center;justify-content:center;width:max-content;max-width:100%;min-width:0;height:32px;padding:0 14px;border-radius:999px;color:#ffffff;font-size:14px;font-weight:950;line-height:1;box-shadow:0 6px 14px rgba(0,0,0,.16);white-space:nowrap}
+.sidebar-promotion-badge{box-shadow:0 6px 14px rgba(0,0,0,.16)}
 .profile-popup-bg{display:none;position:fixed;inset:0;z-index:3400;background:rgba(0,0,0,.45);padding:20px}
 .profile-popup-bg.show{display:flex;align-items:center;justify-content:center}
 .profile-popup{width:100%;max-width:390px;padding:24px 22px 20px;border-radius:24px;background:#ffffff;box-shadow:0 14px 38px rgba(0,0,0,.28);color:#111827}
@@ -290,8 +291,8 @@ body.skill-can-manage .skill-manage-only{display:inline-block}
 .profile-popup h3{font-size:22px}
 .profile-input,.profile-select{font-size:15px;padding:12px 13px;border-radius:15px}
 }
-.sidebar-name-line{display:flex;align-items:center;gap:8px;flex-wrap:wrap;min-height:32px}.server-badge{display:inline-flex;align-items:center;justify-content:center;min-width:44px;padding:6px 12px;border-radius:999px;background:#000;color:#fff;font-size:.82rem;font-weight:900;line-height:1;box-shadow:0 8px 18px rgba(0,0,0,.18);white-space:nowrap}
-.sidebar-nickname{display:inline-flex;align-items:center;min-height:32px;font-size:16px;font-weight:900;color:#fff;line-height:1}
+.sidebar-name-line{display:flex;align-items:center;gap:10px;flex-wrap:wrap;min-height:32px}
+.sidebar-nickname{display:inline-flex;align-items:center;gap:10px;min-height:32px;font-size:16px;font-weight:900;color:#fff;line-height:1}
 .sidebar-action-row{display:grid;grid-template-columns:1fr;gap:8px}
 .sidebar-mini-btn{width:100%;padding:10px 12px;border:1px solid rgba(255,255,255,.18);border-radius:12px;background:#fff;color:#111827;font-size:13px;font-weight:900;cursor:pointer}
 .sidebar-mini-btn.dark{background:#000;color:#fff}
@@ -3060,11 +3061,13 @@ async function openRolePopup() {
       const badges = normalizeBadges(userData.badges);
       const hasBeta = hasBetaTesterBadge(badges);
       const promotionStage = userData.promotionStage || "";
+      const server = userData.server || "";
+      const serverBadge = server ? `<span class="role-server-badge">${escapeRoleHtml(server)}</span>` : "";
       return `
         <div class="role-compact-row">
           <div class="role-compact-main">
             <div class="role-compact-top">
-              <span class="role-compact-name">${nickname}</span>
+              ${serverBadge}<span class="role-compact-name">${nickname}</span>
               <span class="role-compact-badges">${rolePromotionBadgeHtml(promotionStage)}${roleCompactBadgeHtml(role, hasBeta)}</span>
             </div>
             <div class="role-compact-email">${email}</div>
