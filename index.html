@@ -1930,7 +1930,7 @@ function getSelectedSkillStonesForSave() {
 function renderSavedSkillStones(stones = {}) {
   const hasStone = skillStoneShapeList.some(shape => stones?.[shape.key]);
   if (!hasStone) return "";
-  return `<div class="saved-stone-row">${skillStoneShapeList.map(shape => `<div class="saved-stone-mini">${renderStoneShape(shape.key, stones?.[shape.key] || null)}</div>`).join("")}</div>`;
+  return `<div class="saved-stone-row">${skillStoneShapeList.map(shape => `<div class="saved-stone-mini">${renderStoneShape(shape.key, stones?.[shape.key] || null, '', true)}</div>`).join("")}</div>`;
 }
 function addSettingSkill(skillName) {
   if (!canManageSkillSettingsClient()) {
