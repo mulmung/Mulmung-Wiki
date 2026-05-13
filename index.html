@@ -673,6 +673,76 @@ button.faq-flow-item:focus,button.faq-flow-item:focus-visible{outline:none;borde
 .adventure-scroll-badge.gold{background:linear-gradient(135deg,#facc15,#eab308,#d97706)}
 .adventure-scroll-badge.exp{background:linear-gradient(135deg,#7dd3fc,#38bdf8,#2563eb)}
 .adventure-scroll-badge.enhance-cube{background:linear-gradient(135deg,#a855f7,#7c3aed,#4c1d95)}
+
+.adventure-floor-calc-box{
+  margin:2px 0 18px;
+  padding:16px;
+  border:2px solid #e5e7eb;
+  border-radius:20px;
+  background:#f9fafb;
+}
+.adventure-floor-calc-title{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  margin:0 auto 12px;
+  padding:8px 18px;
+  border-radius:999px;
+  background:#111827;
+  color:#fff;
+  font-size:15px;
+  font-weight:950;
+  line-height:1;
+}
+.adventure-floor-calc-desc{
+  margin:0 0 12px;
+  color:#4b5563;
+  font-size:13px;
+  font-weight:800;
+  line-height:1.45;
+  word-break:keep-all;
+}
+.adventure-floor-calc-row{display:flex;gap:9px;align-items:center}
+.adventure-floor-calc-input{
+  flex:1;
+  min-width:0;
+  height:44px;
+  border:2px solid #e5e7eb;
+  border-radius:15px;
+  padding:0 12px;
+  color:#111827;
+  font-size:17px;
+  font-weight:950;
+  text-align:center;
+  outline:none;
+}
+.adventure-floor-calc-input:focus{border-color:#111827;box-shadow:0 0 0 3px rgba(17,24,39,.08)}
+.adventure-floor-calc-btn{
+  height:44px;
+  padding:0 16px;
+  border:none;
+  border-radius:15px;
+  background:#111827;
+  color:#fff;
+  font-size:14px;
+  font-weight:950;
+  cursor:pointer;
+}
+.adventure-floor-calc-result{
+  margin-top:11px;
+  padding:12px;
+  border:1px solid #e5e7eb;
+  border-radius:16px;
+  background:#fff;
+  color:#111827;
+  font-size:15px;
+  font-weight:900;
+  line-height:1.45;
+  text-align:center;
+  word-break:keep-all;
+}
+.adventure-floor-calc-result strong{color:#ef4444;font-size:19px}
+@media(max-width:768px){.adventure-floor-calc-row{flex-direction:column}.adventure-floor-calc-input,.adventure-floor-calc-btn{width:100%}}
 .adventure-popup-actions{display:flex;justify-content:center;margin-top:18px}
 .adventure-skill-link-btn{display:inline-flex;align-items:center;justify-content:center;text-align:center;border:none;border-radius:999px;padding:12px 18px;background:#111827;color:#ffffff;font-size:14px;font-weight:950;line-height:1.2;cursor:pointer;min-width:180px}
 .adventure-skill-link-btn:hover{filter:brightness(.94)}
