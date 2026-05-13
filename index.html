@@ -1852,6 +1852,7 @@ button.save-cancel{
       <div class="menu-group"><button class="menu-btn" onclick="showSection('diamond-beast')">비스트</button></div>
       <div class="menu-group"><button class="menu-btn" onclick="showSection('promotion')">승급</button></div>
       <div class="menu-group"><button class="menu-btn" onclick="toggleSubMenu('infoMenu', this)">스킬 <span>＋</span></button><div class="sub-menu" id="infoMenu"></div></div>
+      <div class="menu-group"><button class="menu-btn" onclick="toggleSubMenu('faqMenu', this)">FAQ <span>＋</span></button><div class="sub-menu" id="faqMenu"></div></div>
       <div class="menu-group"><button class="menu-btn" onclick="toggleSubMenu('updateMenu', this)">업데이트 <span>＋</span></button><div class="sub-menu" id="updateMenu"></div></div>
     </aside>
 
@@ -2109,6 +2110,7 @@ const diamondPages = [
   ["diamond-career","전체 진로"],["diamond-roadmap","다이아 소모처 로드맵"],["diamond-class","클래스"],["diamond-spirit","정령"],["diamond-or","오르"],["diamond-orb","오브"],["diamond-familiar","사역마"],["diamond-beast","비스트"]
 ];
 const infoPages = [["skill-learn","스킬 정보"],["skill-setting","스킬 세팅"],["skill-setting-collection","스킬 세팅 모음"]];
+const faqPages = [["faq-auto-hunt","자사(자동사냥)이 뭔가요?"],["faq-scroll-hot-time-event-buff","스크롤 / 핫타임 / 이벤트 버프는 어떻게 써요?"]];
 const updatePages = [
   ["update-010","v0.1.0-beta","2026.05.09",[
     "물멍위키 사이트 기본 구조 제작",
@@ -2198,6 +2200,7 @@ const pageMap = {
 };
 // 승급은 하위 메뉴 없이 승급 페이지 안 버튼으로 선택합니다.
 infoPages.forEach(([id,name]) => pageMap[id] = ["스킬", name]);
+faqPages.forEach(([id,name]) => pageMap[id] = ["FAQ", name]);
 updatePages.forEach(([id,name]) => pageMap[id] = ["업데이트", name]);
 
 const gradeOrder = ["불멸","신화","전설","영웅","레어","고급","일반"];
@@ -2393,6 +2396,7 @@ function addMenuButtons() {
   // 클래스, 오르, 오브는 사이드 하위 메뉴에서 제외하고 기존 페이지는 유지합니다.
   // 승급 하위 메뉴는 만들지 않습니다.
   infoPages.forEach(([id,name]) => document.getElementById("infoMenu").insertAdjacentHTML("beforeend", `<button class="sub-menu-btn" onclick="showSection('${id}')">${name}</button>`));
+  faqPages.forEach(([id,name]) => document.getElementById("faqMenu").insertAdjacentHTML("beforeend", `<button class="sub-menu-btn" onclick="showSection('${id}')">${name}</button>`));
   updatePages.forEach(([id,name]) => document.getElementById("updateMenu").insertAdjacentHTML("beforeend", `<button class="sub-menu-btn" onclick="showSection('${id}')">${name}</button>`));
 }
 
@@ -2705,6 +2709,20 @@ function addSections() {
       <h2>스킬 세팅 모음</h2>
       <p class="setting-guide-text">저장한 스킬 세팅을 원하는 용도별로 골라 확인할 수 있습니다.</p>
       <div id="savedSettingCollection"></div>
+    </section>
+
+    <section id="faq-auto-hunt" class="card">
+      <h2>자사(자동사냥)이 뭔가요?</h2>
+      <p><strong>자사</strong>는 자동사냥의 줄임말입니다.</p>
+      <p>게임을 켜둔 상태에서 캐릭터가 자동으로 몬스터를 처치하며 재화와 경험치를 모으는 플레이를 말합니다.</p>
+      <p class="guide-text">세부 추천 방식은 추후 내용이 정리되면 이 페이지에 추가할 예정입니다.</p>
+    </section>
+
+    <section id="faq-scroll-hot-time-event-buff" class="card">
+      <h2>스크롤 / 핫타임 / 이벤트 버프는 어떻게 써요?</h2>
+      <p>스크롤, 핫타임, 이벤트 버프는 보상 효율을 올릴 때 사용하는 버프입니다.</p>
+      <p>일반적으로 사냥이나 성장 효율을 높이고 싶을 때 사용하며, 버프 시간이 겹치는 구간에 맞춰 사용하면 더 효율적으로 활용할 수 있습니다.</p>
+      <p class="guide-text">정확한 사용 순서와 추천 타이밍은 추후 내용이 정리되면 이 페이지에 추가할 예정입니다.</p>
     </section>
   `);
 
