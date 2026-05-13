@@ -145,7 +145,7 @@ body.skill-can-manage .skill-manage-only{display:inline-block}
 .saved-setting-slot.grade-normal{color:#111827}
 .saved-setting-footer{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:4px}
 .saved-delete-btn{display:inline-flex;align-items:center;justify-content:center;border:none;border-radius:999px;padding:7px 14px;background:#ef4444;color:#fff;font-size:12px;font-weight:900;cursor:pointer}
-.saved-setting-meta{font-size:12px;font-weight:800;color:#6b7280;word-break:keep-all}
+.saved-setting-meta{font-size:12px;font-weight:800;color:#6b7280;word-break:keep-all}.saved-setting-meta .server-badge{min-width:38px;padding:5px 10px;font-size:.72rem;box-shadow:none}
 .saved-empty{padding:16px;border-radius:14px;background:#f3f4f6;color:#6b7280;font-size:15px;font-weight:800;text-align:center}
 .update-list{padding-left:22px;margin-top:14px}
 .update-list li{font-size:18px;margin-bottom:10px}
@@ -290,7 +290,7 @@ body.skill-can-manage .skill-manage-only{display:inline-block}
 .profile-popup h3{font-size:22px}
 .profile-input,.profile-select{font-size:15px;padding:12px 13px;border-radius:15px}
 }
-.sidebar-name-line{display:flex;align-items:center;gap:8px;flex-wrap:wrap;min-height:32px}
+.sidebar-name-line{display:flex;align-items:center;gap:8px;flex-wrap:wrap;min-height:32px}.server-badge{display:inline-flex;align-items:center;justify-content:center;min-width:44px;padding:6px 12px;border-radius:999px;background:#000;color:#fff;font-size:.82rem;font-weight:900;line-height:1;box-shadow:0 8px 18px rgba(0,0,0,.18);white-space:nowrap}
 .sidebar-nickname{display:inline-flex;align-items:center;min-height:32px;font-size:16px;font-weight:900;color:#fff;line-height:1}
 .sidebar-action-row{display:grid;grid-template-columns:1fr;gap:8px}
 .sidebar-mini-btn{width:100%;padding:10px 12px;border:1px solid rgba(255,255,255,.18);border-radius:12px;background:#fff;color:#111827;font-size:13px;font-weight:900;cursor:pointer}
@@ -921,6 +921,15 @@ body.skill-can-manage .skill-manage-only{display:inline-block}
   <div class="profile-popup-bg" id="profilePopupBg" onclick="closeProfilePopup()">
     <div class="profile-popup" onclick="event.stopPropagation()">
       <h3>내 정보 설정</h3>
+      <div class="profile-field">
+        <label>서버</label>
+        <div class="server-select-row">
+          <label class="server-radio"><input type="radio" name="profileServer" value="1섭"><span>1섭</span></label>
+          <label class="server-radio"><input type="radio" name="profileServer" value="2섭"><span>2섭</span></label>
+          <label class="server-radio"><input type="radio" name="profileServer" value="3섭"><span>3섭</span></label>
+          <label class="server-radio"><input type="radio" name="profileServer" value="4섭"><span>4섭</span></label>
+        </div>
+      </div>
       <div class="profile-field">
         <label for="profileNicknameInput">닉네임</label>
         <input id="profileNicknameInput" class="profile-input" type="text" maxlength="12" placeholder="슬레이어 키우기 닉네임" />
@@ -1689,6 +1698,13 @@ function getSettingOwnerNickname() {
   }
   return "닉네임 미설정";
 }
+function getSettingOwnerServer() {
+  if (window.getCurrentSkillSettingProfile) {
+    const profile = window.getCurrentSkillSettingProfile();
+    if (profile && profile.server) return profile.server;
+  }
+  return "";
+}
 function getSettingOwnerUid() {
   if (window.getCurrentSkillSettingProfile) {
     const profile = window.getCurrentSkillSettingProfile();
@@ -2127,6 +2143,7 @@ async function saveCurrentSkillSetting(category, promotionStage = "") {
     stones: getSelectedSkillStonesForSave(),
     ownerUid: getSettingOwnerUid(),
     uploaderNickname: getSettingOwnerNickname(),
+    uploaderServer: getSettingOwnerServer(),
     skills: selectedSettingSkills.map(skill => ({
       name: skill.name,
       grade: skill.grade,
@@ -2342,6 +2359,7 @@ function renderSavedSettingCollection() {
 function renderSavedSettingBlock(setting, category) {
   const savedSkills = setting.skills || [];
   const uploader = setting.uploaderNickname || setting.nickname || "닉네임 미설정";
+  const uploaderServer = setting.uploaderServer || (setting.ownerProfile && setting.ownerProfile.server) || "";
   const dateText = setting.createdDate || formatShortDate(setting.createdAt);
   const deleteButton = canDeleteSavedSetting(setting)
     ? `<button class="saved-delete-btn" onclick="deleteSavedSetting('${category}', '${setting.id}')">삭제</button>`
@@ -2356,7 +2374,7 @@ function renderSavedSettingBlock(setting, category) {
       </div>
       ${renderSavedSkillStones(setting.stones)}
       <div class="saved-setting-footer">
-        <span class="saved-setting-meta">${uploader} · ${dateText}</span>
+        <span class="saved-setting-meta">${uploaderServer ? `<span class="server-badge">${escapeHtml(uploaderServer)}</span>` : ""}${escapeHtml(uploader)} · ${dateText}</span>
         ${deleteButton}
       </div>
     </div>
@@ -2448,6 +2466,7 @@ const sidebarLogoutBtn = document.getElementById("sidebarLogoutBtn");
 const sidebarWithdrawBtn = document.getElementById("sidebarWithdrawBtn");
 let currentUser = null;
 let currentNickname = "";
+let currentServer = "";
 let currentRole = "user";
 let currentPromotionStage = "";
 let currentBadges = [];
@@ -2474,6 +2493,7 @@ window.getCurrentSkillSettingProfile = function() {
     uid: currentUser.uid,
     email: currentUser.email,
     nickname: currentNickname || (isAdminUser(currentUser) ? "물멍" : "닉네임 미설정"),
+    server: currentServer || "",
     role: isAdminUser(currentUser) ? "admin" : currentRole,
     promotionStage: currentPromotionStage,
     badges: currentBadges
@@ -2496,6 +2516,7 @@ window.saveSkillSettingToCloud = async function(setting) {
     ownerUid: currentUser.uid,
     ownerEmail: currentUser.email,
     uploaderNickname: currentNickname || (isAdminUser(currentUser) ? "물멍" : "닉네임 미설정"),
+    uploaderServer: currentServer || "",
     role: isAdminUser(currentUser) ? "admin" : currentRole,
     updatedAt: serverTimestamp()
   };
@@ -2551,11 +2572,12 @@ function normalizeBadges(badges) {
 function hasBetaTesterBadge(badges) {
   return normalizeBadges(badges).includes("beta_tester");
 }
-async function savePublicUserProfile(user, nickname, role = "user", badges = null, promotionStage = "") {
+async function savePublicUserProfile(user, nickname, role = "user", badges = null, promotionStage = "", server = "") {
   if (!user) return;
   const normalizedBadges = normalizeBadges(badges);
   const publicPayload = {
     nickname: nickname || "",
+    server: server || currentServer || "",
     role: role || "user",
     promotionStage: promotionStage || currentPromotionStage || "",
     status: role === "withdrawn" ? "withdrawn" : "active",
@@ -2665,7 +2687,7 @@ function stopPresenceTimer() {
   if (presenceTimer) clearInterval(presenceTimer);
   presenceTimer = null;
 }
-function updateSidebarDisplay(user, nickname, role = "user", badges = [], promotionStage = "") {
+function updateSidebarDisplay(user, nickname, role = "user", badges = [], promotionStage = "", server = "") {
   if (!sidebarLoginBtn || !sidebarProfile || !sidebarRoleBadge || !sidebarNickname) return;
   sidebarLoginBtn.style.display = "none";
   sidebarProfile.style.display = "block";
@@ -2676,7 +2698,7 @@ function updateSidebarDisplay(user, nickname, role = "user", badges = [], promot
   if (isAdminUser(user) || role === "admin") {
     sidebarRoleBadge.textContent = "관리자";
     sidebarRoleBadge.classList.add("admin");
-    sidebarNickname.textContent = "물멍";
+    sidebarNickname.innerHTML = `${server ? `<span class="server-badge">${escapeHtml(server)}</span>` : ""}<span>물멍</span>`;
     if (sidebarBetaBadge) sidebarBetaBadge.style.display = hasBetaTesterBadge(normalizedBadges) ? "inline-flex" : "none";
     if (sidebarNicknameBtn) {
       sidebarNicknameBtn.textContent = "내 정보 설정";
@@ -2694,7 +2716,7 @@ function updateSidebarDisplay(user, nickname, role = "user", badges = [], promot
     sidebarRoleBadge.classList.add("user");
   }
   if (sidebarBetaBadge) sidebarBetaBadge.style.display = hasBetaTesterBadge(normalizedBadges) ? "inline-flex" : "none";
-  sidebarNickname.textContent = displayName;
+  sidebarNickname.innerHTML = `${server ? `<span class="server-badge">${escapeHtml(server)}</span>` : ""}<span>${escapeHtml(displayName)}</span>`;
   if (sidebarNicknameBtn) {
     sidebarNicknameBtn.textContent = "내 정보 설정";
     sidebarNicknameBtn.style.display = "block";
@@ -2781,7 +2803,9 @@ function openProfilePopup() {
   const nicknameInput = document.getElementById("profileNicknameInput");
   const promotionSelect = document.getElementById("profilePromotionSelect");
   if (!popup || !nicknameInput || !promotionSelect) return;
+  const serverInputs = document.querySelectorAll('input[name="profileServer"]');
   nicknameInput.value = currentNickname || "";
+  serverInputs.forEach(radio => { radio.checked = radio.value === (currentServer || "3섭"); });
   promotionSelect.innerHTML = `<option value="">승급 미설정</option>` + promotionStages.map(stage => `<option value="${stage}" ${stage === currentPromotionStage ? "selected" : ""}>${stage}</option>`).join("");
   popup.classList.add("show");
 }
@@ -2794,9 +2818,11 @@ async function saveProfileSetting() {
   if (!currentUser) return;
   const nicknameInput = document.getElementById("profileNicknameInput");
   const promotionSelect = document.getElementById("profilePromotionSelect");
+  const serverInput = document.querySelector('input[name="profileServer"]:checked');
   if (!nicknameInput || !promotionSelect) return;
   const trimmedNickname = nicknameInput.value.trim();
   const selectedPromotionStage = promotionSelect.value;
+  const selectedServer = serverInput ? serverInput.value : "";
   if (!trimmedNickname) {
     alert("닉네임을 입력해주세요.");
     return;
@@ -2812,15 +2838,17 @@ async function saveProfileSetting() {
     // 닉네임/승급 저장 시 기존 정보가 유지되고 Firebase Rules에도 걸리지 않습니다.
     const profileUpdate = {
       nickname: trimmedNickname,
+      server: selectedServer,
       promotionStage: selectedPromotionStage || "",
       updatedAt: serverTimestamp()
     };
     await setDoc(doc(db, "users", uid), profileUpdate, { merge: true });
     await setDoc(doc(db, "publicUsers", uid), profileUpdate, { merge: true });
     currentNickname = trimmedNickname;
+    currentServer = selectedServer;
     currentPromotionStage = selectedPromotionStage || "";
     await refreshSiteStats();
-    updateUserDisplay(currentUser, currentNickname, currentRole, currentBadges, currentPromotionStage);
+    updateUserDisplay(currentUser, currentNickname, currentRole, currentBadges, currentPromotionStage, currentServer);
     closeProfilePopup();
     alert("내 정보가 저장되었습니다.");
   } catch (error) {
@@ -2846,8 +2874,8 @@ async function getOrCreateUserProfile(user) {
       active: true,
       updatedAt: serverTimestamp()
     }, { merge: true });
-    await savePublicUserProfile(user, "물멍", "admin", normalizeBadges(adminData.badges), adminData.promotionStage || "");
-    return { nickname: "물멍", role: "admin", badges: normalizeBadges(adminData.badges), promotionStage: adminData.promotionStage || "" };
+    await savePublicUserProfile(user, "물멍", "admin", normalizeBadges(adminData.badges), adminData.promotionStage || "", adminData.server || currentServer || "");
+    return { nickname: "물멍", server: adminData.server || currentServer || "", role: "admin", badges: normalizeBadges(adminData.badges), promotionStage: adminData.promotionStage || "" };
   }
   if (!userSnap.exists()) {
     await setDoc(userRef, {
@@ -2860,8 +2888,8 @@ async function getOrCreateUserProfile(user) {
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp()
     });
-    await savePublicUserProfile(user, "", "user", [], "");
-    return { nickname: "", role: "user", badges: [], promotionStage: "" };
+    await savePublicUserProfile(user, "", "user", [], "", "");
+    return { nickname: "", server: "", role: "user", badges: [], promotionStage: "" };
   }
   const data = userSnap.data();
   if (data.status === "withdrawn" || data.role === "withdrawn") {
@@ -2874,26 +2902,27 @@ async function getOrCreateUserProfile(user) {
       updatedAt: serverTimestamp()
     }, { merge: true });
     const restoredBadges = normalizeBadges(data.badges);
-    await savePublicUserProfile(user, "", "user", restoredBadges, data.promotionStage || "");
-    return { nickname: "", role: "user", badges: restoredBadges, promotionStage: data.promotionStage || "" };
+    await savePublicUserProfile(user, "", "user", restoredBadges, data.promotionStage || "", data.server || "");
+    return { nickname: "", server: data.server || "", role: "user", badges: restoredBadges, promotionStage: data.promotionStage || "" };
   }
-  await savePublicUserProfile(user, data.nickname || "", data.role || "user", normalizeBadges(data.badges), data.promotionStage || "");
+  await savePublicUserProfile(user, data.nickname || "", data.role || "user", normalizeBadges(data.badges), data.promotionStage || "", data.server || "");
   return {
     nickname: data.nickname || "",
+    server: data.server || "",
     role: data.role || "user",
     badges: normalizeBadges(data.badges),
     promotionStage: data.promotionStage || ""
   };
 }
-function updateUserDisplay(user, nickname, role = "user", badges = [], promotionStage = "") {
+function updateUserDisplay(user, nickname, role = "user", badges = [], promotionStage = "", server = "") {
   const normalizedBadges = normalizeBadges(badges);
   if (isAdminUser(user)) {
     const betaHtml = hasBetaTesterBadge(normalizedBadges) ? `<span class="role-label beta">베타</span>` : "";
-    userInfo.innerHTML = `<span class="role-label admin">관리자</span>${betaHtml}<span class="nickname-text">물멍</span>`;
+    userInfo.innerHTML = `${server ? `<span class="server-badge">${escapeHtml(server)}</span>` : ""}<span class="role-label admin">관리자</span>${betaHtml}<span class="nickname-text">물멍</span>`;
     nicknameBtn.textContent = "내 정보 설정";
     nicknameBtn.style.display = "inline-block";
     roleManageBtn.style.display = "inline-block";
-    updateSidebarDisplay(user, "물멍", "admin", normalizedBadges, promotionStage);
+    updateSidebarDisplay(user, "물멍", "admin", normalizedBadges, promotionStage, server);
     updateSkillSettingPermissionUI();
     return;
   }
@@ -2902,11 +2931,11 @@ function updateUserDisplay(user, nickname, role = "user", badges = [], promotion
   const displayName = nickname || "닉네임 미설정";
   const betaHtml = hasBetaTesterBadge(normalizedBadges) ? `<span class="role-label beta">베타</span>` : "";
   if (role === "skill_master") {
-    userInfo.innerHTML = `<span class="role-label skill">스킬</span>${betaHtml}<span class="nickname-text">${displayName}</span>`;
+    userInfo.innerHTML = `${server ? `<span class="server-badge">${escapeHtml(server)}</span>` : ""}<span class="role-label skill">스킬</span>${betaHtml}<span class="nickname-text">${escapeHtml(displayName)}</span>`;
   } else {
-    userInfo.innerHTML = `${betaHtml}<span class="nickname-text">${displayName}</span>`;
+    userInfo.innerHTML = `${server ? `<span class="server-badge">${escapeHtml(server)}</span>` : ""}${betaHtml}<span class="nickname-text">${escapeHtml(displayName)}</span>`;
   }
-  updateSidebarDisplay(user, displayName, role, normalizedBadges, promotionStage);
+  updateSidebarDisplay(user, displayName, role, normalizedBadges, promotionStage, server);
   updateSkillSettingPermissionUI();
 }
 loginBtn.addEventListener("click", handleGoogleLogin);
@@ -3126,10 +3155,11 @@ onAuthStateChanged(auth, async (user) => {
     try {
       const profile = await getOrCreateUserProfile(user);
       currentNickname = profile.nickname;
+      currentServer = profile.server || "";
       currentRole = profile.role;
       currentBadges = normalizeBadges(profile.badges);
       currentPromotionStage = profile.promotionStage || "";
-      updateUserDisplay(user, currentNickname, currentRole, currentBadges, currentPromotionStage);
+      updateUserDisplay(user, currentNickname, currentRole, currentBadges, currentPromotionStage, currentServer);
       updateSkillSettingPermissionUI();
       startPresenceTimer(user);
       await refreshSiteStats();
@@ -3145,6 +3175,7 @@ onAuthStateChanged(auth, async (user) => {
     stopPresenceTimer();
     currentUser = null;
     currentNickname = "";
+    currentServer = "";
     currentRole = "user";
     currentPromotionStage = "";
     currentBadges = [];
