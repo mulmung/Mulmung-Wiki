@@ -1047,7 +1047,7 @@ function openSkillDetailPopup(skillName){
       <div class="skill-detail-section-title">수치 계산기</div>
       <div class="skill-calc-row">
         <label class="skill-effect-plain" for="skillCalcLevelInput">현재 스킬 레벨</label>
-        <input id="skillCalcLevelInput" class="skill-level-input" type="number" min="1" max="${skill.maxSkillLevel}" value="1" oninput="updateSkillCalculator('${skill.name}')" />
+        <input id="skillCalcLevelInput" class="skill-level-input" type="number" min="1" max="${skill.maxSkillLevel}" value="1" onfocus="this.select()" oninput="updateSkillCalculator('${skill.name}')" onblur="normalizeSkillCalculatorInput('${skill.name}')" />
       </div>
       <div id="skillCalcResult" class="skill-calc-results"></div>
       <div class="skill-detail-note">계산식: 기본값 + (스킬 레벨 - 1) × 레벨업당 증가값</div>
@@ -1071,10 +1071,26 @@ function updateSkillCalculator(skillName){
   const input = document.getElementById("skillCalcLevelInput");
   const result = document.getElementById("skillCalcResult");
   if (!skill || !input || !result) return;
-  let level = parseInt(input.value, 10);
-  if (!Number.isFinite(level)) level = 1;
+
+  const rawValue = String(input.value || "").trim();
+
+  // 입력 중에는 빈칸을 허용한다.
+  // 기존처럼 빈칸이 되는 순간 바로 1을 넣으면 5, 7, 23 같은 값을 새로 입력하기 어렵다.
+  if (rawValue === "") {
+    result.innerHTML = `<div class="skill-calc-result"><strong>입력 대기</strong><span>스킬 레벨을 입력해주세요.</span></div>`;
+    return;
+  }
+
+  let level = parseInt(rawValue, 10);
+  if (!Number.isFinite(level)) return;
+
   level = Math.min(Math.max(level, 1), skill.maxSkillLevel || 1);
-  if (String(level) !== input.value) input.value = level;
+
+  // 최대 레벨 초과, 0 이하 입력처럼 범위를 벗어난 경우에만 보정한다.
+  if (String(level) !== rawValue && (level === 1 || level === (skill.maxSkillLevel || 1))) {
+    input.value = level;
+  }
+
   const base = calcSkillValue(skill, level);
   const first = skill.firstMultiplier ? base * skill.firstMultiplier : null;
   const second = skill.secondMultiplier ? (first !== null ? first : base) * skill.secondMultiplier : null;
@@ -1085,6 +1101,17 @@ function updateSkillCalculator(skillName){
   if (second !== null) rows.push(`<div class="skill-calc-result"><strong>2차 각성 적용</strong><span>${formatSkillNumber(second)}${skill.unit || ""}</span></div>`);
   rows.push(`<div class="skill-calc-result"><strong>기본값 / 레벨업당</strong><span>${formatSkillNumber(skill.baseValue)}${skill.unit || ""} / +${formatSkillNumber(skill.increaseValue)}${skill.unit || ""}</span></div>`);
   result.innerHTML = rows.join("");
+}
+function normalizeSkillCalculatorInput(skillName){
+  const skill = skills.find(item => item.name === skillName);
+  const input = document.getElementById("skillCalcLevelInput");
+  if (!skill || !input) return;
+
+  let level = parseInt(input.value, 10);
+  if (!Number.isFinite(level)) level = 1;
+  level = Math.min(Math.max(level, 1), skill.maxSkillLevel || 1);
+  input.value = level;
+  updateSkillCalculator(skillName);
 }
 function closeSkillDetailPopup(){
   const bg = document.getElementById("skillDetailPopupBg");
