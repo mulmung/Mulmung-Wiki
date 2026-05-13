@@ -3057,16 +3057,37 @@ async function saveProfileSetting() {
       updatedAt: serverTimestamp()
     };
     await setDoc(doc(db, "users", uid), profileUpdate, { merge: true });
-    await setDoc(doc(db, "publicUsers", uid), profileUpdate, { merge: true });
+
     currentNickname = trimmedNickname;
     currentServer = selectedServer;
     currentPromotionStage = selectedPromotionStage || "";
+
+    // 공개 유저 정보는 직책/훈장/서버/승급 배지가 사라지지 않도록
+    // 현재 보유 중인 role, badges까지 함께 보존해서 동기화합니다.
+    // publicUsers 권한 규칙이 아직 이전 상태여도 내 정보 저장 자체가 실패하지 않게 분리 처리합니다.
+    try {
+      await savePublicUserProfile(
+        currentUser,
+        currentNickname,
+        currentRole,
+        currentBadges,
+        currentPromotionStage,
+        currentServer
+      );
+    } catch (publicError) {
+      console.warn("공개 유저 정보 동기화 오류:", publicError);
+    }
+
     await refreshSiteStats();
     updateUserDisplay(currentUser, currentNickname, currentRole, currentBadges, currentPromotionStage, currentServer);
     closeProfilePopup();
     alert("내 정보가 저장되었습니다.");
   } catch (error) {
     console.error("내 정보 저장 오류:", error);
+    if (error && error.code === "permission-denied") {
+      alert("내 정보 저장 오류: permission-denied\nFirebase 보안 규칙에서 users 문서의 server/promotionStage 저장 권한을 허용해야 합니다.");
+      return;
+    }
     alert(`내 정보 저장 오류: ${error.code || "unknown"}
 ${error.message || ""}`);
   }
@@ -3353,7 +3374,7 @@ async function setUserBetaTester(uid, enabled) {
     }, { merge: true });
     if (currentUser && currentUser.uid === uid) {
       currentBadges = nextBadges;
-      updateUserDisplay(currentUser, currentNickname, currentRole, currentBadges, currentPromotionStage);
+      updateUserDisplay(currentUser, currentNickname, currentRole, currentBadges, currentPromotionStage, currentServer);
     }
     alert(enabled ? "베타 테스터 훈장을 부여했습니다." : "베타 테스터 훈장을 해제했습니다.");
     await openRolePopup();
