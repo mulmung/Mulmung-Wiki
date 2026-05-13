@@ -634,6 +634,43 @@ body.skill-can-manage .skill-manage-only{display:inline-block}
 .saved-stone-mini .stone-shape{width:22px;height:22px;font-size:12px;border-radius:6px;box-shadow:none;text-shadow:0 1px 2px rgba(0,0,0,.22)}.saved-stone-mini .stone-shape.square{border-radius:5px}.saved-stone-mini .stone-shape.diamond{border-radius:4px}.saved-stone-mini .stone-shape.empty{font-size:0;text-shadow:none}
 @media(max-width:768px){.setting-boxed-panel{margin:30px auto 28px;padding:32px 12px 18px;border-radius:18px}.setting-boxed-title{padding:7px 20px;font-size:16px}.skill-stone-title{padding:6px 18px;font-size:15px}.skill-stone-section{max-width:420px;margin:16px auto 26px;padding:28px 10px 14px;border-radius:18px}.skill-stone-slot-row{grid-template-columns:repeat(3,70px);gap:10px}.skill-stone-slot-btn{width:70px;height:70px;min-height:0;border-radius:14px}.stone-shape{width:38px;height:38px;font-size:16px}.panel-reset-row{margin-top:14px}.panel-reset-btn{padding:7px 13px;font-size:12px}.stone-popup{padding:22px 16px;border-radius:20px}.stone-option-grid{gap:8px}.stone-option-btn{min-height:76px;border-radius:14px;font-size:11px}.stone-option-btn .stone-shape{width:40px;height:40px;font-size:17px}}
 
+
+.skill-type-badge{display:inline-flex;align-items:center;justify-content:center;height:28px;padding:0 11px;border-radius:999px;color:#fff;font-size:13px;font-weight:950;line-height:1;white-space:nowrap;flex:0 0 auto}
+.skill-type-badge.active{background:#111827}
+.skill-type-badge.passive{background:#6b7280}
+.skill-summary{margin-top:10px;padding:11px 13px;border-radius:14px;background:#f9fafb;border:1px solid #e5e7eb;color:#374151;font-size:15px;font-weight:800;line-height:1.45;word-break:keep-all}
+.skill-detail-btn{margin-top:12px;border:none;border-radius:999px;background:#111827;color:#fff;padding:9px 15px;font-size:13px;font-weight:950;cursor:pointer}
+.skill-detail-btn:hover{filter:brightness(.94)}
+.skill-detail-popup-bg{display:none;position:fixed;inset:0;z-index:3450;background:rgba(0,0,0,.48);padding:18px}
+.skill-detail-popup-bg.show{display:flex;align-items:center;justify-content:center}
+.skill-detail-popup{width:100%;max-width:520px;max-height:86vh;overflow-y:auto;padding:22px;border-radius:24px;background:#fff;color:#111827;box-shadow:0 14px 42px rgba(0,0,0,.3)}
+.skill-detail-head{text-align:center;margin-bottom:16px}
+.skill-detail-title{font-size:28px;font-weight:950;letter-spacing:-.03em;margin-bottom:10px}
+.skill-detail-badges{display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap}
+.skill-detail-section{margin-top:14px;padding:16px;border:1px solid #e5e7eb;border-radius:20px;background:#fff}
+.skill-detail-section.gray{background:#f9fafb}
+.skill-detail-section-title{display:flex;align-items:center;gap:8px;margin-bottom:10px;font-size:17px;font-weight:950;color:#111827}
+.skill-detail-section-title::after{content:"";flex:1;height:2px;border-radius:999px;background:#e5e7eb}
+.skill-detail-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.skill-detail-info-card{padding:12px;border-radius:15px;background:#f9fafb;border:1px solid #e5e7eb;text-align:center}
+.skill-detail-label{display:block;margin-bottom:4px;color:#6b7280;font-size:12px;font-weight:950}
+.skill-detail-value{display:block;color:#111827;font-size:16px;font-weight:950;word-break:keep-all}
+.skill-effect-plain{font-size:15px;font-weight:850;line-height:1.6;color:#374151;word-break:keep-all;text-align:center}
+.skill-calc-row{display:grid;grid-template-columns:1fr 120px;align-items:center;gap:10px;margin:8px 0 12px}
+.skill-level-input{width:100%;border:2px solid #e5e7eb;border-radius:14px;padding:10px 12px;font-size:16px;font-weight:950;text-align:center;outline:none}
+.skill-level-input:focus{border-color:#111827}
+.skill-calc-results{display:grid;gap:8px}
+.skill-calc-result{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 13px;border-radius:15px;background:#fff;border:1px solid #e5e7eb}
+.skill-calc-result strong{font-size:14px;color:#374151}
+.skill-calc-result span{font-size:18px;font-weight:950;color:#111827;white-space:nowrap}
+.skill-calc-result.primary{background:#ecfeff;border-color:#99f6e4}
+.skill-awakening-list{display:grid;gap:8px}
+.skill-awakening-item{padding:12px;border-radius:15px;background:#f9fafb;border:1px solid #e5e7eb;font-size:14px;font-weight:850;line-height:1.45;color:#374151;word-break:keep-all}
+.skill-awakening-item strong{color:#111827}
+.skill-detail-note{margin-top:10px;color:#6b7280;font-size:12px;font-weight:800;line-height:1.45;text-align:center;word-break:keep-all}
+.skill-detail-close-btn{width:100%;margin-top:14px;border:none;border-radius:999px;padding:12px 16px;background:#111827;color:#fff;font-size:14px;font-weight:950;cursor:pointer}
+@media(max-width:768px){.skill-type-badge{height:26px;padding:0 9px;font-size:12px}.skill-summary{font-size:13px}.skill-detail-popup{max-width:94vw;max-height:84vh;padding:18px;border-radius:22px}.skill-detail-title{font-size:24px}.skill-detail-grid{grid-template-columns:1fr}.skill-calc-row{grid-template-columns:1fr 96px}.skill-calc-result span{font-size:16px}}
+
 </style>
 </head>
 <body>
@@ -881,6 +918,12 @@ body.skill-can-manage .skill-manage-only{display:inline-block}
       </div>
     </div>
   </div>
+
+  <div class="skill-detail-popup-bg" id="skillDetailPopupBg" onclick="closeSkillDetailPopup()">
+    <div class="skill-detail-popup" onclick="event.stopPropagation()">
+      <div id="skillDetailPopupContent"></div>
+    </div>
+  </div>
   <div class="save-popup-bg" id="savePopupBg" onclick="closeSavePopup()">
     <div class="save-popup" onclick="event.stopPropagation()">
       <h3>스킬 세팅 저장</h3>
@@ -949,6 +992,105 @@ body.skill-can-manage .skill-manage-only{display:inline-block}
 <script>
 const promotions = [["stone", "스톤"], ["bronze", "브론즈"], ["iron", "아이언"], ["silver", "실버"], ["gold", "골드"], ["mithril", "미스릴"], ["orichalcum", "오리하르콘"], ["arcanite", "아케이나이트"], ["adamantite", "아다만타이트"], ["ether", "에테르"], ["black-mithril", "블랙미스릴"], ["demon-metal", "데몬메탈"], ["dragonos", "드라고노스"], ["ragnablood", "라그나블러드"], ["warfrost", "워프로스트"], ["darknox", "다크녹스"], ["blueabyss", "블루어비스"], ["infinent", "인피넌트"], ["cyclos", "사이클로스"], ["ecationnine", "에케이션트나인"], ["gigarock", "기가로크"], ["eisenhart", "아이젠하르트"], ["diamondust", "다이아더스트"], ["eldenwood", "엘든우드"], ["blitzgold", "블리츠골드"]];
 const skills = [{"element": "불", "level": "Lv.10", "name": "불꽃 베기", "grade": "일반", "material": "-"}, {"element": "불", "level": "Lv.20", "name": "불의 검", "grade": "일반", "material": "-"}, {"element": "불", "level": "Lv.30", "name": "타오르는 검", "grade": "레어", "material": "불 속성석 10"}, {"element": "불", "level": "Lv.40", "name": "열풍", "grade": "고급", "material": "무기 고급 2등급 4"}, {"element": "불", "level": "Lv.70", "name": "화염 베기", "grade": "레어", "material": "불 속성석 20"}, {"element": "불", "level": "Lv.90", "name": "화염 파동", "grade": "영웅", "material": "무기 영웅 3등급 4"}, {"element": "불", "level": "Lv.120", "name": "연옥 화염 베기", "grade": "전설", "material": "무기 전설 4등급 2 / 불 속성석 300"}, {"element": "불", "level": "Lv.200", "name": "분노", "grade": "전설", "material": "무기 전설 1등급 4 / 불 속성석 100"}, {"element": "불", "level": "Lv.300", "name": "진 열풍", "grade": "전설", "material": "무기 전설 3등급 4"}, {"element": "불", "level": "Lv.400", "name": "불기둥", "grade": "신화", "material": "무기 신화 3등급 4"}, {"element": "불", "level": "-", "name": "워리어번", "grade": "신화", "material": "추후 업데이트"}, {"element": "물", "level": "Lv.15", "name": "흐르는 칼날", "grade": "레어", "material": "-"}, {"element": "물", "level": "Lv.25", "name": "굽이치는 칼날", "grade": "영웅", "material": "-"}, {"element": "물", "level": "Lv.35", "name": "아이스 스톤", "grade": "일반", "material": "-"}, {"element": "물", "level": "Lv.45", "name": "파도 베기", "grade": "레어", "material": "-"}, {"element": "물", "level": "Lv.60", "name": "아이스 샤워", "grade": "고급", "material": "물 속성석 20"}, {"element": "물", "level": "Lv.80", "name": "춤추는 파도", "grade": "영웅", "material": "악세 영웅 3등급 4"}, {"element": "물", "level": "Lv.100", "name": "메디테이션", "grade": "전설", "material": "악세 전설 3등급 4 / 물 속성석 50"}, {"element": "물", "level": "Lv.160", "name": "아이스 타임", "grade": "전설", "material": "악세 전설 4등급 2 / 물 속성석 300"}, {"element": "물", "level": "Lv.250", "name": "마나의 축복", "grade": "일반", "material": "무기 레어 4등급 4"}, {"element": "물", "level": "Lv.350", "name": "블리자드", "grade": "신화", "material": "무기 신화 2등급 4"}, {"element": "바람", "level": "Lv.15", "name": "가속의 검", "grade": "레어", "material": "무기 레어 4등급 4"}, {"element": "바람", "level": "Lv.25", "name": "번개 베기", "grade": "일반", "material": "무기 일반 4등급 4"}, {"element": "바람", "level": "Lv.35", "name": "바람의 검", "grade": "영웅", "material": "무기 영웅 4등급 4"}, {"element": "바람", "level": "Lv.40", "name": "전광석화", "grade": "영웅", "material": "무기 레어 3등급 4"}, {"element": "바람", "level": "Lv.50", "name": "뇌격", "grade": "고급", "material": "무기 레어 4등급 4"}, {"element": "바람", "level": "Lv.70", "name": "천둥 베기", "grade": "레어", "material": "바람 속성석 20"}, {"element": "바람", "level": "Lv.90", "name": "고속이동", "grade": "고급", "material": "악세 고급 4등급 4"}, {"element": "바람", "level": "Lv.140", "name": "수라 번개 베기", "grade": "전설", "material": "전설 레어 2등급 4 / 바람 속성석 300"}, {"element": "바람", "level": "Lv.200", "name": "격류", "grade": "신화", "material": "무기 전설 1등급 4"}, {"element": "바람", "level": "Lv.300", "name": "뇌신", "grade": "신화", "material": "악세 신화 2등급 4"}, {"element": "바람", "level": "Lv.450", "name": "신속", "grade": "신화", "material": "무기 신화 4등급 4"}, {"element": "바람", "level": "-", "name": "적뢰", "grade": "전설", "material": "추후 업데이트"}, {"element": "땅", "level": "Lv.10", "name": "대지의 축복", "grade": "일반", "material": "-"}, {"element": "땅", "level": "Lv.20", "name": "스톤 스트라이크", "grade": "일반", "material": "악세 일반 4등급 4"}, {"element": "땅", "level": "Lv.30", "name": "땅의 의지", "grade": "레어", "material": "-"}, {"element": "땅", "level": "Lv.50", "name": "강철의 의지", "grade": "영웅", "material": "땅 속성석 20"}, {"element": "땅", "level": "Lv.60", "name": "파워 스트라이크", "grade": "고급", "material": "땅 속성석 20"}, {"element": "땅", "level": "Lv.100", "name": "파워 임팩트", "grade": "고급", "material": "악세 고급 2등급 4"}, {"element": "땅", "level": "Lv.140", "name": "라이프 마나", "grade": "영웅", "material": "땅 속성석 50"}, {"element": "땅", "level": "Lv.180", "name": "기가 스트라이크", "grade": "전설", "material": "악세 전설 2등급 2 / 땅 속성석 300"}, {"element": "땅", "level": "Lv.500", "name": "마수 사냥", "grade": "신화", "material": "무기 신화 1등급 4"}, {"element": "땅", "level": "-", "name": "기가 임팩트", "grade": "전설", "material": "추후 업데이트"}, {"element": "땅", "level": "-", "name": "괴력난신", "grade": "신화", "material": "추후 업데이트"}, {"element": "없음", "level": "-", "name": "레이브", "grade": "불멸", "material": "추후 업데이트"}];
+
+const skillDetailMap = {
+  "불꽃 베기": { type:"액티브", maxSkillLevel:250, cooldown:"12 · 11회", mp:"25", summary:"범위 3 이내의 적 모두를 공격하는 기본 불 속성 공격 스킬입니다.", effectText:"범위 3 이내의 적 모두에게 공격력의 n%로 1회 공격합니다.", baseValue:400, increaseValue:40, unit:"%", firstMultiplier:1.5, secondMultiplier:3, awakening1Text:"1차 각성 시 효과 수치에 ×1.5가 적용됩니다.", awakening2Text:"2차 각성 시 1차 각성 결과에 ×3이 추가로 곱해지고 공격 횟수가 2회로 증가합니다.", extraNote:"각성 시 해당 스킬의 이펙트가 변경됩니다." },
+  "불의 검": { type:"패시브", maxSkillLevel:20, cooldown:"17초", mp:"50", summary:"일정 시간 동안 전체 공격력을 올려주는 불 속성 버프 스킬입니다.", effectText:"10초간 전체 공격력 +n%", baseValue:80, increaseValue:3, unit:"%", awakening1Text:"현재 제공된 표 기준으로 별도 곱연산 각성 수치는 표시되지 않았습니다.", awakening2Text:"각성 시 해당 스킬의 이펙트가 변경됩니다." },
+  "열풍": { type:"액티브", maxSkillLevel:250, cooldown:"12초", mp:"45", summary:"범위 3 이내의 적 모두를 공격하고, 시전 중 시간을 정지시키는 공격 스킬입니다.", effectText:"범위 3 이내의 적 모두에게 공격력의 n%로 1회 공격합니다.", baseValue:1500, increaseValue:150, unit:"%", firstMultiplier:1.5, secondMultiplier:3, awakening1Text:"1차 각성 시 효과 수치에 ×1.5가 적용됩니다.", awakening2Text:"2차 각성 시 1차 각성 결과에 ×3이 추가로 곱해지고 공격 횟수가 2회로 증가합니다.", extraNote:"시전 중 시간 정지 효과가 있습니다. 각성 시 해당 스킬의 이펙트가 변경됩니다." },
+  "화염 베기": { type:"액티브", maxSkillLevel:250, cooldown:"13 · 12회", mp:"25", summary:"범위 4 이내의 적 모두를 공격하는 불 속성 범위 스킬입니다.", effectText:"범위 4 이내의 적 모두에게 공격력의 n%로 1회 공격합니다.", baseValue:1350, increaseValue:135, unit:"%", firstMultiplier:1.5, secondMultiplier:3, awakening1Text:"1차 각성 시 효과 수치에 ×1.5가 적용됩니다.", awakening2Text:"2차 각성 시 1차 각성 결과에 ×3이 추가로 곱해지고 공격 횟수가 2회로 증가합니다.", extraNote:"각성 시 해당 스킬의 이펙트가 변경됩니다." },
+  "타오르는 검": { type:"패시브", maxSkillLevel:20, cooldown:"5초", mp:"-", summary:"전투 돌입 후 5초마다 전체 공격력이 증가하며, 최대 10회까지 중첩됩니다.", effectText:"전투 돌입 후 5초마다 전체 공격력 +n%", baseValue:16, increaseValue:0.8, unit:"%", awakening1Text:"현재 제공된 표 기준으로 별도 곱연산 각성 수치는 표시되지 않았습니다.", awakening2Text:"최대 10회까지 적용됩니다.", extraNote:"패시브 스킬이므로 계산기는 1~20레벨 범위로 제한됩니다." },
+  "화염 파동": { type:"액티브", maxSkillLevel:250, cooldown:"4초", mp:"15", summary:"적 발견 시 검격을 날리고, 각성 시 검격 속도와 거리가 증가하는 공격 스킬입니다.", effectText:"스플래시 데미지 공격력의 n%", baseValue:700, increaseValue:70, unit:"%", secondMultiplier:3, awakening1Text:"1차 각성 시 스플래시 데미지에 ×3이 적용됩니다.", awakening2Text:"2차 각성 시 검격 속도 및 거리가 증가합니다.", extraNote:"각성 시 해당 스킬의 이펙트가 변경됩니다." },
+  "연옥 화염 베기": { type:"액티브", maxSkillLevel:250, cooldown:"15 · 14회", mp:"30", summary:"범위 6 이내의 적 모두를 공격하는 넓은 범위의 불 속성 스킬입니다.", effectText:"범위 6 이내의 적 모두에게 공격력의 n%로 1회 공격합니다.", baseValue:1920, increaseValue:192, unit:"%", firstMultiplier:1.5, secondMultiplier:3, awakening1Text:"1차 각성 시 효과 수치에 ×1.5가 적용됩니다.", awakening2Text:"2차 각성 시 1차 각성 결과에 ×3이 추가로 곱해지고 공격 횟수가 2회로 증가합니다.", extraNote:"각성 시 해당 스킬의 이펙트가 변경됩니다." },
+  "진 열풍": { type:"액티브", maxSkillLevel:250, cooldown:"12초", mp:"45", summary:"범위 3 이내의 적 모두를 강하게 공격하고, 시전 중 시간을 정지시키는 스킬입니다.", effectText:"범위 3 이내의 적 모두에게 공격력의 n%로 1회 공격합니다.", baseValue:3330, increaseValue:333, unit:"%", firstMultiplier:1.5, secondMultiplier:3, awakening1Text:"1차 각성 시 효과 수치에 ×1.5가 적용됩니다.", awakening2Text:"2차 각성 시 1차 각성 결과에 ×3이 추가로 곱해지고 공격 횟수가 2회로 증가합니다.", extraNote:"시전 중 시간 정지 효과가 있습니다. 각성 시 해당 스킬의 이펙트가 변경됩니다." },
+  "분노": { type:"패시브", maxSkillLevel:20, cooldown:"15초", mp:"50", summary:"체력이 감소한 만큼 전체 공격력이 증가하고, 지속 중 HP 회복이 멈추는 패시브입니다.", effectText:"체력 1%당 n%만큼 전체 공격력이 증가합니다.", baseValue:2, increaseValue:0.1, unit:"%", awakening1Text:"현재 제공된 표 기준으로 별도 곱연산 각성 수치는 표시되지 않았습니다.", awakening2Text:"지속되는 동안 HP 회복이 멈춥니다.", extraNote:"실제 증가량은 감소한 체력 비율에 따라 달라집니다." },
+  "불기둥": { type:"액티브", maxSkillLevel:250, cooldown:"10초 · 8초", mp:"40", summary:"점차 강해지는 연속 불기둥을 소환하여 피해를 주는 스킬입니다.", effectText:"공격력의 n% 데미지", baseValue:700, increaseValue:70, unit:"%", secondMultiplier:3, awakening1Text:"1차 각성 시 공격력의 n% ×3 데미지가 적용됩니다.", awakening2Text:"2차 각성 시 추가로 ×3이 적용됩니다.", extraNote:"각성 시 해당 스킬의 이펙트가 변경됩니다." },
+  "워리어번": { type:"패시브", maxSkillLevel:20, cooldown:"18초", mp:"30", summary:"현재 체력의 50%를 소모하고, 5초간 전체 공격력을 증가시키는 패시브입니다.", effectText:"5초간 전체 공격력이 n% 증가합니다.", baseValue:250, increaseValue:7, unit:"%", awakening1Text:"현재 제공된 표 기준으로 별도 곱연산 각성 수치는 표시되지 않았습니다.", awakening2Text:"각성 시 해당 스킬의 이펙트가 변경됩니다.", extraNote:"사용 시 현재 체력의 50%를 소모합니다." }
+};
+skills.forEach(skill => Object.assign(skill, skillDetailMap[skill.name] || {}));
+function getSkillTypeClass(type){return type === "패시브" ? "passive" : "active";}
+function getUnlockLevelText(skill){return skill.level && skill.level !== "-" ? skill.level : "추후 업데이트";}
+function formatSkillNumber(value){
+  if (typeof value !== "number" || !Number.isFinite(value)) return "-";
+  const rounded = Math.round(value * 1000) / 1000;
+  return Number.isInteger(rounded) ? rounded.toLocaleString("ko-KR") : rounded.toLocaleString("ko-KR", {maximumFractionDigits:3});
+}
+function calcSkillValue(skill, level){return skill.baseValue + (level - 1) * skill.increaseValue;}
+function openSkillDetailPopup(skillName){
+  const skill = skills.find(item => item.name === skillName);
+  if (!skill || !skill.type) return;
+  const bg = document.getElementById("skillDetailPopupBg");
+  const content = document.getElementById("skillDetailPopupContent");
+  if (!bg || !content) return;
+  const gradeBadge = `<span class="badge ${gradeClassMap[skill.grade]}">${skill.grade}</span>`;
+  const elementBadge = skill.element && skill.element !== "없음" ? `<span class="badge ${elementClassMap[skill.element]}">${skill.element}</span>` : "";
+  const typeBadge = `<span class="skill-type-badge ${getSkillTypeClass(skill.type)}">${skill.type}</span>`;
+  content.innerHTML = `
+    <div class="skill-detail-head">
+      <div class="skill-detail-title">${skill.name}</div>
+      <div class="skill-detail-badges">${gradeBadge}${elementBadge}${typeBadge}</div>
+    </div>
+    <div class="skill-detail-section gray">
+      <div class="skill-detail-section-title">기본 정보</div>
+      <div class="skill-detail-grid">
+        <div class="skill-detail-info-card"><span class="skill-detail-label">획득 레벨</span><span class="skill-detail-value">캐릭터 ${getUnlockLevelText(skill)}</span></div>
+        <div class="skill-detail-info-card"><span class="skill-detail-label">스킬 최대 레벨</span><span class="skill-detail-value">${skill.maxSkillLevel}</span></div>
+        <div class="skill-detail-info-card"><span class="skill-detail-label">대기 시간</span><span class="skill-detail-value">${skill.cooldown || "-"}</span></div>
+        <div class="skill-detail-info-card"><span class="skill-detail-label">MP 소모</span><span class="skill-detail-value">${skill.mp || "-"}</span></div>
+      </div>
+      <div class="skill-detail-note">획득 레벨은 스킬 카드를 얻는 캐릭터 레벨이고, 계산기에 입력하는 값은 스킬 강화 레벨입니다.</div>
+    </div>
+    <div class="skill-detail-section">
+      <div class="skill-detail-section-title">쉬운 설명</div>
+      <div class="skill-effect-plain">${skill.summary || skill.effectText || "상세 정보 준비 중입니다."}</div>
+    </div>
+    <div class="skill-detail-section gray">
+      <div class="skill-detail-section-title">수치 계산기</div>
+      <div class="skill-calc-row">
+        <label class="skill-effect-plain" for="skillCalcLevelInput">현재 스킬 레벨</label>
+        <input id="skillCalcLevelInput" class="skill-level-input" type="number" min="1" max="${skill.maxSkillLevel}" value="1" oninput="updateSkillCalculator('${skill.name}')" />
+      </div>
+      <div id="skillCalcResult" class="skill-calc-results"></div>
+      <div class="skill-detail-note">계산식: 기본값 + (스킬 레벨 - 1) × 레벨업당 증가값</div>
+    </div>
+    <div class="skill-detail-section">
+      <div class="skill-detail-section-title">각성 효과</div>
+      <div class="skill-awakening-list">
+        <div class="skill-awakening-item"><strong>기본 효과</strong><br>${skill.effectText || "-"}</div>
+        ${skill.awakening1Text ? `<div class="skill-awakening-item"><strong>1차 각성</strong><br>${skill.awakening1Text}</div>` : ""}
+        ${skill.awakening2Text ? `<div class="skill-awakening-item"><strong>2차 각성</strong><br>${skill.awakening2Text}</div>` : ""}
+        ${skill.extraNote ? `<div class="skill-awakening-item"><strong>추가 안내</strong><br>${skill.extraNote}</div>` : ""}
+      </div>
+    </div>
+    <button class="skill-detail-close-btn" type="button" onclick="closeSkillDetailPopup()">닫기</button>
+  `;
+  bg.classList.add("show");
+  updateSkillCalculator(skill.name);
+}
+function updateSkillCalculator(skillName){
+  const skill = skills.find(item => item.name === skillName);
+  const input = document.getElementById("skillCalcLevelInput");
+  const result = document.getElementById("skillCalcResult");
+  if (!skill || !input || !result) return;
+  let level = parseInt(input.value, 10);
+  if (!Number.isFinite(level)) level = 1;
+  level = Math.min(Math.max(level, 1), skill.maxSkillLevel || 1);
+  if (String(level) !== input.value) input.value = level;
+  const base = calcSkillValue(skill, level);
+  const first = skill.firstMultiplier ? base * skill.firstMultiplier : null;
+  const second = skill.secondMultiplier ? (first !== null ? first : base) * skill.secondMultiplier : null;
+  const rows = [
+    `<div class="skill-calc-result primary"><strong>기본 n값</strong><span>${formatSkillNumber(base)}${skill.unit || ""}</span></div>`
+  ];
+  if (first !== null) rows.push(`<div class="skill-calc-result"><strong>1차 각성 적용</strong><span>${formatSkillNumber(first)}${skill.unit || ""}</span></div>`);
+  if (second !== null) rows.push(`<div class="skill-calc-result"><strong>2차 각성 적용</strong><span>${formatSkillNumber(second)}${skill.unit || ""}</span></div>`);
+  rows.push(`<div class="skill-calc-result"><strong>기본값 / 레벨업당</strong><span>${formatSkillNumber(skill.baseValue)}${skill.unit || ""} / +${formatSkillNumber(skill.increaseValue)}${skill.unit || ""}</span></div>`);
+  result.innerHTML = rows.join("");
+}
+function closeSkillDetailPopup(){
+  const bg = document.getElementById("skillDetailPopupBg");
+  if (bg) bg.classList.remove("show");
+}
+
 const diamondPages = [
   ["diamond-career","전체 진로"],["diamond-roadmap","다이아 소모처 로드맵"],["diamond-class","클래스"],["diamond-spirit","정령"],["diamond-or","오르"],["diamond-orb","오브"],["diamond-familiar","사역마"],["diamond-beast","비스트"]
 ];
@@ -1866,9 +2008,12 @@ function renderSkills() {
             <span class="skill-name">${skill.name}</span>
             <span class="badge ${gradeClassMap[skill.grade]}">${skill.grade}</span>
             ${skill.element && skill.element !== "없음" ? `<span class="badge ${elementClassMap[skill.element]}">${skill.element}</span>` : ""}
+            ${skill.type ? `<span class="skill-type-badge ${getSkillTypeClass(skill.type)}">${skill.type}</span>` : ""}
           </div>
-          <div class="skill-info">레벨: ${skill.level}</div>
+          <div class="skill-info">획득 레벨: ${getUnlockLevelText(skill)}</div>
           <div class="skill-info">필요 재료: ${skill.material}</div>
+          ${skill.summary ? `<div class="skill-summary">${skill.summary}</div>` : ""}
+          ${skill.type ? `<button class="skill-detail-btn" type="button" onclick="openSkillDetailPopup('${skill.name}')">상세 보기 · 계산기</button>` : ""}
         </div>
       `;
     });
