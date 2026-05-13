@@ -671,12 +671,22 @@ body.skill-can-manage .skill-manage-only{display:inline-block}
 .skill-calc-value-cell.primary{background:#ecfeff;border-color:#99f6e4}
 .skill-calc-base-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px}
 .skill-calc-base-row .skill-calc-label-cell,.skill-calc-base-row .skill-calc-value-cell{min-height:50px}
+
+.skill-calc-card-grid{display:grid;grid-template-columns:repeat(var(--calc-cols,3),minmax(0,1fr));gap:8px}
+.skill-calc-card{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-height:116px;padding:12px 7px;border:1px solid #e5e7eb;border-radius:16px;background:#fff;text-align:center;word-break:keep-all}
+.skill-calc-card.primary{background:#ecfeff;border-color:#99f6e4}
+.skill-calc-card-label{color:#374151;font-size:13px;font-weight:950;line-height:1.2}
+.skill-calc-card-value{color:#111827;font-size:20px;font-weight:950;line-height:1.15;white-space:nowrap}
+.skill-calc-base-card{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;margin-top:8px}
+.skill-calc-base-cell{display:flex;align-items:center;justify-content:center;min-height:58px;padding:11px 8px;border:1px solid #e5e7eb;border-radius:16px;background:#fff;text-align:center;word-break:keep-all}
+.skill-calc-base-label{color:#374151;font-size:13px;font-weight:950;line-height:1.2}
+.skill-calc-base-value{color:#111827;font-size:18px;font-weight:950;line-height:1.15;white-space:nowrap}
 .skill-awakening-list{display:grid;gap:8px}
 .skill-awakening-item{padding:12px;border-radius:15px;background:#f9fafb;border:1px solid #e5e7eb;font-size:14px;font-weight:850;line-height:1.45;color:#374151;word-break:keep-all}
 .skill-awakening-item strong{color:#111827}
 .skill-detail-note{margin-top:10px;color:#6b7280;font-size:12px;font-weight:800;line-height:1.45;text-align:center;word-break:keep-all}
 .skill-detail-close-btn{width:100%;margin-top:14px;border:none;border-radius:999px;padding:12px 16px;background:#111827;color:#fff;font-size:14px;font-weight:950;cursor:pointer}
-@media(max-width:768px){.skill-type-badge{height:26px;padding:0 9px;font-size:12px}.skill-summary{font-size:13px}.skill-detail-popup{max-width:94vw;max-height:84vh;padding:18px;border-radius:22px}.skill-detail-title{font-size:24px}.skill-detail-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.skill-detail-info-card{min-height:82px;padding:10px 6px}.skill-detail-label{font-size:12px;margin-bottom:6px}.skill-detail-value{font-size:16px}.skill-calc-row{grid-template-columns:1fr 96px}.skill-calc-result span{font-size:16px}.skill-calc-matrix{gap:6px}.skill-calc-label-cell{min-height:42px;padding:8px 4px;font-size:11px}.skill-calc-value-cell{min-height:52px;padding:9px 4px;font-size:15px}.skill-calc-base-row{gap:6px}.skill-calc-base-row .skill-calc-label-cell,.skill-calc-base-row .skill-calc-value-cell{min-height:46px}}
+@media(max-width:768px){.skill-type-badge{height:26px;padding:0 9px;font-size:12px}.skill-summary{font-size:13px}.skill-detail-popup{max-width:94vw;max-height:84vh;padding:18px;border-radius:22px}.skill-detail-title{font-size:24px}.skill-detail-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.skill-detail-info-card{min-height:82px;padding:10px 6px}.skill-detail-label{font-size:12px;margin-bottom:6px}.skill-detail-value{font-size:16px}.skill-calc-row{grid-template-columns:1fr 96px}.skill-calc-result span{font-size:16px}.skill-calc-matrix{gap:6px}.skill-calc-label-cell{min-height:42px;padding:8px 4px;font-size:11px}.skill-calc-value-cell{min-height:52px;padding:9px 4px;font-size:15px}.skill-calc-base-row{gap:6px}.skill-calc-base-row .skill-calc-label-cell,.skill-calc-base-row .skill-calc-value-cell{min-height:46px}.skill-calc-card-grid{gap:6px}.skill-calc-card{min-height:104px;padding:10px 4px;border-radius:15px;gap:7px}.skill-calc-card-label{font-size:11px}.skill-calc-card-value{font-size:16px}.skill-calc-base-card{gap:6px}.skill-calc-base-cell{min-height:50px;padding:9px 4px;border-radius:15px}.skill-calc-base-label{font-size:11px}.skill-calc-base-value{font-size:15px}}
 
 </style>
 </head>
@@ -1107,18 +1117,21 @@ function updateSkillCalculator(skillName){
   if (first !== null) calcItems.push({ label: "1차 각성 적용", value: `${formatSkillNumber(first)}${skill.unit || ""}` });
   if (second !== null) calcItems.push({ label: "2차 각성 적용", value: `${formatSkillNumber(second)}${skill.unit || ""}` });
 
-  const labelRow = calcItems.map(item => `<div class="skill-calc-label-cell">${item.label}</div>`).join("");
-  const valueRow = calcItems.map(item => `<div class="skill-calc-value-cell ${item.primary ? "primary" : ""}">${item.value}</div>`).join("");
+  const calcCards = calcItems.map(item => `
+    <div class="skill-calc-card ${item.primary ? "primary" : ""}">
+      <div class="skill-calc-card-label">${item.label}</div>
+      <div class="skill-calc-card-value">${item.value}</div>
+    </div>
+  `).join("");
   const baseInfo = `${formatSkillNumber(skill.baseValue)}${skill.unit || ""} / +${formatSkillNumber(skill.increaseValue)}${skill.unit || ""}`;
 
   result.innerHTML = `
-    <div class="skill-calc-matrix" style="--calc-cols:${calcItems.length}">
-      ${labelRow}
-      ${valueRow}
+    <div class="skill-calc-card-grid" style="--calc-cols:${calcItems.length}">
+      ${calcCards}
     </div>
-    <div class="skill-calc-base-row">
-      <div class="skill-calc-label-cell">기본값 / 레벨업당</div>
-      <div class="skill-calc-value-cell">${baseInfo}</div>
+    <div class="skill-calc-base-card">
+      <div class="skill-calc-base-cell"><span class="skill-calc-base-label">기본값 / 레벨업당</span></div>
+      <div class="skill-calc-base-cell"><span class="skill-calc-base-value">${baseInfo}</span></div>
     </div>
   `;
 }
