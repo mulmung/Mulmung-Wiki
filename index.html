@@ -608,9 +608,23 @@ body.skill-can-manage .skill-manage-only{display:inline-block}
 .faq-difference-table th{background:#111827;color:#fff;font-weight:950}
 .faq-difference-table tr:last-child td{border-bottom:none}
 .faq-final-box{margin-top:20px;padding:18px;border-radius:22px;background:#fffbeb;border:1px solid #fde68a;color:#92400e;font-size:16px;font-weight:900;line-height:1.65;word-break:keep-all;text-align:center}
-.faq-effect-open-btn{display:inline-flex;align-items:center;justify-content:center;margin:16px 0 8px;padding:12px 18px;border:none;border-radius:999px;background:#111827;color:#fff;font-size:15px;font-weight:950;line-height:1;cursor:pointer;box-shadow:0 8px 18px rgba(0,0,0,.12)}
+.faq-effect-open-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;margin:16px 0 8px;padding:14px 22px;border:none;border-radius:999px;background:#111827;color:#fff;font-size:16px;font-weight:950;line-height:1;cursor:pointer;box-shadow:0 10px 22px rgba(0,0,0,.18);-webkit-tap-highlight-color:transparent}
+.faq-effect-open-btn-primary{min-width:210px}
+.faq-effect-open-arrow{font-size:13px;transform:translateY(1px)}
 .faq-effect-open-btn:hover{filter:brightness(.96)}
-.faq-effect-help{margin:0 0 12px;color:#6b7280;font-size:14px;font-weight:800;line-height:1.5;word-break:keep-all}
+.faq-effect-help{margin:0 0 12px;color:#6b7280;font-size:14px;font-weight:800;line-height:1.5;word-break:keep-all}.faq-effect-open-btn:active{transform:translateY(1px)}
+.faq-effect-button-card{margin:22px 0;padding:18px;border-radius:24px;background:#fff;border:1px solid #e5e7eb;box-shadow:0 12px 28px rgba(15,23,42,.06)}
+.faq-effect-button-title{display:inline-flex;align-items:center;justify-content:center;margin-bottom:14px;padding:10px 16px;border-radius:999px;background:#111827;color:#fff;font-size:15px;font-weight:950;line-height:1}
+.faq-effect-button-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.faq-effect-item-btn{border:none;background:transparent;padding:0;cursor:pointer;-webkit-tap-highlight-color:transparent;display:flex;align-items:center;justify-content:center}
+.faq-effect-item-btn .adventure-scroll-badge{width:100%;min-width:0;justify-content:center}
+.faq-effect-item-btn:active{transform:translateY(1px)}
+.faq-effect-detail-card{margin-top:12px;padding:16px;border-radius:20px;background:#f9fafb;border:1px solid #e5e7eb}
+.faq-effect-detail-row{display:grid;grid-template-columns:86px 1fr;gap:10px;align-items:start;padding:10px 0;border-bottom:1px solid #e5e7eb;font-size:15px;line-height:1.55;word-break:keep-all}
+.faq-effect-detail-row:last-child{border-bottom:none}
+.faq-effect-detail-label{font-weight:950;color:#111827}
+.faq-effect-detail-text{font-weight:850;color:#374151}
+@media(max-width:768px){.faq-effect-button-card{margin:18px 0;padding:14px;border-radius:22px}.faq-effect-button-title{font-size:14px}.faq-effect-button-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.faq-effect-detail-row{grid-template-columns:72px 1fr;font-size:14px}}
 .faq-effect-popup-bg{display:none;position:fixed;inset:0;z-index:3470;background:rgba(0,0,0,.48);padding:18px}
 .faq-effect-popup-bg.show{display:flex;align-items:center;justify-content:center}
 .faq-effect-popup{position:relative;width:100%;max-width:700px;max-height:84vh;overflow-y:auto;padding:24px 18px 18px;border-radius:24px;background:#fff;box-shadow:0 16px 42px rgba(0,0,0,.28);color:#111827}
@@ -619,7 +633,7 @@ body.skill-can-manage .skill-manage-only{display:inline-block}
 .faq-effect-popup-guide{margin:0 0 14px 4px;color:#4b5563;font-size:14px;font-weight:800;line-height:1.55;word-break:keep-all}
 .faq-effect-popup .faq-route-table-wrap{margin:0;border-radius:20px}
 .faq-effect-popup .faq-route-table{min-width:560px}
-@media(max-width:768px){.faq-effect-open-btn{margin:14px 0 8px;padding:11px 16px;font-size:14px}.faq-effect-help{font-size:13px;margin-bottom:10px}.faq-effect-popup{max-width:94vw;max-height:82vh;padding:18px 12px 14px;border-radius:22px}.faq-effect-popup-title{font-size:21px;margin:0 44px 12px 2px}.faq-effect-popup-guide{font-size:13px;margin:0 0 12px 2px}.faq-effect-popup .faq-route-table{min-width:520px}}
+@media(max-width:768px){.faq-effect-open-btn{margin:14px 0 8px;padding:13px 18px;font-size:15px}.faq-effect-help{font-size:13px;margin-bottom:10px}.faq-effect-popup{max-width:94vw;max-height:82vh;padding:18px 12px 14px;border-radius:22px}.faq-effect-popup-title{font-size:21px;margin:0 44px 12px 2px}.faq-effect-popup-guide{font-size:13px;margin:0 0 12px 2px}.faq-effect-popup .faq-route-table{min-width:520px}}
 @media(max-width:768px){.faq-highlight-box{padding:15px;border-radius:18px}.faq-highlight-title{font-size:18px}.faq-highlight-box p{font-size:14px!important}.faq-multiplier-box{gap:6px;padding:13px;border-radius:17px}.faq-multiplier-symbol{font-size:16px}.faq-result-badge{min-height:36px;padding:0 14px;font-size:14px}.adventure-scroll-badge{min-width:64px;height:34px;padding:0 12px;font-size:13px}.faq-route-title{font-size:21px;margin-top:24px}.faq-route-table{min-width:580px}.faq-route-table th,.faq-route-table td{padding:10px 8px;font-size:13px}.faq-flow-box{gap:6px;padding:12px}.faq-flow-item{min-height:31px;padding:0 10px;font-size:12px}.faq-reason-list li{font-size:14px}.faq-difference-table th,.faq-difference-table td{font-size:13px;padding:11px 8px}.faq-final-box{font-size:14px;padding:15px}}
 
 .adventure-guide-text{margin-bottom:18px;color:#4b5563}
@@ -2617,26 +2631,29 @@ function addSections() {
         </div>
       </div>
 
-      <button type="button" class="faq-effect-open-btn" onclick="openFaqEffectPopup()">기본 효과 정리</button>
-      <p class="faq-effect-help">버튼을 누르면 각 스크롤, 핫타임, 이벤트 버프의 효과와 추천 사용처를 한 번에 확인할 수 있습니다.</p>
+      <div class="faq-effect-button-card">
+        <div class="faq-effect-button-title">기본 효과 정리</div>
+        <p class="faq-effect-help">아래 버튼을 누르면 각 스크롤, 핫타임, 이벤트 버프의 효과와 추천 사용처를 팝업으로 확인할 수 있습니다.</p>
+        <div class="faq-effect-button-grid">
+          <button type="button" class="faq-effect-item-btn" onclick="openFaqEffectPopup('gold')"><span class="adventure-scroll-badge gold">골드</span></button>
+          <button type="button" class="faq-effect-item-btn" onclick="openFaqEffectPopup('exp')"><span class="adventure-scroll-badge exp">경험치</span></button>
+          <button type="button" class="faq-effect-item-btn" onclick="openFaqEffectPopup('enhanceCube')"><span class="adventure-scroll-badge enhance-cube">강화 큐브</span></button>
+          <button type="button" class="faq-effect-item-btn" onclick="openFaqEffectPopup('equipment')"><span class="adventure-scroll-badge equipment">장비</span></button>
+          <button type="button" class="faq-effect-item-btn" onclick="openFaqEffectPopup('hotTime')"><span class="adventure-scroll-badge hot-time">핫타임</span></button>
+          <button type="button" class="faq-effect-item-btn" onclick="openFaqEffectPopup('eventBuff')"><span class="adventure-scroll-badge event-buff">이벤트 버프</span></button>
+        </div>
+      </div>
 
       <div id="faqEffectPopupBg" class="faq-effect-popup-bg" onclick="closeFaqEffectPopup(event)">
         <div class="faq-effect-popup" onclick="event.stopPropagation()">
           <button type="button" class="popup-close-circle" onclick="closeFaqEffectPopup()">×</button>
-          <div class="faq-effect-popup-title">기본 효과 정리</div>
-          <p class="faq-effect-popup-guide">각 재화용 스크롤과 핫타임, 이벤트 버프는 적용 대상이 다르기 때문에 상황에 맞게 나눠서 쓰는 것이 중요합니다.</p>
-          <div class="faq-route-table-wrap">
-            <table class="faq-route-table">
-              <thead><tr><th>종류</th><th>효과</th><th>추천 사용처</th></tr></thead>
-              <tbody>
-                <tr><td><span class="adventure-scroll-badge gold">골드</span></td><td>골드 획득량 300% 상승</td><td>용의 협곡, 폐쇄된 대광산</td></tr>
-                <tr><td><span class="adventure-scroll-badge exp">경험치</span></td><td>경험치 획득량 300% 상승</td><td>수련 동굴</td></tr>
-                <tr><td><span class="adventure-scroll-badge enhance-cube">강화 큐브</span></td><td>강화 큐브 획득량 300% 상승</td><td>시공의 균열</td></tr>
-                <tr><td><span class="adventure-scroll-badge equipment">장비</span></td><td>장비 획득량 300% 상승</td><td>자사 방치</td></tr>
-                <tr><td><span class="adventure-scroll-badge hot-time">핫타임</span></td><td>골드/경험치 획득량 200% 상승</td><td>토/일 00:10 이후 우편 수령</td></tr>
-                <tr><td><span class="adventure-scroll-badge event-buff">이벤트 버프</span></td><td>선택한 재화 획득량 200% 상승</td><td>원하는 콘텐츠 직전에 선택</td></tr>
-              </tbody>
-            </table>
+          <div class="faq-effect-popup-title" id="faqEffectPopupTitle">기본 효과 정리</div>
+          <div id="faqEffectPopupBadgeWrap" style="margin:0 0 14px 2px"></div>
+          <p class="faq-effect-popup-guide" id="faqEffectPopupGuide">버튼을 누르면 상세 설명이 표시됩니다.</p>
+          <div class="faq-effect-detail-card">
+            <div class="faq-effect-detail-row"><div class="faq-effect-detail-label">효과</div><div class="faq-effect-detail-text" id="faqEffectPopupEffect"></div></div>
+            <div class="faq-effect-detail-row"><div class="faq-effect-detail-label">추천 사용처</div><div class="faq-effect-detail-text" id="faqEffectPopupUse"></div></div>
+            <div class="faq-effect-detail-row"><div class="faq-effect-detail-label">사용 이유</div><div class="faq-effect-detail-text" id="faqEffectPopupReason"></div></div>
           </div>
         </div>
       </div>
@@ -4374,8 +4391,77 @@ registerTotalVisit().then(refreshSiteStats).catch(error => {
 window.loadSkillSettingsFromCloud();
 statsTimer = setInterval(refreshSiteStats, 30000);
   console.log("Firebase 연결 완료");
-function openFaqEffectPopup() {
+const faqEffectInfo = {
+  gold: {
+    title: "골드 스크롤",
+    badge: "골드",
+    badgeClass: "gold",
+    guide: "골드 획득량을 올리는 스크롤입니다.",
+    effect: "골드 획득량 300% 상승",
+    use: "용의 협곡, 폐쇄된 대광산",
+    reason: "주말 핫타임 2배, 골드 이벤트 버프 2배와 겹치면 골드 12배 구간을 만들 수 있어 골드 콘텐츠 직전에 사용하는 것이 가장 좋습니다."
+  },
+  exp: {
+    title: "경험치 스크롤",
+    badge: "경험치",
+    badgeClass: "exp",
+    guide: "경험치 획득량을 올리는 스크롤입니다.",
+    effect: "경험치 획득량 300% 상승",
+    use: "수련 동굴",
+    reason: "주말 핫타임 2배와 함께 사용하면 수련 동굴에서 경험치 6배 효율을 챙길 수 있습니다."
+  },
+  enhanceCube: {
+    title: "강화 큐브 스크롤",
+    badge: "강화 큐브",
+    badgeClass: "enhance-cube",
+    guide: "강화 큐브 획득량을 올리는 스크롤입니다.",
+    effect: "강화 큐브 획득량 300% 상승",
+    use: "시공의 균열",
+    reason: "시공의 균열은 골드/경험치 핫타임 효율과 직접 연결되지 않으므로 핫타임 수령 전에 먼저 처리하는 것이 좋습니다."
+  },
+  equipment: {
+    title: "장비 스크롤",
+    badge: "장비",
+    badgeClass: "equipment",
+    guide: "장비 획득량을 올리는 스크롤입니다.",
+    effect: "장비 획득량 300% 상승",
+    use: "자사 방치",
+    reason: "골드 12배 구간이 끝난 뒤 장비 스크롤을 사용하고 자동사냥을 이어가면 장비 파밍 효율을 챙길 수 있습니다."
+  },
+  hotTime: {
+    title: "주말 핫타임",
+    badge: "핫타임",
+    badgeClass: "hot-time",
+    guide: "주말에 우편함에서 수령하는 골드/경험치 버프입니다.",
+    effect: "골드/경험치 획득량 200% 상승",
+    use: "토/일 00:10 이후 우편 수령",
+    reason: "수령 즉시 시간이 흐르기 때문에 시공의 균열을 먼저 처리한 뒤, 수련 동굴과 골드 콘텐츠를 몰아서 진행하는 것이 좋습니다."
+  },
+  eventBuff: {
+    title: "이벤트 버프",
+    badge: "이벤트 버프",
+    badgeClass: "event-buff",
+    guide: "이벤트 기간에 원하는 재화 획득량을 올리는 선택형 버프입니다.",
+    effect: "선택한 재화 획득량 200% 상승",
+    use: "원하는 콘텐츠 직전에 선택",
+    reason: "골드 이벤트 버프는 수련 동굴 이후에 선택해야 버프 시간을 용의 협곡과 폐쇄된 대광산에 온전히 사용할 수 있습니다."
+  }
+};
+function openFaqEffectPopup(type) {
+  const info = faqEffectInfo[type] || faqEffectInfo.gold;
   const popup = document.getElementById("faqEffectPopupBg");
+  const title = document.getElementById("faqEffectPopupTitle");
+  const badgeWrap = document.getElementById("faqEffectPopupBadgeWrap");
+  const guide = document.getElementById("faqEffectPopupGuide");
+  const effect = document.getElementById("faqEffectPopupEffect");
+  const use = document.getElementById("faqEffectPopupUse");
+  const reason = document.getElementById("faqEffectPopupReason");
+  if (title) title.textContent = info.title;
+  if (badgeWrap) badgeWrap.innerHTML = `<span class="adventure-scroll-badge ${info.badgeClass}">${info.badge}</span>`;
+  if (guide) guide.textContent = info.guide;
+  if (effect) effect.textContent = info.effect;
+  if (use) use.textContent = info.use;
+  if (reason) reason.textContent = info.reason;
   if (popup) popup.classList.add("show");
 }
 function closeFaqEffectPopup(event) {
