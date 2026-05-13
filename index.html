@@ -87,12 +87,13 @@ button:focus,button:focus-visible,a:focus,a:focus-visible,[role="button"]:focus,
 .skill-group-title{margin:26px 0 14px;font-size:24px;font-weight:900;color:#111827}
 .skill-result-list{display:grid;gap:14px}
 .skill-result-card{border:1px solid #e5e7eb;border-radius:18px;padding:18px;background:#fff}
-.skill-result-card-inner{display:grid;grid-template-columns:64px minmax(0,1fr);gap:12px;align-items:center}
+.skill-result-card-inner{display:grid;grid-template-columns:64px minmax(0,1fr);gap:14px;align-items:center}
 .skill-card-thumb-wrap{width:64px;height:64px;border-radius:18px;background:#f9fafb;border:1px solid #e5e7eb;display:flex;align-items:center;justify-content:center;overflow:hidden;box-shadow:0 5px 14px rgba(0,0,0,.05)}
 .skill-card-thumb{width:54px;height:54px;object-fit:contain;display:block}
 .skill-card-body{min-width:0}
-.skill-name-row{display:flex;align-items:center;flex-wrap:nowrap;gap:6px;margin-bottom:12px}
-.skill-name{font-size:22px;font-weight:900;color:#111827;margin-right:4px}
+.skill-name-row{display:flex;flex-direction:column;align-items:flex-start;gap:8px;margin-bottom:12px}
+.skill-badge-row{display:flex;align-items:center;flex-wrap:wrap;gap:6px}
+.skill-name{display:block;font-size:22px;font-weight:900;color:#111827;margin-right:0;line-height:1.22;word-break:keep-all}
 .skill-info{font-size:16px;font-weight:800;color:#374151;margin-top:6px}
 .empty-result{margin-top:20px;padding:18px;border-radius:16px;background:#f3f4f6;font-size:16px;font-weight:800;color:#4b5563;text-align:center}
 .setting-guide-text{text-align:center;font-weight:900;color:#4b5563}
@@ -695,7 +696,7 @@ body.skill-can-manage .skill-manage-only{display:inline-block}
 .skill-awakening-item{padding:12px;border-radius:15px;background:#f9fafb;border:1px solid #e5e7eb;font-size:14px;font-weight:850;line-height:1.45;color:#374151;word-break:keep-all}
 .skill-awakening-item strong{color:#111827}
 .skill-detail-note{margin-top:10px;color:#6b7280;font-size:12px;font-weight:800;line-height:1.45;text-align:center;word-break:keep-all}
-@media(max-width:768px){.skill-result-card{padding:14px}.skill-result-card-inner{grid-template-columns:56px minmax(0,1fr);gap:10px}.skill-card-thumb-wrap{width:56px;height:56px;border-radius:16px}.skill-card-thumb{width:48px;height:48px}.skill-detail-image-box{width:92px;height:92px;border-radius:22px}.skill-detail-image{width:78px;height:78px}.skill-detail-top-close-btn{width:32px;height:32px;font-size:19px;margin-bottom:-26px}.skill-type-badge{height:26px;padding:0 9px;font-size:12px}.skill-summary{font-size:13px}.skill-detail-popup{max-width:94vw;max-height:84vh;padding:18px;border-radius:22px}.skill-detail-title{font-size:24px}.skill-detail-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.skill-detail-info-card{min-height:82px;padding:10px 6px}.skill-detail-label{font-size:12px;margin-bottom:6px}.skill-detail-value{font-size:16px}.skill-calc-row{grid-template-columns:1fr 96px}.skill-calc-result span{font-size:16px}.skill-calc-matrix{gap:6px}.skill-calc-label-cell{min-height:42px;padding:8px 4px;font-size:11px}.skill-calc-value-cell{min-height:52px;padding:9px 4px;font-size:15px}.skill-calc-base-row{gap:6px}.skill-calc-base-row .skill-calc-label-cell,.skill-calc-base-row .skill-calc-value-cell{min-height:46px}.skill-calc-card-grid{gap:6px}.skill-calc-card{min-height:104px;padding:10px 4px;border-radius:15px;gap:7px}.skill-calc-card-label{font-size:11px}.skill-calc-card-value{font-size:16px}.skill-calc-base-card{margin-top:6px}.skill-calc-base-cell{min-height:50px;padding:9px 12px;border-radius:15px}.skill-calc-base-label{font-size:11px}.skill-calc-base-value{font-size:15px}}
+@media(max-width:768px){.skill-result-card{padding:14px}.skill-result-card-inner{grid-template-columns:56px minmax(0,1fr);gap:10px}.skill-card-thumb-wrap{width:56px;height:56px;border-radius:16px}.skill-card-thumb{width:48px;height:48px}.skill-name-row{gap:7px;margin-bottom:11px}.skill-badge-row{gap:5px}.skill-name{font-size:21px;line-height:1.22}.skill-detail-image-box{width:92px;height:92px;border-radius:22px}.skill-detail-image{width:78px;height:78px}.skill-detail-top-close-btn{width:32px;height:32px;font-size:19px;margin-bottom:-26px}.skill-type-badge{height:26px;padding:0 9px;font-size:12px}.skill-summary{font-size:13px}.skill-detail-popup{max-width:94vw;max-height:84vh;padding:18px;border-radius:22px}.skill-detail-title{font-size:24px}.skill-detail-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.skill-detail-info-card{min-height:82px;padding:10px 6px}.skill-detail-label{font-size:12px;margin-bottom:6px}.skill-detail-value{font-size:16px}.skill-calc-row{grid-template-columns:1fr 96px}.skill-calc-result span{font-size:16px}.skill-calc-matrix{gap:6px}.skill-calc-label-cell{min-height:42px;padding:8px 4px;font-size:11px}.skill-calc-value-cell{min-height:52px;padding:9px 4px;font-size:15px}.skill-calc-base-row{gap:6px}.skill-calc-base-row .skill-calc-label-cell,.skill-calc-base-row .skill-calc-value-cell{min-height:46px}.skill-calc-card-grid{gap:6px}.skill-calc-card{min-height:104px;padding:10px 4px;border-radius:15px;gap:7px}.skill-calc-card-label{font-size:11px}.skill-calc-card-value{font-size:16px}.skill-calc-base-card{margin-top:6px}.skill-calc-base-cell{min-height:50px;padding:9px 12px;border-radius:15px}.skill-calc-base-label{font-size:11px}.skill-calc-base-value{font-size:15px}}
 
 </style>
 </head>
@@ -2335,7 +2336,8 @@ function addSections() {
             <div class="home-beta-name-btn">라비</div>
             <div class="home-beta-name-btn">르웬</div>
             <div class="home-beta-name-btn">판다</div>
-            <div class="home-beta-name-btn empty">추가 예정</div>
+            <div class="home-beta-name-btn">탈출한 늑구</div>
+            <div class="home-beta-name-btn">다크사이트</div>
           </div>
         </div>
       </div>
@@ -2782,9 +2784,11 @@ function renderSkills() {
             <div class="skill-card-body">
               <div class="skill-name-row">
                 <span class="skill-name">${skill.name}</span>
-                <span class="badge ${gradeClassMap[skill.grade]}">${skill.grade}</span>
-                ${skill.element && skill.element !== "없음" ? `<span class="badge ${elementClassMap[skill.element]}">${skill.element}</span>` : ""}
-                ${skill.type ? `<span class="skill-type-badge ${getSkillTypeClass(skill.type)}">${skill.type}</span>` : ""}
+                <div class="skill-badge-row">
+                  <span class="badge ${gradeClassMap[skill.grade]}">${skill.grade}</span>
+                  ${skill.element && skill.element !== "없음" ? `<span class="badge ${elementClassMap[skill.element]}">${skill.element}</span>` : ""}
+                  ${skill.type ? `<span class="skill-type-badge ${getSkillTypeClass(skill.type)}">${skill.type}</span>` : ""}
+                </div>
               </div>
               ${skill.summary ? `<div class="skill-summary">${skill.summary}</div>` : ""}
               ${skill.type ? `<button class="skill-detail-btn" type="button" onclick="openSkillDetailPopup('${skill.name}')">상세 보기 · 계산기</button>` : ""}
