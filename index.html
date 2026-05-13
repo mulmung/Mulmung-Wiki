@@ -87,11 +87,11 @@ button:focus,button:focus-visible,a:focus,a:focus-visible,[role="button"]:focus,
 .skill-group-title{margin:26px 0 14px;font-size:24px;font-weight:900;color:#111827}
 .skill-result-list{display:grid;gap:14px}
 .skill-result-card{border:1px solid #e5e7eb;border-radius:18px;padding:18px;background:#fff}
-.skill-result-card-inner{display:grid;grid-template-columns:64px minmax(0,1fr);gap:14px;align-items:center}
-.skill-card-thumb-wrap{width:64px;height:64px;border-radius:18px;background:#f9fafb;border:1px solid #e5e7eb;display:flex;align-items:center;justify-content:center;overflow:hidden;box-shadow:0 5px 14px rgba(0,0,0,.05)}
+.skill-result-card-inner{display:grid;grid-template-columns:64px minmax(0,1fr);gap:12px 14px;align-items:start}
+.skill-card-thumb-wrap{grid-column:1;grid-row:1;width:64px;height:64px;margin-top:2px;border-radius:18px;background:#f9fafb;border:1px solid #e5e7eb;display:flex;align-items:center;justify-content:center;overflow:hidden;box-shadow:0 5px 14px rgba(0,0,0,.05)}
 .skill-card-thumb{width:54px;height:54px;object-fit:contain;display:block}
-.skill-card-body{min-width:0}
-.skill-name-row{display:flex;flex-direction:column;align-items:flex-start;gap:8px;margin-bottom:12px}
+.skill-card-body{display:contents;min-width:0}
+.skill-name-row{grid-column:2;grid-row:1;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:8px;min-height:64px;margin-bottom:0}
 .skill-badge-row{display:flex;align-items:center;flex-wrap:wrap;gap:6px}
 .skill-name{display:block;font-size:22px;font-weight:900;color:#111827;margin-right:0;line-height:1.22;word-break:keep-all}
 .skill-info{font-size:16px;font-weight:800;color:#374151;margin-top:6px}
@@ -643,8 +643,8 @@ body.skill-can-manage .skill-manage-only{display:inline-block}
 .skill-type-badge{display:inline-flex;align-items:center;justify-content:center;height:28px;padding:0 11px;border-radius:999px;color:#fff;font-size:13px;font-weight:950;line-height:1;white-space:nowrap;flex:0 0 auto}
 .skill-type-badge.active{background:#111827}
 .skill-type-badge.passive{background:#6b7280}
-.skill-summary{margin-top:10px;padding:11px 13px;border-radius:14px;background:#f9fafb;border:1px solid #e5e7eb;color:#374151;font-size:15px;font-weight:800;line-height:1.45;word-break:keep-all}
-.skill-detail-btn{margin-top:12px;border:none;border-radius:999px;background:#111827;color:#fff;padding:9px 15px;font-size:13px;font-weight:950;cursor:pointer}
+.skill-summary{grid-column:1/-1;width:100%;margin-top:2px;padding:13px 15px;border-radius:14px;background:#f9fafb;border:1px solid #e5e7eb;color:#374151;font-size:15px;font-weight:800;line-height:1.45;word-break:keep-all}
+.skill-detail-btn{grid-column:1/-1;justify-self:center;display:inline-flex;align-items:center;justify-content:center;margin:10px auto 0;border:none;border-radius:999px;background:#111827;color:#fff;padding:10px 18px;font-size:13px;font-weight:950;cursor:pointer}
 .skill-detail-btn:hover{filter:brightness(.94)}
 .skill-detail-popup-bg{display:none;position:fixed;inset:0;z-index:3450;background:rgba(0,0,0,.48);padding:18px}
 .skill-detail-popup-bg.show{display:flex;align-items:center;justify-content:center}
@@ -696,7 +696,7 @@ body.skill-can-manage .skill-manage-only{display:inline-block}
 .skill-awakening-item{padding:12px;border-radius:15px;background:#f9fafb;border:1px solid #e5e7eb;font-size:14px;font-weight:850;line-height:1.45;color:#374151;word-break:keep-all}
 .skill-awakening-item strong{color:#111827}
 .skill-detail-note{margin-top:10px;color:#6b7280;font-size:12px;font-weight:800;line-height:1.45;text-align:center;word-break:keep-all}
-@media(max-width:768px){.skill-result-card{padding:14px}.skill-result-card-inner{grid-template-columns:56px minmax(0,1fr);gap:10px}.skill-card-thumb-wrap{width:56px;height:56px;border-radius:16px}.skill-card-thumb{width:48px;height:48px}.skill-name-row{gap:7px;margin-bottom:11px}.skill-badge-row{gap:5px}.skill-name{font-size:21px;line-height:1.22}.skill-detail-image-box{width:92px;height:92px;border-radius:22px}.skill-detail-image{width:78px;height:78px}.skill-detail-top-close-btn{width:32px;height:32px;font-size:19px;margin-bottom:-26px}.skill-type-badge{height:26px;padding:0 9px;font-size:12px}.skill-summary{font-size:13px}.skill-detail-popup{max-width:94vw;max-height:84vh;padding:18px;border-radius:22px}.skill-detail-title{font-size:24px}.skill-detail-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.skill-detail-info-card{min-height:82px;padding:10px 6px}.skill-detail-label{font-size:12px;margin-bottom:6px}.skill-detail-value{font-size:16px}.skill-calc-row{grid-template-columns:1fr 96px}.skill-calc-result span{font-size:16px}.skill-calc-matrix{gap:6px}.skill-calc-label-cell{min-height:42px;padding:8px 4px;font-size:11px}.skill-calc-value-cell{min-height:52px;padding:9px 4px;font-size:15px}.skill-calc-base-row{gap:6px}.skill-calc-base-row .skill-calc-label-cell,.skill-calc-base-row .skill-calc-value-cell{min-height:46px}.skill-calc-card-grid{gap:6px}.skill-calc-card{min-height:104px;padding:10px 4px;border-radius:15px;gap:7px}.skill-calc-card-label{font-size:11px}.skill-calc-card-value{font-size:16px}.skill-calc-base-card{margin-top:6px}.skill-calc-base-cell{min-height:50px;padding:9px 12px;border-radius:15px}.skill-calc-base-label{font-size:11px}.skill-calc-base-value{font-size:15px}}
+@media(max-width:768px){.skill-result-card{padding:14px}.skill-result-card-inner{grid-template-columns:56px minmax(0,1fr);gap:10px 10px}.skill-card-thumb-wrap{width:56px;height:56px;margin-top:1px;border-radius:16px}.skill-card-thumb{width:48px;height:48px}.skill-name-row{min-height:56px;gap:7px;margin-bottom:0}.skill-badge-row{gap:5px}.skill-name{font-size:21px;line-height:1.22}.skill-detail-image-box{width:92px;height:92px;border-radius:22px}.skill-detail-image{width:78px;height:78px}.skill-detail-top-close-btn{width:32px;height:32px;font-size:19px;margin-bottom:-26px}.skill-type-badge{height:26px;padding:0 9px;font-size:12px}.skill-summary{font-size:13px}.skill-detail-popup{max-width:94vw;max-height:84vh;padding:18px;border-radius:22px}.skill-detail-title{font-size:24px}.skill-detail-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.skill-detail-info-card{min-height:82px;padding:10px 6px}.skill-detail-label{font-size:12px;margin-bottom:6px}.skill-detail-value{font-size:16px}.skill-calc-row{grid-template-columns:1fr 96px}.skill-calc-result span{font-size:16px}.skill-calc-matrix{gap:6px}.skill-calc-label-cell{min-height:42px;padding:8px 4px;font-size:11px}.skill-calc-value-cell{min-height:52px;padding:9px 4px;font-size:15px}.skill-calc-base-row{gap:6px}.skill-calc-base-row .skill-calc-label-cell,.skill-calc-base-row .skill-calc-value-cell{min-height:46px}.skill-calc-card-grid{gap:6px}.skill-calc-card{min-height:104px;padding:10px 4px;border-radius:15px;gap:7px}.skill-calc-card-label{font-size:11px}.skill-calc-card-value{font-size:16px}.skill-calc-base-card{margin-top:6px}.skill-calc-base-cell{min-height:50px;padding:9px 12px;border-radius:15px}.skill-calc-base-label{font-size:11px}.skill-calc-base-value{font-size:15px}}
 
 </style>
 </head>
