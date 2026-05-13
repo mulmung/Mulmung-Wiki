@@ -675,6 +675,7 @@ button.faq-flow-item:focus,button.faq-flow-item:focus-visible{outline:none;borde
 .adventure-scroll-badge.enhance-cube{background:linear-gradient(135deg,#a855f7,#7c3aed,#4c1d95)}
 
 .adventure-floor-calc-box{
+  display:none;
   margin:2px 0 18px;
   padding:16px;
   border:2px solid #e5e7eb;
@@ -741,6 +742,7 @@ button.faq-flow-item:focus,button.faq-flow-item:focus-visible{outline:none;borde
   text-align:center;
   word-break:keep-all;
 }
+.adventure-floor-calc-box.show{display:block}
 .adventure-floor-calc-result strong{color:#ef4444;font-size:19px}
 @media(max-width:768px){.adventure-floor-calc-row{flex-direction:column}.adventure-floor-calc-input,.adventure-floor-calc-btn{width:100%}}
 .adventure-popup-actions{display:flex;justify-content:center;margin-top:18px}
@@ -3660,6 +3662,16 @@ renderSavedSettingCollection();
       <div class="adventure-recommend-box" id="adventureRecommendBox">
         <div class="adventure-recommend-title">추천 스크롤</div>
         <div class="adventure-scroll-badge-wrap" id="adventureScrollBadgeWrap"></div>
+
+        <div class="adventure-floor-calc-box" id="adventureFloorCalcBox">
+          <div class="adventure-floor-calc-title">획득량 증가 층 계산기</div>
+          <div class="adventure-floor-calc-desc">현재 도착한 층을 입력하면 다음 획득량 증가 층을 계산합니다.<br>증가 구간: 4n + 1층</div>
+          <div class="adventure-floor-calc-row">
+            <input id="adventureFloorInput" class="adventure-floor-calc-input" type="number" inputmode="numeric" min="1" placeholder="현재 층 입력" oninput="calculateAdventureFloor()" />
+            <button class="adventure-floor-calc-btn" type="button" onclick="calculateAdventureFloor()">계산</button>
+          </div>
+          <div class="adventure-floor-calc-result" id="adventureFloorCalcResult">현재 층을 입력해주세요.</div>
+        </div>
       </div>
       <div class="adventure-popup-actions">
         <button id="adventureSkillLinkBtn" class="adventure-skill-link-btn" type="button">해당 모험 스킬</button>
@@ -4622,6 +4634,18 @@ function openAdventurePopup(key) {
       linkBtn.onclick = null;
     }
   }
+  const floorCalcBox = document.getElementById("adventureFloorCalcBox");
+  const floorInput = document.getElementById("adventureFloorInput");
+  const floorResult = document.getElementById("adventureFloorCalcResult");
+  if (floorCalcBox) {
+    if (key === "closedMine") {
+      floorCalcBox.classList.add("show");
+    } else {
+      floorCalcBox.classList.remove("show");
+    }
+  }
+  if (floorInput) floorInput.value = "";
+  if (floorResult) floorResult.textContent = "현재 층을 입력해주세요.";
   badgeWrap.innerHTML = "";
   if (Array.isArray(data.scrolls) && data.scrolls.length) {
     data.scrolls.forEach(scroll => {
@@ -4646,11 +4670,26 @@ function goToAdventureSkillSettings(categoryName) {
   showSection("skill-setting-collection");
   renderSavedSettingCollection();
 }
+function calculateAdventureFloor() {
+  const input = document.getElementById("adventureFloorInput");
+  const result = document.getElementById("adventureFloorCalcResult");
+  if (!input || !result) return;
+  const current = Number(input.value);
+  if (!Number.isFinite(current) || current < 1) {
+    result.textContent = "현재 층을 입력해주세요.";
+    return;
+  }
+  const floor = Math.floor(current);
+  let nextFloor = floor + 1;
+  while (nextFloor % 4 !== 1) nextFloor += 1;
+  result.innerHTML = `다음 획득량 증가 층은 <strong>${nextFloor}층</strong>입니다.`;
+}
 function closeAdventurePopup() {
   document.getElementById("adventurePopupBg").classList.remove("show");
 }
 window.openAdventurePopup = openAdventurePopup;
 window.closeAdventurePopup = closeAdventurePopup;
+window.calculateAdventureFloor = calculateAdventureFloor;
 window.goToAdventureSkillSettings = goToAdventureSkillSettings;
 </script>
 </body>
