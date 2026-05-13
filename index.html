@@ -1816,6 +1816,20 @@ button.save-cancel{
   border-color: #111827;
   box-shadow: 0 9px 20px rgba(0,0,0,.12);
 }
+.adventure-btn,
+.adventure-btn:focus,
+.adventure-btn:focus-visible,
+.adventure-btn:active {
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.adventure-btn:focus,
+.adventure-btn:focus-visible,
+.adventure-btn:active {
+  background: #ffffff;
+  border-color: #e5e7eb;
+  box-shadow: 0 5px 14px rgba(0,0,0,.07);
+}
 .adventure-divider {
   margin: 22px 0 12px;
   display: flex;
@@ -4661,6 +4675,9 @@ function openAdventurePopup(key) {
 function closeAdventurePopup() {
   document.getElementById("adventurePopupBg").classList.remove("show");
 }
+
+window.openAdventurePopup = openAdventurePopup;
+window.closeAdventurePopup = closeAdventurePopup;
 
 </script>
 </body>
