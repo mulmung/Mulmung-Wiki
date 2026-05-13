@@ -226,11 +226,17 @@ body.skill-can-manage .skill-manage-only{display:inline-block}
 .role-beta-badge{display:inline-flex;align-items:center;justify-content:center;width:max-content;padding:6px 12px;border-radius:999px;background:#facc15;color:#ffffff;font-size:13px;font-weight:950;line-height:1;box-shadow:0 8px 18px rgba(250,204,21,.24)}
 .role-medal-line{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:6px}
 .role-medal-label{font-size:12px;font-weight:900;color:#6b7280}
-.home-beta-title{display:flex;align-items:center;gap:10px;margin:18px 0 10px}
+.home-beta-title{display:flex;align-items:center;gap:10px;margin:18px 0 14px}
 .home-beta-title::after{content:"";flex:1;height:1px;background:#d1d5db}
 .home-beta-title .role-beta-badge{font-size:14px;padding:7px 14px}
-.home-beta-list{margin-top:10px;display:flex;flex-direction:column;gap:6px;font-weight:800;line-height:1.4}
-.home-beta-list span{display:block}
+.home-beta-board{display:flex;flex-direction:column;gap:18px;margin-top:10px}
+.home-beta-generation{display:flex;flex-direction:column;gap:12px}
+.home-beta-generation-title{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:950;color:#111827;line-height:1}
+.home-beta-generation-title::after{content:"";flex:1;height:2px;background:#d1d5db;border-radius:999px}
+.home-beta-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.home-beta-name-btn{border:none;border-radius:14px;min-height:46px;padding:10px 8px;background:#f9fafb;color:#111827;font-size:15px;font-weight:900;line-height:1.2;text-align:center;word-break:keep-all;box-shadow:0 4px 10px rgba(0,0,0,.06);cursor:default}
+.home-beta-name-btn.empty{background:#f3f4f6;color:#9ca3af;box-shadow:none}
+@media(max-width:768px){.home-beta-generation-title{font-size:16px}.home-beta-grid{gap:8px}.home-beta-name-btn{min-height:42px;padding:9px 6px;font-size:13px;border-radius:12px}}
 .role-user-role-line{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:8px}
 .role-user-role-label{color:#6b7280;font-size:14px;font-weight:900}
 .role-section-title.normal{color:#6b7280}
@@ -1288,19 +1294,30 @@ function addSections() {
       <div class="home-beta-title">
         <span class="role-beta-badge">베타 테스터</span>
       </div>
-      <div class="home-beta-list">
-        <span>agoong</span>
-        <span>싸미곰</span>
-        <span>Saver</span>
-        <span>타이</span>
-        <span>이걸못잡아</span>
-        <span>시콘</span>
-        <span>예린교수</span>
-        <span>포쿠</span>
-        <span>adws</span>
-        <span>쫜</span>
-        <span>곰팡이</span>
-        <span>쿠키제과</span>
+      <div class="home-beta-board">
+        <div class="home-beta-generation">
+          <div class="home-beta-generation-title">1기</div>
+          <div class="home-beta-grid">
+            <button type="button" class="home-beta-name-btn">agoong</button>
+            <button type="button" class="home-beta-name-btn">싸미곰</button>
+            <button type="button" class="home-beta-name-btn">Saver</button>
+            <button type="button" class="home-beta-name-btn">타이</button>
+            <button type="button" class="home-beta-name-btn">이걸못잡아</button>
+            <button type="button" class="home-beta-name-btn">시콘</button>
+            <button type="button" class="home-beta-name-btn">예린교수</button>
+            <button type="button" class="home-beta-name-btn">포쿠</button>
+            <button type="button" class="home-beta-name-btn">adws</button>
+            <button type="button" class="home-beta-name-btn">쫜</button>
+            <button type="button" class="home-beta-name-btn">곰팡이</button>
+            <button type="button" class="home-beta-name-btn">쿠키제과</button>
+          </div>
+        </div>
+        <div class="home-beta-generation">
+          <div class="home-beta-generation-title">2기</div>
+          <div class="home-beta-grid">
+            <button type="button" class="home-beta-name-btn empty">추가 예정</button>
+          </div>
+        </div>
       </div>
     </section>
     <section id="intro" class="card">
