@@ -226,6 +226,12 @@ body.skill-can-manage .skill-manage-only{display:inline-block}
 .role-beta-badge{display:inline-flex;align-items:center;justify-content:center;width:max-content;padding:6px 12px;border-radius:999px;background:#facc15;color:#ffffff;font-size:13px;font-weight:950;line-height:1;box-shadow:0 8px 18px rgba(250,204,21,.24)}
 .role-medal-line{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:6px}
 .role-medal-label{font-size:12px;font-weight:900;color:#6b7280}
+.home-guide-box{margin:20px 0 24px;padding:18px 18px 16px;border-radius:20px;background:linear-gradient(180deg,#ffffff,#f9fafb);border:1px solid #e5e7eb;box-shadow:0 8px 20px rgba(0,0,0,.05)}
+.home-guide-title{display:flex;align-items:center;gap:10px;margin-bottom:12px;font-size:19px;font-weight:950;color:#111827;line-height:1}
+.home-guide-title::after{content:"";flex:1;height:2px;border-radius:999px;background:linear-gradient(90deg,#111827,#d1d5db)}
+.home-guide-list{margin:0;padding-left:20px}
+.home-guide-list li{margin-bottom:8px;color:#374151;font-size:15px;font-weight:800;line-height:1.55;word-break:keep-all}
+.home-guide-list li:last-child{margin-bottom:0}
 .home-beta-title{display:flex;align-items:center;gap:10px;margin:18px 0 14px}
 .home-beta-title::after{content:"";flex:1;height:2px;background:linear-gradient(90deg,#d1d5db,#e5e7eb,#d1d5db);border-radius:999px}
 .home-beta-title .role-beta-badge{font-size:14px;padding:7px 14px;box-shadow:0 8px 20px rgba(250,204,21,.28)}
@@ -1292,6 +1298,15 @@ function addSections() {
     <section id="home" class="card active">
       <h2>홈</h2>
       <p><strong>물멍위키에 오신 여러분을 환영합니다.</strong></p>
+      <div class="home-guide-box">
+        <div class="home-guide-title">이용 안내</div>
+        <ul class="home-guide-list">
+          <li>로그인 후 닉네임과 승급을 설정할 수 있습니다.</li>
+          <li>일반 유저는 저장된 스킬 세팅을 볼 수 있습니다.</li>
+          <li>스킬 세팅 저장/수정/삭제는 관리자와 스킬 마스터만 가능합니다.</li>
+          <li>직책과 훈장은 관리자가 부여합니다.</li>
+        </ul>
+      </div>
       <div class="home-beta-title">
         <span class="role-beta-badge">베타 테스터</span>
       </div>
