@@ -38,7 +38,10 @@ button::-moz-focus-inner{border:0}
 .menu-btn.black-orb-menu-btn.active{background:linear-gradient(135deg,#2dd4bf,#99f6e4);color:#042f2e;border:2px solid #14b8a6;box-shadow:0 0 12px rgba(20,184,166,.58)}
 
 .black-orb-panel{margin-top:20px;padding:20px;border:1px solid #99f6e4;border-radius:22px;background:linear-gradient(180deg,#f0fdfa,#ffffff);box-shadow:0 8px 22px rgba(20,184,166,.10)}
-.black-orb-toggle-row{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:16px;padding:14px 16px;border-radius:18px;background:#ffffff;border:1px solid #ccfbf1}
+.black-orb-compare-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;align-items:start}
+.black-orb-column{display:flex;flex-direction:column;min-width:0;gap:12px}
+.black-orb-toggle-row{display:flex;align-items:center;justify-content:center;gap:12px;min-height:58px;padding:11px 12px;border-radius:18px;background:#ffffff;border:1px solid #ccfbf1}
+.black-orb-toggle-spacer{min-height:58px}
 .black-orb-toggle-label{font-size:17px;font-weight:950;color:#0f172a;word-break:keep-all}
 .black-orb-switch{position:relative;display:inline-flex;align-items:center;width:64px;height:34px;flex:0 0 auto}
 .black-orb-switch input{position:absolute;opacity:0;width:0;height:0}
@@ -46,15 +49,14 @@ button::-moz-focus-inner{border:0}
 .black-orb-slider::before{content:"";position:absolute;width:28px;height:28px;left:3px;top:3px;border-radius:50%;background:#ffffff;transition:.22s ease;box-shadow:0 3px 8px rgba(15,23,42,.24)}
 .black-orb-switch input:checked + .black-orb-slider{background:#14b8a6}
 .black-orb-switch input:checked + .black-orb-slider::before{transform:translateX(30px)}
-.black-orb-option-box{display:grid;gap:10px;padding:16px;border:2px solid #14b8a6;border-radius:20px;background:#ffffff}
-.black-orb-option-row{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:8px}
+.black-orb-option-box{display:grid;gap:10px;padding:16px;border:2px solid #14b8a6;border-radius:20px;background:#ffffff;min-width:0}
+.black-orb-option-row{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:8px;min-width:0}
 .black-orb-plus,.black-orb-percent{font-size:18px;font-weight:950;color:#0f766e}
-.black-orb-input-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;width:100%}
-.black-orb-input,.black-orb-select{width:100%;height:44px;border:1px solid #99f6e4;border-radius:14px;background:#f8fafc;color:#111827;font-size:16px;font-weight:900;text-align:center;outline:none}
+.black-orb-input,.black-orb-select{width:100%;min-width:0;height:44px;border:1px solid #99f6e4;border-radius:14px;background:#f8fafc;color:#111827;font-size:16px;font-weight:900;text-align:center;outline:none}
 .black-orb-input:focus,.black-orb-select:focus{border-color:#14b8a6;box-shadow:0 0 0 3px rgba(20,184,166,.16)}
-@media(max-width:380px){.black-orb-input-pair{gap:6px}.black-orb-input{font-size:14px}}
 .black-orb-divider{height:1px;background:#e5e7eb;margin:2px 0}
-@media(max-width:768px){.black-orb-panel{padding:16px;border-radius:20px}.black-orb-toggle-row{padding:12px 13px}.black-orb-toggle-label{font-size:15px}.black-orb-switch{width:58px;height:31px}.black-orb-slider::before{width:25px;height:25px}.black-orb-switch input:checked + .black-orb-slider::before{transform:translateX(27px)}.black-orb-option-box{padding:13px;border-radius:18px}.black-orb-input,.black-orb-select{height:40px;font-size:15px}}
+@media(max-width:768px){.black-orb-panel{padding:14px;border-radius:20px}.black-orb-compare-grid{gap:8px}.black-orb-column{gap:9px}.black-orb-toggle-row{min-height:48px;padding:8px 6px;border-radius:16px;gap:7px}.black-orb-toggle-spacer{min-height:48px}.black-orb-toggle-label{font-size:13px}.black-orb-switch{width:50px;height:28px}.black-orb-slider::before{width:22px;height:22px}.black-orb-switch input:checked + .black-orb-slider::before{transform:translateX(22px)}.black-orb-option-box{gap:8px;padding:10px 7px;border-radius:17px}.black-orb-option-row{gap:5px}.black-orb-plus,.black-orb-percent{font-size:15px}.black-orb-input,.black-orb-select{height:36px;border-radius:12px;font-size:12px;padding:0 3px}}
+@media(max-width:380px){.black-orb-panel{padding:12px}.black-orb-compare-grid{gap:6px}.black-orb-option-box{padding:9px 5px}.black-orb-input,.black-orb-select{height:34px;font-size:11px}.black-orb-plus,.black-orb-percent{font-size:14px}}
 .sub-menu{display:none;margin-top:5px;padding-left:9px;border-left:2px solid #55ffff}
 .sub-menu.open{display:block}
 .sub-menu-btn{display:block;margin:5px 0;padding:8px 10px;border-radius:9px;background:#3a3d40;color:#fff;font-size:12px;line-height:1.15;min-height:36px}
@@ -2761,21 +2763,19 @@ function addSections() {
       <p>드롭다운 숫자와 계산식은 추후 정리하여 업데이트할 예정입니다.</p>
 
       <div class="black-orb-panel">
-        <div class="black-orb-toggle-row">
-          <span class="black-orb-toggle-label">각성</span>
-          <label class="black-orb-switch" aria-label="각성 온오프">
-            <input type="checkbox" id="blackOrbAwakeningToggle" />
-            <span class="black-orb-slider"></span>
-          </label>
-        </div>
-
+        <div class="black-orb-compare-grid">
+          <div class="black-orb-column">
+            <div class="black-orb-toggle-row">
+              <span class="black-orb-toggle-label">각성</span>
+              <label class="black-orb-switch" aria-label="각성 온오프">
+                <input type="checkbox" id="blackOrbAwakeningToggle" />
+                <span class="black-orb-slider"></span>
+              </label>
+            </div>
         <div class="black-orb-option-box">
           <div class="black-orb-option-row">
             <span class="black-orb-plus">+</span>
-            <div class="black-orb-input-pair">
-              <input class="black-orb-input black-orb-comma-input" type="text" inputmode="numeric" placeholder="숫자 입력" autocomplete="off" />
-              <input class="black-orb-input black-orb-comma-input" type="text" inputmode="numeric" placeholder="숫자 입력" autocomplete="off" />
-            </div>
+            <input class="black-orb-input black-orb-comma-input" type="text" inputmode="numeric" placeholder="숫자 입력" autocomplete="off" />
             <span class="black-orb-percent">%</span>
           </div>
 
@@ -2800,6 +2800,42 @@ function addSections() {
             <span class="black-orb-plus">+</span>
             <select class="black-orb-select"><option value="">숫자 선택</option></select>
             <span class="black-orb-percent">%</span>
+          </div>
+        </div>
+          </div>
+
+          <div class="black-orb-column">
+            <div class="black-orb-toggle-spacer" aria-hidden="true"></div>
+        <div class="black-orb-option-box">
+          <div class="black-orb-option-row">
+            <span class="black-orb-plus">+</span>
+            <input class="black-orb-input black-orb-comma-input" type="text" inputmode="numeric" placeholder="숫자 입력" autocomplete="off" />
+            <span class="black-orb-percent">%</span>
+          </div>
+
+          <div class="black-orb-divider"></div>
+
+          <div class="black-orb-option-row">
+            <span class="black-orb-plus">+</span>
+            <select class="black-orb-select"><option value="">숫자 선택</option></select>
+            <span class="black-orb-percent">%</span>
+          </div>
+          <div class="black-orb-option-row">
+            <span class="black-orb-plus">+</span>
+            <select class="black-orb-select"><option value="">숫자 선택</option></select>
+            <span class="black-orb-percent">%</span>
+          </div>
+          <div class="black-orb-option-row">
+            <span class="black-orb-plus">+</span>
+            <select class="black-orb-select"><option value="">숫자 선택</option></select>
+            <span class="black-orb-percent">%</span>
+          </div>
+          <div class="black-orb-option-row">
+            <span class="black-orb-plus">+</span>
+            <select class="black-orb-select"><option value="">숫자 선택</option></select>
+            <span class="black-orb-percent">%</span>
+          </div>
+        </div>
           </div>
         </div>
       </div>
