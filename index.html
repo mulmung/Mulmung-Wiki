@@ -932,6 +932,7 @@ button.faq-flow-item:focus,button.faq-flow-item:focus-visible{outline:none;borde
 .soul-engrave-grid.cols-4{grid-template-columns:repeat(4,minmax(0,1fr));max-width:220px;margin:0 auto}
 .soul-engrave-grid.cols-5{grid-template-columns:repeat(5,minmax(0,1fr));max-width:260px;margin:0 auto}
 .soul-engrave-cell{
+  position:relative;
   aspect-ratio:1/1;
   border:2px solid #e5e7eb;
   border-radius:10px;
@@ -952,6 +953,7 @@ button.faq-flow-item:focus,button.faq-flow-item:focus-visible{outline:none;borde
   inset:0;
   max-width:none;
   margin:0;
+  z-index:2;
 }
 .soul-engrave-cell.has-node{
   background:rgba(255,255,255,.96);
@@ -966,7 +968,7 @@ button.faq-flow-item:focus,button.faq-flow-item:focus-visible{outline:none;borde
   width:100%;
   height:100%;
   pointer-events:none;
-  z-index:1;
+  z-index:3;
   overflow:visible;
 }
 .soul-engrave-line{
@@ -984,8 +986,8 @@ button.faq-flow-item:focus,button.faq-flow-item:focus-visible{outline:none;borde
   left:50%;
   top:50%;
   transform:translate(-50%,-50%);
-  width:58%;
-  height:58%;
+  width:34px;
+  height:34px;
   border-radius:999px;
   display:flex;
   align-items:center;
@@ -994,15 +996,15 @@ button.faq-flow-item:focus,button.faq-flow-item:focus-visible{outline:none;borde
   font-size:14px;
   font-weight:950;
   line-height:1;
-  box-shadow:0 2px 8px rgba(15,23,42,.12);
-  z-index:2;
+  box-shadow:0 2px 8px rgba(15,23,42,.16);
+  z-index:4;
 }
 .soul-engrave-node.red{background:#ff5b61;}
 .soul-engrave-node.green{background:#7ed243;}
 .soul-engrave-node.blue{background:#7688ee;}
 @media(max-width:768px){
   .soul-engrave-board{max-width:220px;}
-  .soul-engrave-node{font-size:13px;}
+  .soul-engrave-node{width:32px;height:32px;font-size:13px;}
 }
 
 </style>
