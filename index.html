@@ -1162,6 +1162,28 @@ button.faq-flow-item:focus,button.faq-flow-item:focus-visible{outline:none;borde
   .black-orb-popup-picker .black-orb-element-badge{min-width:38px !important;height:23px !important;font-size:10px !important;padding:0 6px !important}
 }
 
+
+/* 블랙 오브 계산기: 메인 속성 선택 + 팝업 소형화 */
+.black-orb-main-attribute-row{display:flex;justify-content:center;margin-bottom:10px}
+.black-orb-main-attribute-btn{min-width:96px;height:34px;border:2px solid #334155;border-radius:999px;background:#ffffff;color:#111827;font-size:13px;font-weight:950;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;padding:0 14px;box-shadow:0 5px 12px rgba(15,23,42,.10)}
+.black-orb-main-attribute-btn.selected{border-color:transparent;background:transparent;box-shadow:none;padding:0}
+.black-orb-main-attribute-choice-grid .black-orb-element-choice:first-child{grid-column:auto}
+.black-orb-option-box{border-color:#334155 !important}
+.black-orb-panel.selected-wind .black-orb-option-box{border-color:var(--wind-color) !important}
+.black-orb-panel.selected-earth .black-orb-option-box{border-color:var(--earth-color) !important}
+.black-orb-panel.selected-water .black-orb-option-box{border-color:var(--water-color) !important}
+.black-orb-panel.selected-fire .black-orb-option-box{border-color:var(--fire-color) !important}
+.black-orb-detail-popup{max-width:280px !important;padding:13px 7px 10px !important;border-radius:19px !important}
+.black-orb-popup-box{padding:7px 5px !important;gap:6px !important;border-radius:15px !important}
+.black-orb-popup-detail-row{grid-template-columns:minmax(38px,42px) auto minmax(34px,40px) auto auto !important;gap:2px !important}
+.black-orb-popup-detail-row .black-orb-input{max-width:40px !important;height:30px !important;font-size:11px !important;padding:0 2px !important}
+.black-orb-popup-picker{min-width:38px !important}
+.black-orb-popup-picker .black-orb-element-badge{min-width:38px !important;height:23px !important;font-size:10px !important;padding:0 6px !important}
+.black-orb-popup-row{gap:4px !important}
+.black-orb-detail-popup-close{margin-top:8px !important;padding:9px 10px !important}
+@media(max-width:768px){.black-orb-main-attribute-row{margin-bottom:8px}.black-orb-main-attribute-btn{min-width:88px;height:31px;font-size:12px}.black-orb-detail-popup{max-width:260px !important;padding:12px 6px 10px !important}.black-orb-popup-box{padding:7px 4px !important}.black-orb-popup-detail-row{grid-template-columns:minmax(36px,40px) auto minmax(32px,38px) auto auto !important;gap:2px !important}.black-orb-popup-detail-row .black-orb-input{max-width:38px !important}.black-orb-popup-picker .black-orb-element-badge{min-width:36px !important}}
+@media(max-width:380px){.black-orb-detail-popup{max-width:246px !important;padding:11px 5px 9px !important}.black-orb-popup-detail-row{grid-template-columns:minmax(34px,38px) auto minmax(30px,36px) auto auto !important}.black-orb-popup-detail-row .black-orb-input{max-width:36px !important;font-size:10.5px !important}.black-orb-popup-picker .black-orb-element-badge{min-width:34px !important;font-size:9.5px !important}.black-orb-x2-badge{width:20px;height:20px;font-size:8px}}
+
 </style>
 </head>
 <body>
@@ -2854,7 +2876,10 @@ function addSections() {
       <p>블랙 오브 교체 시 어떤 옵션이 더 좋은지 비교할 수 있는 계산기 페이지입니다.</p>
       <p>드롭다운 숫자와 계산식은 추후 정리하여 업데이트할 예정입니다.</p>
 
-      <div class="black-orb-panel">
+      <div class="black-orb-panel" id="blackOrbPanel">
+        <div class="black-orb-main-attribute-row">
+          <button type="button" id="blackOrbMainAttributeBtn" class="black-orb-main-attribute-btn" onclick="openBlackOrbMainAttributePopup()">속성 선택</button>
+        </div>
         <div class="black-orb-compare-grid">
           <div class="black-orb-column">
             <div class="black-orb-toggle-row">
@@ -2945,6 +2970,19 @@ function addSections() {
         <button type="button" class="black-orb-attribute-btn earth" onclick="openBlackOrbDetailPopup('earth','땅')">땅</button>
         <button type="button" class="black-orb-attribute-btn water" onclick="openBlackOrbDetailPopup('water','물')">물</button>
         <button type="button" class="black-orb-attribute-btn fire" onclick="openBlackOrbDetailPopup('fire','불')">불</button>
+      </div>
+
+      <div id="blackOrbMainAttributePopupBg" class="black-orb-element-popup-bg" onclick="closeBlackOrbMainAttributePopup(event)">
+        <div class="black-orb-element-popup black-orb-main-attribute-popup" onclick="event.stopPropagation()">
+          <h3 class="black-orb-element-popup-title">비교 속성 선택</h3>
+          <div class="black-orb-element-choice-grid black-orb-main-attribute-choice-grid">
+            <button type="button" class="black-orb-element-choice" data-value="wind" data-label="바람" onclick="selectBlackOrbMainAttribute(this)"><span class="black-orb-element-badge wind">바람</span></button>
+            <button type="button" class="black-orb-element-choice" data-value="earth" data-label="땅" onclick="selectBlackOrbMainAttribute(this)"><span class="black-orb-element-badge earth">땅</span></button>
+            <button type="button" class="black-orb-element-choice" data-value="water" data-label="물" onclick="selectBlackOrbMainAttribute(this)"><span class="black-orb-element-badge water">물</span></button>
+            <button type="button" class="black-orb-element-choice" data-value="fire" data-label="불" onclick="selectBlackOrbMainAttribute(this)"><span class="black-orb-element-badge fire">불</span></button>
+          </div>
+          <button type="button" class="black-orb-element-popup-close" onclick="closeBlackOrbMainAttributePopup()">닫기</button>
+        </div>
       </div>
 
       <div id="blackOrbDetailPopupBg" class="black-orb-detail-popup-bg" onclick="closeBlackOrbDetailPopup(event)">
@@ -6285,6 +6323,33 @@ function formatBlackOrbCommaInputs() {
 formatBlackOrbCommaInputs();
 
 
+function openBlackOrbMainAttributePopup() {
+  const popup = document.getElementById("blackOrbMainAttributePopupBg");
+  if (popup) popup.classList.add("show");
+}
+function closeBlackOrbMainAttributePopup(event) {
+  if (event && event.target && event.currentTarget && event.target !== event.currentTarget) return;
+  const popup = document.getElementById("blackOrbMainAttributePopupBg");
+  if (popup) popup.classList.remove("show");
+}
+function selectBlackOrbMainAttribute(option) {
+  const value = option.dataset.value || "wind";
+  const label = option.dataset.label || "바람";
+  const allowed = ["wind", "earth", "water", "fire"];
+  const safeValue = allowed.includes(value) ? value : "wind";
+  const panel = document.getElementById("blackOrbPanel");
+  const button = document.getElementById("blackOrbMainAttributeBtn");
+  if (panel) {
+    panel.classList.remove("selected-wind", "selected-earth", "selected-water", "selected-fire");
+    panel.classList.add(`selected-${safeValue}`);
+  }
+  if (button) {
+    button.className = `black-orb-main-attribute-btn selected ${safeValue}`;
+    button.innerHTML = `<span class="black-orb-element-badge ${safeValue}">${label}</span>`;
+  }
+  closeBlackOrbMainAttributePopup();
+}
+
 function openBlackOrbDetailPopup(elementClass, label) {
   const popupBg = document.getElementById("blackOrbDetailPopupBg");
   const popup = document.getElementById("blackOrbDetailPopup");
@@ -6306,6 +6371,9 @@ function closeBlackOrbDetailPopup(event) {
   const popupBg = document.getElementById("blackOrbDetailPopupBg");
   if (popupBg) popupBg.classList.remove("show");
 }
+window.openBlackOrbMainAttributePopup = openBlackOrbMainAttributePopup;
+window.closeBlackOrbMainAttributePopup = closeBlackOrbMainAttributePopup;
+window.selectBlackOrbMainAttribute = selectBlackOrbMainAttribute;
 window.openBlackOrbDetailPopup = openBlackOrbDetailPopup;
 window.closeBlackOrbDetailPopup = closeBlackOrbDetailPopup;
 
