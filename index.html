@@ -774,6 +774,15 @@ button.faq-flow-item:focus,button.faq-flow-item:focus-visible{outline:none;borde
 .soul-info-badge{position:absolute;top:-14px;left:50%;transform:translateX(-50%);display:inline-flex;align-items:center;justify-content:center;min-width:104px;padding:7px 13px;border-radius:999px;background:#111827;color:#fff;font-size:13px;font-weight:950;line-height:1;white-space:nowrap;box-shadow:0 7px 16px rgba(0,0,0,.14)}
 .soul-info-value{min-height:24px;color:#6b7280;font-size:18px;font-weight:950;line-height:1.35;word-break:keep-all}
 .soul-info-value.pending{color:#9ca3af}
+.soul-weapon-item-grade{display:inline-flex;align-items:center;justify-content:center;margin-right:5px;font-weight:950;line-height:1}
+.soul-weapon-item-rank{color:#111827;font-weight:950}
+.soul-weapon-item-grade.grade-normal{color:#111827}
+.soul-weapon-item-grade.grade-advanced{color:#22c55e}
+.soul-weapon-item-grade.grade-rare{color:#fb923c}
+.soul-weapon-item-grade.grade-hero{color:#a855f7}
+.soul-weapon-item-grade.grade-legend{color:#ef4444}
+.soul-weapon-item-grade.grade-myth{color:#5ac8fa}
+
 @media(max-width:768px){.soul-weapon-filter-box{padding:15px;border-radius:18px}.soul-weapon-filter-label{font-size:14px}.soul-weapon-select{height:44px;border-radius:14px;font-size:14px}.soul-weapon-grid{grid-template-columns:repeat(5,minmax(0,1fr));gap:7px}.soul-weapon-btn{min-height:45px;padding:9px 4px;border-radius:12px;font-size:13px}.soul-info-card{padding:19px 12px 14px}.soul-info-value{font-size:16px}}
 @media(max-width:380px){.soul-weapon-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 
@@ -3124,24 +3133,47 @@ function openInfoPopup(title, html) {
   document.getElementById("unlockPopupText").innerHTML = html;
   document.getElementById("unlockPopupBg").classList.add("show");
 }
-function soulWeaponInfoRow(label, value) {
+function soulWeaponInfoRow(label, value, useHtml = false) {
   const safeLabel = String(label ?? "");
-  const safeValue = String(value ?? "입력 예정");
+  const rawValue = value ?? "입력 예정";
+  const safeValue = useHtml ? rawValue : String(rawValue);
+  const pendingClass = safeValue === "입력 예정" ? " pending" : "";
   return `
     <div class="soul-info-card">
       <span class="soul-info-badge">${safeLabel}</span>
-      <div class="soul-info-value pending">${safeValue}</div>
+      <div class="soul-info-value${pendingClass}">${safeValue}</div>
     </div>`;
 }
+function soulWeaponWeaponText(grade, rank) {
+  const gradeClassMap = {
+    "일반": "grade-normal",
+    "고급": "grade-advanced",
+    "레어": "grade-rare",
+    "영웅": "grade-hero",
+    "전설": "grade-legend",
+    "신화": "grade-myth"
+  };
+  const gradeClass = gradeClassMap[grade] || "grade-normal";
+  return `<span class="soul-weapon-item-grade ${gradeClass}">${grade}</span><span class="soul-weapon-item-rank">${rank}</span>`;
+}
+const soulWeaponInfoMap = {
+  "순수": {
+    stage: "80",
+    soul: "2000",
+    weapon: soulWeaponWeaponText("일반", "1등급"),
+    attack: "6300"
+  }
+};
 function openSoulWeaponPopup(name, hasEngraving) {
+  const info = soulWeaponInfoMap[name] || {};
   let html = '<div class="soul-info-list">';
-  html += soulWeaponInfoRow('필요 스테이지', '입력 예정');
-  html += soulWeaponInfoRow('필요 소울', '입력 예정');
-  html += soulWeaponInfoRow('필요 무기', '입력 예정');
-  html += soulWeaponInfoRow('추가 공격력', '입력 예정');
-  if (hasEngraving) html += soulWeaponInfoRow('각인', '입력 예정');
+  html += soulWeaponInfoRow('필요 스테이지', info.stage || '입력 예정');
+  html += soulWeaponInfoRow('필요 소울', info.soul || '입력 예정');
+  html += soulWeaponInfoRow('필요 무기', info.weapon || '입력 예정', !!info.weapon);
+  html += soulWeaponInfoRow('추가 공격력', info.attack || '입력 예정');
+  if (hasEngraving) html += soulWeaponInfoRow('각인', info.engraving || '입력 예정');
   html += '</div>';
-  openInfoPopup(name + ' 소울 웨폰', html);
+  openInfoPopup(name, html);
 }
 function filterSoulWeapons(color) {
   document.querySelectorAll('.soul-weapon-btn').forEach(btn => {
