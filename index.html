@@ -3161,11 +3161,11 @@ function soulWeaponInfoRow(label, value, useHtml = false, fullWidth = false) {
   const safeValue = useHtml ? rawValue : String(rawValue);
   const pendingClass = !useHtml && safeValue === "입력 예정" ? " pending" : "";
   const fullWidthClass = fullWidth ? " full-width" : "";
-  return '
-    <div class="soul-info-card' + fullWidthClass + '">
-      <span class="soul-info-badge">' + safeLabel + '</span>
-      <div class="soul-info-value' + pendingClass + '">' + safeValue + '</div>
-    </div>';
+  return `
+    <div class="soul-info-card${fullWidthClass}">
+      <span class="soul-info-badge">${safeLabel}</span>
+      <div class="soul-info-value${pendingClass}">${safeValue}</div>
+    </div>`;
 }
 function soulWeaponWeaponText(grade, rank) {
   const gradeClassMap = {
