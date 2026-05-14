@@ -1219,7 +1219,6 @@ button.faq-flow-item:focus,button.faq-flow-item:focus-visible{outline:none;borde
 }
 
 
-
 /* 블랙 오브 계산기 팝업 정렬/닫기/선택 팝업 수정 */
 .black-orb-element-popup-bg{z-index:3900 !important}
 .black-orb-detail-popup-bg{z-index:3800 !important}
@@ -1263,7 +1262,6 @@ button.faq-flow-item:focus,button.faq-flow-item:focus-visible{outline:none;borde
   .black-orb-element-select-grid{grid-template-columns:repeat(2,minmax(100px,1fr)) !important;gap:8px !important}
   .black-orb-element-select-grid .black-orb-element-choice{min-height:54px !important;border-radius:16px !important}
 }
-
 
 
 /* 블랙 오브 상세 팝업 독립 상태 및 레이아웃 미세조정 */
@@ -1314,7 +1312,6 @@ button.faq-flow-item:focus,button.faq-flow-item:focus-visible{outline:none;borde
   .black-orb-element-select-grid .black-orb-element-choice{min-height:42px !important;border-radius:14px !important;padding:6px 4px !important}
   .black-orb-element-select-grid .black-orb-element-choice-all{width:calc(50% - 2.5px) !important}
 }
-
 
 
 /* 블랙 오브 계산기 저장 버튼/헤더 정렬/메인 속성 팝업 조정 */
@@ -3244,6 +3241,7 @@ function addSections() {
               <span class="black-orb-percent">%</span><span class="black-orb-x2-badge">×2</span>
             </div>
           </div>
+          <button type="button" class="black-orb-detail-save-btn" id="blackOrbDetailSaveBtn" onclick="saveBlackOrbDetailStateToStorage()">저장</button>
         </div>
       </div>
 
@@ -6544,7 +6542,6 @@ function formatBlackOrbCommaInputs() {
   });
 }
 formatBlackOrbCommaInputs();
-
 
 
 const blackOrbDetailPopupState = {
