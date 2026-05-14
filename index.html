@@ -3907,6 +3907,34 @@ function getSoulWeaponEngraveGridHtml(name){
     '</div>';
   }
 
+
+  if(name === "용맹"){
+    /*
+      용맹 원본 추천표 기준
+      - A 도형 2개는 같은 꺾임형 계열이므로 둘 다 빨강 #EB6A67 적용
+      - 우측 하단 C 도형은 직선형이 아니라 역 꺾임형이므로 주황 #F4A64E 적용
+      - 빈칸은 회색 채움 타일 유지
+    */
+    const yongmaengCells = [
+      null, {color:"red"}, {color:"red"}, null,
+      {color:"red"}, {color:"red"}, {color:"red"}, {color:"orange"},
+      null, {color:"red"}, {color:"red"}, {color:"orange"},
+      null, {color:"red"}, {color:"orange"}, {color:"orange"}
+    ];
+    const gridHtml = yongmaengCells.map(cell => {
+      if(!cell) return '<div class="soul-engrave-cell empty-fill"></div>';
+      return '<div class="soul-engrave-cell has-node"><span class="soul-engrave-node ' + cell.color + '" aria-hidden="true"></span></div>';
+    }).join('');
+    return '<div class="soul-engrave-board" aria-label="용맹 4x4 각인 추천 배치">' +
+      '<svg class="soul-engrave-line-svg" viewBox="0 0 4 4" aria-hidden="true">' +
+        '<path class="soul-engrave-line red" d="M 1.5 .5 L 2.5 .5 L 2.5 1.5 L 2.5 2.5" />' +
+        '<path class="soul-engrave-line red" d="M .5 1.5 L 1.5 1.5 L 1.5 2.5 L 1.5 3.5" />' +
+        '<path class="soul-engrave-line orange" d="M 3.5 1.5 L 3.5 2.5 L 3.5 3.5 L 2.5 3.5" />' +
+      '</svg>' +
+      '<div class="soul-engrave-grid cols-4">' + gridHtml + '</div>' +
+    '</div>';
+  }
+
   const isFourByFour = somangIndex >= 0 && index <= somangIndex;
   const cols = isFourByFour ? 4 : 5;
   const size = cols * cols;
