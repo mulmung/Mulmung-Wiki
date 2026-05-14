@@ -3990,15 +3990,14 @@ function getSoulWeaponEngraveGridHtml(name){
   if(name === "미련"){
     /*
       미련 원본 추천표 기준
-      - 꺾임형 2개는 빨강 #EB6A67
-      - 역 꺾임형 1개는 주황 #F4A64E
+      - ㄱ자 계열 도형들은 모두 빨강 #EB6A67
       - 빈칸은 회색 #C9CBD3 유지
     */
     const miryeonCells = [
       {color:"red"}, {color:"red"}, null, null,
-      null, {color:"red"}, {color:"orange"}, {color:"orange"},
-      null, {color:"red"}, {color:"red"}, {color:"orange"},
-      {color:"red"}, {color:"red"}, {color:"red"}, {color:"orange"}
+      null, {color:"red"}, {color:"red"}, {color:"red"},
+      null, {color:"red"}, {color:"red"}, {color:"red"},
+      {color:"red"}, {color:"red"}, {color:"red"}, {color:"red"}
     ];
     const gridHtml = miryeonCells.map(cell => {
       if(!cell) return '<div class="soul-engrave-cell empty-fill"></div>';
@@ -4007,7 +4006,7 @@ function getSoulWeaponEngraveGridHtml(name){
     return '<div class="soul-engrave-board" aria-label="미련 4x4 각인 추천 배치">' +
       '<svg class="soul-engrave-line-svg" viewBox="0 0 4 4" aria-hidden="true">' +
         '<path class="soul-engrave-line red" d="M .5 .5 L 1.5 .5 L 1.5 1.5 L 1.5 2.5" />' +
-        '<path class="soul-engrave-line orange" d="M 2.5 1.5 L 3.5 1.5 L 3.5 2.5 L 3.5 3.5" />' +
+        '<path class="soul-engrave-line red" d="M 2.5 1.5 L 3.5 1.5 L 3.5 2.5 L 3.5 3.5" />' +
         '<path class="soul-engrave-line red" d="M .5 3.5 L 1.5 3.5 L 2.5 3.5 L 2.5 2.5" />' +
       '</svg>' +
       '<div class="soul-engrave-grid cols-4">' + gridHtml + '</div>' +
@@ -4044,16 +4043,15 @@ function getSoulWeaponEngraveGridHtml(name){
   if(name === "투지"){
     /*
       투지 원본 추천표 기준
-      - A 도형은 꺾임형 빨강 #EB6A67
+      - ㄱ자 계열 도형들은 모두 빨강 #EB6A67
       - D 도형은 삼방향형 초록 #98D05B
-      - 역 꺾임형 1개는 주황 #F4A64E
       - 빈칸은 회색 #C9CBD3 유지
     */
     const tujiCells = [
       null, {color:"red"}, {color:"red"}, {color:"red"},
-      null, {color:"red"}, {color:"orange"}, {color:"orange"},
-      null, {color:"green"}, null, {color:"orange"},
-      {color:"green"}, {color:"green"}, {color:"green"}, {color:"orange"}
+      null, {color:"red"}, {color:"red"}, {color:"red"},
+      null, {color:"green"}, null, {color:"red"},
+      {color:"green"}, {color:"green"}, {color:"green"}, {color:"red"}
     ];
     const gridHtml = tujiCells.map(cell => {
       if(!cell) return '<div class="soul-engrave-cell empty-fill"></div>';
@@ -4063,7 +4061,7 @@ function getSoulWeaponEngraveGridHtml(name){
       '<svg class="soul-engrave-line-svg" viewBox="0 0 4 4" aria-hidden="true">' +
         '<path class="soul-engrave-line red" d="M 1.5 .5 L 2.5 .5 L 3.5 .5 M 1.5 .5 L 1.5 1.5" />' +
         '<path class="soul-engrave-line green" d="M 1.5 2.5 L 1.5 3.5 M .5 3.5 L 1.5 3.5 L 2.5 3.5" />' +
-        '<path class="soul-engrave-line orange" d="M 2.5 1.5 L 3.5 1.5 L 3.5 2.5 L 3.5 3.5" />' +
+        '<path class="soul-engrave-line red" d="M 2.5 1.5 L 3.5 1.5 L 3.5 2.5 L 3.5 3.5" />' +
       '</svg>' +
       '<div class="soul-engrave-grid cols-4">' + gridHtml + '</div>' +
     '</div>';
