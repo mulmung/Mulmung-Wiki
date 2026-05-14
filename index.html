@@ -3264,7 +3264,7 @@ function toggleSoulTitleInfo(button) {
   if (willShow) bubble.classList.add('show');
 }
 const soulWeaponInfoMap = {
-  "순수": {
+"순수": {
     stage: "80",
     soul: "2,000",
     weapon: soulWeaponWeaponText("일반", "1등급"),
@@ -3359,6 +3359,402 @@ const soulWeaponInfoMap = {
     soul: "2,118,221,523,607,500,000",
     weapon: soulWeaponWeaponText("고급", "1등급"),
     attack: "1,153,987,330"
+  },
+  "무딘": {
+    stage: "380",
+    soul: "22,500,000",
+    weapon: soulWeaponWeaponText("일반", "4등급"),
+    attack: "559,000"
+  },
+  "호쾌": {
+    stage: "400",
+    soul: "27,000,000",
+    weapon: soulWeaponWeaponText("전설", "3등급"),
+    attack: "616,000"
+  },
+  "타락": {
+    stage: "420",
+    soul: "31,500,000",
+    weapon: soulWeaponWeaponText("영웅", "3등급"),
+    attack: "675,000"
+  },
+  "낭만": {
+    stage: "440",
+    soul: "67,500,000",
+    weapon: soulWeaponWeaponText("영웅", "2등급"),
+    attack: "736,000"
+  },
+  "고요": {
+    stage: "460",
+    soul: "81,000,000",
+    weapon: soulWeaponWeaponText("레어", "2등급"),
+    attack: "799,000"
+  },
+  "망각": {
+    stage: "480",
+    soul: "94,500,000",
+    weapon: soulWeaponWeaponText("레어", "4등급"),
+    attack: "864,000"
+  },
+  "미련": {
+    stage: "500",
+    soul: "202,500,000",
+    weapon: soulWeaponWeaponText("고급", "4등급"),
+    attack: "931,000"
+  },
+  "의지": {
+    stage: "520",
+    soul: "243,000,000",
+    weapon: soulWeaponWeaponText("전설", "1등급"),
+    attack: "1,000,000"
+  },
+  "투지": {
+    stage: "540",
+    soul: "283,500,000",
+    weapon: soulWeaponWeaponText("일반", "4등급"),
+    attack: "1,260,000"
+  },
+  "소망": {
+    stage: "560",
+    soul: "607,500,000",
+    weapon: soulWeaponWeaponText("레어", "1등급"),
+    attack: "1,452,000"
+  },
+  "평정": {
+    stage: "580",
+    soul: "729,000,000",
+    weapon: soulWeaponWeaponText("일반", "1등급"),
+    attack: "1,669,800"
+  },
+  "로망": {
+    stage: "600",
+    soul: "850,500,000",
+    weapon: soulWeaponWeaponText("일반", "3등급"),
+    attack: "1,916,640"
+  },
+  "믿음": {
+    stage: "620",
+    soul: "1,822,500,000",
+    weapon: soulWeaponWeaponText("일반", "2등급"),
+    attack: "2,196,150"
+  },
+  "유혹": {
+    stage: "640",
+    soul: "2,187,000,000",
+    weapon: soulWeaponWeaponText("레어", "2등급"),
+    attack: "2,512,395"
+  },
+  "상처": {
+    stage: "660",
+    soul: "2,551,500,000",
+    weapon: soulWeaponWeaponText("고급", "4등급"),
+    attack: "2,869,928"
+  },
+  "야성": {
+    stage: "680",
+    soul: "5,467,500,000",
+    weapon: soulWeaponWeaponText("고급", "2등급"),
+    attack: "3,273,844"
+  },
+  "야망": {
+    stage: "700",
+    soul: "6,561,000,000",
+    weapon: soulWeaponWeaponText("전설", "3등급"),
+    attack: "3,729,844"
+  },
+  "고독": {
+    stage: "720",
+    soul: "7,654,500,000",
+    weapon: soulWeaponWeaponText("일반", "4등급"),
+    attack: "4,244,305"
+  },
+  "질투": {
+    stage: "740",
+    soul: "16,402,500,000",
+    weapon: soulWeaponWeaponText("영웅", "3등급"),
+    attack: "4,824,360"
+  },
+  "지혜": {
+    stage: "760",
+    soul: "19,683,000,000",
+    weapon: soulWeaponWeaponText("고급", "3등급"),
+    attack: "5,477,984"
+  },
+  "이상": {
+    stage: "780",
+    soul: "22,963,500,000",
+    weapon: soulWeaponWeaponText("전설", "3등급"),
+    attack: "6,214,088"
+  },
+  "시련": {
+    stage: "800",
+    soul: "49,207,500,000",
+    weapon: soulWeaponWeaponText("레어", "1등급"),
+    attack: "7,042,633"
+  },
+  "우정": {
+    stage: "820",
+    soul: "59,049,000,000",
+    weapon: soulWeaponWeaponText("영웅", "2등급"),
+    attack: "7,974,746"
+  },
+  "노련": {
+    stage: "840",
+    soul: "68,890,500,000",
+    weapon: soulWeaponWeaponText("레어", "1등급"),
+    attack: "9,022,856"
+  },
+  "여유": {
+    stage: "860",
+    soul: "147,622,500,000",
+    weapon: soulWeaponWeaponText("영웅", "1등급"),
+    attack: "10,200,840"
+  },
+  "자만": {
+    stage: "880",
+    soul: "177,147,000,000",
+    weapon: soulWeaponWeaponText("일반", "4등급"),
+    attack: "11,524,192"
+  },
+  "본능": {
+    stage: "900",
+    soul: "206,671,500,000",
+    weapon: soulWeaponWeaponText("전설", "3등급"),
+    attack: "13,010,206"
+  },
+  "황홀": {
+    stage: "920",
+    soul: "442,867,500,000",
+    weapon: soulWeaponWeaponText("영웅", "3등급"),
+    attack: "14,678,181"
+  },
+  "명예": {
+    stage: "940",
+    soul: "531,441,000,000",
+    weapon: soulWeaponWeaponText("영웅", "2등급"),
+    attack: "16,549,649"
+  },
+  "위대": {
+    stage: "960",
+    soul: "620,014,500,000",
+    weapon: soulWeaponWeaponText("전설", "1등급"),
+    attack: "18,648,629"
+  },
+  "축복": {
+    stage: "980",
+    soul: "1,328,602,500,000",
+    weapon: soulWeaponWeaponText("전설", "4등급"),
+    attack: "21,001,909"
+  },
+  "투혼": {
+    stage: "1000",
+    soul: "1,594,323,000,000",
+    weapon: soulWeaponWeaponText("일반", "4등급"),
+    attack: "23,639,358"
+  },
+  "변화": {
+    stage: "1020",
+    soul: "1,860,043,500,000",
+    weapon: soulWeaponWeaponText("고급", "2등급"),
+    attack: "26,110,745"
+  },
+  "흥미": {
+    stage: "1040",
+    soul: "3,985,807,500,000",
+    weapon: soulWeaponWeaponText("영웅", "4등급"),
+    attack: "29,093,173"
+  },
+  "총명": {
+    stage: "1060",
+    soul: "4,782,969,000,000",
+    weapon: soulWeaponWeaponText("일반", "2등급"),
+    attack: "32,400,940"
+  },
+  "탐욕": {
+    stage: "1080",
+    soul: "5,580,130,500,000",
+    weapon: soulWeaponWeaponText("일반", "4등급"),
+    attack: "36,068,451"
+  },
+  "맹세": {
+    stage: "1100",
+    soul: "11,957,422,500,000",
+    weapon: soulWeaponWeaponText("전설", "3등급"),
+    attack: "40,133,666"
+  },
+  "불안": {
+    stage: "1120",
+    soul: "14,348,907,000,000",
+    weapon: soulWeaponWeaponText("영웅", "4등급"),
+    attack: "44,638,465"
+  },
+  "혈기": {
+    stage: "1140",
+    soul: "16,740,391,500,000",
+    weapon: soulWeaponWeaponText("전설", "1등급"),
+    attack: "49,629,046"
+  },
+  "기대": {
+    stage: "1160",
+    soul: "35,872,267,500,000",
+    weapon: soulWeaponWeaponText("레어", "4등급"),
+    attack: "55,156,359"
+  },
+  "방황": {
+    stage: "1180",
+    soul: "43,046,721,000,000",
+    weapon: soulWeaponWeaponText("영웅", "3등급"),
+    attack: "61,276,594"
+  },
+  "일탈": {
+    stage: "1200",
+    soul: "50,221,174,500,000",
+    weapon: soulWeaponWeaponText("고급", "2등급"),
+    attack: "68,051,704"
+  },
+  "갈증": {
+    stage: "1220",
+    soul: "107,616,802,500,000",
+    weapon: soulWeaponWeaponText("영웅", "4등급"),
+    attack: "75,549,993"
+  },
+  "성실": {
+    stage: "1240",
+    soul: "129,140,163,000,000",
+    weapon: soulWeaponWeaponText("고급", "1등급"),
+    attack: "83,846,756"
+  },
+  "결의": {
+    stage: "1260",
+    soul: "150,663,523,500,000",
+    weapon: soulWeaponWeaponText("영웅", "1등급"),
+    attack: "93,024,982"
+  },
+  "고양": {
+    stage: "1280",
+    soul: "322,850,407,500,000",
+    weapon: soulWeaponWeaponText("고급", "2등급"),
+    attack: "103,176,129"
+  },
+  "기백": {
+    stage: "1300",
+    soul: "387,420,489,000,000",
+    weapon: soulWeaponWeaponText("일반", "1등급"),
+    attack: "114,400,980"
+  },
+  "환상": {
+    stage: "1320",
+    soul: "451,990,570,500,000",
+    weapon: soulWeaponWeaponText("전설", "3등급"),
+    attack: "126,810,578"
+  },
+  "회의": {
+    stage: "1340",
+    soul: "968,551,222,500,000",
+    weapon: soulWeaponWeaponText("영웅", "1등급"),
+    attack: "140,527,256"
+  },
+  "허무": {
+    stage: "1360",
+    soul: "1,162,261,467,000,000",
+    weapon: soulWeaponWeaponText("레어", "4등급"),
+    attack: "155,685,770"
+  },
+  "집착": {
+    stage: "1380",
+    soul: "1,355,971,711,500,000",
+    weapon: soulWeaponWeaponText("레어", "3등급"),
+    attack: "172,434,545"
+  },
+  "여운": {
+    stage: "1400",
+    soul: "2,905,653,667,500,000",
+    weapon: soulWeaponWeaponText("고급", "2등급"),
+    attack: "190,937,046"
+  },
+  "정적": {
+    stage: "1420",
+    soul: "3,486,784,401,000,000",
+    weapon: soulWeaponWeaponText("고급", "3등급"),
+    attack: "211,373,276"
+  },
+  "애상": {
+    stage: "1440",
+    soul: "4,067,915,134,500,000",
+    weapon: soulWeaponWeaponText("영웅", "4등급"),
+    attack: "233,941,438"
+  },
+  "영원": {
+    stage: "1460",
+    soul: "8,716,961,002,500,000",
+    weapon: soulWeaponWeaponText("영웅", "3등급"),
+    attack: "258,859,746"
+  },
+  "고결": {
+    stage: "1480",
+    soul: "10,460,353,203,000,000",
+    weapon: soulWeaponWeaponText("레어", "3등급"),
+    attack: "286,368,424"
+  },
+  "경험": {
+    stage: "1500",
+    soul: "12,203,745,403,500,000",
+    weapon: soulWeaponWeaponText("고급", "3등급"),
+    attack: "316,731,899"
+  },
+  "독립": {
+    stage: "1520",
+    soul: "26,150,883,007,500,000",
+    weapon: soulWeaponWeaponText("고급", "4등급"),
+    attack: "350,241,216"
+  },
+  "영감": {
+    stage: "1540",
+    soul: "31,381,059,609,000,000",
+    weapon: soulWeaponWeaponText("전설", "2등급"),
+    attack: "387,216,682"
+  },
+  "몽환": {
+    stage: "1560",
+    soul: "36,611,236,210,500,000",
+    weapon: soulWeaponWeaponText("레어", "1등급"),
+    attack: "428,010,777"
+  },
+  "집념": {
+    stage: "1580",
+    soul: "78,452,649,022,500,000",
+    weapon: soulWeaponWeaponText("영웅", "1등급"),
+    attack: "473,011,355"
+  },
+  "냉철": {
+    stage: "1600",
+    soul: "94,143,178,827,000,000",
+    weapon: soulWeaponWeaponText("레어", "2등급"),
+    attack: "522,645,149"
+  },
+  "설렘": {
+    stage: "1620",
+    soul: "109,833,740,012,560,000",
+    weapon: soulWeaponWeaponText("전설", "4등급"),
+    attack: "577,381,635"
+  },
+  "만족": {
+    stage: "1640",
+    soul: "235,357,998,622,093,000",
+    weapon: soulWeaponWeaponText("영웅", "3등급"),
+    attack: "637,737,262"
+  },
+  "잔향": {
+    stage: "1660",
+    soul: "282,429,598,346,512,000",
+    weapon: soulWeaponWeaponText("전설", "1등급"),
+    attack: "704,280,110"
+  },
+  "전조": {
+    stage: "1680",
+    soul: "329,501,125,894,500,000",
+    weapon: soulWeaponWeaponText("레어", "4등급"),
+    attack: "777,635,000"
   }
 };
 function openSoulWeaponPopup(name, hasEngraving) {
