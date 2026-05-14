@@ -1264,6 +1264,57 @@ button.faq-flow-item:focus,button.faq-flow-item:focus-visible{outline:none;borde
   .black-orb-element-select-grid .black-orb-element-choice{min-height:54px !important;border-radius:16px !important}
 }
 
+
+
+/* 블랙 오브 상세 팝업 독립 상태 및 레이아웃 미세조정 */
+.black-orb-detail-popup-head{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  gap:10px !important;
+  margin:2px 0 8px !important;
+}
+.black-orb-detail-popup .black-orb-popup-close-top{
+  position:static !important;
+  top:auto !important;
+  right:auto !important;
+  margin:0 !important;
+  width:32px !important;
+  height:32px !important;
+  flex:0 0 auto !important;
+}
+.black-orb-detail-popup-badge{
+  min-width:68px !important;
+}
+.black-orb-element-select-popup{
+  max-width:272px !important;
+  padding:16px 14px 14px !important;
+  border-radius:22px !important;
+}
+.black-orb-element-popup-head{
+  margin-bottom:10px !important;
+}
+.black-orb-element-select-grid{
+  grid-template-columns:repeat(2,minmax(92px,1fr)) !important;
+  gap:6px !important;
+}
+.black-orb-element-select-grid .black-orb-element-choice{
+  min-height:48px !important;
+  border-radius:16px !important;
+  padding:8px 6px !important;
+}
+.black-orb-element-select-grid .black-orb-element-choice-all{
+  width:calc(50% - 3px) !important;
+}
+@media(max-width:768px){
+  .black-orb-detail-popup-head{gap:8px !important;margin:2px 0 6px !important}
+  .black-orb-detail-popup .black-orb-popup-close-top{width:30px !important;height:30px !important;font-size:18px !important}
+  .black-orb-element-select-popup{max-width:246px !important;padding:14px 12px 12px !important}
+  .black-orb-element-select-grid{grid-template-columns:repeat(2,minmax(84px,1fr)) !important;gap:5px !important}
+  .black-orb-element-select-grid .black-orb-element-choice{min-height:42px !important;border-radius:14px !important;padding:6px 4px !important}
+  .black-orb-element-select-grid .black-orb-element-choice-all{width:calc(50% - 2.5px) !important}
+}
+
 </style>
 </head>
 <body>
@@ -3069,9 +3120,9 @@ function addSections() {
 
       <div id="blackOrbDetailPopupBg" class="black-orb-detail-popup-bg" onclick="closeBlackOrbDetailPopup(event)">
         <div id="blackOrbDetailPopup" class="black-orb-detail-popup wind" onclick="event.stopPropagation()">
-          <button class="popup-floating-close-btn black-orb-popup-close-top" type="button" onclick="closeBlackOrbDetailPopup()" aria-label="닫기">×</button>
           <div class="black-orb-detail-popup-head">
             <span id="blackOrbDetailPopupBadge" class="black-orb-detail-popup-badge wind">바람</span>
+            <button class="popup-floating-close-btn black-orb-popup-close-top" type="button" onclick="closeBlackOrbDetailPopup()" aria-label="닫기">×</button>
           </div>
           <div class="black-orb-popup-box">
             <div class="black-orb-popup-row">
@@ -6407,6 +6458,62 @@ function formatBlackOrbCommaInputs() {
 formatBlackOrbCommaInputs();
 
 
+
+const blackOrbDetailPopupState = {
+  wind: createBlackOrbDetailPopupState(),
+  earth: createBlackOrbDetailPopupState(),
+  water: createBlackOrbDetailPopupState(),
+  fire: createBlackOrbDetailPopupState()
+};
+function createBlackOrbDetailPopupState() {
+  return {
+    topValue: "",
+    rows: Array.from({ length: 4 }, () => ({ value: "all", label: "모든", badgeClass: "all", number: "" }))
+  };
+}
+function applyBlackOrbPickerState(button, rowState) {
+  if (!button || !rowState) return;
+  button.dataset.value = rowState.value || "all";
+  button.dataset.label = rowState.label || "모든";
+  button.dataset.class = rowState.badgeClass || "all";
+  button.innerHTML = `<span class="black-orb-element-badge ${button.dataset.class}">${button.dataset.label}</span>`;
+}
+function saveBlackOrbCurrentDetailState() {
+  const popup = document.getElementById("blackOrbDetailPopup");
+  if (!popup) return;
+  const attr = popup.dataset.currentAttribute;
+  if (!attr || !blackOrbDetailPopupState[attr]) return;
+  const topInput = popup.querySelector('.black-orb-popup-row .black-orb-input');
+  blackOrbDetailPopupState[attr].topValue = topInput ? topInput.value : "";
+  const rows = popup.querySelectorAll('.black-orb-popup-detail-row');
+  blackOrbDetailPopupState[attr].rows = Array.from(rows).map((row) => {
+    const picker = row.querySelector('.black-orb-element-picker');
+    const input = row.querySelector('.black-orb-input');
+    return {
+      value: picker?.dataset.value || 'all',
+      label: picker?.dataset.label || '모든',
+      badgeClass: picker?.dataset.class || 'all',
+      number: input?.value || ''
+    };
+  });
+}
+function loadBlackOrbDetailState(attr) {
+  const popup = document.getElementById("blackOrbDetailPopup");
+  if (!popup || !attr || !blackOrbDetailPopupState[attr]) return;
+  const state = blackOrbDetailPopupState[attr];
+  const topInput = popup.querySelector('.black-orb-popup-row .black-orb-input');
+  if (topInput) topInput.value = state.topValue || "";
+  const rows = popup.querySelectorAll('.black-orb-popup-detail-row');
+  rows.forEach((row, index) => {
+    const rowState = state.rows[index] || { value:'all', label:'모든', badgeClass:'all', number:'' };
+    const picker = row.querySelector('.black-orb-element-picker');
+    const input = row.querySelector('.black-orb-input');
+    applyBlackOrbPickerState(picker, rowState);
+    if (input) input.value = rowState.number || "";
+    updateBlackOrbX2ForRow(row);
+  });
+}
+
 function openBlackOrbMainAttributePopup() {
   const popup = document.getElementById("blackOrbMainAttributePopupBg");
   if (popup) popup.classList.add("show");
@@ -6478,6 +6585,7 @@ function selectBlackOrbMainAttribute(option) {
 }
 
 function openBlackOrbDetailPopup(elementClass, label) {
+  saveBlackOrbCurrentDetailState();
   const popupBg = document.getElementById("blackOrbDetailPopupBg");
   const popup = document.getElementById("blackOrbDetailPopup");
   const badge = document.getElementById("blackOrbDetailPopupBadge");
@@ -6493,11 +6601,13 @@ function openBlackOrbDetailPopup(elementClass, label) {
     badge.className = `black-orb-detail-popup-badge ${safeClass}`;
     badge.textContent = safeLabel;
   }
+  loadBlackOrbDetailState(safeClass);
   updateAllBlackOrbX2Badges();
   if (popupBg) popupBg.classList.add("show");
 }
 function closeBlackOrbDetailPopup(event) {
   if (event && event.target && event.currentTarget && event.target !== event.currentTarget) return;
+  saveBlackOrbCurrentDetailState();
   const popupBg = document.getElementById("blackOrbDetailPopupBg");
   if (popupBg) popupBg.classList.remove("show");
 }
@@ -6527,9 +6637,16 @@ function selectBlackOrbElementFromPopup(option) {
   currentBlackOrbElementPicker.dataset.label = label;
   currentBlackOrbElementPicker.dataset.class = badgeClass;
   currentBlackOrbElementPicker.innerHTML = `<span class="black-orb-element-badge ${badgeClass}">${label}</span>`;
-  updateBlackOrbX2ForRow(currentBlackOrbElementPicker.closest(".black-orb-detail-row, .black-orb-popup-detail-row"));
+  const targetRow = currentBlackOrbElementPicker.closest(".black-orb-detail-row, .black-orb-popup-detail-row");
+  updateBlackOrbX2ForRow(targetRow);
+  if (targetRow && targetRow.closest('#blackOrbDetailPopup')) saveBlackOrbCurrentDetailState();
   closeBlackOrbElementPopup();
 }
+document.getElementById('blackOrbDetailPopup')?.addEventListener('input', function(event){
+  if (event.target && event.target.classList && event.target.classList.contains('black-orb-input')) {
+    saveBlackOrbCurrentDetailState();
+  }
+});
 updateAllBlackOrbX2Badges();
 window.addEventListener("resize", syncBlackOrbDetailPopupSize);
 
