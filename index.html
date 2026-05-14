@@ -4020,15 +4020,15 @@ function getSoulWeaponEngraveGridHtml(name){
   if(name === "타락"){
     /*
       타락 원본 추천표 기준
-      - A 도형 2개는 같은 역 꺾임형 계열이므로 모두 주황 #F4A64E
+      - A 도형 2개는 같은 꺾임형 계열이므로 모두 빨강 #EB6A67
       - B 도형은 네모형 노랑 #F0DC57
       - 빈칸은 회색 #C9CBD3 유지
     */
     const tarakCells = [
-      null, null, {color:"orange"}, {color:"orange"},
-      null, {color:"orange"}, {color:"orange"}, {color:"orange"},
-      {color:"yellow"}, {color:"yellow"}, {color:"orange"}, {color:"orange"},
-      {color:"yellow"}, {color:"yellow"}, {color:"orange"}, null
+      null, null, {color:"red"}, {color:"red"},
+      null, {color:"red"}, {color:"red"}, {color:"red"},
+      {color:"yellow"}, {color:"yellow"}, {color:"red"}, {color:"red"},
+      {color:"yellow"}, {color:"yellow"}, {color:"red"}, null
     ];
     const gridHtml = tarakCells.map(cell => {
       if(!cell) return '<div class="soul-engrave-cell empty-fill"></div>';
@@ -4036,8 +4036,8 @@ function getSoulWeaponEngraveGridHtml(name){
     }).join('');
     return '<div class="soul-engrave-board" aria-label="타락 4x4 각인 추천 배치">' +
       '<svg class="soul-engrave-line-svg" viewBox="0 0 4 4" aria-hidden="true">' +
-        '<path class="soul-engrave-line orange" d="M 2.5 .5 L 3.5 .5 L 3.5 1.5 L 3.5 2.5" />' +
-        '<path class="soul-engrave-line orange" d="M 1.5 1.5 L 2.5 1.5 L 2.5 2.5 L 2.5 3.5" />' +
+        '<path class="soul-engrave-line red" d="M 2.5 .5 L 3.5 .5 L 3.5 1.5 L 3.5 2.5" />' +
+        '<path class="soul-engrave-line red" d="M 1.5 1.5 L 2.5 1.5 L 2.5 2.5 L 2.5 3.5" />' +
         '<path class="soul-engrave-line yellow" d="M .5 2.5 L 1.5 2.5 L 1.5 3.5 L .5 3.5 L .5 2.5" />' +
       '</svg>' +
       '<div class="soul-engrave-grid cols-4">' + gridHtml + '</div>' +
@@ -4928,6 +4928,8 @@ async function savePublicUserProfile(user, nickname, role = "user", badges = nul
     status: role === "withdrawn" ? "withdrawn" : "active",
     active: role !== "withdrawn",
     lastActiveAt: Date.now(),
+    privacyAgreed: true,
+    privacyAgreedAt: serverTimestamp(),
     updatedAt: serverTimestamp()
   };
   // 닉네임 재설정 후에도 베타 테스터 같은 훈장이 화면에서 사라져 보이지 않도록 보존합니다.
@@ -5227,6 +5229,13 @@ window.saveProfileSetting = saveProfileSetting;
 function handleNicknameSetting() {
   openProfilePopup();
 }
+async function ensureUserPrivacyAgreement(userRef) {
+  await setDoc(userRef, {
+    privacyAgreed: true,
+    privacyAgreedAt: serverTimestamp(),
+    updatedAt: serverTimestamp()
+  }, { merge: true });
+}
 async function getOrCreateUserProfile(user) {
   const userRef = doc(db, "users", user.uid);
   const userSnap = await getDoc(userRef);
@@ -5238,6 +5247,8 @@ async function getOrCreateUserProfile(user) {
       role: "admin",
       status: "active",
       active: true,
+      privacyAgreed: true,
+      privacyAgreedAt: serverTimestamp(),
       updatedAt: serverTimestamp()
     }, { merge: true });
     await savePublicUserProfile(user, "물멍", "admin", normalizeBadges(adminData.badges), adminData.promotionStage || "", adminData.server || currentServer || "");
@@ -5251,6 +5262,8 @@ async function getOrCreateUserProfile(user) {
       status: "active",
       active: true,
       badges: [],
+      privacyAgreed: true,
+      privacyAgreedAt: serverTimestamp(),
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp()
     });
@@ -5265,11 +5278,16 @@ async function getOrCreateUserProfile(user) {
       role: "user",
       status: "active",
       active: true,
+      privacyAgreed: true,
+      privacyAgreedAt: serverTimestamp(),
       updatedAt: serverTimestamp()
     }, { merge: true });
     const restoredBadges = normalizeBadges(data.badges);
     await savePublicUserProfile(user, "", "user", restoredBadges, data.promotionStage || "", data.server || "");
     return { nickname: "", server: data.server || "", role: "user", badges: restoredBadges, promotionStage: data.promotionStage || "" };
+  }
+  if (data.privacyAgreed !== true) {
+    await ensureUserPrivacyAgreement(userRef);
   }
   await savePublicUserProfile(user, data.nickname || "", data.role || "user", normalizeBadges(data.badges), data.promotionStage || "", data.server || "");
   return {
