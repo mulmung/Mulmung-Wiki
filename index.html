@@ -772,18 +772,18 @@ button.faq-flow-item:focus,button.faq-flow-item:focus-visible{outline:none;borde
 .soul-info-list{display:grid;gap:12px;margin-top:10px;text-align:center}
 .soul-info-card{position:relative;margin-top:8px;padding:20px 14px 15px;border:2px solid #e5e7eb;border-radius:18px;background:#fff;text-align:center}
 .soul-info-badge{position:absolute;top:-14px;left:50%;transform:translateX(-50%);display:inline-flex;align-items:center;justify-content:center;min-width:104px;padding:7px 13px;border-radius:999px;background:#111827;color:#fff;font-size:13px;font-weight:950;line-height:1;white-space:nowrap;box-shadow:0 7px 16px rgba(0,0,0,.14)}
-.soul-info-value{min-height:24px;color:#6b7280;font-size:18px;font-weight:950;line-height:1.35;word-break:keep-all}
+.soul-info-value{min-height:28px;color:#111827;font-size:21px;font-weight:950;line-height:1.35;word-break:keep-all}
 .soul-info-value.pending{color:#9ca3af}
-.soul-weapon-item-grade{display:inline-flex;align-items:center;justify-content:center;margin-right:5px;font-weight:950;line-height:1}
-.soul-weapon-item-rank{color:#111827;font-weight:950}
-.soul-weapon-item-grade.grade-normal{color:#111827}
-.soul-weapon-item-grade.grade-advanced{color:#22c55e}
-.soul-weapon-item-grade.grade-rare{color:#fb923c}
-.soul-weapon-item-grade.grade-hero{color:#a855f7}
-.soul-weapon-item-grade.grade-legend{color:#ef4444}
-.soul-weapon-item-grade.grade-myth{color:#5ac8fa}
+.soul-weapon-item-grade{display:inline-flex;align-items:center;justify-content:center;margin-right:7px;min-height:28px;padding:0 10px;border-radius:999px;font-size:16px;font-weight:950;line-height:1;vertical-align:middle}
+.soul-weapon-item-rank{display:inline-flex;align-items:center;color:#111827;font-weight:950;vertical-align:middle}
+.soul-weapon-item-grade.grade-normal{background:#fff;color:#111827;border:1px solid #d1d5db}
+.soul-weapon-item-grade.grade-advanced{background:#22c55e;color:#fff}
+.soul-weapon-item-grade.grade-rare{background:#fb923c;color:#fff}
+.soul-weapon-item-grade.grade-hero{background:#a855f7;color:#fff}
+.soul-weapon-item-grade.grade-legend{background:#ef4444;color:#fff}
+.soul-weapon-item-grade.grade-myth{background:#5ac8fa;color:#fff}
 
-@media(max-width:768px){.soul-weapon-filter-box{padding:15px;border-radius:18px}.soul-weapon-filter-label{font-size:14px}.soul-weapon-select{height:44px;border-radius:14px;font-size:14px}.soul-weapon-grid{grid-template-columns:repeat(5,minmax(0,1fr));gap:7px}.soul-weapon-btn{min-height:45px;padding:9px 4px;border-radius:12px;font-size:13px}.soul-info-card{padding:19px 12px 14px}.soul-info-value{font-size:16px}}
+@media(max-width:768px){.soul-weapon-filter-box{padding:15px;border-radius:18px}.soul-weapon-filter-label{font-size:14px}.soul-weapon-select{height:44px;border-radius:14px;font-size:14px}.soul-weapon-grid{grid-template-columns:repeat(5,minmax(0,1fr));gap:7px}.soul-weapon-btn{min-height:45px;padding:9px 4px;border-radius:12px;font-size:13px}.soul-info-card{padding:19px 12px 14px}.soul-info-value{font-size:20px}}
 @media(max-width:380px){.soul-weapon-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 
 
@@ -3156,6 +3156,26 @@ function soulWeaponWeaponText(grade, rank) {
   const gradeClass = gradeClassMap[grade] || "grade-normal";
   return `<span class="soul-weapon-item-grade ${gradeClass}">${grade}</span><span class="soul-weapon-item-rank">${rank}</span>`;
 }
+function soulWeaponShortNumber(value) {
+  const num = Number(String(value).replace(/,/g, ""));
+  if (!Number.isFinite(num)) return "";
+  if (num < 1000) return String(num);
+
+  const units = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const unitIndex = Math.min(Math.floor(Math.log10(num) / 3) - 1, units.length - 1);
+  const divisor = Math.pow(1000, unitIndex + 1);
+  const scaled = num / divisor;
+  const formatted = Number.isInteger(scaled)
+    ? String(scaled)
+    : scaled.toFixed(2).replace(/\.?0+$/, "");
+
+  return `${formatted}${units[unitIndex]}`;
+}
+function soulWeaponNumberText(value) {
+  const raw = String(value ?? "");
+  const short = soulWeaponShortNumber(raw);
+  return short && short !== raw ? `${raw} / ${short}` : raw;
+}
 const soulWeaponInfoMap = {
   "순수": {
     stage: "80",
@@ -3168,9 +3188,9 @@ function openSoulWeaponPopup(name, hasEngraving) {
   const info = soulWeaponInfoMap[name] || {};
   let html = '<div class="soul-info-list">';
   html += soulWeaponInfoRow('필요 스테이지', info.stage || '입력 예정');
-  html += soulWeaponInfoRow('필요 소울', info.soul || '입력 예정');
+  html += soulWeaponInfoRow('필요 소울', info.soul ? soulWeaponNumberText(info.soul) : '입력 예정');
   html += soulWeaponInfoRow('필요 무기', info.weapon || '입력 예정', !!info.weapon);
-  html += soulWeaponInfoRow('추가 공격력', info.attack || '입력 예정');
+  html += soulWeaponInfoRow('추가 공격력', info.attack ? soulWeaponNumberText(info.attack) : '입력 예정');
   if (hasEngraving) html += soulWeaponInfoRow('각인', info.engraving || '입력 예정');
   html += '</div>';
   openInfoPopup(name, html);
