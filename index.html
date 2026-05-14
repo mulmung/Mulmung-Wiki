@@ -757,6 +757,27 @@ button.faq-flow-item:focus,button.faq-flow-item:focus-visible{outline:none;borde
 }
 
 
+/* 소울 웨폰 */
+.soul-weapon-guide{font-size:16px!important;font-weight:800;color:#4b5563;word-break:keep-all}
+.soul-weapon-filter-box{margin:18px 0 20px;padding:18px;border:1px solid #e5e7eb;border-radius:20px;background:#f9fafb}
+.soul-weapon-filter-label{display:block;margin-bottom:10px;font-size:16px;font-weight:950;color:#111827;word-break:keep-all}
+.soul-weapon-select{width:100%;height:48px;border:2px solid #111827;border-radius:16px;background:#fff;color:#111827;padding:0 14px;font-size:16px;font-weight:900;outline:none;cursor:pointer}
+.soul-weapon-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-top:18px}
+.soul-weapon-btn{border:none;border-radius:16px;min-height:58px;padding:12px 8px;color:#fff;font-size:17px;font-weight:950;line-height:1.15;cursor:pointer;word-break:keep-all;box-shadow:0 8px 18px rgba(0,0,0,.10);transition:transform .15s ease,filter .15s ease,box-shadow .15s ease}
+.soul-weapon-btn:hover{transform:translateY(-2px);filter:brightness(1.03);box-shadow:0 12px 24px rgba(0,0,0,.14)}
+.soul-weapon-btn.is-hidden{display:none}
+.soul-green{background:linear-gradient(135deg,#16a34a,#22c55e)}
+.soul-blue{background:linear-gradient(135deg,#2563eb,#38bdf8)}
+.soul-red{background:linear-gradient(135deg,#dc2626,#fb7185)}
+.soul-info-list{display:grid;gap:12px;margin-top:10px;text-align:center}
+.soul-info-card{position:relative;margin-top:8px;padding:20px 14px 15px;border:2px solid #e5e7eb;border-radius:18px;background:#fff;text-align:center}
+.soul-info-badge{position:absolute;top:-14px;left:50%;transform:translateX(-50%);display:inline-flex;align-items:center;justify-content:center;min-width:104px;padding:7px 13px;border-radius:999px;background:#111827;color:#fff;font-size:13px;font-weight:950;line-height:1;white-space:nowrap;box-shadow:0 7px 16px rgba(0,0,0,.14)}
+.soul-info-value{min-height:24px;color:#6b7280;font-size:18px;font-weight:950;line-height:1.35;word-break:keep-all}
+.soul-info-value.pending{color:#9ca3af}
+@media(max-width:768px){.soul-weapon-filter-box{padding:15px;border-radius:18px}.soul-weapon-filter-label{font-size:14px}.soul-weapon-select{height:44px;border-radius:14px;font-size:14px}.soul-weapon-grid{grid-template-columns:repeat(5,minmax(0,1fr));gap:7px}.soul-weapon-btn{min-height:45px;padding:9px 4px;border-radius:12px;font-size:13px}.soul-info-card{padding:19px 12px 14px}.soul-info-value{font-size:16px}}
+@media(max-width:380px){.soul-weapon-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+
+
 /* 전역 팝업 우측 상단 닫기 버튼 */
 .popup-floating-close-btn{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:center;width:42px;height:42px;margin:-8px -6px -34px auto;border:none;border-radius:999px;background:#111827;color:#fff;font-size:28px;font-weight:950;line-height:1;cursor:pointer;box-shadow:0 8px 20px rgba(0,0,0,.24)}
 .popup-floating-close-btn:hover{filter:brightness(.94)}
@@ -925,6 +946,7 @@ button.faq-flow-item:focus,button.faq-flow-item:focus-visible{outline:none;borde
       <div class="menu-group"><button class="menu-btn" onclick="showSection('diamond-career')">전체 진로</button></div>
       <div class="menu-group"><button class="menu-btn" onclick="showSection('promotion')">승급</button></div>
       <div class="menu-group"><button class="menu-btn" onclick="toggleSubMenu('infoMenu', this)">스킬 <span>＋</span></button><div class="sub-menu" id="infoMenu"></div></div>
+      <div class="menu-group"><button class="menu-btn" onclick="showSection('soul-weapon')">소울 웨폰</button></div>
       <div class="menu-group"><button class="menu-btn" onclick="showSection('diamond-spirit')">정령</button></div>
       <div class="menu-group"><button class="menu-btn" onclick="showSection('diamond-familiar')">사역마</button></div>
       <div class="menu-group"><button class="menu-btn" onclick="showSection('diamond-beast')">비스트</button></div>
@@ -2121,6 +2143,7 @@ const pageMap = {
   "intro":["들어가며",""],
   "diamond-career":["전체 진로",""],
   "diamond-spirit":["정령",""],
+  "soul-weapon":["소울 웨폰",""],
   "diamond-familiar":["사역마",""],
   "diamond-beast":["비스트",""],
   "adventure":["모험",""],
@@ -2560,6 +2583,36 @@ function addSections() {
       <img src="diamond-roadmap.png" alt="다이아 소모처 로드맵" class="roadmap-image" />
     </section>
     <section id="diamond-class" class="card"><h2>클래스</h2><button class="unlock-btn" onclick="openUnlockPopup('클래스', '250레벨 달성 / 120 스테이지')">해금</button><p>추후 [클래스] 내용을 업데이트 할 예정입니다.</p></section>
+    <section id="soul-weapon" class="card">
+      <h2>소울 웨폰</h2>
+      <p class="soul-weapon-guide">소울 웨폰 색상을 선택하거나 아래 버튼을 눌러 필요 정보를 확인할 수 있습니다.</p>
+      <div class="soul-weapon-filter-box">
+        <label for="soulWeaponColorSelect" class="soul-weapon-filter-label">원하는 색의 소울 웨폰을 골라주세요.</label>
+        <select id="soulWeaponColorSelect" class="soul-weapon-select" onchange="filterSoulWeapons(this.value)">
+          <option value="all" selected>전체 소울 웨폰</option>
+          <option value="green">그린 소울 웨폰</option>
+          <option value="blue">블루 소울 웨폰</option>
+          <option value="red">레드 소울 웨폰</option>
+        </select>
+      </div>
+      <div class="soul-weapon-grid" id="soulWeaponGrid">
+        <button class="soul-weapon-btn soul-green" type="button" data-soul-color="green" onclick="openSoulWeaponPopup('순수', false)">순수</button>
+        <button class="soul-weapon-btn soul-blue" type="button" data-soul-color="blue" onclick="openSoulWeaponPopup('냉정', false)">냉정</button>
+        <button class="soul-weapon-btn soul-red" type="button" data-soul-color="red" onclick="openSoulWeaponPopup('갈망', false)">갈망</button>
+        <button class="soul-weapon-btn soul-green" type="button" data-soul-color="green" onclick="openSoulWeaponPopup('노력', false)">노력</button>
+        <button class="soul-weapon-btn soul-blue" type="button" data-soul-color="blue" onclick="openSoulWeaponPopup('인내', false)">인내</button>
+        <button class="soul-weapon-btn soul-red" type="button" data-soul-color="red" onclick="openSoulWeaponPopup('증오', false)">증오</button>
+        <button class="soul-weapon-btn soul-green" type="button" data-soul-color="green" onclick="openSoulWeaponPopup('위풍', false)">위풍</button>
+        <button class="soul-weapon-btn soul-blue" type="button" data-soul-color="blue" onclick="openSoulWeaponPopup('고뇌', false)">고뇌</button>
+        <button class="soul-weapon-btn soul-red" type="button" data-soul-color="red" onclick="openSoulWeaponPopup('환희', false)">환희</button>
+        <button class="soul-weapon-btn soul-green" type="button" data-soul-color="green" onclick="openSoulWeaponPopup('분노', false)">분노</button>
+        <button class="soul-weapon-btn soul-blue" type="button" data-soul-color="blue" onclick="openSoulWeaponPopup('위로', false)">위로</button>
+        <button class="soul-weapon-btn soul-red" type="button" data-soul-color="red" onclick="openSoulWeaponPopup('열망', false)">열망</button>
+        <button class="soul-weapon-btn soul-green" type="button" data-soul-color="green" onclick="openSoulWeaponPopup('긍지', true)">긍지</button>
+        <button class="soul-weapon-btn soul-blue" type="button" data-soul-color="blue" onclick="openSoulWeaponPopup('용맹', true)">용맹</button>
+        <button class="soul-weapon-btn soul-red" type="button" data-soul-color="red" onclick="openSoulWeaponPopup('폭주', true)">폭주</button>
+      </div>
+    </section>
     <section id="diamond-spirit" class="card">
       <h2>정령</h2>
       <div class="spirit-action-row">
@@ -3000,6 +3053,30 @@ function openInfoPopup(title, html) {
   document.getElementById("unlockPopupTitle").textContent = title;
   document.getElementById("unlockPopupText").innerHTML = html;
   document.getElementById("unlockPopupBg").classList.add("show");
+}
+function soulWeaponInfoRow(label, value) {
+  const safeLabel = String(label ?? "");
+  const safeValue = String(value ?? "입력 예정");
+  return `
+    <div class="soul-info-card">
+      <span class="soul-info-badge">${safeLabel}</span>
+      <div class="soul-info-value pending">${safeValue}</div>
+    </div>`;
+}
+function openSoulWeaponPopup(name, hasEngraving) {
+  let html = '<div class="soul-info-list">';
+  html += soulWeaponInfoRow('필요 스테이지', '입력 예정');
+  html += soulWeaponInfoRow('필요 무기', '입력 예정');
+  html += soulWeaponInfoRow('추가 공격력', '입력 예정');
+  if (hasEngraving) html += soulWeaponInfoRow('각인', '입력 예정');
+  html += '</div>';
+  openInfoPopup(name + ' 소울 웨폰', html);
+}
+function filterSoulWeapons(color) {
+  document.querySelectorAll('.soul-weapon-btn').forEach(btn => {
+    const shouldShow = color === 'all' || btn.dataset.soulColor === color;
+    btn.classList.toggle('is-hidden', !shouldShow);
+  });
 }
 function closeUnlockPopup() {
   document.getElementById("unlockPopupBg").classList.remove("show");
