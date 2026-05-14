@@ -585,6 +585,7 @@ body.skill-can-manage .skill-manage-only{display:inline-block}
 .role-manage-action-btn{border:none;border-radius:14px;padding:11px 8px;font-size:13px;font-weight:950;cursor:pointer;background:#e5e7eb;color:#111827}
 .role-manage-action-btn.primary{background:#f97316;color:#fff}
 .role-manage-action-btn.beta{background:#facc15;color:#fff}
+.role-manage-action-btn.danger{background:#dc2626;color:#fff}
 .role-manage-action-btn.dark{background:#111827;color:#fff}
 .role-manage-action-btn:disabled{opacity:.38;cursor:not-allowed}
 .role-manage-close-btn{width:100%;margin-top:4px;border:none;border-radius:999px;padding:11px 14px;background:#111827;color:#fff;font-size:13px;font-weight:950;cursor:pointer}
@@ -1353,6 +1354,12 @@ button.faq-flow-item:focus,button.faq-flow-item:focus-visible{outline:none;borde
         <div class="role-manage-group-title">훈장 변경</div>
         <div class="role-manage-actions single">
           <button id="roleToggleBetaBtn" class="role-manage-action-btn beta" type="button">베타 테스터 변경</button>
+        </div>
+      </div>
+      <div class="role-manage-group">
+        <div class="role-manage-group-title">탈퇴 처리</div>
+        <div class="role-manage-actions single">
+          <button id="roleForceWithdrawBtn" class="role-manage-action-btn danger" type="button">탈퇴 처리</button>
         </div>
       </div>
       <button class="role-manage-close-btn popup-bottom-close-hidden" type="button" onclick="closeRoleUserManagePopup()">닫기</button>
@@ -5544,8 +5551,10 @@ function openRoleUserManagePopup(uid) {
   const setUserBtn = document.getElementById("roleSetUserBtn");
   const setSkillBtn = document.getElementById("roleSetSkillBtn");
   const betaBtn = document.getElementById("roleToggleBetaBtn");
+  const forceWithdrawBtn = document.getElementById("roleForceWithdrawBtn");
   setUserBtn.disabled = role === "admin" || role === "user";
   setSkillBtn.disabled = role === "admin" || role === "skill_master";
+  forceWithdrawBtn.disabled = role === "admin";
   setUserBtn.onclick = async () => {
     await setUserRole(uid, "user");
     closeRoleUserManagePopup();
@@ -5557,6 +5566,10 @@ function openRoleUserManagePopup(uid) {
   betaBtn.textContent = hasBeta ? "베타 테스터 해제" : "베타 테스터 부여";
   betaBtn.onclick = async () => {
     await setUserBetaTester(uid, !hasBeta);
+    closeRoleUserManagePopup();
+  };
+  forceWithdrawBtn.onclick = async () => {
+    await forceWithdrawUser(uid);
     closeRoleUserManagePopup();
   };
   document.getElementById("roleManagePopupBg").classList.add("show");
@@ -5636,6 +5649,47 @@ async function openRolePopup() {
     list.innerHTML = `<div class="saved-empty">유저 목록을 불러오지 못했습니다.<br>${error.code || "unknown"}</div>`;
   }
 }
+async function forceWithdrawUser(uid) {
+  if (!currentUser || !isAdminUser(currentUser)) {
+    alert("관리자만 탈퇴 처리할 수 있습니다.");
+    return;
+  }
+  const userData = roleManageUsersById[uid] || {};
+  const nickname = userData.nickname || "닉네임 미설정";
+  const email = userData.email || "이메일 없음";
+  if ((userData.role || "user") === "admin") {
+    alert("관리자 계정은 탈퇴 처리할 수 없습니다.");
+    return;
+  }
+  const confirmed = confirm(`${nickname} 님을 정말 탈퇴 처리하시겠습니까?
+
+이 작업을 하면 해당 유저는 목록과 가입자 수에서 제외됩니다.`);
+  if (!confirmed) return;
+  const confirmedAgain = confirm(`마지막 확인입니다.
+${nickname} (${email}) 님을 탈퇴 처리할까요?`);
+  if (!confirmedAgain) return;
+  try {
+    const withdrawPayload = {
+      nickname: "",
+      role: "withdrawn",
+      status: "withdrawn",
+      active: false,
+      lastActiveAt: null,
+      withdrawnAt: serverTimestamp(),
+      updatedAt: serverTimestamp()
+    };
+    await setDoc(doc(db, "users", uid), withdrawPayload, { merge: true });
+    await setDoc(doc(db, "publicUsers", uid), withdrawPayload, { merge: true });
+    await refreshSiteStats();
+    alert(`${nickname} 님을 탈퇴 처리했습니다.`);
+    await openRolePopup();
+  } catch (error) {
+    console.error("관리자 탈퇴 처리 오류:", error);
+    alert(`탈퇴 처리 오류: ${error.code || "unknown"}
+${error.message || ""}`);
+  }
+}
+window.forceWithdrawUser = forceWithdrawUser;
 async function setUserRole(uid, role) {
   if (!currentUser || !isAdminUser(currentUser)) {
     alert("관리자만 직책을 변경할 수 있습니다.");
