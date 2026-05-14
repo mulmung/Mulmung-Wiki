@@ -769,22 +769,38 @@ button.faq-flow-item:focus,button.faq-flow-item:focus-visible{outline:none;borde
 .soul-green{background:linear-gradient(135deg,#16a34a,#22c55e)}
 .soul-blue{background:linear-gradient(135deg,#2563eb,#38bdf8)}
 .soul-red{background:linear-gradient(135deg,#dc2626,#fb7185)}
-.soul-info-list{display:grid;gap:12px;margin-top:10px;text-align:center}
-.soul-info-card{position:relative;margin-top:8px;padding:20px 14px 15px;border:2px solid #e5e7eb;border-radius:18px;background:#fff;text-align:center}
-.soul-info-badge{position:absolute;top:-14px;left:50%;transform:translateX(-50%);display:inline-flex;align-items:center;justify-content:center;min-width:104px;padding:7px 13px;border-radius:999px;background:#111827;color:#fff;font-size:13px;font-weight:950;line-height:1;white-space:nowrap;box-shadow:0 7px 16px rgba(0,0,0,.14)}
-.soul-info-value{min-height:28px;color:#111827;font-size:21px;font-weight:950;line-height:1.35;word-break:keep-all}
+.soul-info-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 14px;margin-top:14px;text-align:center}
+.soul-info-card{position:relative;margin-top:10px;padding:22px 14px 16px;border:2px solid #e5e7eb;border-radius:20px;background:#fff;text-align:center;min-height:130px;display:flex;align-items:center;justify-content:center}
+.soul-info-card.full-width{grid-column:1/-1;min-height:136px}
+.soul-info-badge{position:absolute;top:-14px;left:50%;transform:translateX(-50%);display:inline-flex;align-items:center;justify-content:center;min-width:114px;padding:8px 14px;border-radius:999px;background:#111827;color:#fff;font-size:14px;font-weight:950;line-height:1;white-space:nowrap;box-shadow:0 7px 16px rgba(0,0,0,.14)}
+.soul-info-value{width:100%;min-height:40px;color:#111827;font-size:20px;font-weight:950;line-height:1.4;word-break:keep-all;display:flex;align-items:center;justify-content:center;text-align:center}
 .soul-info-value.pending{color:#9ca3af}
-.soul-weapon-item-grade{display:inline-flex;align-items:center;justify-content:center;margin-right:7px;min-height:28px;padding:0 10px;border-radius:999px;font-size:16px;font-weight:950;line-height:1;vertical-align:middle}
-.soul-weapon-item-rank{display:inline-flex;align-items:center;color:#111827;font-weight:950;vertical-align:middle}
+.soul-value-main{color:#111827;font-size:20px;font-weight:950;line-height:1.4}
+.soul-value-line-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;width:100%}
+.soul-value-line{display:inline-flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap}
+.soul-help-btn,.soul-color-info-btn{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border:none;border-radius:999px;font-size:14px;font-weight:950;line-height:1;cursor:pointer;box-shadow:0 5px 12px rgba(0,0,0,.12)}
+.soul-help-btn{background:#f3f4f6;color:#111827;border:1px solid #d1d5db}
+.soul-inline-info,.soul-title-inline-info{display:none;padding:10px 12px;border-radius:14px;background:#111827;color:#fff;font-size:13px;font-weight:800;line-height:1.5;text-align:center;word-break:break-all;box-shadow:0 8px 18px rgba(0,0,0,.16)}
+.soul-inline-info.show,.soul-title-inline-info.show{display:block}
+.soul-weapon-item-grade{display:inline-flex;align-items:center;justify-content:center;margin-right:7px;min-height:32px;padding:0 12px;border-radius:999px;font-size:18px;font-weight:950;line-height:1;vertical-align:middle}
+.soul-weapon-item-rank{display:inline-flex;align-items:center;color:#111827;font-size:18px;font-weight:950;vertical-align:middle}
 .soul-weapon-item-grade.grade-normal{background:#fff;color:#111827;border:1px solid #d1d5db}
 .soul-weapon-item-grade.grade-advanced{background:#22c55e;color:#fff}
 .soul-weapon-item-grade.grade-rare{background:#fb923c;color:#fff}
 .soul-weapon-item-grade.grade-hero{background:#a855f7;color:#fff}
 .soul-weapon-item-grade.grade-legend{background:#ef4444;color:#fff}
 .soul-weapon-item-grade.grade-myth{background:#5ac8fa;color:#fff}
-
-@media(max-width:768px){.soul-weapon-filter-box{padding:15px;border-radius:18px}.soul-weapon-filter-label{font-size:14px}.soul-weapon-select{height:44px;border-radius:14px;font-size:14px}.soul-weapon-grid{grid-template-columns:repeat(5,minmax(0,1fr));gap:7px}.soul-weapon-btn{min-height:45px;padding:9px 4px;border-radius:12px;font-size:13px}.soul-info-card{padding:19px 12px 14px}.soul-info-value{font-size:20px}}
-@media(max-width:380px){.soul-weapon-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.unlock-popup.soul-weapon-popup-mode{max-width:560px;padding:24px 20px 18px;text-align:center}
+.unlock-popup.soul-weapon-popup-mode h3{margin-bottom:10px}
+.unlock-popup.soul-weapon-popup-mode #unlockPopupText{display:block}
+.soul-popup-title-wrap{display:flex;flex-direction:column;align-items:center;gap:10px}
+.soul-popup-title-row{display:inline-flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap}
+.soul-popup-title-name{font-size:inherit;font-weight:inherit;line-height:1.2;color:#111827}
+.soul-color-info-btn.soul-green{background:#22c55e;color:#fff}
+.soul-color-info-btn.soul-blue{background:#3b82f6;color:#fff}
+.soul-color-info-btn.soul-red{background:#ef4444;color:#fff}
+@media(max-width:768px){.soul-weapon-filter-box{padding:15px;border-radius:18px}.soul-weapon-filter-label{font-size:14px}.soul-weapon-select{height:44px;border-radius:14px;font-size:14px}.soul-weapon-grid{grid-template-columns:repeat(5,minmax(0,1fr));gap:7px}.soul-weapon-btn{min-height:45px;padding:9px 4px;border-radius:12px;font-size:13px}.unlock-popup.soul-weapon-popup-mode{max-width:94vw;padding:20px 14px 16px}.soul-info-list{gap:16px 10px}.soul-info-card{min-height:118px;padding:20px 10px 14px;border-radius:18px}.soul-info-card.full-width{min-height:124px}.soul-info-badge{min-width:102px;font-size:13px;padding:7px 12px}.soul-info-value,.soul-value-main,.soul-weapon-item-grade,.soul-weapon-item-rank{font-size:16px}.soul-help-btn,.soul-color-info-btn{width:24px;height:24px;font-size:13px}.soul-inline-info,.soul-title-inline-info{font-size:12px;padding:9px 10px}}
+@media(max-width:380px){.soul-weapon-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.soul-info-list{grid-template-columns:1fr}.soul-info-card,.soul-info-card.full-width{grid-column:auto;min-height:112px}}
 
 
 /* 전역 팝업 우측 상단 닫기 버튼 */
@@ -971,7 +987,7 @@ button.faq-flow-item:focus,button.faq-flow-item:focus-visible{outline:none;borde
     </div>
   </div>
   <div class="unlock-popup-bg" id="unlockPopupBg" onclick="closeUnlockPopup()">
-    <div class="unlock-popup" onclick="event.stopPropagation()"><button class="popup-floating-close-btn" type="button" onclick="closeUnlockPopup()" aria-label="닫기">×</button><h3 id="unlockPopupTitle">해금 조건</h3><p id="unlockPopupText"></p></div>
+    <div class="unlock-popup" onclick="event.stopPropagation()"><button class="popup-floating-close-btn" type="button" onclick="closeUnlockPopup()" aria-label="닫기">×</button><h3 id="unlockPopupTitle">해금 조건</h3><div id="unlockPopupText"></div></div>
   </div>
   <div class="spirit-detail-popup-bg" id="spiritDetailPopupBg" onclick="closeSpiritPopup()">
     <div class="spirit-detail-popup" onclick="event.stopPropagation()">
@@ -3123,26 +3139,33 @@ function showSection(sectionId) {
   if (sectionId === "skill-setting-collection") renderSavedSettingCollection();
   if (window.innerWidth <= 768) closeSidebar();
 }
+function resetUnlockPopupMode() {
+  const popupEl = document.querySelector('#unlockPopupBg .unlock-popup');
+  if (popupEl) popupEl.classList.remove('soul-weapon-popup-mode');
+}
 function openUnlockPopup(title, text) {
+  resetUnlockPopupMode();
   document.getElementById("unlockPopupTitle").textContent = title + " 해금 조건";
   document.getElementById("unlockPopupText").textContent = text;
   document.getElementById("unlockPopupBg").classList.add("show");
 }
 function openInfoPopup(title, html) {
+  resetUnlockPopupMode();
   document.getElementById("unlockPopupTitle").textContent = title;
   document.getElementById("unlockPopupText").innerHTML = html;
   document.getElementById("unlockPopupBg").classList.add("show");
 }
-function soulWeaponInfoRow(label, value, useHtml = false) {
+function soulWeaponInfoRow(label, value, useHtml = false, fullWidth = false) {
   const safeLabel = String(label ?? "");
   const rawValue = value ?? "입력 예정";
   const safeValue = useHtml ? rawValue : String(rawValue);
-  const pendingClass = safeValue === "입력 예정" ? " pending" : "";
-  return `
-    <div class="soul-info-card">
-      <span class="soul-info-badge">${safeLabel}</span>
-      <div class="soul-info-value${pendingClass}">${safeValue}</div>
-    </div>`;
+  const pendingClass = !useHtml && safeValue === "입력 예정" ? " pending" : "";
+  const fullWidthClass = fullWidth ? " full-width" : "";
+  return '
+    <div class="soul-info-card' + fullWidthClass + '">
+      <span class="soul-info-badge">' + safeLabel + '</span>
+      <div class="soul-info-value' + pendingClass + '">' + safeValue + '</div>
+    </div>';
 }
 function soulWeaponWeaponText(grade, rank) {
   const gradeClassMap = {
@@ -3154,27 +3177,60 @@ function soulWeaponWeaponText(grade, rank) {
     "신화": "grade-myth"
   };
   const gradeClass = gradeClassMap[grade] || "grade-normal";
-  return `<span class="soul-weapon-item-grade ${gradeClass}">${grade}</span><span class="soul-weapon-item-rank">${rank}</span>`;
+  return '<span class="soul-weapon-item-grade ' + gradeClass + '">' + grade + '</span><span class="soul-weapon-item-rank">' + rank + '</span>';
 }
 function soulWeaponShortNumber(value) {
   const num = Number(String(value).replace(/,/g, ""));
   if (!Number.isFinite(num)) return "";
   if (num < 1000) return String(num);
-
   const units = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   const unitIndex = Math.min(Math.floor(Math.log10(num) / 3) - 1, units.length - 1);
   const divisor = Math.pow(1000, unitIndex + 1);
   const scaled = num / divisor;
   const formatted = Number.isInteger(scaled)
     ? String(scaled)
-    : scaled.toFixed(2).replace(/\.?0+$/, "");
-
-  return `${formatted}${units[unitIndex]}`;
+    : scaled.toFixed(2).replace(/.?0+$/, "");
+  return formatted + units[unitIndex];
 }
-function soulWeaponNumberText(value) {
-  const raw = String(value ?? "");
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+function soulWeaponNumberHtml(value) {
+  const raw = String(value ?? "").trim();
+  if (!raw) return "입력 예정";
   const short = soulWeaponShortNumber(raw);
-  return short && short !== raw ? `${raw} / ${short}` : raw;
+  if (short && short !== raw) {
+    return '<div class="soul-value-line-wrap"><div class="soul-value-line"><span class="soul-value-main">' + short + '</span><button class="soul-help-btn" type="button" onclick="toggleSoulInlineInfo(this)">?</button></div><div class="soul-inline-info">' + escapeHtml(raw) + '</div></div>';
+  }
+  return '<span class="soul-value-main">' + escapeHtml(raw) + '</span>';
+}
+function getSoulWeaponColorByName(name) {
+  const btn = Array.from(document.querySelectorAll('.soul-weapon-btn')).find(item => item.textContent.trim() === name);
+  return btn ? btn.dataset.soulColor || 'green' : 'green';
+}
+function getSoulWeaponColorMeta(color) {
+  if (color === 'blue') return { label: '블루 소울 웨폰', desc: '블루 소울이 필요한 소울 웨폰입니다.' };
+  if (color === 'red') return { label: '레드 소울 웨폰', desc: '레드 소울이 필요한 소울 웨폰입니다.' };
+  return { label: '그린 소울 웨폰', desc: '그린 소울이 필요한 소울 웨폰입니다.' };
+}
+function toggleSoulInlineInfo(button) {
+  const bubble = button.closest('.soul-value-line-wrap')?.querySelector('.soul-inline-info');
+  if (!bubble) return;
+  const willShow = !bubble.classList.contains('show');
+  document.querySelectorAll('.soul-inline-info.show').forEach(item => item.classList.remove('show'));
+  if (willShow) bubble.classList.add('show');
+}
+function toggleSoulTitleInfo(button) {
+  const bubble = button.closest('.soul-popup-title-wrap')?.querySelector('.soul-title-inline-info');
+  if (!bubble) return;
+  const willShow = !bubble.classList.contains('show');
+  document.querySelectorAll('.soul-title-inline-info.show').forEach(item => item.classList.remove('show'));
+  if (willShow) bubble.classList.add('show');
 }
 const soulWeaponInfoMap = {
   "순수": {
@@ -3190,15 +3246,21 @@ const soulWeaponInfoMap = {
   }
 };
 function openSoulWeaponPopup(name, hasEngraving) {
+  const popupEl = document.querySelector('#unlockPopupBg .unlock-popup');
+  if (popupEl) popupEl.classList.add('soul-weapon-popup-mode');
   const info = soulWeaponInfoMap[name] || {};
+  const soulColor = getSoulWeaponColorByName(name);
+  const colorMeta = getSoulWeaponColorMeta(soulColor);
+  document.getElementById('unlockPopupTitle').innerHTML = '<div class="soul-popup-title-wrap"><div class="soul-popup-title-row"><span class="soul-popup-title-name">' + escapeHtml(name) + '</span><button class="soul-color-info-btn soul-' + soulColor + '" type="button" onclick="toggleSoulTitleInfo(this)">?</button></div><div class="soul-title-inline-info"><strong>' + colorMeta.label + '</strong><br>' + colorMeta.desc + '</div></div>';
   let html = '<div class="soul-info-list">';
   html += soulWeaponInfoRow('필요 스테이지', info.stage || '입력 예정');
-  html += soulWeaponInfoRow('필요 소울', info.soul ? soulWeaponNumberText(info.soul) : '입력 예정');
+  html += soulWeaponInfoRow('필요 소울', info.soul ? soulWeaponNumberHtml(info.soul) : '입력 예정', !!info.soul);
   html += soulWeaponInfoRow('필요 무기', info.weapon || '입력 예정', !!info.weapon);
-  html += soulWeaponInfoRow('추가 공격력', info.attack ? soulWeaponNumberText(info.attack) : '입력 예정');
-  if (hasEngraving) html += soulWeaponInfoRow('각인', info.engraving || '입력 예정');
+  html += soulWeaponInfoRow('추가 공격력', info.attack ? soulWeaponNumberHtml(info.attack) : '입력 예정', !!info.attack);
+  if (hasEngraving) html += soulWeaponInfoRow('각인', info.engraving || '입력 예정', false, true);
   html += '</div>';
-  openInfoPopup(name, html);
+  document.getElementById('unlockPopupText').innerHTML = html;
+  document.getElementById('unlockPopupBg').classList.add('show');
 }
 function filterSoulWeapons(color) {
   document.querySelectorAll('.soul-weapon-btn').forEach(btn => {
@@ -3208,6 +3270,8 @@ function filterSoulWeapons(color) {
 }
 function closeUnlockPopup() {
   document.getElementById("unlockPopupBg").classList.remove("show");
+  resetUnlockPopupMode();
+  document.querySelectorAll('.soul-inline-info.show,.soul-title-inline-info.show').forEach(item => item.classList.remove('show'));
 }
 function escapeSpiritHtml(value) {
   return String(value ?? "")
