@@ -51,12 +51,28 @@ button::-moz-focus-inner{border:0}
 .black-orb-switch input:checked + .black-orb-slider::before{transform:translateX(30px)}
 .black-orb-option-box{display:grid;gap:10px;padding:16px;border:2px solid #14b8a6;border-radius:20px;background:#ffffff;min-width:0}
 .black-orb-option-row{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:8px;min-width:0}
+.black-orb-detail-row{display:grid;grid-template-columns:minmax(74px,.85fr) auto minmax(0,1fr) auto;align-items:center;gap:7px;min-width:0}
 .black-orb-plus,.black-orb-percent{font-size:18px;font-weight:950;color:#0f766e}
 .black-orb-input,.black-orb-select{width:100%;min-width:0;height:44px;border:1px solid #99f6e4;border-radius:14px;background:#f8fafc;color:#111827;font-size:16px;font-weight:900;text-align:center;outline:none}
 .black-orb-input:focus,.black-orb-select:focus{border-color:#14b8a6;box-shadow:0 0 0 3px rgba(20,184,166,.16)}
+
+.black-orb-element-dropdown{position:relative;width:100%;min-width:0}
+.black-orb-element-trigger{width:100%;min-width:0;height:44px;border:1px solid #99f6e4;border-radius:14px;background:#f8fafc;color:#111827;font-size:16px;font-weight:900;text-align:center;outline:none;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0 34px 0 10px;position:relative}
+.black-orb-element-trigger::after{content:"⌄";position:absolute;right:12px;top:50%;transform:translateY(-52%);color:#64748b;font-size:18px;font-weight:900;line-height:1}
+.black-orb-element-trigger:focus{border-color:#14b8a6;box-shadow:0 0 0 3px rgba(20,184,166,.16)}
+.black-orb-element-menu{display:none;position:absolute;top:calc(100% + 6px);left:0;right:0;z-index:40;padding:8px;border:1px solid #99f6e4;border-radius:16px;background:#ffffff;box-shadow:0 12px 26px rgba(15,23,42,.16)}
+.black-orb-element-dropdown.open .black-orb-element-menu{display:grid;grid-template-columns:1fr;gap:6px}
+.black-orb-element-option{border:none;border-radius:999px;background:#f8fafc;padding:8px 8px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.black-orb-element-option:hover{background:#f1f5f9}
+.black-orb-element-badge{display:inline-flex;align-items:center;justify-content:center;min-width:54px;height:28px;padding:0 12px;border-radius:999px;color:#ffffff;font-size:13px;font-weight:950;line-height:1;white-space:nowrap;box-shadow:0 5px 12px rgba(15,23,42,.12)}
+.black-orb-element-badge.all{background:#000;color:#fff}
+.black-orb-element-badge.wind{background:var(--wind-color);color:#fff}
+.black-orb-element-badge.earth{background:var(--earth-color);color:#111827}
+.black-orb-element-badge.fire{background:var(--fire-color);color:#fff}
+.black-orb-element-badge.water{background:var(--water-color);color:#fff}
 .black-orb-divider{height:1px;background:#e5e7eb;margin:2px 0}
-@media(max-width:768px){.black-orb-panel{padding:14px;border-radius:20px}.black-orb-compare-grid{gap:8px}.black-orb-column{gap:9px}.black-orb-toggle-row{min-height:48px;padding:8px 6px;border-radius:16px;gap:7px}.black-orb-toggle-spacer{min-height:48px}.black-orb-toggle-label{font-size:13px}.black-orb-switch{width:50px;height:28px}.black-orb-slider::before{width:22px;height:22px}.black-orb-switch input:checked + .black-orb-slider::before{transform:translateX(22px)}.black-orb-option-box{gap:8px;padding:10px 7px;border-radius:17px}.black-orb-option-row{gap:5px}.black-orb-plus,.black-orb-percent{font-size:15px}.black-orb-input,.black-orb-select{height:36px;border-radius:12px;font-size:12px;padding:0 3px}}
-@media(max-width:380px){.black-orb-panel{padding:12px}.black-orb-compare-grid{gap:6px}.black-orb-option-box{padding:9px 5px}.black-orb-input,.black-orb-select{height:34px;font-size:11px}.black-orb-plus,.black-orb-percent{font-size:14px}}
+@media(max-width:768px){.black-orb-panel{padding:14px;border-radius:20px}.black-orb-compare-grid{gap:8px}.black-orb-column{gap:9px}.black-orb-toggle-row{min-height:48px;padding:8px 6px;border-radius:16px;gap:7px}.black-orb-toggle-spacer{min-height:48px}.black-orb-toggle-label{font-size:13px}.black-orb-switch{width:50px;height:28px}.black-orb-slider::before{width:22px;height:22px}.black-orb-switch input:checked + .black-orb-slider::before{transform:translateX(22px)}.black-orb-option-box{gap:8px;padding:10px 7px;border-radius:17px}.black-orb-option-row{gap:5px}.black-orb-detail-row{grid-template-columns:minmax(48px,.8fr) auto minmax(0,1fr) auto;gap:4px}.black-orb-plus,.black-orb-percent{font-size:15px}.black-orb-input,.black-orb-select,.black-orb-element-trigger{height:36px;border-radius:12px;font-size:12px;padding:0 24px 0 4px}.black-orb-element-trigger::after{right:8px;font-size:15px}.black-orb-element-badge{min-width:44px;height:24px;padding:0 9px;font-size:11px}.black-orb-element-menu{padding:6px;border-radius:13px}.black-orb-element-option{padding:6px 4px}}
+@media(max-width:380px){.black-orb-panel{padding:12px}.black-orb-compare-grid{gap:6px}.black-orb-option-box{padding:9px 5px}.black-orb-detail-row{grid-template-columns:minmax(44px,.75fr) auto minmax(0,1fr) auto;gap:3px}.black-orb-input,.black-orb-select,.black-orb-element-trigger{height:34px;font-size:11px}.black-orb-element-badge{min-width:40px;height:23px;font-size:10px}.black-orb-plus,.black-orb-percent{font-size:14px}}
 .sub-menu{display:none;margin-top:5px;padding-left:9px;border-left:2px solid #55ffff}
 .sub-menu.open{display:block}
 .sub-menu-btn{display:block;margin:5px 0;padding:8px 10px;border-radius:9px;background:#3a3d40;color:#fff;font-size:12px;line-height:1.15;min-height:36px}
@@ -2773,69 +2789,165 @@ function addSections() {
               </label>
             </div>
         <div class="black-orb-option-box">
-          <div class="black-orb-option-row">
-            <span class="black-orb-plus">+</span>
-            <input class="black-orb-input black-orb-comma-input" type="text" inputmode="numeric" placeholder="숫자 입력" autocomplete="off" />
-            <span class="black-orb-percent">%</span>
-          </div>
+            <div class="black-orb-option-row">
+              <span class="black-orb-plus">+</span>
+              <input class="black-orb-input black-orb-comma-input" type="text" inputmode="numeric" placeholder="숫자 입력" autocomplete="off" />
+              <span class="black-orb-percent">%</span>
+            </div>
 
-          <div class="black-orb-divider"></div>
+            <div class="black-orb-divider"></div>
 
-          <div class="black-orb-option-row">
-            <span class="black-orb-plus">+</span>
-            <select class="black-orb-select"><option value="">숫자 선택</option></select>
-            <span class="black-orb-percent">%</span>
+          <div class="black-orb-detail-row">
+              <div class="black-orb-element-dropdown" data-value="all">
+                <button type="button" class="black-orb-element-trigger" onclick="toggleBlackOrbElementDropdown(this)">
+                  <span class="black-orb-element-badge all">모든</span>
+                </button>
+                <div class="black-orb-element-menu">
+                  <button type="button" class="black-orb-element-option" data-value="all" data-label="모든" data-class="all" onclick="selectBlackOrbElement(this)"><span class="black-orb-element-badge all">모든</span></button>
+                  <button type="button" class="black-orb-element-option" data-value="wind" data-label="바람" data-class="wind" onclick="selectBlackOrbElement(this)"><span class="black-orb-element-badge wind">바람</span></button>
+                  <button type="button" class="black-orb-element-option" data-value="earth" data-label="땅" data-class="earth" onclick="selectBlackOrbElement(this)"><span class="black-orb-element-badge earth">땅</span></button>
+                  <button type="button" class="black-orb-element-option" data-value="fire" data-label="불" data-class="fire" onclick="selectBlackOrbElement(this)"><span class="black-orb-element-badge fire">불</span></button>
+                  <button type="button" class="black-orb-element-option" data-value="water" data-label="물" data-class="water" onclick="selectBlackOrbElement(this)"><span class="black-orb-element-badge water">물</span></button>
+                </div>
+              </div>
+              <span class="black-orb-plus">+</span>
+              <input class="black-orb-input black-orb-comma-input" type="text" inputmode="numeric" placeholder="숫자 입력" autocomplete="off" />
+              <span class="black-orb-percent">%</span>
+            </div>
+          <div class="black-orb-detail-row">
+              <div class="black-orb-element-dropdown" data-value="all">
+                <button type="button" class="black-orb-element-trigger" onclick="toggleBlackOrbElementDropdown(this)">
+                  <span class="black-orb-element-badge all">모든</span>
+                </button>
+                <div class="black-orb-element-menu">
+                  <button type="button" class="black-orb-element-option" data-value="all" data-label="모든" data-class="all" onclick="selectBlackOrbElement(this)"><span class="black-orb-element-badge all">모든</span></button>
+                  <button type="button" class="black-orb-element-option" data-value="wind" data-label="바람" data-class="wind" onclick="selectBlackOrbElement(this)"><span class="black-orb-element-badge wind">바람</span></button>
+                  <button type="button" class="black-orb-element-option" data-value="earth" data-label="땅" data-class="earth" onclick="selectBlackOrbElement(this)"><span class="black-orb-element-badge earth">땅</span></button>
+                  <button type="button" class="black-orb-element-option" data-value="fire" data-label="불" data-class="fire" onclick="selectBlackOrbElement(this)"><span class="black-orb-element-badge fire">불</span></button>
+                  <button type="button" class="black-orb-element-option" data-value="water" data-label="물" data-class="water" onclick="selectBlackOrbElement(this)"><span class="black-orb-element-badge water">물</span></button>
+                </div>
+              </div>
+              <span class="black-orb-plus">+</span>
+              <input class="black-orb-input black-orb-comma-input" type="text" inputmode="numeric" placeholder="숫자 입력" autocomplete="off" />
+              <span class="black-orb-percent">%</span>
+            </div>
+          <div class="black-orb-detail-row">
+              <div class="black-orb-element-dropdown" data-value="all">
+                <button type="button" class="black-orb-element-trigger" onclick="toggleBlackOrbElementDropdown(this)">
+                  <span class="black-orb-element-badge all">모든</span>
+                </button>
+                <div class="black-orb-element-menu">
+                  <button type="button" class="black-orb-element-option" data-value="all" data-label="모든" data-class="all" onclick="selectBlackOrbElement(this)"><span class="black-orb-element-badge all">모든</span></button>
+                  <button type="button" class="black-orb-element-option" data-value="wind" data-label="바람" data-class="wind" onclick="selectBlackOrbElement(this)"><span class="black-orb-element-badge wind">바람</span></button>
+                  <button type="button" class="black-orb-element-option" data-value="earth" data-label="땅" data-class="earth" onclick="selectBlackOrbElement(this)"><span class="black-orb-element-badge earth">땅</span></button>
+                  <button type="button" class="black-orb-element-option" data-value="fire" data-label="불" data-class="fire" onclick="selectBlackOrbElement(this)"><span class="black-orb-element-badge fire">불</span></button>
+                  <button type="button" class="black-orb-element-option" data-value="water" data-label="물" data-class="water" onclick="selectBlackOrbElement(this)"><span class="black-orb-element-badge water">물</span></button>
+                </div>
+              </div>
+              <span class="black-orb-plus">+</span>
+              <input class="black-orb-input black-orb-comma-input" type="text" inputmode="numeric" placeholder="숫자 입력" autocomplete="off" />
+              <span class="black-orb-percent">%</span>
+            </div>
+          <div class="black-orb-detail-row">
+              <div class="black-orb-element-dropdown" data-value="all">
+                <button type="button" class="black-orb-element-trigger" onclick="toggleBlackOrbElementDropdown(this)">
+                  <span class="black-orb-element-badge all">모든</span>
+                </button>
+                <div class="black-orb-element-menu">
+                  <button type="button" class="black-orb-element-option" data-value="all" data-label="모든" data-class="all" onclick="selectBlackOrbElement(this)"><span class="black-orb-element-badge all">모든</span></button>
+                  <button type="button" class="black-orb-element-option" data-value="wind" data-label="바람" data-class="wind" onclick="selectBlackOrbElement(this)"><span class="black-orb-element-badge wind">바람</span></button>
+                  <button type="button" class="black-orb-element-option" data-value="earth" data-label="땅" data-class="earth" onclick="selectBlackOrbElement(this)"><span class="black-orb-element-badge earth">땅</span></button>
+                  <button type="button" class="black-orb-element-option" data-value="fire" data-label="불" data-class="fire" onclick="selectBlackOrbElement(this)"><span class="black-orb-element-badge fire">불</span></button>
+                  <button type="button" class="black-orb-element-option" data-value="water" data-label="물" data-class="water" onclick="selectBlackOrbElement(this)"><span class="black-orb-element-badge water">물</span></button>
+                </div>
+              </div>
+              <span class="black-orb-plus">+</span>
+              <input class="black-orb-input black-orb-comma-input" type="text" inputmode="numeric" placeholder="숫자 입력" autocomplete="off" />
+              <span class="black-orb-percent">%</span>
+            </div>
           </div>
-          <div class="black-orb-option-row">
-            <span class="black-orb-plus">+</span>
-            <select class="black-orb-select"><option value="">숫자 선택</option></select>
-            <span class="black-orb-percent">%</span>
-          </div>
-          <div class="black-orb-option-row">
-            <span class="black-orb-plus">+</span>
-            <select class="black-orb-select"><option value="">숫자 선택</option></select>
-            <span class="black-orb-percent">%</span>
-          </div>
-          <div class="black-orb-option-row">
-            <span class="black-orb-plus">+</span>
-            <select class="black-orb-select"><option value="">숫자 선택</option></select>
-            <span class="black-orb-percent">%</span>
-          </div>
-        </div>
           </div>
 
           <div class="black-orb-column">
             <div class="black-orb-toggle-spacer" aria-hidden="true"></div>
         <div class="black-orb-option-box">
-          <div class="black-orb-option-row">
-            <span class="black-orb-plus">+</span>
-            <input class="black-orb-input black-orb-comma-input" type="text" inputmode="numeric" placeholder="숫자 입력" autocomplete="off" />
-            <span class="black-orb-percent">%</span>
-          </div>
+            <div class="black-orb-option-row">
+              <span class="black-orb-plus">+</span>
+              <input class="black-orb-input black-orb-comma-input" type="text" inputmode="numeric" placeholder="숫자 입력" autocomplete="off" />
+              <span class="black-orb-percent">%</span>
+            </div>
 
-          <div class="black-orb-divider"></div>
+            <div class="black-orb-divider"></div>
 
-          <div class="black-orb-option-row">
-            <span class="black-orb-plus">+</span>
-            <select class="black-orb-select"><option value="">숫자 선택</option></select>
-            <span class="black-orb-percent">%</span>
+          <div class="black-orb-detail-row">
+              <div class="black-orb-element-dropdown" data-value="all">
+                <button type="button" class="black-orb-element-trigger" onclick="toggleBlackOrbElementDropdown(this)">
+                  <span class="black-orb-element-badge all">모든</span>
+                </button>
+                <div class="black-orb-element-menu">
+                  <button type="button" class="black-orb-element-option" data-value="all" data-label="모든" data-class="all" onclick="selectBlackOrbElement(this)"><span class="black-orb-element-badge all">모든</span></button>
+                  <button type="button" class="black-orb-element-option" data-value="wind" data-label="바람" data-class="wind" onclick="selectBlackOrbElement(this)"><span class="black-orb-element-badge wind">바람</span></button>
+                  <button type="button" class="black-orb-element-option" data-value="earth" data-label="땅" data-class="earth" onclick="selectBlackOrbElement(this)"><span class="black-orb-element-badge earth">땅</span></button>
+                  <button type="button" class="black-orb-element-option" data-value="fire" data-label="불" data-class="fire" onclick="selectBlackOrbElement(this)"><span class="black-orb-element-badge fire">불</span></button>
+                  <button type="button" class="black-orb-element-option" data-value="water" data-label="물" data-class="water" onclick="selectBlackOrbElement(this)"><span class="black-orb-element-badge water">물</span></button>
+                </div>
+              </div>
+              <span class="black-orb-plus">+</span>
+              <input class="black-orb-input black-orb-comma-input" type="text" inputmode="numeric" placeholder="숫자 입력" autocomplete="off" />
+              <span class="black-orb-percent">%</span>
+            </div>
+          <div class="black-orb-detail-row">
+              <div class="black-orb-element-dropdown" data-value="all">
+                <button type="button" class="black-orb-element-trigger" onclick="toggleBlackOrbElementDropdown(this)">
+                  <span class="black-orb-element-badge all">모든</span>
+                </button>
+                <div class="black-orb-element-menu">
+                  <button type="button" class="black-orb-element-option" data-value="all" data-label="모든" data-class="all" onclick="selectBlackOrbElement(this)"><span class="black-orb-element-badge all">모든</span></button>
+                  <button type="button" class="black-orb-element-option" data-value="wind" data-label="바람" data-class="wind" onclick="selectBlackOrbElement(this)"><span class="black-orb-element-badge wind">바람</span></button>
+                  <button type="button" class="black-orb-element-option" data-value="earth" data-label="땅" data-class="earth" onclick="selectBlackOrbElement(this)"><span class="black-orb-element-badge earth">땅</span></button>
+                  <button type="button" class="black-orb-element-option" data-value="fire" data-label="불" data-class="fire" onclick="selectBlackOrbElement(this)"><span class="black-orb-element-badge fire">불</span></button>
+                  <button type="button" class="black-orb-element-option" data-value="water" data-label="물" data-class="water" onclick="selectBlackOrbElement(this)"><span class="black-orb-element-badge water">물</span></button>
+                </div>
+              </div>
+              <span class="black-orb-plus">+</span>
+              <input class="black-orb-input black-orb-comma-input" type="text" inputmode="numeric" placeholder="숫자 입력" autocomplete="off" />
+              <span class="black-orb-percent">%</span>
+            </div>
+          <div class="black-orb-detail-row">
+              <div class="black-orb-element-dropdown" data-value="all">
+                <button type="button" class="black-orb-element-trigger" onclick="toggleBlackOrbElementDropdown(this)">
+                  <span class="black-orb-element-badge all">모든</span>
+                </button>
+                <div class="black-orb-element-menu">
+                  <button type="button" class="black-orb-element-option" data-value="all" data-label="모든" data-class="all" onclick="selectBlackOrbElement(this)"><span class="black-orb-element-badge all">모든</span></button>
+                  <button type="button" class="black-orb-element-option" data-value="wind" data-label="바람" data-class="wind" onclick="selectBlackOrbElement(this)"><span class="black-orb-element-badge wind">바람</span></button>
+                  <button type="button" class="black-orb-element-option" data-value="earth" data-label="땅" data-class="earth" onclick="selectBlackOrbElement(this)"><span class="black-orb-element-badge earth">땅</span></button>
+                  <button type="button" class="black-orb-element-option" data-value="fire" data-label="불" data-class="fire" onclick="selectBlackOrbElement(this)"><span class="black-orb-element-badge fire">불</span></button>
+                  <button type="button" class="black-orb-element-option" data-value="water" data-label="물" data-class="water" onclick="selectBlackOrbElement(this)"><span class="black-orb-element-badge water">물</span></button>
+                </div>
+              </div>
+              <span class="black-orb-plus">+</span>
+              <input class="black-orb-input black-orb-comma-input" type="text" inputmode="numeric" placeholder="숫자 입력" autocomplete="off" />
+              <span class="black-orb-percent">%</span>
+            </div>
+          <div class="black-orb-detail-row">
+              <div class="black-orb-element-dropdown" data-value="all">
+                <button type="button" class="black-orb-element-trigger" onclick="toggleBlackOrbElementDropdown(this)">
+                  <span class="black-orb-element-badge all">모든</span>
+                </button>
+                <div class="black-orb-element-menu">
+                  <button type="button" class="black-orb-element-option" data-value="all" data-label="모든" data-class="all" onclick="selectBlackOrbElement(this)"><span class="black-orb-element-badge all">모든</span></button>
+                  <button type="button" class="black-orb-element-option" data-value="wind" data-label="바람" data-class="wind" onclick="selectBlackOrbElement(this)"><span class="black-orb-element-badge wind">바람</span></button>
+                  <button type="button" class="black-orb-element-option" data-value="earth" data-label="땅" data-class="earth" onclick="selectBlackOrbElement(this)"><span class="black-orb-element-badge earth">땅</span></button>
+                  <button type="button" class="black-orb-element-option" data-value="fire" data-label="불" data-class="fire" onclick="selectBlackOrbElement(this)"><span class="black-orb-element-badge fire">불</span></button>
+                  <button type="button" class="black-orb-element-option" data-value="water" data-label="물" data-class="water" onclick="selectBlackOrbElement(this)"><span class="black-orb-element-badge water">물</span></button>
+                </div>
+              </div>
+              <span class="black-orb-plus">+</span>
+              <input class="black-orb-input black-orb-comma-input" type="text" inputmode="numeric" placeholder="숫자 입력" autocomplete="off" />
+              <span class="black-orb-percent">%</span>
+            </div>
           </div>
-          <div class="black-orb-option-row">
-            <span class="black-orb-plus">+</span>
-            <select class="black-orb-select"><option value="">숫자 선택</option></select>
-            <span class="black-orb-percent">%</span>
-          </div>
-          <div class="black-orb-option-row">
-            <span class="black-orb-plus">+</span>
-            <select class="black-orb-select"><option value="">숫자 선택</option></select>
-            <span class="black-orb-percent">%</span>
-          </div>
-          <div class="black-orb-option-row">
-            <span class="black-orb-plus">+</span>
-            <select class="black-orb-select"><option value="">숫자 선택</option></select>
-            <span class="black-orb-percent">%</span>
-          </div>
-        </div>
           </div>
         </div>
       </div>
@@ -6122,6 +6234,35 @@ function formatBlackOrbCommaInputs() {
 }
 formatBlackOrbCommaInputs();
 
+function closeBlackOrbElementDropdowns(exceptDropdown) {
+  document.querySelectorAll(".black-orb-element-dropdown.open").forEach((dropdown) => {
+    if (dropdown !== exceptDropdown) dropdown.classList.remove("open");
+  });
+}
+function toggleBlackOrbElementDropdown(trigger) {
+  const dropdown = trigger.closest(".black-orb-element-dropdown");
+  if (!dropdown) return;
+  const willOpen = !dropdown.classList.contains("open");
+  closeBlackOrbElementDropdowns(dropdown);
+  dropdown.classList.toggle("open", willOpen);
+}
+function selectBlackOrbElement(option) {
+  const dropdown = option.closest(".black-orb-element-dropdown");
+  if (!dropdown) return;
+  const trigger = dropdown.querySelector(".black-orb-element-trigger");
+  const value = option.dataset.value || "all";
+  const label = option.dataset.label || "모든";
+  const badgeClass = option.dataset.class || "all";
+  dropdown.dataset.value = value;
+  trigger.innerHTML = `<span class="black-orb-element-badge ${badgeClass}">${label}</span>`;
+  dropdown.classList.remove("open");
+}
+document.addEventListener("click", (event) => {
+  if (!event.target.closest(".black-orb-element-dropdown")) closeBlackOrbElementDropdowns();
+});
+
+window.toggleBlackOrbElementDropdown = toggleBlackOrbElementDropdown;
+window.selectBlackOrbElement = selectBlackOrbElement;
 window.openAdventurePopup = openAdventurePopup;
 window.closeAdventurePopup = closeAdventurePopup;
 window.calculateAdventureFloor = calculateAdventureFloor;
