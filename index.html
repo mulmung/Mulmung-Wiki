@@ -97,15 +97,16 @@ button::-moz-focus-inner{border:0}
 .black-orb-detail-popup-badge.fire{background:var(--fire-color);color:#fff}
 .black-orb-popup-box{display:grid;gap:10px;padding:14px;border:2px solid var(--black-orb-popup-color);border-radius:20px;background:#ffffff}
 .black-orb-popup-row{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:8px;min-width:0}
-.black-orb-popup-detail-row{display:grid;grid-template-columns:minmax(92px,108px) auto minmax(0,1fr) auto;align-items:center;gap:7px;min-width:0}
+.black-orb-popup-detail-row{display:grid;grid-template-columns:minmax(62px,72px) auto minmax(86px,1fr) auto;align-items:center;gap:7px;min-width:0}
+.black-orb-popup-picker{min-width:62px}
 .black-orb-popup-select{width:100%;height:38px;border:1px solid #99f6e4;border-radius:13px;background:#f8fafc;color:#111827;font-size:13px;font-weight:900;text-align:center;outline:none;padding:0 6px}
 .black-orb-popup-select:focus{border-color:var(--black-orb-popup-color);box-shadow:0 0 0 3px rgba(20,184,166,.14)}
 .black-orb-detail-popup-close{width:100%;margin-top:12px;border:none;border-radius:999px;padding:11px 14px;background:#111827;color:#fff;font-size:14px;font-weight:950;cursor:pointer}
 @media(max-width:768px){#black-orb-calculator.card{padding-left:14px;padding-right:14px}.black-orb-panel{padding:10px 8px;border-radius:20px;margin-left:-4px;margin-right:-4px}.black-orb-compare-grid{gap:8px}.black-orb-column{gap:8px}.black-orb-toggle-row{min-height:48px;padding:8px 6px;border-radius:16px;gap:7px}.black-orb-toggle-spacer{min-height:48px}.black-orb-toggle-label{font-size:13px}.black-orb-switch{width:50px;height:28px}.black-orb-slider::before{width:22px;height:22px}.black-orb-switch input:checked + .black-orb-slider::before{transform:translateX(22px)}.black-orb-option-box{gap:8px;padding:9px 6px;border-radius:17px}.black-orb-option-row{gap:5px}.black-orb-detail-row{grid-template-columns:auto auto minmax(40px,1fr) auto;gap:4px}.black-orb-plus,.black-orb-percent{font-size:15px}.black-orb-input{height:36px;border-radius:12px;font-size:12px;padding:0 5px}.black-orb-detail-row .black-orb-input{font-size:12px;padding:0 3px}.black-orb-detail-row .black-orb-input::placeholder{font-size:12px}.black-orb-element-picker{min-width:42px}.black-orb-element-badge{min-width:42px;height:25px;padding:0 8px;font-size:11px}.black-orb-element-popup{max-width:300px;padding:20px 16px 16px}.black-orb-element-popup-title{font-size:19px}.black-orb-element-choice{min-height:46px}}
 @media(max-width:380px){#black-orb-calculator.card{padding-left:10px;padding-right:10px}.black-orb-panel{padding:8px 5px;margin-left:-5px;margin-right:-5px}.black-orb-compare-grid{gap:5px}.black-orb-option-box{padding:8px 4px}.black-orb-detail-row{grid-template-columns:auto auto minmax(38px,1fr) auto;gap:3px}.black-orb-input{height:34px;font-size:11px}.black-orb-detail-row .black-orb-input{font-size:11px}.black-orb-detail-row .black-orb-input::placeholder{font-size:11px}.black-orb-element-picker{min-width:38px}.black-orb-element-badge{min-width:38px;height:23px;font-size:10px;padding:0 7px}.black-orb-plus,.black-orb-percent{font-size:14px}}
 
-@media(max-width:768px){.black-orb-attribute-button-grid{gap:7px;margin-top:12px}.black-orb-attribute-btn{border-radius:14px;font-size:13px}.black-orb-detail-popup{max-width:340px;padding:18px 13px 14px;border-radius:22px}.black-orb-popup-box{gap:8px;padding:10px;border-radius:17px}.black-orb-popup-row{gap:5px}.black-orb-popup-detail-row{grid-template-columns:minmax(56px,64px) auto minmax(44px,1fr) auto;gap:4px}.black-orb-popup-select{height:34px;border-radius:11px;font-size:11px;padding:0 2px}.black-orb-detail-popup-badge{min-width:58px;height:30px;font-size:13px}.black-orb-detail-popup-close{padding:10px 12px;font-size:13px}}
-@media(max-width:380px){.black-orb-attribute-button-grid{gap:6px}.black-orb-attribute-btn{border-radius:12px;font-size:12px}.black-orb-popup-detail-row{grid-template-columns:minmax(50px,58px) auto minmax(40px,1fr) auto;gap:3px}.black-orb-popup-select{height:32px;font-size:10px}.black-orb-detail-popup{padding:16px 10px 12px}}
+@media(max-width:768px){.black-orb-attribute-button-grid{gap:7px;margin-top:12px}.black-orb-attribute-btn{border-radius:14px;font-size:13px}.black-orb-detail-popup{max-width:340px;padding:18px 13px 14px;border-radius:22px}.black-orb-popup-box{gap:8px;padding:10px;border-radius:17px}.black-orb-popup-row{gap:5px}.black-orb-popup-detail-row{grid-template-columns:minmax(52px,58px) auto minmax(70px,1fr) auto;gap:4px}.black-orb-popup-picker{min-width:52px}.black-orb-popup-picker .black-orb-element-badge{min-width:52px;height:29px;font-size:12px;padding:0 8px}.black-orb-popup-select{height:34px;border-radius:11px;font-size:11px;padding:0 2px}.black-orb-detail-popup-badge{min-width:58px;height:30px;font-size:13px}.black-orb-detail-popup-close{padding:10px 12px;font-size:13px}}
+@media(max-width:380px){.black-orb-attribute-button-grid{gap:6px}.black-orb-attribute-btn{border-radius:12px;font-size:12px}.black-orb-popup-detail-row{grid-template-columns:minmax(48px,54px) auto minmax(62px,1fr) auto;gap:3px}.black-orb-popup-picker{min-width:48px}.black-orb-popup-picker .black-orb-element-badge{min-width:48px;height:27px;font-size:11px;padding:0 7px}.black-orb-popup-select{height:32px;font-size:10px}.black-orb-detail-popup{padding:16px 10px 12px}}
 .sub-menu{display:none;margin-top:5px;padding-left:9px;border-left:2px solid #55ffff}
 .sub-menu.open{display:block}
 .sub-menu-btn{display:block;margin:5px 0;padding:8px 10px;border-radius:9px;background:#3a3d40;color:#fff;font-size:12px;line-height:1.15;min-height:36px}
@@ -2917,33 +2918,25 @@ function addSections() {
             </div>
             <div class="black-orb-divider"></div>
             <div class="black-orb-popup-detail-row">
-              <select class="black-orb-popup-select" aria-label="속성 선택">
-                <option value="all">모든</option><option value="wind">바람</option><option value="earth">땅</option><option value="water">물</option><option value="fire">불</option>
-              </select>
+              <button type="button" class="black-orb-element-picker black-orb-popup-picker" data-value="all" data-label="모든" data-class="all" onclick="openBlackOrbElementPopup(this)"><span class="black-orb-element-badge all">모든</span></button>
               <span class="black-orb-plus">+</span>
               <input class="black-orb-input black-orb-comma-input" type="text" inputmode="numeric" placeholder="숫자" autocomplete="off" />
               <span class="black-orb-percent">%</span>
             </div>
             <div class="black-orb-popup-detail-row">
-              <select class="black-orb-popup-select" aria-label="속성 선택">
-                <option value="all">모든</option><option value="wind">바람</option><option value="earth">땅</option><option value="water">물</option><option value="fire">불</option>
-              </select>
+              <button type="button" class="black-orb-element-picker black-orb-popup-picker" data-value="all" data-label="모든" data-class="all" onclick="openBlackOrbElementPopup(this)"><span class="black-orb-element-badge all">모든</span></button>
               <span class="black-orb-plus">+</span>
               <input class="black-orb-input black-orb-comma-input" type="text" inputmode="numeric" placeholder="숫자" autocomplete="off" />
               <span class="black-orb-percent">%</span>
             </div>
             <div class="black-orb-popup-detail-row">
-              <select class="black-orb-popup-select" aria-label="속성 선택">
-                <option value="all">모든</option><option value="wind">바람</option><option value="earth">땅</option><option value="water">물</option><option value="fire">불</option>
-              </select>
+              <button type="button" class="black-orb-element-picker black-orb-popup-picker" data-value="all" data-label="모든" data-class="all" onclick="openBlackOrbElementPopup(this)"><span class="black-orb-element-badge all">모든</span></button>
               <span class="black-orb-plus">+</span>
               <input class="black-orb-input black-orb-comma-input" type="text" inputmode="numeric" placeholder="숫자" autocomplete="off" />
               <span class="black-orb-percent">%</span>
             </div>
             <div class="black-orb-popup-detail-row">
-              <select class="black-orb-popup-select" aria-label="속성 선택">
-                <option value="all">모든</option><option value="wind">바람</option><option value="earth">땅</option><option value="water">물</option><option value="fire">불</option>
-              </select>
+              <button type="button" class="black-orb-element-picker black-orb-popup-picker" data-value="all" data-label="모든" data-class="all" onclick="openBlackOrbElementPopup(this)"><span class="black-orb-element-badge all">모든</span></button>
               <span class="black-orb-plus">+</span>
               <input class="black-orb-input black-orb-comma-input" type="text" inputmode="numeric" placeholder="숫자" autocomplete="off" />
               <span class="black-orb-percent">%</span>
