@@ -805,6 +805,9 @@ button.faq-flow-item:focus,button.faq-flow-item:focus-visible{outline:none;borde
 .soul-color-info-btn.soul-green{background:#22c55e;color:#fff}
 .soul-color-info-btn.soul-blue{background:#3b82f6;color:#fff}
 .soul-color-info-btn.soul-red{background:#ef4444;color:#fff}
+.soul-title-inline-info .soul-word-green{color:#22c55e;font-weight:950}
+.soul-title-inline-info .soul-word-blue{color:#38bdf8;font-weight:950}
+.soul-title-inline-info .soul-word-red{color:#fb7185;font-weight:950}
 @media(max-width:768px){.soul-weapon-filter-box{padding:15px;border-radius:18px}.soul-weapon-filter-label{font-size:14px}.soul-weapon-select{height:44px;border-radius:14px;font-size:14px}.soul-weapon-grid{grid-template-columns:repeat(5,minmax(0,1fr));gap:7px}.soul-weapon-btn{min-height:45px;padding:9px 4px;border-radius:12px;font-size:13px}.unlock-popup.soul-weapon-popup-mode{max-width:94vw;padding:20px 14px 16px}.soul-info-list{gap:16px 10px}.soul-info-card{min-height:118px;padding:20px 10px 14px;border-radius:18px}.soul-info-card.full-width{min-height:124px}.soul-info-badge{min-width:102px;font-size:13px;padding:7px 12px}.soul-info-value,.soul-value-main,.soul-weapon-item-grade,.soul-weapon-item-rank{font-size:16px}.soul-help-btn,.soul-color-info-btn{width:24px;height:24px;font-size:13px}.soul-inline-info,.soul-title-inline-info{font-size:12px;padding:9px 10px}.soul-title-inline-info{min-width:180px;max-width:220px}.soul-inline-info{min-width:72px;max-width:min(76vw,360px)}}
 @media(max-width:380px){.soul-weapon-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.soul-info-list{grid-template-columns:1fr}.soul-info-card,.soul-info-card.full-width{grid-column:auto;min-height:112px}}
 
@@ -3220,9 +3223,18 @@ function getSoulWeaponColorByName(name) {
   return btn ? btn.dataset.soulColor || 'green' : 'green';
 }
 function getSoulWeaponColorMeta(color) {
-  if (color === 'blue') return { label: '블루 소울 웨폰', desc: '블루 소울이 필요한 소울 웨폰입니다.' };
-  if (color === 'red') return { label: '레드 소울 웨폰', desc: '레드 소울이 필요한 소울 웨폰입니다.' };
-  return { label: '그린 소울 웨폰', desc: '그린 소울이 필요한 소울 웨폰입니다.' };
+  if (color === 'blue') return {
+    label: '<span class="soul-word-blue">블루 소울 웨폰</span>',
+    desc: '<span class="soul-word-blue">블루 소울</span>이 필요한 소울 웨폰입니다.'
+  };
+  if (color === 'red') return {
+    label: '<span class="soul-word-red">레드 소울 웨폰</span>',
+    desc: '<span class="soul-word-red">레드 소울</span>이 필요한 소울 웨폰입니다.'
+  };
+  return {
+    label: '<span class="soul-word-green">그린 소울 웨폰</span>',
+    desc: '<span class="soul-word-green">그린 소울</span>이 필요한 소울 웨폰입니다.'
+  };
 }
 function closeAllSoulInfoBubbles() {
   document.querySelectorAll('.soul-inline-info.show,.soul-title-inline-info.show').forEach(item => item.classList.remove('show'));
