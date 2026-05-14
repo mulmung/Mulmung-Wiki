@@ -49,8 +49,10 @@ button::-moz-focus-inner{border:0}
 .black-orb-option-box{display:grid;gap:10px;padding:16px;border:2px solid #14b8a6;border-radius:20px;background:#ffffff}
 .black-orb-option-row{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:8px}
 .black-orb-plus,.black-orb-percent{font-size:18px;font-weight:950;color:#0f766e}
+.black-orb-input-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;width:100%}
 .black-orb-input,.black-orb-select{width:100%;height:44px;border:1px solid #99f6e4;border-radius:14px;background:#f8fafc;color:#111827;font-size:16px;font-weight:900;text-align:center;outline:none}
 .black-orb-input:focus,.black-orb-select:focus{border-color:#14b8a6;box-shadow:0 0 0 3px rgba(20,184,166,.16)}
+@media(max-width:380px){.black-orb-input-pair{gap:6px}.black-orb-input{font-size:14px}}
 .black-orb-divider{height:1px;background:#e5e7eb;margin:2px 0}
 @media(max-width:768px){.black-orb-panel{padding:16px;border-radius:20px}.black-orb-toggle-row{padding:12px 13px}.black-orb-toggle-label{font-size:15px}.black-orb-switch{width:58px;height:31px}.black-orb-slider::before{width:25px;height:25px}.black-orb-switch input:checked + .black-orb-slider::before{transform:translateX(27px)}.black-orb-option-box{padding:13px;border-radius:18px}.black-orb-input,.black-orb-select{height:40px;font-size:15px}}
 .sub-menu{display:none;margin-top:5px;padding-left:9px;border-left:2px solid #55ffff}
@@ -2770,7 +2772,10 @@ function addSections() {
         <div class="black-orb-option-box">
           <div class="black-orb-option-row">
             <span class="black-orb-plus">+</span>
-            <input class="black-orb-input" type="number" inputmode="decimal" placeholder="숫자 입력" />
+            <div class="black-orb-input-pair">
+              <input class="black-orb-input black-orb-comma-input" type="text" inputmode="numeric" placeholder="숫자 입력" autocomplete="off" />
+              <input class="black-orb-input black-orb-comma-input" type="text" inputmode="numeric" placeholder="숫자 입력" autocomplete="off" />
+            </div>
             <span class="black-orb-percent">%</span>
           </div>
 
@@ -6069,6 +6074,18 @@ function calculateAdventureFloor() {
 function closeAdventurePopup() {
   document.getElementById("adventurePopupBg").classList.remove("show");
 }
+
+function formatBlackOrbCommaInputs() {
+  const inputs = document.querySelectorAll(".black-orb-comma-input");
+  inputs.forEach((input) => {
+    input.addEventListener("input", () => {
+      const rawValue = input.value.replace(/,/g, "").replace(/[^0-9]/g, "");
+      input.value = rawValue ? rawValue.replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "";
+    });
+  });
+}
+formatBlackOrbCommaInputs();
+
 window.openAdventurePopup = openAdventurePopup;
 window.closeAdventurePopup = closeAdventurePopup;
 window.calculateAdventureFloor = calculateAdventureFloor;
