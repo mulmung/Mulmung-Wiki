@@ -925,12 +925,12 @@ button.faq-flow-item:focus,button.faq-flow-item:focus-visible{outline:none;borde
 .soul-engrave-grid{
   width:100%;
   display:grid;
-  gap:6px;
+  gap:0;
   align-content:center;
   justify-content:center;
 }
-.soul-engrave-grid.cols-4{grid-template-columns:repeat(4,minmax(0,1fr));max-width:220px;margin:0 auto}
-.soul-engrave-grid.cols-5{grid-template-columns:repeat(5,minmax(0,1fr));max-width:260px;margin:0 auto}
+.soul-engrave-grid.cols-4{grid-template-columns:repeat(4,minmax(0,1fr));max-width:250px;margin:0 auto}
+.soul-engrave-grid.cols-5{grid-template-columns:repeat(5,minmax(0,1fr));max-width:270px;margin:0 auto}
 .soul-engrave-cell{
   position:relative;
   aspect-ratio:1/1;
@@ -938,19 +938,19 @@ button.faq-flow-item:focus,button.faq-flow-item:focus-visible{outline:none;borde
 .soul-engrave-cell::before{
   content:"";
   position:absolute;
-  inset:4px;
-  border:2px solid #e5e7eb;
-  border-radius:10px;
-  background:rgba(249,250,251,.92);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.9);
+  inset:6px;
+  border:2px solid #e4e7ec;
+  border-radius:13px;
+  background:rgba(255,255,255,.98);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.96),0 2px 6px rgba(15,23,42,.05);
 }
 
 
 .soul-engrave-board{
   position:relative;
   width:100%;
-  max-width:220px;
-  margin:0 auto;
+  max-width:250px;
+  margin:2px auto 0;
   aspect-ratio:1/1;
 }
 .soul-engrave-board .soul-engrave-grid{
@@ -961,12 +961,14 @@ button.faq-flow-item:focus,button.faq-flow-item:focus-visible{outline:none;borde
   z-index:2;
 }
 .soul-engrave-cell.has-node::before{
-  background:rgba(255,255,255,.96);
+  background:#ffffff;
 }
 .soul-engrave-cell.empty-fill::before{
+  inset:6px;
   background:#C9CBD3;
-  border-color:#d7d9df;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.45), 0 2px 7px rgba(15,23,42,.08);
+  border-color:#d9dce3;
+  border-width:2px;
+  box-shadow:inset 0 2px 3px rgba(255,255,255,.38),inset 0 -2px 3px rgba(15,23,42,.06),0 2px 7px rgba(15,23,42,.08);
 }
 .soul-engrave-line-svg{
   position:absolute;
@@ -981,8 +983,8 @@ button.faq-flow-item:focus,button.faq-flow-item:focus-visible{outline:none;borde
   fill:none;
   stroke-linecap:round;
   stroke-linejoin:round;
-  stroke-width:.20;
-  opacity:.95;
+  stroke-width:.22;
+  opacity:.98;
 }
 .soul-engrave-line.red{stroke:#EB6A67;}
 .soul-engrave-line.orange{stroke:#F4A64E;}
@@ -995,14 +997,14 @@ button.faq-flow-item:focus,button.faq-flow-item:focus-visible{outline:none;borde
   left:50%;
   top:50%;
   transform:translate(-50%,-50%);
-  width:30px;
-  height:30px;
+  width:34px;
+  height:34px;
   border-radius:999px;
   display:block;
   color:transparent;
   font-size:0;
   line-height:0;
-  box-shadow:0 2px 8px rgba(15,23,42,.16);
+  box-shadow:0 3px 8px rgba(15,23,42,.16);
   z-index:4;
 }
 .soul-engrave-node.red{background:#EB6A67;}
@@ -1012,8 +1014,11 @@ button.faq-flow-item:focus,button.faq-flow-item:focus-visible{outline:none;borde
 .soul-engrave-node.yellow{background:#F0DC57;}
 .soul-engrave-node.purple{background:#A56AE8;}
 @media(max-width:768px){
-  .soul-engrave-board{max-width:220px;}
-  .soul-engrave-node{width:28px;height:28px;font-size:0;}
+  .soul-engrave-board{max-width:244px;}
+  .soul-engrave-grid.cols-4{max-width:244px;}
+  .soul-engrave-node{width:32px;height:32px;font-size:0;}
+  .soul-engrave-line{stroke-width:.23;}
+  .soul-engrave-cell::before,.soul-engrave-cell.empty-fill::before{inset:5px;border-radius:12px;}
 }
 
 </style>
