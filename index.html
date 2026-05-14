@@ -964,9 +964,9 @@ button.faq-flow-item:focus,button.faq-flow-item:focus-visible{outline:none;borde
   background:rgba(255,255,255,.96);
 }
 .soul-engrave-cell.empty-fill::before{
-  background:rgba(107,114,128,.40);
-  border-color:#d1d5db;
-  box-shadow:none;
+  background:#C9CBD3;
+  border-color:#d7d9df;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.45), 0 2px 7px rgba(15,23,42,.08);
 }
 .soul-engrave-line-svg{
   position:absolute;
@@ -981,12 +981,15 @@ button.faq-flow-item:focus,button.faq-flow-item:focus-visible{outline:none;borde
   fill:none;
   stroke-linecap:round;
   stroke-linejoin:round;
-  stroke-width:.18;
+  stroke-width:.20;
   opacity:.95;
 }
-.soul-engrave-line.red{stroke:#ff5b61;}
-.soul-engrave-line.green{stroke:#7ed243;}
-.soul-engrave-line.blue{stroke:#7688ee;}
+.soul-engrave-line.red{stroke:#EB6A67;}
+.soul-engrave-line.orange{stroke:#F4A64E;}
+.soul-engrave-line.green{stroke:#98D05B;}
+.soul-engrave-line.blue{stroke:#7483E6;}
+.soul-engrave-line.yellow{stroke:#F0DC57;}
+.soul-engrave-line.purple{stroke:#A56AE8;}
 .soul-engrave-node{
   position:absolute;
   left:50%;
@@ -1002,9 +1005,12 @@ button.faq-flow-item:focus,button.faq-flow-item:focus-visible{outline:none;borde
   box-shadow:0 2px 8px rgba(15,23,42,.16);
   z-index:4;
 }
-.soul-engrave-node.red{background:#ff5b61;}
-.soul-engrave-node.green{background:#7ed243;}
-.soul-engrave-node.blue{background:#7688ee;}
+.soul-engrave-node.red{background:#EB6A67;}
+.soul-engrave-node.orange{background:#F4A64E;}
+.soul-engrave-node.green{background:#98D05B;}
+.soul-engrave-node.blue{background:#7483E6;}
+.soul-engrave-node.yellow{background:#F0DC57;}
+.soul-engrave-node.purple{background:#A56AE8;}
 @media(max-width:768px){
   .soul-engrave-board{max-width:220px;}
   .soul-engrave-node{width:28px;height:28px;font-size:0;}
@@ -3878,9 +3884,9 @@ function getSoulWeaponEngraveGridHtml(name){
   if(name === "긍지"){
     const prideCells = [
       {text:"A", color:"red"}, {text:"A", color:"red"}, {text:"A", color:"red"}, null,
-      {text:"A", color:"red"}, {text:"D", color:"green"}, {text:"A", color:"blue"}, null,
-      {text:"D", color:"green"}, {text:"D", color:"green"}, {text:"A", color:"blue"}, null,
-      null, {text:"D", color:"green"}, {text:"A", color:"blue"}, {text:"A", color:"blue"}
+      {text:"A", color:"red"}, {text:"D", color:"green"}, {text:"A", color:"red"}, null,
+      {text:"D", color:"green"}, {text:"D", color:"green"}, {text:"A", color:"red"}, null,
+      null, {text:"D", color:"green"}, {text:"A", color:"red"}, {text:"A", color:"red"}
     ];
     const gridHtml = prideCells.map(cell => {
       if(!cell) return '<div class="soul-engrave-cell empty-fill"></div>';
@@ -3890,7 +3896,7 @@ function getSoulWeaponEngraveGridHtml(name){
       '<svg class="soul-engrave-line-svg" viewBox="0 0 4 4" aria-hidden="true">' +
         '<path class="soul-engrave-line red" d="M .5 .5 L 1.5 .5 L 2.5 .5 M .5 .5 L .5 1.5" />' +
         '<path class="soul-engrave-line green" d="M 1.5 1.5 L 1.5 2.5 L .5 2.5 M 1.5 2.5 L 1.5 3.5" />' +
-        '<path class="soul-engrave-line blue" d="M 2.5 1.5 L 2.5 2.5 L 2.5 3.5 L 3.5 3.5" />' +
+        '<path class="soul-engrave-line red" d="M 2.5 1.5 L 2.5 2.5 L 2.5 3.5 L 3.5 3.5" />' +
       '</svg>' +
       '<div class="soul-engrave-grid cols-4">' + gridHtml + '</div>' +
     '</div>';
