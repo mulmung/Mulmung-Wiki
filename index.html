@@ -921,6 +921,24 @@ button.faq-flow-item:focus,button.faq-flow-item:focus-visible{outline:none;borde
 .skill-detail-note{margin-top:10px;color:#6b7280;font-size:12px;font-weight:800;line-height:1.45;text-align:center;word-break:keep-all}
 @media(max-width:768px){.skill-result-card{padding:14px}.skill-result-card-inner{grid-template-columns:56px minmax(0,1fr);gap:10px 10px}.skill-card-thumb-wrap{width:56px;height:56px;margin-top:1px;border-radius:16px}.skill-card-thumb{width:48px;height:48px}.skill-name-row{min-height:56px;gap:7px;margin-bottom:0}.skill-badge-row{gap:5px}.skill-name{font-size:21px;line-height:1.22}.skill-detail-image-box{width:92px;height:92px;border-radius:22px}.skill-detail-image{width:78px;height:78px}.skill-detail-top-close-btn{width:32px;height:32px;font-size:19px;margin-bottom:-26px}.skill-type-badge{height:26px;padding:0 9px;font-size:12px}.skill-summary{font-size:13px}.skill-detail-popup{max-width:94vw;max-height:84vh;padding:18px;border-radius:22px}.skill-detail-title{font-size:24px}.skill-detail-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.skill-detail-info-card{min-height:82px;padding:10px 6px}.skill-detail-label{font-size:12px;margin-bottom:6px}.skill-detail-value{font-size:16px}.skill-calc-row{grid-template-columns:1fr 96px}.skill-calc-result span{font-size:16px}.skill-calc-matrix{gap:6px}.skill-calc-label-cell{min-height:42px;padding:8px 4px;font-size:11px}.skill-calc-value-cell{min-height:52px;padding:9px 4px;font-size:15px}.skill-calc-base-row{gap:6px}.skill-calc-base-row .skill-calc-label-cell,.skill-calc-base-row .skill-calc-value-cell{min-height:46px}.skill-calc-card-grid{gap:6px}.skill-calc-card{min-height:104px;padding:10px 4px;border-radius:15px;gap:7px}.skill-calc-card-label{font-size:11px}.skill-calc-card-value{font-size:16px}.skill-calc-base-card{margin-top:6px}.skill-calc-base-cell{min-height:50px;padding:9px 12px;border-radius:15px}.skill-calc-base-label{font-size:11px}.skill-calc-base-value{font-size:15px}}
 
+
+.soul-engrave-grid{
+  width:100%;
+  display:grid;
+  gap:6px;
+  align-content:center;
+  justify-content:center;
+}
+.soul-engrave-grid.cols-4{grid-template-columns:repeat(4,minmax(0,1fr));max-width:220px;margin:0 auto}
+.soul-engrave-grid.cols-5{grid-template-columns:repeat(5,minmax(0,1fr));max-width:260px;margin:0 auto}
+.soul-engrave-cell{
+  aspect-ratio:1/1;
+  border:2px solid #e5e7eb;
+  border-radius:10px;
+  background:rgba(249,250,251,.9);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9);
+}
+
 </style>
 </head>
 <body>
@@ -3775,6 +3793,25 @@ const soulWeaponInfoMap = {
     attack: "1,045,792,948"
   }
 };
+
+function getSoulWeaponEngraveGridHtml(name){
+  const index = soulWeaponNames.indexOf(name);
+  const prideIndex = soulWeaponNames.indexOf("긍지");
+  const somangIndex = soulWeaponNames.indexOf("소망");
+
+  if(index < 0 || prideIndex < 0 || index < prideIndex){
+    return '<span class="soul-info-empty">입력 예정</span>';
+  }
+
+  const isFourByFour = somangIndex >= 0 && index <= somangIndex;
+  const cols = isFourByFour ? 4 : 5;
+  const size = cols * cols;
+
+  return `<div class="soul-engrave-grid cols-${cols}" aria-label="${cols}x${cols} 각인 박스">` +
+    Array.from({length:size}, () => '<div class="soul-engrave-cell"></div>').join('') +
+  '</div>';
+}
+
 function openSoulWeaponPopup(name, hasEngraving) {
   const popupEl = document.querySelector('#unlockPopupBg .unlock-popup');
   if (popupEl) popupEl.classList.add('soul-weapon-popup-mode');
@@ -3787,7 +3824,7 @@ function openSoulWeaponPopup(name, hasEngraving) {
   html += soulWeaponInfoRow('필요 소울', info.soul ? soulWeaponNumberHtml(info.soul) : '입력 예정', !!info.soul);
   html += soulWeaponInfoRow('필요 무기', info.weapon || '입력 예정', !!info.weapon);
   html += soulWeaponInfoRow('추가 공격력', info.attack ? soulWeaponNumberHtml(info.attack) : '입력 예정', !!info.attack);
-  if (hasEngraving) html += soulWeaponInfoRow('각인', info.engraving || '입력 예정', false, true);
+  if (hasEngraving) html += soulWeaponInfoRow('각인', getSoulWeaponEngraveGridHtml(name), true, true);
   html += '</div>';
   document.getElementById('unlockPopupText').innerHTML = html;
   document.getElementById('unlockPopupBg').classList.add('show');
