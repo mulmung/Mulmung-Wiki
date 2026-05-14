@@ -3962,6 +3962,88 @@ function getSoulWeaponEngraveGridHtml(name){
     '</div>';
   }
 
+  if(name === "무딘"){
+    /*
+      무딘 원본 추천표 기준
+      - A 도형은 꺾임형 빨강 #EB6A67
+      - B 도형은 네모형 노랑 #F0DC57
+      - E 도형은 직선형 파랑 #7483E6
+      - 빈칸은 회색 #C9CBD3 유지
+    */
+    const mudinCells = [
+      null, {color:"red"}, {color:"yellow"}, {color:"yellow"},
+      null, {color:"red"}, {color:"yellow"}, {color:"yellow"},
+      null, {color:"red"}, {color:"red"}, null,
+      {color:"blue"}, {color:"blue"}, {color:"blue"}, {color:"blue"}
+    ];
+    const gridHtml = mudinCells.map(cell => {
+      if(!cell) return '<div class="soul-engrave-cell empty-fill"></div>';
+      return '<div class="soul-engrave-cell has-node"><span class="soul-engrave-node ' + cell.color + '" aria-hidden="true"></span></div>';
+    }).join('');
+    return '<div class="soul-engrave-board" aria-label="무딘 4x4 각인 추천 배치">' +
+      '<svg class="soul-engrave-line-svg" viewBox="0 0 4 4" aria-hidden="true">' +
+        '<path class="soul-engrave-line red" d="M 1.5 .5 L 1.5 1.5 L 1.5 2.5 L 2.5 2.5" />' +
+        '<path class="soul-engrave-line yellow" d="M 2.5 .5 L 3.5 .5 L 3.5 1.5 L 2.5 1.5 L 2.5 .5" />' +
+        '<path class="soul-engrave-line blue" d="M .5 3.5 L 1.5 3.5 L 2.5 3.5 L 3.5 3.5" />' +
+      '</svg>' +
+      '<div class="soul-engrave-grid cols-4">' + gridHtml + '</div>' +
+    '</div>';
+  }
+
+  if(name === "호쾌"){
+    /*
+      호쾌 원본 추천표 기준
+      - A 도형 2개는 같은 꺾임형 계열이므로 모두 빨강 #EB6A67
+      - D 도형은 삼방향형 초록 #98D05B
+      - 빈칸은 회색 #C9CBD3 유지
+    */
+    const hokwaeCells = [
+      {color:"red"}, {color:"red"}, {color:"red"}, {color:"red"},
+      {color:"red"}, {color:"red"}, {color:"green"}, null,
+      {color:"red"}, {color:"red"}, {color:"green"}, {color:"green"},
+      null, null, {color:"green"}, null
+    ];
+    const gridHtml = hokwaeCells.map(cell => {
+      if(!cell) return '<div class="soul-engrave-cell empty-fill"></div>';
+      return '<div class="soul-engrave-cell has-node"><span class="soul-engrave-node ' + cell.color + '" aria-hidden="true"></span></div>';
+    }).join('');
+    return '<div class="soul-engrave-board" aria-label="호쾌 4x4 각인 추천 배치">' +
+      '<svg class="soul-engrave-line-svg" viewBox="0 0 4 4" aria-hidden="true">' +
+        '<path class="soul-engrave-line red" d="M .5 .5 L .5 1.5 L .5 2.5 L 1.5 2.5" />' +
+        '<path class="soul-engrave-line red" d="M 1.5 .5 L 2.5 .5 L 3.5 .5 M 1.5 .5 L 1.5 1.5" />' +
+        '<path class="soul-engrave-line green" d="M 2.5 1.5 L 2.5 2.5 L 3.5 2.5 M 2.5 2.5 L 2.5 3.5" />' +
+      '</svg>' +
+      '<div class="soul-engrave-grid cols-4">' + gridHtml + '</div>' +
+    '</div>';
+  }
+
+  if(name === "타락"){
+    /*
+      타락 원본 추천표 기준
+      - A 도형 2개는 같은 역 꺾임형 계열이므로 모두 주황 #F4A64E
+      - B 도형은 네모형 노랑 #F0DC57
+      - 빈칸은 회색 #C9CBD3 유지
+    */
+    const tarakCells = [
+      null, null, {color:"orange"}, {color:"orange"},
+      null, {color:"orange"}, {color:"orange"}, {color:"orange"},
+      {color:"yellow"}, {color:"yellow"}, {color:"orange"}, {color:"orange"},
+      {color:"yellow"}, {color:"yellow"}, {color:"orange"}, null
+    ];
+    const gridHtml = tarakCells.map(cell => {
+      if(!cell) return '<div class="soul-engrave-cell empty-fill"></div>';
+      return '<div class="soul-engrave-cell has-node"><span class="soul-engrave-node ' + cell.color + '" aria-hidden="true"></span></div>';
+    }).join('');
+    return '<div class="soul-engrave-board" aria-label="타락 4x4 각인 추천 배치">' +
+      '<svg class="soul-engrave-line-svg" viewBox="0 0 4 4" aria-hidden="true">' +
+        '<path class="soul-engrave-line orange" d="M 2.5 .5 L 3.5 .5 L 3.5 1.5 L 3.5 2.5" />' +
+        '<path class="soul-engrave-line orange" d="M 1.5 1.5 L 2.5 1.5 L 2.5 2.5 L 2.5 3.5" />' +
+        '<path class="soul-engrave-line yellow" d="M .5 2.5 L 1.5 2.5 L 1.5 3.5 L .5 3.5 L .5 2.5" />' +
+      '</svg>' +
+      '<div class="soul-engrave-grid cols-4">' + gridHtml + '</div>' +
+    '</div>';
+  }
+
   const isFourByFour = somangIndex >= 0 && index <= somangIndex;
   const cols = isFourByFour ? 4 : 5;
   const size = cols * cols;
