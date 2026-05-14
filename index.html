@@ -156,6 +156,18 @@ body.skill-can-manage .skill-manage-only{display:inline-block}
 .update-list li{font-size:18px;margin-bottom:10px}
 .update-date{display:inline-block;margin-bottom:14px;padding:6px 12px;border-radius:999px;background:#f3f4f6;color:#4b5563;font-size:14px;font-weight:800}
 .site-footer{border-top:1px solid #d1d5db;margin:36px 0 28px;padding-top:18px;text-align:center;color:#6b7280;font-size:14px;font-weight:700}
+.privacy-footer-link{margin-top:8px;border:none;background:transparent;color:#374151;font-size:13px;font-weight:900;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.privacy-policy-page{max-width:960px}
+.privacy-policy-intro{margin:10px 0 18px;padding:14px 16px;border:1px solid #e5e7eb;border-radius:16px;background:#f9fafb;color:#374151;font-weight:700;line-height:1.7}
+.privacy-policy-block{margin-top:14px;padding:16px;border:1px solid #e5e7eb;border-radius:16px;background:#fff}
+.privacy-policy-block h3{margin-bottom:8px;font-size:17px;color:#111827}
+.privacy-policy-block p,.privacy-policy-block li{font-size:14px;color:#374151;line-height:1.75}
+.privacy-policy-block ul{margin:8px 0 0 18px}
+.privacy-policy-table{width:100%;border-collapse:separate;border-spacing:0;margin-top:10px;overflow:hidden;border:1px solid #e5e7eb;border-radius:14px;background:#fff}
+.privacy-policy-table th,.privacy-policy-table td{padding:10px 12px;border-bottom:1px solid #e5e7eb;text-align:left;font-size:13px;vertical-align:top}
+.privacy-policy-table th{background:#111827;color:#fff;font-weight:900}
+.privacy-policy-table tr:last-child td{border-bottom:none}
+.privacy-policy-note{margin-top:16px;padding:14px 16px;border-radius:16px;background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;font-size:14px;font-weight:800;line-height:1.7}
 @media(max-width:768px){.compact-filter-wrap{gap:8px;margin:12px 0 18px}
 .compact-filter-row{gap:5px;overflow-x:auto;flex-wrap:nowrap;padding-bottom:5px}
 .compact-filter-label{font-size:14px;min-width:32px;margin-right:2px;white-space:nowrap;word-break:keep-all}
@@ -188,6 +200,9 @@ body.skill-can-manage .skill-manage-only{display:inline-block}
 .saved-setting-title{font-size:20px}
 .update-list li{font-size:16px}
 .site-footer{font-size:13px;margin:28px 0 24px}
+.privacy-footer-link{font-size:12px}
+.privacy-policy-block{padding:14px}
+.privacy-policy-table th,.privacy-policy-table td{padding:9px 8px;font-size:12px}
 }
 .setting-slot.filled.grade-advanced{background:#22c55e;color:#fff}
 .setting-slot.filled.grade-rare{background:#fb923c;color:#fff}
@@ -207,6 +222,12 @@ body.skill-can-manage .skill-manage-only{display:inline-block}
 .auth-box{margin-left:auto;display:flex;align-items:center;gap:8px}
 .login-btn{padding:8px 12px;border:1px solid #d1d5db;border-radius:10px;background:#ffffff;color:#111827;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap}
 .login-btn:hover{background:#f3f4f6}
+.privacy-agree-wrap{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:800;color:#374151;white-space:nowrap}
+.privacy-agree-wrap input{width:14px;height:14px;accent-color:#111827;cursor:pointer}
+.privacy-agree-link{border:none;background:transparent;color:#111827;font-size:12px;font-weight:900;text-decoration:underline;text-underline-offset:2px;cursor:pointer;padding:0}
+.sidebar-privacy-agree{display:flex;align-items:flex-start;gap:7px;margin:8px 0 0;padding:9px 10px;border:1px solid rgba(255,255,255,.16);border-radius:12px;background:rgba(255,255,255,.08);color:#f9fafb;font-size:12px;font-weight:800;line-height:1.45}
+.sidebar-privacy-agree input{margin-top:2px;width:15px;height:15px;accent-color:#facc15;cursor:pointer;flex:0 0 auto}
+.sidebar-privacy-agree .privacy-agree-link{color:#facc15;font-size:12px}
 .user-info{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:800;color:#374151;white-space:nowrap}
 .role-label{display:inline-flex;align-items:center;justify-content:center;padding:7px 10px;border-radius:12px;color:#ffffff;font-size:13px;font-weight:900;line-height:1}
 .role-label.admin{background:#111827}
@@ -262,6 +283,9 @@ body.skill-can-manage .skill-manage-only{display:inline-block}
 .role-admin-badge{display:inline-block;margin-top:6px;padding:4px 8px;border-radius:999px;background:#111827;color:#ffffff;font-size:12px;font-weight:900}
 @media(max-width:768px){.auth-box{gap:5px}
 .login-btn{padding:7px 8px;font-size:11px;border-radius:8px}
+.privacy-agree-wrap{font-size:10px;gap:3px}
+.privacy-agree-wrap input{width:12px;height:12px}
+.privacy-agree-link{font-size:10px}
 .user-info{font-size:11px;max-width:150px;overflow:hidden;text-overflow:ellipsis}
 .role-label{padding:6px 8px;border-radius:9px;font-size:11px}
 .nickname-text{font-size:12px;overflow:hidden;text-overflow:ellipsis}
@@ -1028,6 +1052,11 @@ button.faq-flow-item:focus,button.faq-flow-item:focus-visible{outline:none;borde
   <button class="hamburger-btn" onclick="toggleSidebar()">☰</button>
   <button class="top-title" onclick="showSection('home')">물멍위키</button>
   <div class="auth-box">
+    <div id="topPrivacyAgreeWrap" class="privacy-agree-wrap">
+      <input type="checkbox" id="privacyAgreeCheckbox" />
+      <span>동의</span>
+      <button class="privacy-agree-link" type="button" onclick="showSection('privacy-policy')">보기</button>
+    </div>
     <button id="loginBtn" class="login-btn">Google 로그인</button>
     <span id="userInfo" class="user-info"></span>
     <button id="nicknameBtn" class="login-btn" style="display:none;">내 정보 설정</button>
@@ -1059,6 +1088,10 @@ button.faq-flow-item:focus,button.faq-flow-item:focus-visible{outline:none;borde
       <div class="sidebar-auth-card">
         <div class="sidebar-auth-title">로그인 정보</div>
         <button id="sidebarLoginBtn" class="sidebar-mini-btn dark">Google 로그인</button>
+        <label id="sidebarPrivacyAgreeWrap" class="sidebar-privacy-agree">
+          <input type="checkbox" id="sidebarPrivacyAgreeCheckbox" />
+          <span>개인정보처리방침에 동의합니다. <button class="privacy-agree-link" type="button" onclick="event.preventDefault(); showSection('privacy-policy')">보기</button></span>
+        </label>
         <div id="sidebarProfile" style="display:none;">
           <div class="sidebar-user-line">
             <div class="sidebar-name-line">
@@ -1089,12 +1122,16 @@ button.faq-flow-item:focus,button.faq-flow-item:focus-visible{outline:none;borde
       <div class="menu-group"><button class="menu-btn" onclick="showSection('adventure')">모험</button></div>
       <div class="menu-group"><button class="menu-btn" onclick="toggleSubMenu('faqMenu', this)">FAQ <span>＋</span></button><div class="sub-menu" id="faqMenu"></div></div>
       <div class="menu-group"><button class="menu-btn" onclick="toggleSubMenu('updateMenu', this)">업데이트 <span>＋</span></button><div class="sub-menu" id="updateMenu"></div></div>
+      <div class="menu-group"><button class="menu-btn" onclick="showSection('privacy-policy')">개인정보처리방침</button></div>
     </aside>
     <div class="main-area">
       <div id="breadcrumb" class="breadcrumb"></div>
       <main class="content" id="content">
         </main>
-      <footer class="site-footer">현재 버전: 물멍위키 v0.1.5-beta</footer>
+      <footer class="site-footer">
+        <div>현재 버전: 물멍위키 v0.1.5-beta</div>
+        <button class="privacy-footer-link" type="button" onclick="showSection('privacy-policy')">개인정보처리방침</button>
+      </footer>
     </div>
   </div>
   <div class="unlock-popup-bg" id="unlockPopupBg" onclick="closeUnlockPopup()">
@@ -2287,7 +2324,8 @@ const pageMap = {
   "diamond-class":["전체 진로","클래스"],
   "diamond-or":["전체 진로","오르"],
   "diamond-orb":["전체 진로","오브"],
-  "promotion":["승급",""]
+  "promotion":["승급",""],
+  "privacy-policy":["개인정보처리방침",""]
 };
 // 승급은 하위 메뉴 없이 승급 페이지 안 버튼으로 선택합니다.
 infoPages.forEach(([id,name]) => pageMap[id] = ["스킬", name]);
@@ -3098,6 +3136,98 @@ function addSections() {
       <div class="promotion-button-grid">
         ${promotions.map(([id,name]) => `<button class="promotion-stage-btn" data-promotion-id="${id}" onclick="showPromotionStage('${id}', '${name}')">${name}</button>`).join("")}
       </div>
+    </section>
+  `);
+  content.insertAdjacentHTML("beforeend", `
+    <section id="privacy-policy" class="card privacy-policy-page">
+      <h2>개인정보처리방침</h2>
+      <p class="privacy-policy-intro">
+        물멍위키는 이용자의 개인정보를 중요하게 생각하며, 사이트 운영과 로그인 기능 제공에 필요한 최소한의 정보만 처리합니다.
+        본 방침은 물멍위키에서 수집·이용·보관하는 정보와 이용자의 권리를 안내하기 위한 문서입니다.
+      </p>
+
+      <div class="privacy-policy-block">
+        <h3>1. 개인정보의 처리 목적</h3>
+        <ul>
+          <li>Google 로그인을 통한 사용자 식별</li>
+          <li>닉네임, 서버, 승급, 직책, 배지 등 사용자 프로필 표시</li>
+          <li>스킬 세팅 저장 및 관리</li>
+          <li>사이트 이용 상태 확인 및 접속자 통계 표시</li>
+          <li>관리자 권한 관리, 부정 이용 방지, 사이트 운영 안정화</li>
+        </ul>
+      </div>
+
+      <div class="privacy-policy-block">
+        <h3>2. 처리하는 개인정보 항목</h3>
+        <table class="privacy-policy-table">
+          <thead><tr><th>구분</th><th>처리 항목</th></tr></thead>
+          <tbody>
+            <tr><td>Google 로그인 정보</td><td>이메일, 사용자 고유 식별값 UID</td></tr>
+            <tr><td>사용자 입력 정보</td><td>닉네임, 서버, 승급 정보</td></tr>
+            <tr><td>사이트 운영 정보</td><td>직책, 배지, 계정 상태, 접속 상태, 수정일시</td></tr>
+            <tr><td>서비스 이용 정보</td><td>스킬 세팅 저장 내역, 저장/수정/삭제 관련 정보</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="privacy-policy-block">
+        <h3>3. 개인정보의 보유 및 이용기간</h3>
+        <p>물멍위키는 회원이 서비스를 이용하는 동안 개인정보를 보유 및 이용합니다. 회원이 탈퇴하거나 관리자가 계정을 비활성화할 필요가 있다고 판단한 경우 관련 정보는 삭제 또는 비활성화 처리될 수 있습니다.</p>
+      </div>
+
+      <div class="privacy-policy-block">
+        <h3>4. 개인정보의 제3자 제공</h3>
+        <p>물멍위키는 이용자의 개인정보를 원칙적으로 외부에 제공하지 않습니다. 다만 법령에 따라 요구되는 경우에는 관련 법령에 따라 제공될 수 있습니다.</p>
+      </div>
+
+      <div class="privacy-policy-block">
+        <h3>5. 외부 서비스 이용</h3>
+        <ul>
+          <li>Google Firebase Authentication: Google 로그인 및 사용자 인증</li>
+          <li>Google Cloud Firestore: 사용자 정보 및 스킬 세팅 데이터 저장</li>
+          <li>GitHub Pages: 웹사이트 호스팅</li>
+        </ul>
+      </div>
+
+      <div class="privacy-policy-block">
+        <h3>6. 개인정보의 공개 범위</h3>
+        <table class="privacy-policy-table">
+          <thead><tr><th>공개될 수 있는 정보</th><th>공개하지 않는 정보</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>닉네임, 서버, 승급, 표시용 직책, 표시용 배지, 접속 여부</td>
+              <td>이메일, UID, 정확한 로그인 기록, 관리자용 내부 권한 정보, 비공개 운영 정보</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="privacy-policy-block">
+        <h3>7. 개인정보의 안전성 확보 조치</h3>
+        <ul>
+          <li>Firestore 보안 규칙을 통한 접근 제한</li>
+          <li>users 컬렉션은 본인 또는 관리자만 열람 가능하도록 제한</li>
+          <li>스킬 세팅 저장, 수정, 삭제 권한 제한</li>
+          <li>공개용 정보와 비공개 정보를 분리하여 관리</li>
+        </ul>
+      </div>
+
+      <div class="privacy-policy-block">
+        <h3>8. 이용자의 권리</h3>
+        <p>이용자는 본인의 개인정보에 대해 열람, 수정, 삭제, 탈퇴를 요청할 수 있습니다. 요청은 물멍위키 관리자에게 문의하여 처리할 수 있습니다.</p>
+      </div>
+
+      <div class="privacy-policy-block">
+        <h3>9. 개인정보 보호책임자</h3>
+        <p>관리자: 물멍<br>이메일: khu9918@gmail.com</p>
+      </div>
+
+      <div class="privacy-policy-block">
+        <h3>10. 개인정보처리방침 변경</h3>
+        <p>본 개인정보처리방침은 사이트 운영 상황, 기능 변경, 관련 법령 변경에 따라 수정될 수 있으며, 변경 시 물멍위키 사이트 내 공지 또는 업데이트 내역을 통해 안내합니다.</p>
+      </div>
+
+      <div class="privacy-policy-note">시행일: 2026년 5월 14일</div>
     </section>
   `);
   updatePages.forEach(([id,name,date,list]) => {
@@ -4800,6 +4930,10 @@ let roleManageUsersById = {};
 const logoutBtn = document.getElementById("logoutBtn");
 const userInfo = document.getElementById("userInfo");
 const sidebarLoginBtn = document.getElementById("sidebarLoginBtn");
+const topPrivacyAgreeWrap = document.getElementById("topPrivacyAgreeWrap");
+const sidebarPrivacyAgreeWrap = document.getElementById("sidebarPrivacyAgreeWrap");
+const privacyAgreeCheckbox = document.getElementById("privacyAgreeCheckbox");
+const sidebarPrivacyAgreeCheckbox = document.getElementById("sidebarPrivacyAgreeCheckbox");
 const sidebarProfile = document.getElementById("sidebarProfile");
 const sidebarRoleBadge = document.getElementById("sidebarRoleBadge");
 const sidebarBetaBadge = document.getElementById("sidebarBetaBadge");
@@ -5034,9 +5168,28 @@ function stopPresenceTimer() {
   if (presenceTimer) clearInterval(presenceTimer);
   presenceTimer = null;
 }
+function syncPrivacyAgreementCheckboxes(checked) {
+  if (privacyAgreeCheckbox) privacyAgreeCheckbox.checked = checked;
+  if (sidebarPrivacyAgreeCheckbox) sidebarPrivacyAgreeCheckbox.checked = checked;
+}
+function isPrivacyAgreementChecked() {
+  return !!((privacyAgreeCheckbox && privacyAgreeCheckbox.checked) || (sidebarPrivacyAgreeCheckbox && sidebarPrivacyAgreeCheckbox.checked));
+}
+function setPrivacyAgreementUIVisible(visible) {
+  const display = visible ? "inline-flex" : "none";
+  if (topPrivacyAgreeWrap) topPrivacyAgreeWrap.style.display = display;
+  if (sidebarPrivacyAgreeWrap) sidebarPrivacyAgreeWrap.style.display = visible ? "flex" : "none";
+}
+if (privacyAgreeCheckbox) {
+  privacyAgreeCheckbox.addEventListener("change", () => syncPrivacyAgreementCheckboxes(privacyAgreeCheckbox.checked));
+}
+if (sidebarPrivacyAgreeCheckbox) {
+  sidebarPrivacyAgreeCheckbox.addEventListener("change", () => syncPrivacyAgreementCheckboxes(sidebarPrivacyAgreeCheckbox.checked));
+}
 function updateSidebarDisplay(user, nickname, role = "user", badges = [], promotionStage = "", server = "") {
   if (!sidebarLoginBtn || !sidebarProfile || !sidebarRoleBadge || !sidebarNickname) return;
   sidebarLoginBtn.style.display = "none";
+  setPrivacyAgreementUIVisible(false);
   sidebarProfile.style.display = "block";
   const displayName = nickname || "닉네임 미설정";
   const normalizedBadges = normalizeBadges(badges);
@@ -5073,6 +5226,7 @@ function updateSidebarDisplay(user, nickname, role = "user", badges = [], promot
 }
 function resetSidebarDisplay() {
   if (sidebarLoginBtn) sidebarLoginBtn.style.display = "block";
+  setPrivacyAgreementUIVisible(true);
   if (sidebarProfile) sidebarProfile.style.display = "none";
   if (sidebarBetaBadge) sidebarBetaBadge.style.display = "none";
   updateSidebarPromotionBadge("");
@@ -5091,6 +5245,10 @@ function showLoginBrowserNotice() {
   );
 }
 async function handleGoogleLogin() {
+  if (!isPrivacyAgreementChecked()) {
+    alert("개인정보처리방침에 동의해야 Google 로그인을 이용할 수 있습니다.");
+    return;
+  }
   showLoginBrowserNotice();
   try {
     await signInWithPopup(auth, provider);
@@ -5537,6 +5695,7 @@ onAuthStateChanged(auth, async (user) => {
   if (user) {
     currentUser = user;
     loginBtn.style.display = "none";
+    setPrivacyAgreementUIVisible(false);
     logoutBtn.style.display = "inline-block";
     try {
       const profile = await getOrCreateUserProfile(user);
@@ -5567,6 +5726,8 @@ onAuthStateChanged(auth, async (user) => {
     currentBadges = [];
     updateSkillSettingPermissionUI();
     loginBtn.style.display = "inline-block";
+    setPrivacyAgreementUIVisible(true);
+    syncPrivacyAgreementCheckboxes(false);
     nicknameBtn.style.display = "none";
     roleManageBtn.style.display = "none";
     logoutBtn.style.display = "none";
