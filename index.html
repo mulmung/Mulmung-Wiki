@@ -1184,6 +1184,40 @@ button.faq-flow-item:focus,button.faq-flow-item:focus-visible{outline:none;borde
 @media(max-width:768px){.black-orb-main-attribute-row{margin-bottom:8px}.black-orb-main-attribute-btn{min-width:88px;height:31px;font-size:12px}.black-orb-detail-popup{max-width:260px !important;padding:12px 6px 10px !important}.black-orb-popup-box{padding:7px 4px !important}.black-orb-popup-detail-row{grid-template-columns:minmax(36px,40px) auto minmax(32px,38px) auto auto !important;gap:2px !important}.black-orb-popup-detail-row .black-orb-input{max-width:38px !important}.black-orb-popup-picker .black-orb-element-badge{min-width:36px !important}}
 @media(max-width:380px){.black-orb-detail-popup{max-width:246px !important;padding:11px 5px 9px !important}.black-orb-popup-detail-row{grid-template-columns:minmax(34px,38px) auto minmax(30px,36px) auto auto !important}.black-orb-popup-detail-row .black-orb-input{max-width:36px !important;font-size:10.5px !important}.black-orb-popup-picker .black-orb-element-badge{min-width:34px !important;font-size:9.5px !important}.black-orb-x2-badge{width:20px;height:20px;font-size:8px}}
 
+
+/* 블랙 오브 계산기: 최종 팝업 크기 동기화 + ×2 활성 색상 */
+.black-orb-x2-badge{background:#cbd5e1 !important;color:#ffffff !important;box-shadow:0 4px 10px rgba(100,116,139,.18) !important}
+.black-orb-x2-badge.active-wind{background:var(--wind-color) !important;color:#ffffff !important}
+.black-orb-x2-badge.active-earth{background:var(--earth-color) !important;color:#111827 !important}
+.black-orb-x2-badge.active-water{background:var(--water-color) !important;color:#ffffff !important}
+.black-orb-x2-badge.active-fire{background:var(--fire-color) !important;color:#ffffff !important}
+.black-orb-detail-popup{
+  width:var(--black-orb-detail-width, 170px) !important;
+  max-width:var(--black-orb-detail-width, 170px) !important;
+  min-height:var(--black-orb-detail-height, auto) !important;
+  padding:8px 5px 7px !important;
+  border-radius:18px !important;
+  display:flex !important;
+  flex-direction:column !important;
+  gap:5px !important;
+}
+.black-orb-detail-popup-head{margin-bottom:2px !important}
+.black-orb-detail-popup-badge{min-width:46px !important;height:24px !important;padding:0 10px !important;font-size:11px !important}
+.black-orb-popup-box{padding:6px 4px !important;gap:5px !important;border-radius:15px !important;flex:1 1 auto !important}
+.black-orb-popup-row{grid-template-columns:auto minmax(0,1fr) auto !important;gap:3px !important}
+.black-orb-popup-detail-row{grid-template-columns:minmax(34px,38px) auto minmax(30px,36px) auto auto !important;gap:2px !important}
+.black-orb-popup-detail-row .black-orb-input{max-width:36px !important;height:28px !important;font-size:10px !important;padding:0 1px !important;border-radius:10px !important}
+.black-orb-popup-detail-row .black-orb-input::placeholder{font-size:9.5px !important}
+.black-orb-popup-picker{min-width:34px !important}
+.black-orb-popup-picker .black-orb-element-badge{min-width:34px !important;height:22px !important;padding:0 5px !important;font-size:9.5px !important}
+.black-orb-popup-detail-row .black-orb-plus,.black-orb-popup-detail-row .black-orb-percent{font-size:12px !important}
+.black-orb-detail-popup .black-orb-x2-badge{width:19px !important;height:19px !important;font-size:7.8px !important}
+.black-orb-detail-popup-close{height:30px !important;margin-top:2px !important;padding:0 8px !important;font-size:12px !important;flex:0 0 auto !important}
+.black-orb-detail-popup .black-orb-input{height:30px !important;font-size:11px !important}
+@media(max-width:768px){
+  .black-orb-detail-popup{width:var(--black-orb-detail-width, 145px) !important;max-width:var(--black-orb-detail-width, 145px) !important;min-height:var(--black-orb-detail-height, auto) !important;padding:8px 5px 7px !important}
+}
+
 </style>
 </head>
 <body>
@@ -6332,6 +6366,48 @@ function closeBlackOrbMainAttributePopup(event) {
   const popup = document.getElementById("blackOrbMainAttributePopupBg");
   if (popup) popup.classList.remove("show");
 }
+function getBlackOrbMainAttribute() {
+  const panel = document.getElementById("blackOrbPanel");
+  if (!panel) return "";
+  if (panel.classList.contains("selected-wind")) return "wind";
+  if (panel.classList.contains("selected-earth")) return "earth";
+  if (panel.classList.contains("selected-water")) return "water";
+  if (panel.classList.contains("selected-fire")) return "fire";
+  return "";
+}
+function clearBlackOrbX2Class(badge) {
+  if (!badge) return;
+  badge.classList.remove("active-wind", "active-earth", "active-water", "active-fire");
+}
+function updateBlackOrbX2ForRow(row) {
+  if (!row) return;
+  const badge = row.querySelector(".black-orb-x2-badge");
+  const picker = row.querySelector(".black-orb-element-picker");
+  if (!badge || !picker) return;
+  clearBlackOrbX2Class(badge);
+  const rowValue = picker.dataset.class || picker.dataset.value || "all";
+  let targetValue = "";
+  if (row.closest(".black-orb-popup-box")) {
+    const detailPopup = document.getElementById("blackOrbDetailPopup");
+    targetValue = detailPopup ? (detailPopup.dataset.currentAttribute || "") : "";
+  } else {
+    targetValue = getBlackOrbMainAttribute();
+  }
+  if (targetValue && rowValue === targetValue) {
+    badge.classList.add(`active-${targetValue}`);
+  }
+}
+function updateAllBlackOrbX2Badges() {
+  document.querySelectorAll(".black-orb-detail-row, .black-orb-popup-detail-row").forEach(updateBlackOrbX2ForRow);
+}
+function syncBlackOrbDetailPopupSize() {
+  const popup = document.getElementById("blackOrbDetailPopup");
+  const sampleBox = document.querySelector("#blackOrbPanel .black-orb-option-box");
+  if (!popup || !sampleBox) return;
+  const rect = sampleBox.getBoundingClientRect();
+  if (rect.width > 0) popup.style.setProperty("--black-orb-detail-width", `${Math.round(rect.width)}px`);
+  if (rect.height > 0) popup.style.setProperty("--black-orb-detail-height", `${Math.round(rect.height)}px`);
+}
 function selectBlackOrbMainAttribute(option) {
   const value = option.dataset.value || "wind";
   const label = option.dataset.label || "바람";
@@ -6347,6 +6423,7 @@ function selectBlackOrbMainAttribute(option) {
     button.className = `black-orb-main-attribute-btn selected ${safeValue}`;
     button.innerHTML = `<span class="black-orb-element-badge ${safeValue}">${label}</span>`;
   }
+  updateAllBlackOrbX2Badges();
   closeBlackOrbMainAttributePopup();
 }
 
@@ -6359,11 +6436,14 @@ function openBlackOrbDetailPopup(elementClass, label) {
   if (popup) {
     popup.classList.remove("wind", "earth", "water", "fire");
     popup.classList.add(safeClass);
+    popup.dataset.currentAttribute = safeClass;
+    syncBlackOrbDetailPopupSize();
   }
   if (badge) {
     badge.className = `black-orb-detail-popup-badge ${safeClass}`;
     badge.textContent = safeLabel;
   }
+  updateAllBlackOrbX2Badges();
   if (popupBg) popupBg.classList.add("show");
 }
 function closeBlackOrbDetailPopup(event) {
@@ -6397,8 +6477,11 @@ function selectBlackOrbElementFromPopup(option) {
   currentBlackOrbElementPicker.dataset.label = label;
   currentBlackOrbElementPicker.dataset.class = badgeClass;
   currentBlackOrbElementPicker.innerHTML = `<span class="black-orb-element-badge ${badgeClass}">${label}</span>`;
+  updateBlackOrbX2ForRow(currentBlackOrbElementPicker.closest(".black-orb-detail-row, .black-orb-popup-detail-row"));
   closeBlackOrbElementPopup();
 }
+updateAllBlackOrbX2Badges();
+window.addEventListener("resize", syncBlackOrbDetailPopupSize);
 
 window.openBlackOrbElementPopup = openBlackOrbElementPopup;
 window.closeBlackOrbElementPopup = closeBlackOrbElementPopup;
