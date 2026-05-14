@@ -3935,6 +3935,33 @@ function getSoulWeaponEngraveGridHtml(name){
     '</div>';
   }
 
+  if(name === "폭주"){
+    /*
+      폭주 원본 추천표 기준
+      - A 도형은 같은 꺾임형 계열 2개이므로 둘 다 빨강 #EB6A67 적용
+      - B 도형은 2x2 네모형이므로 노랑 #F0DC57 적용
+      - 4열 전체는 빈칸이므로 회색 채움 타일 유지
+    */
+    const pokjuCells = [
+      {color:"red"}, {color:"yellow"}, {color:"yellow"}, null,
+      {color:"red"}, {color:"yellow"}, {color:"yellow"}, null,
+      {color:"red"}, {color:"red"}, {color:"red"}, null,
+      {color:"red"}, {color:"red"}, {color:"red"}, null
+    ];
+    const gridHtml = pokjuCells.map(cell => {
+      if(!cell) return '<div class="soul-engrave-cell empty-fill"></div>';
+      return '<div class="soul-engrave-cell has-node"><span class="soul-engrave-node ' + cell.color + '" aria-hidden="true"></span></div>';
+    }).join('');
+    return '<div class="soul-engrave-board" aria-label="폭주 4x4 각인 추천 배치">' +
+      '<svg class="soul-engrave-line-svg" viewBox="0 0 4 4" aria-hidden="true">' +
+        '<path class="soul-engrave-line red" d="M .5 .5 L .5 1.5 L .5 2.5 L 1.5 2.5" />' +
+        '<path class="soul-engrave-line yellow" d="M 1.5 .5 L 2.5 .5 L 2.5 1.5 L 1.5 1.5 L 1.5 .5" />' +
+        '<path class="soul-engrave-line red" d="M 0.5 3.5 L 1.5 3.5 L 2.5 3.5 L 2.5 2.5" />' +
+      '</svg>' +
+      '<div class="soul-engrave-grid cols-4">' + gridHtml + '</div>' +
+    '</div>';
+  }
+
   const isFourByFour = somangIndex >= 0 && index <= somangIndex;
   const cols = isFourByFour ? 4 : 5;
   const size = cols * cols;
