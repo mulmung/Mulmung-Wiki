@@ -8971,1186 +8971,230 @@ window.goToAdventureSkillSettings = goToAdventureSkillSettings;
 </script>
 
 
-<script>
-/* 유물 증가 데미지 계산/표시 최종 보정 */
-(function(){
-  const RELIC_ROWS = [
-    { inputId: "blackOrbRelicTyphoonEye",   damageId: "blackOrbRelicTyphoonEyeDamage",   label: "바람", element: "wind" },
-    { inputId: "blackOrbRelicKingProof",    damageId: "blackOrbRelicKingProofDamage",    label: "땅",   element: "earth" },
-    { inputId: "blackOrbRelicSilentFlame",  damageId: "blackOrbRelicSilentFlameDamage",  label: "불",   element: "fire" },
-    { inputId: "blackOrbRelicAbyssDrop",    damageId: "blackOrbRelicAbyssDropDamage",    label: "물",   element: "water" }
-  ];
 
-  const style = document.createElement("style");
-  style.textContent = `
-    .black-orb-relic-damage{
-      display:flex !important;
-      align-items:center !important;
-      justify-content:center !important;
-      gap:4px !important;
-      padding:4px 6px !important;
-      min-width:0 !important;
-      font-size:12px !important;
-      white-space:nowrap !important;
-    }
-    .black-orb-relic-result-badge{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      min-width:34px;
-      height:24px;
-      padding:0 9px;
-      border-radius:999px;
-      font-size:11px;
-      font-weight:900;
-      line-height:1;
-      color:#fff;
-      box-shadow:0 4px 10px rgba(15,23,42,.10);
-      flex:0 0 auto;
-    }
-    .black-orb-relic-result-badge.wind{background:var(--element-wind,#14d7c9);color:#fff;}
-    .black-orb-relic-result-badge.earth{background:var(--element-earth,#ffc45d);color:#111827;}
-    .black-orb-relic-result-badge.fire{background:var(--element-fire,#c91d0b);color:#fff;}
-    .black-orb-relic-result-badge.water{background:var(--element-water,#080078);color:#fff;}
-    .black-orb-relic-result-value{
-      font-size:12px;
-      font-weight:900;
-      color:#111827;
-      line-height:1;
-      flex:0 0 auto;
-    }
-    @media (max-width:520px){
-      .black-orb-relic-damage{gap:3px !important;padding:3px 4px !important;font-size:11px !important;}
-      .black-orb-relic-result-badge{min-width:30px;height:22px;padding:0 7px;font-size:10px;}
-      .black-orb-relic-result-value{font-size:11px;}
-    }
-  `;
-  document.head.appendChild(style);
-
-  function relicCoefficient(level){
-    if(level > 99) return 3;
-    if(level > 89) return 2.6;
-    if(level > 79) return 2.3;
-    if(level > 69) return 2;
-    if(level > 59) return 1.8;
-    if(level > 49) return 1.6;
-    if(level > 39) return 1.45;
-    if(level > 29) return 1.3;
-    if(level > 19) return 1.2;
-    if(level > 9) return 1.1;
-    return 1;
-  }
-
-  function formatRelicPercent(value){
-    const rounded = Math.round(value * 10) / 10;
-    if(Number.isInteger(rounded)) return String(rounded);
-    return String(rounded).replace(/\.0$/, "");
-  }
-
-  window.calculateBlackOrbRelicDamagePercent = function(levelValue){
-    const level = Number(String(levelValue || "").replace(/,/g, ""));
-    if(!Number.isFinite(level) || level <= 0) return 0;
-    return level * relicCoefficient(level);
-  };
-
-  window.updateBlackOrbRelicDamageSummary = function(){
-    RELIC_ROWS.forEach(row => {
-      const input = document.getElementById(row.inputId);
-      const target = document.getElementById(row.damageId);
-      if(!target) return;
-      const value = window.calculateBlackOrbRelicDamagePercent(input ? input.value : 0);
-      target.innerHTML = `<span class="black-orb-relic-result-badge ${row.element}">${row.label}</span><span class="black-orb-relic-result-value">+${formatRelicPercent(value)}%</span>`;
-    });
-  };
-
-  const previousApply = window.applyBlackOrbRelicSettings;
-  window.applyBlackOrbRelicSettings = function(values){
-    if(typeof previousApply === "function") previousApply(values);
-    else if(values){
-      Object.keys(values).forEach(id => {
-        const el = document.getElementById(id);
-        if(el) el.value = values[id] || "";
-      });
-    }
-    window.updateBlackOrbRelicDamageSummary();
-  };
-
-  const previousSave = window.saveBlackOrbRelicSettings;
-  window.saveBlackOrbRelicSettings = async function(){
-    const result = typeof previousSave === "function" ? await previousSave() : undefined;
-    window.updateBlackOrbRelicDamageSummary();
-    return result;
-  };
-
-  function bindRelicDamageEvents(){
-    RELIC_ROWS.forEach(row => {
-      const input = document.getElementById(row.inputId);
-      if(input && !input.dataset.relicDamageBound){
-        input.dataset.relicDamageBound = "1";
-        input.addEventListener("input", window.updateBlackOrbRelicDamageSummary);
-        input.addEventListener("change", window.updateBlackOrbRelicDamageSummary);
-      }
-    });
-    window.updateBlackOrbRelicDamageSummary();
-  }
-
-  const previousOpenRelicPopup = window.openBlackOrbRelicPopup;
-  window.openBlackOrbRelicPopup = function(){
-    if(typeof previousOpenRelicPopup === "function") previousOpenRelicPopup.apply(this, arguments);
-    setTimeout(bindRelicDamageEvents, 0);
-  };
-
-  if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", bindRelicDamageEvents);
-  else bindRelicDamageEvents();
-  window.addEventListener("load", bindRelicDamageEvents);
-})();
-</script>
-
-
-
-<!-- 유물 증가 데미지 계산/저장 최종 보정 -->
-<style>
-  .black-orb-relic-damage{display:flex !important;align-items:center !important;justify-content:center !important;gap:6px !important;padding:6px 8px !important;min-width:0 !important;white-space:nowrap !important;color:#111827 !important;font-weight:900 !important;}
-  .black-orb-relic-damage .relic-result-badge{display:inline-flex;align-items:center;justify-content:center;min-width:42px;height:28px;padding:0 12px;border-radius:999px;font-size:14px;font-weight:900;line-height:1;color:#fff;}
-  .black-orb-relic-damage .relic-result-badge.wind{background:#19d5c3;color:#fff;}
-  .black-orb-relic-damage .relic-result-badge.earth{background:#ffc45f;color:#111827;}
-  .black-orb-relic-damage .relic-result-badge.fire{background:#d81e0c;color:#fff;}
-  .black-orb-relic-damage .relic-result-badge.water{background:#070078;color:#fff;}
-  .black-orb-relic-damage .relic-result-value{display:inline-flex;align-items:center;justify-content:center;font-size:15px;font-weight:900;color:#111827;line-height:1;}
-  @media (max-width:520px){.black-orb-relic-damage{gap:4px !important;padding:5px 4px !important;}.black-orb-relic-damage .relic-result-badge{min-width:34px;height:24px;padding:0 8px;font-size:12px;}.black-orb-relic-damage .relic-result-value{font-size:13px;}}
+<style id="black-orb-relic-unified-style">
+.black-orb-relic-result{display:flex;align-items:center;justify-content:center;gap:6px;font-weight:900;white-space:nowrap;}
+.black-orb-relic-result .black-orb-element-badge{min-width:42px;height:28px;padding:0 10px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:#fff;line-height:1;}
+.black-orb-element-badge.wind{background:var(--wind-color,#18d5c3)!important;color:#fff!important;}
+.black-orb-element-badge.earth,.black-orb-element-badge.ground{background:var(--earth-color,#ffc55f)!important;color:#111827!important;}
+.black-orb-element-badge.fire{background:var(--fire-color,#d91d10)!important;color:#fff!important;}
+.black-orb-element-badge.water{background:var(--water-color,#070078)!important;color:#fff!important;}
 </style>
-<script>
+
+<script id="black-orb-relic-skill-unified-save">
 (function(){
-  const STORAGE_KEY = "blackOrbRelicSettings";
-  const RELIC_ROWS = [
-    { inputId:"blackOrbRelicTyphoonEye", damageId:"blackOrbRelicTyphoonEyeDamage", key:"typhoonEye", element:"wind", label:"바람" },
-    { inputId:"blackOrbRelicEmperorProof", damageId:"blackOrbRelicEmperorProofDamage", key:"emperorProof", element:"earth", label:"땅" },
-    { inputId:"blackOrbRelicQuietFlame", damageId:"blackOrbRelicQuietFlameDamage", key:"quietFlame", element:"fire", label:"불" },
-    { inputId:"blackOrbRelicAbyssWaterdrop", damageId:"blackOrbRelicAbyssWaterdropDamage", key:"abyssWaterdrop", element:"water", label:"물" }
+  "use strict";
+
+  const RELIC_STORAGE_KEY = "blackOrbRelicSettings";
+  const SKILL_STORAGE_KEY = "blackOrbSkillMasterySettings";
+
+  const relicRows = [
+    { key:"typhoonEye", id:"blackOrbRelicTyphoonEyeLevel", damageId:"blackOrbRelicTyphoonEyeDamage", label:"바람", cls:"wind" },
+    { key:"kingsProof", id:"blackOrbRelicKingsProofLevel", damageId:"blackOrbRelicKingsProofDamage", label:"땅", cls:"earth" },
+    { key:"silentFlame", id:"blackOrbRelicSilentFlameLevel", damageId:"blackOrbRelicSilentFlameDamage", label:"불", cls:"fire" },
+    { key:"abyssDrop", id:"blackOrbRelicAbyssDropLevel", damageId:"blackOrbRelicAbyssDropDamage", label:"물", cls:"water" }
   ];
+
+  function qs(id){ return document.getElementById(id); }
   function cleanNumber(value){ return String(value ?? "").replace(/[^0-9]/g, ""); }
+  function toNumber(value){ const n = parseInt(cleanNumber(value), 10); return Number.isFinite(n) ? n : 0; }
+  function setInputValue(id, value){ const el = qs(id); if (el) el.value = value === undefined || value === null ? "" : String(value); }
+  function storageGet(key){ try { return JSON.parse(localStorage.getItem(key) || "null"); } catch(e){ return null; } }
+  function storageSet(key, value){ try { localStorage.setItem(key, JSON.stringify(value)); } catch(e){} }
+
+  function normalizeRelicSettings(raw){
+    if (!raw) return { typhoonEye:"", kingsProof:"", silentFlame:"", abyssDrop:"" };
+    if (Array.isArray(raw)) {
+      return {
+        typhoonEye: cleanNumber(raw[0]),
+        kingsProof: cleanNumber(raw[1]),
+        silentFlame: cleanNumber(raw[2]),
+        abyssDrop: cleanNumber(raw[3])
+      };
+    }
+    return {
+      typhoonEye: cleanNumber(raw.typhoonEye ?? raw.wind ?? raw[0] ?? ""),
+      kingsProof: cleanNumber(raw.kingsProof ?? raw.earth ?? raw.ground ?? raw[1] ?? ""),
+      silentFlame: cleanNumber(raw.silentFlame ?? raw.fire ?? raw[2] ?? ""),
+      abyssDrop: cleanNumber(raw.abyssDrop ?? raw.water ?? raw[3] ?? "")
+    };
+  }
+
   function relicMultiplier(level){
-    if(level > 99) return 3;
-    if(level > 89) return 2.6;
-    if(level > 79) return 2.3;
-    if(level > 69) return 2;
-    if(level > 59) return 1.8;
-    if(level > 49) return 1.6;
-    if(level > 39) return 1.45;
-    if(level > 29) return 1.3;
-    if(level > 19) return 1.2;
-    if(level > 9) return 1.1;
+    if (level > 99) return 3;
+    if (level > 89) return 2.6;
+    if (level > 79) return 2.3;
+    if (level > 69) return 2;
+    if (level > 59) return 1.8;
+    if (level > 49) return 1.6;
+    if (level > 39) return 1.45;
+    if (level > 29) return 1.3;
+    if (level > 19) return 1.2;
+    if (level > 9) return 1.1;
     return 1;
   }
+
+  function calcRelicDamage(level){
+    const n = Math.max(0, toNumber(level));
+    return n * relicMultiplier(n);
+  }
+
   function formatPercent(value){
     const rounded = Math.round((Number(value) || 0) * 100) / 100;
-    return Number.isInteger(rounded) ? String(rounded) : String(rounded).replace(/\.0+$/, "");
+    return Number.isInteger(rounded) ? String(rounded) : rounded.toFixed(2).replace(/0+$/,'').replace(/\.$/,'');
   }
-  function calculateRelicDamage(levelValue){
-    const level = Number(cleanNumber(levelValue));
-    if(!Number.isFinite(level) || level <= 0) return 0;
-    return level * relicMultiplier(level);
-  }
-  function renderRelicDamage(row){
-    const input = document.getElementById(row.inputId);
-    const output = document.getElementById(row.damageId);
-    if(!output) return;
-    const damage = calculateRelicDamage(input ? input.value : "");
-    output.innerHTML = '<span class="relic-result-badge '+ row.element +'">'+ row.label +'</span><span class="relic-result-value">+'+ formatPercent(damage) +'%</span>';
-  }
-  function updateAllRelicDamage(){ RELIC_ROWS.forEach(renderRelicDamage); }
-  function collectRelicSettings(){
-    const values = {};
-    RELIC_ROWS.forEach(row => {
-      const input = document.getElementById(row.inputId);
-      values[row.inputId] = input ? cleanNumber(input.value) : "";
-      values[row.key] = values[row.inputId];
-      values[row.damageId] = document.getElementById(row.damageId)?.textContent?.trim() || "";
-    });
-    return values;
-  }
-  function applyRelicSettings(values){
-    if(!values) return;
-    RELIC_ROWS.forEach(row => {
-      const input = document.getElementById(row.inputId);
-      if(!input) return;
-      const savedValue = values[row.inputId] ?? values[row.key] ?? "";
-      input.value = cleanNumber(savedValue);
-    });
-    updateAllRelicDamage();
-  }
-  function saveRelicSettingsLocal(){ try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(collectRelicSettings())); }catch(e){} }
-  function loadRelicSettingsLocal(){
-    try{
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if(saved) applyRelicSettings(JSON.parse(saved));
-      else updateAllRelicDamage();
-    }catch(e){ updateAllRelicDamage(); }
-  }
-  function isValidRelicLevel(value){
-    const v = cleanNumber(value);
-    if(v === "") return true;
-    const n = Number(v);
-    return Number.isInteger(n) && n >= 0 && n <= 100;
-  }
-  window.collectBlackOrbRelicSettings = collectRelicSettings;
-  window.applyBlackOrbRelicSettings = applyRelicSettings;
-  window.updateBlackOrbRelicDamage = updateAllRelicDamage;
-  window.isValidBlackOrbRelicLevel = isValidRelicLevel;
-  window.saveBlackOrbRelicSettings = async function(){
-    const values = collectRelicSettings();
-    const valid = RELIC_ROWS.every(row => isValidRelicLevel(values[row.inputId]));
-    if(!valid){
-      if(window.showBlackOrbRelicTooltip) window.showBlackOrbRelicTooltip();
-      return;
-    }
-    if(window.hideBlackOrbRelicTooltip) window.hideBlackOrbRelicTooltip();
-    saveRelicSettingsLocal();
-    if(window.saveBlackOrbRelicSettingsToCloud){
-      const result = await window.saveBlackOrbRelicSettingsToCloud(values);
-      if(!result || !result.ok){
-        if(window.showBlackOrbSaveFail) window.showBlackOrbSaveFail(".black-orb-relic-save-btn");
-        return;
-      }
-    }
-    if(window.setBlackOrbSaveButtonState) window.setBlackOrbSaveButtonState(document.querySelector(".black-orb-relic-save-btn"), "done");
-  };
-  document.addEventListener("input", function(e){
-    const row = RELIC_ROWS.find(r => e.target && e.target.id === r.inputId);
-    if(!row) return;
-    const cleaned = cleanNumber(e.target.value);
-    if(e.target.value !== cleaned) e.target.value = cleaned;
-    renderRelicDamage(row);
-    saveRelicSettingsLocal();
-  });
-  const originalOpen = window.openBlackOrbRelicPopup;
-  window.openBlackOrbRelicPopup = function(){
-    if(typeof originalOpen === "function") originalOpen.apply(this, arguments);
-    setTimeout(loadRelicSettingsLocal, 0);
-  };
-  if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", loadRelicSettingsLocal);
-  else loadRelicSettingsLocal();
-})();
-</script>
 
-
-<script>
-/* Final robust patch: relic damage render + persistent save/load */
-(function(){
-  const STORAGE_KEY = "blackOrbRelicSettings";
-  const ROWS = [
-    { inputId:"blackOrbRelicTyphoonEyeLevel", damageId:"blackOrbRelicTyphoonEyeDamage", element:"wind" },
-    { inputId:"blackOrbRelicEmperorProofLevel", damageId:"blackOrbRelicEmperorProofDamage", element:"earth" },
-    { inputId:"blackOrbRelicQuietFlameLevel", damageId:"blackOrbRelicQuietFlameDamage", element:"fire" },
-    { inputId:"blackOrbRelicAbyssWaterdropLevel", damageId:"blackOrbRelicAbyssWaterdropDamage", element:"water" }
-  ];
-  const arrayToObject = (arr) => ({
-    blackOrbRelicTyphoonEyeLevel: arr?.[0] ?? "",
-    blackOrbRelicEmperorProofLevel: arr?.[1] ?? "",
-    blackOrbRelicQuietFlameLevel: arr?.[2] ?? "",
-    blackOrbRelicAbyssWaterdropLevel: arr?.[3] ?? ""
-  });
-  const normalize = (raw) => Array.isArray(raw) ? arrayToObject(raw) : (raw || {});
-  function relicRate(level){
-    const x = Math.max(0, Number(String(level || "").replace(/,/g, "")) || 0);
-    let rate = 1;
-    if(x > 99) rate = 3;
-    else if(x > 89) rate = 2.6;
-    else if(x > 79) rate = 2.3;
-    else if(x > 69) rate = 2;
-    else if(x > 59) rate = 1.8;
-    else if(x > 49) rate = 1.6;
-    else if(x > 39) rate = 1.45;
-    else if(x > 29) rate = 1.3;
-    else if(x > 19) rate = 1.2;
-    else if(x > 9) rate = 1.1;
-    return x * rate;
-  }
-  function fmt(v){
-    if(!Number.isFinite(v)) return "+0%";
-    return "+" + (Number.isInteger(v) ? String(v) : v.toFixed(2).replace(/\.00$/, "").replace(/(\.\d)0$/, "$1")) + "%";
-  }
-  function elementBadge(element){
-    const map = {wind:"바람", earth:"땅", fire:"불", water:"물"};
-    return `<span class="black-orb-element-badge ${element}">${map[element] || ""}</span>`;
-  }
-  window.updateBlackOrbRelicDamageSummary = function(){
-    ROWS.forEach(row => {
-      const input = document.getElementById(row.inputId);
-      const out = document.getElementById(row.damageId);
-      if(!input || !out) return;
-      out.innerHTML = `${elementBadge(row.element)} <strong>${fmt(relicRate(input.value))}</strong>`;
+  function renderRelicDamage(){
+    relicRows.forEach(row => {
+      const input = qs(row.id);
+      const target = qs(row.damageId);
+      if (!target) return;
+      const level = input ? toNumber(input.value) : 0;
+      const damage = calcRelicDamage(level);
+      target.innerHTML = `<span class="black-orb-relic-result"><span class="black-orb-element-badge ${row.cls}">${row.label}</span><span>+${formatPercent(damage)}%</span></span>`;
     });
-  };
-  window.collectBlackOrbRelicSettings = function(){
-    const values = {};
-    ROWS.forEach(row => values[row.inputId] = document.getElementById(row.inputId)?.value || "");
-    return values;
-  };
+  }
+
+  function readRelicSettings(){
+    const settings = {};
+    relicRows.forEach(row => settings[row.key] = cleanNumber(qs(row.id)?.value || ""));
+    return settings;
+  }
+
   window.applyBlackOrbRelicSettings = function(settings){
-    const values = normalize(settings);
-    ROWS.forEach(row => {
-      const input = document.getElementById(row.inputId);
-      if(input && Object.prototype.hasOwnProperty.call(values, row.inputId)) input.value = values[row.inputId] || "";
-    });
-    window.updateBlackOrbRelicDamageSummary();
+    const normalized = normalizeRelicSettings(settings);
+    relicRows.forEach(row => setInputValue(row.id, normalized[row.key]));
+    renderRelicDamage();
   };
+
   window.saveBlackOrbRelicSettings = async function(){
-    const values = window.collectBlackOrbRelicSettings();
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(values));
-    window.updateBlackOrbRelicDamageSummary();
-    if(window.saveBlackOrbRelicSettingsToCloud){
-      const result = await window.saveBlackOrbRelicSettingsToCloud(values);
-      if(!result || !result.ok){
-        if(typeof showBlackOrbSaveFail === "function") showBlackOrbSaveFail(".black-orb-relic-save-btn");
-        return;
-      }
+    const settings = readRelicSettings();
+    storageSet(RELIC_STORAGE_KEY, settings);
+    renderRelicDamage();
+    if (typeof window.saveBlackOrbRelicSettingsToCloud === "function") {
+      try { await window.saveBlackOrbRelicSettingsToCloud(settings); } catch(e) { console.error("유물 클라우드 저장 실패:", e); }
     }
-    if(typeof setBlackOrbSaveButtonState === "function") {
-      setBlackOrbSaveButtonState(document.querySelector(".black-orb-relic-save-btn"), "done");
-    }
+    if (typeof window.showBlackOrbSaveBubble === "function") window.showBlackOrbSaveBubble("유물 정보가 저장되었습니다.");
+    return settings;
   };
-  const oldOpen = window.openBlackOrbRelicPopup;
-  window.openBlackOrbRelicPopup = function(){
-    if(typeof oldOpen === "function") oldOpen();
-    try{
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if(saved) window.applyBlackOrbRelicSettings(JSON.parse(saved));
-      else window.updateBlackOrbRelicDamageSummary();
-    }catch(e){ window.updateBlackOrbRelicDamageSummary(); }
-  };
-  document.addEventListener("input", function(e){
-    if(e.target && e.target.classList && e.target.classList.contains("black-orb-relic-input")){
-      window.updateBlackOrbRelicDamageSummary();
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(window.collectBlackOrbRelicSettings()));
+
+  async function loadRelicSettings(){
+    const local = normalizeRelicSettings(storageGet(RELIC_STORAGE_KEY));
+    window.applyBlackOrbRelicSettings(local);
+    if (typeof window.loadBlackOrbRelicSettingsFromCloud === "function") {
+      try { await window.loadBlackOrbRelicSettingsFromCloud(); } catch(e) { console.error("유물 클라우드 불러오기 실패:", e); }
     }
-  }, true);
-  document.addEventListener("DOMContentLoaded", function(){
-    try{
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if(saved) window.applyBlackOrbRelicSettings(JSON.parse(saved));
-      else window.updateBlackOrbRelicDamageSummary();
-    }catch(e){ window.updateBlackOrbRelicDamageSummary(); }
-  });
-})();
-</script>
-
-
-<script>
-/* 최종 보정: 블랙 오브 > 스킬 숙련도 계산/저장/복구 */
-(function(){
-  const STORAGE_KEY = "blackOrbSkillMasterySettings";
-  const LEGACY_KEYS = ["blackOrbSkillMasterySettings"];
-
-  function getLevelInput(){ return document.getElementById("blackOrbSkillMasteryLevel"); }
-  function getDamageBox(){ return document.getElementById("blackOrbSkillMasteryDamage"); }
-  function getSaveBtn(){ return document.querySelector(".black-orb-skill-save-btn"); }
-
-  function normalizeDigits(value){
-    return String(value || "").replace(/[^0-9]/g, "");
+    renderRelicDamage();
   }
 
-  function parseLevel(value){
-    const digits = normalizeDigits(value);
-    if(digits === "") return null;
-    const n = Number(digits);
-    return Number.isFinite(n) ? n : null;
-  }
-
-  function isValidSkillMasteryLevel(value){
-    const n = parseLevel(value);
-    return n !== null && Number.isInteger(n) && n >= 0 && n <= 328;
-  }
-
-  function calculateSkillMasteryDamage(level){
-    const n = Number(level);
-    if(!Number.isFinite(n)) return null;
-    if(n === 256) return 40345;
+  function calcSkillMasteryDamage(level){
+    const n = Math.max(0, toNumber(level));
+    if (n === 256) return 40345;
     const quotient = Math.floor(n / 5);
     return Math.round((n * 5 * Math.pow(1.07000005, quotient)) * 100) / 100;
   }
 
-  function formatDamage(value){
-    if(value === null || value === undefined || !Number.isFinite(Number(value))) return "데미지 증가량";
-    const n = Number(value);
-    const text = Number.isInteger(n) ? String(n) : n.toFixed(2).replace(/\.00$/, "").replace(/(\.\d)0$/, "$1");
-    return "+" + text + "%";
-  }
-
-  function updateSkillMasteryDamage(){
-    const input = getLevelInput();
-    const box = getDamageBox();
-    if(!input || !box) return;
-    const level = parseLevel(input.value);
-    if(level === null){
-      box.textContent = "데미지 증가량";
-      return;
-    }
-    box.textContent = formatDamage(calculateSkillMasteryDamage(level));
-  }
-
-  function collectSettings(){
-    const input = getLevelInput();
-    const levelText = normalizeDigits(input ? input.value : "");
-    const level = levelText === "" ? "" : String(Number(levelText));
-    const damage = level === "" ? "" : formatDamage(calculateSkillMasteryDamage(Number(level)));
-    return { level, damage, savedAt: new Date().toISOString() };
-  }
-
-  function applySettings(values){
-    if(!values) return;
-    const input = getLevelInput();
-    if(input && Object.prototype.hasOwnProperty.call(values, "level")){
-      input.value = normalizeDigits(values.level);
-    }
-    updateSkillMasteryDamage();
-  }
-
-  function loadLocalSettings(){
-    for(const key of LEGACY_KEYS){
-      try{
-        const raw = localStorage.getItem(key);
-        if(!raw) continue;
-        const parsed = JSON.parse(raw);
-        if(parsed && typeof parsed === "object") return parsed;
-      }catch(e){}
-    }
-    return null;
-  }
-
-  function saveLocalSettings(values){
-    try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(values)); }catch(e){}
-  }
-
-  async function saveSettings(){
-    const input = getLevelInput();
-    const btn = getSaveBtn();
-    const value = input ? input.value : "";
-    if(!isValidSkillMasteryLevel(value)){
-      if(typeof window.showBlackOrbSkillMasteryTooltip === "function") window.showBlackOrbSkillMasteryTooltip();
-      if(btn){
-        const old = btn.textContent;
-        btn.textContent = "0~328";
-        btn.classList.add("save-fail");
-        setTimeout(function(){ btn.textContent = old || "저장하기"; btn.classList.remove("save-fail"); }, 1200);
-      }
-      return false;
-    }
-    if(typeof window.hideBlackOrbSkillMasteryTooltip === "function") window.hideBlackOrbSkillMasteryTooltip();
-    updateSkillMasteryDamage();
-    const values = collectSettings();
-    saveLocalSettings(values);
-    if(typeof window.saveBlackOrbSkillMasterySettingsToCloud === "function"){
-      try{ await window.saveBlackOrbSkillMasterySettingsToCloud(values); }catch(e){}
-    }
-    if(btn){
-      const old = btn.textContent;
-      btn.textContent = "저장완료";
-      setTimeout(function(){ btn.textContent = old || "저장하기"; }, 1200);
-    }
-    return true;
-  }
-
-  window.calculateBlackOrbSkillMasteryDamage = updateSkillMasteryDamage;
-  window.collectBlackOrbSkillMasterySettings = collectSettings;
-  window.applyBlackOrbSkillMasterySettings = applySettings;
-  window.isValidBlackOrbSkillMasteryLevel = isValidSkillMasteryLevel;
-  window.saveBlackOrbSkillMasterySettings = saveSettings;
-
-  const previousOpen = window.openBlackOrbSkillMasteryPopup;
-  window.openBlackOrbSkillMasteryPopup = function(){
-    if(typeof previousOpen === "function") previousOpen.apply(this, arguments);
-    applySettings(loadLocalSettings());
-    setTimeout(updateSkillMasteryDamage, 0);
-  };
-
-  function bind(){
-    const input = getLevelInput();
-    if(input && !input.dataset.skillMasteryFormulaBound){
-      input.dataset.skillMasteryFormulaBound = "1";
-      input.addEventListener("input", function(){
-        const cleaned = normalizeDigits(input.value);
-        if(input.value !== cleaned) input.value = cleaned;
-        updateSkillMasteryDamage();
-      });
-      input.addEventListener("change", updateSkillMasteryDamage);
-    }
-    const btn = getSaveBtn();
-    if(btn && !btn.dataset.skillMasterySaveBound){
-      btn.dataset.skillMasterySaveBound = "1";
-      btn.addEventListener("click", function(ev){
-        ev.preventDefault();
-        ev.stopImmediatePropagation();
-        saveSettings();
-      }, true);
-    }
-    applySettings(loadLocalSettings());
-  }
-
-  document.addEventListener("DOMContentLoaded", bind);
-  window.addEventListener("pageshow", function(){ setTimeout(bind, 0); });
-  setTimeout(bind, 0);
-  setTimeout(bind, 500);
-})();
-</script>
-
-
-
-<script>
-/* ===== Black Orb final persistence + damage calculation patch ===== */
-(function(){
-  const RELIC_KEY = "blackOrbRelicSettings";
-  const SKILL_KEY = "blackOrbSkillMasterySettings";
-
-  const RELICS = [
-    { type:"wind",  input:"blackOrbRelicWindLevel",  output:"blackOrbRelicWindDamage",  label:"바람" },
-    { type:"earth", input:"blackOrbRelicEarthLevel", output:"blackOrbRelicEarthDamage", label:"땅" },
-    { type:"fire",  input:"blackOrbRelicFireLevel",  output:"blackOrbRelicFireDamage",  label:"불" },
-    { type:"water", input:"blackOrbRelicWaterLevel", output:"blackOrbRelicWaterDamage", label:"물" }
-  ];
-
-  function $(id){ return document.getElementById(id); }
-
-  function cleanNumber(value){
-    return String(value ?? "").replace(/[^0-9]/g, "");
-  }
-
-  function readInt(id){
-    const el = $(id);
-    const raw = cleanNumber(el ? el.value : "");
-    return raw === "" ? 0 : parseInt(raw, 10);
-  }
-
-  function normalizeInput(id){
-    const el = $(id);
-    if(!el) return;
-    const raw = cleanNumber(el.value);
-    el.value = raw === "" ? "" : String(parseInt(raw, 10));
-  }
-
-  function formatPercentValue(n){
-    const rounded = Math.round((Number(n) || 0) * 100) / 100;
-    return rounded.toLocaleString("ko-KR", { maximumFractionDigits: 2 });
-  }
-
-  function relicMultiplier(level){
-    if(level > 99) return 3;
-    if(level > 89) return 2.6;
-    if(level > 79) return 2.3;
-    if(level > 69) return 2;
-    if(level > 59) return 1.8;
-    if(level > 49) return 1.6;
-    if(level > 39) return 1.45;
-    if(level > 29) return 1.3;
-    if(level > 19) return 1.2;
-    if(level > 9) return 1.1;
-    return 1;
-  }
-
-  window.calculateBlackOrbRelicDamage = function(level){
-    const lv = Math.max(0, parseInt(level || 0, 10) || 0);
-    return lv * relicMultiplier(lv);
-  };
-
-  function makeElementBadge(type, label){
-    return '<span class="black-orb-element-badge black-orb-element-' + type + '">' + label + '</span>';
-  }
-
-  window.updateBlackOrbRelicDamageOutputs = function(){
-    RELICS.forEach(item => {
-      normalizeInput(item.input);
-      const lv = readInt(item.input);
-      const out = $(item.output);
-      if(out){
-        out.innerHTML = makeElementBadge(item.type, item.label) + '<span class="black-orb-damage-value"> +' + formatPercentValue(window.calculateBlackOrbRelicDamage(lv)) + '%</span>';
-      }
-    });
-  };
-
-  window.collectBlackOrbRelicSettings = function(){
-    return {
-      wind: readInt("blackOrbRelicWindLevel"),
-      earth: readInt("blackOrbRelicEarthLevel"),
-      fire: readInt("blackOrbRelicFireLevel"),
-      water: readInt("blackOrbRelicWaterLevel")
-    };
-  };
-
-  window.applyBlackOrbRelicSettings = function(values){
-    values = values || {};
-    const map = { wind:"blackOrbRelicWindLevel", earth:"blackOrbRelicEarthLevel", fire:"blackOrbRelicFireLevel", water:"blackOrbRelicWaterLevel" };
-    Object.entries(map).forEach(([key,id]) => {
-      const el = $(id);
-      if(el && values[key] !== undefined && values[key] !== null && values[key] !== "") el.value = String(parseInt(cleanNumber(values[key]),10) || 0);
-    });
-    window.updateBlackOrbRelicDamageOutputs();
-  };
-
-  function readSavedRelic(){
-    try{ return JSON.parse(localStorage.getItem(RELIC_KEY) || "null"); }catch(e){ return null; }
-  }
-
-  function saveRelicLocal(values){
-    localStorage.setItem(RELIC_KEY, JSON.stringify(values));
-    localStorage.setItem(RELIC_KEY + "V2", JSON.stringify(values));
-  }
-
-  window.saveBlackOrbRelicSettings = async function(){
-    RELICS.forEach(item => normalizeInput(item.input));
-    const values = window.collectBlackOrbRelicSettings();
-    saveRelicLocal(values);
-    window.updateBlackOrbRelicDamageOutputs();
-    if(typeof window.saveBlackOrbRelicSettingsToCloud === "function"){
-      try{ await window.saveBlackOrbRelicSettingsToCloud(values); }catch(e){}
-    }
-    if(typeof window.setBlackOrbSaveButtonState === "function"){
-      window.setBlackOrbSaveButtonState(document.querySelector(".black-orb-relic-save-btn"), "done");
-    }
-  };
-
-  const prevOpenRelic = window.openBlackOrbRelicPopup;
-  window.openBlackOrbRelicPopup = function(){
-    if(typeof prevOpenRelic === "function") prevOpenRelic();
-    const saved = readSavedRelic();
-    if(saved) window.applyBlackOrbRelicSettings(saved);
-    else window.updateBlackOrbRelicDamageOutputs();
-  };
-
-  function calculateSkillMasteryDamage(level){
-    const lv = Math.max(0, parseInt(level || 0, 10) || 0);
-    if(lv === 256) return 40345;
-    return lv * 5 * Math.pow(1.07000005, Math.floor(lv / 5));
-  }
-  window.calculateBlackOrbSkillMasteryDamage = calculateSkillMasteryDamage;
+  window.calculateBlackOrbSkillMasteryDamage = calcSkillMasteryDamage;
 
   window.updateBlackOrbSkillMasteryDamage = function(){
-    normalizeInput("blackOrbSkillMasteryLevel");
-    const level = readInt("blackOrbSkillMasteryLevel");
-    const out = $("blackOrbSkillMasteryDamage");
-    if(out){
-      out.textContent = "+" + formatPercentValue(calculateSkillMasteryDamage(level)) + "%";
-    }
+    const levelInput = qs("blackOrbSkillMasteryLevel");
+    const damageBox = qs("blackOrbSkillMasteryDamage");
+    if (!damageBox) return;
+    const level = toNumber(levelInput?.value || "");
+    damageBox.textContent = level ? `+${formatPercent(calcSkillMasteryDamage(level))}%` : "데미지 증가량";
   };
 
-  window.collectBlackOrbSkillMasterySettings = function(){
-    return { level: readInt("blackOrbSkillMasteryLevel") };
-  };
-
-  window.applyBlackOrbSkillMasterySettings = function(values){
-    const el = $("blackOrbSkillMasteryLevel");
-    if(el && values && values.level !== undefined && values.level !== null && values.level !== ""){
-      el.value = String(parseInt(cleanNumber(values.level),10) || 0);
-    }
+  window.applyBlackOrbSkillMasterySettings = function(settings){
+    const level = cleanNumber(settings?.level ?? settings?.skillMasteryLevel ?? settings ?? "");
+    setInputValue("blackOrbSkillMasteryLevel", level);
     window.updateBlackOrbSkillMasteryDamage();
   };
-
-  function readSavedSkill(){
-    try{ return JSON.parse(localStorage.getItem(SKILL_KEY) || "null"); }catch(e){ return null; }
-  }
-
-  function saveSkillLocal(values){
-    localStorage.setItem(SKILL_KEY, JSON.stringify(values));
-    localStorage.setItem(SKILL_KEY + "V2", JSON.stringify(values));
-  }
 
   window.saveBlackOrbSkillMasterySettings = async function(){
-    normalizeInput("blackOrbSkillMasteryLevel");
-    const values = window.collectBlackOrbSkillMasterySettings();
-    saveSkillLocal(values);
+    const level = cleanNumber(qs("blackOrbSkillMasteryLevel")?.value || "");
+    const settings = { level };
+    storageSet(SKILL_STORAGE_KEY, settings);
     window.updateBlackOrbSkillMasteryDamage();
-    if(typeof window.saveBlackOrbSkillMasterySettingsToCloud === "function"){
-      try{ await window.saveBlackOrbSkillMasterySettingsToCloud(values); }catch(e){}
+    if (typeof window.saveBlackOrbSkillMasterySettingsToCloud === "function") {
+      try { await window.saveBlackOrbSkillMasterySettingsToCloud(settings); } catch(e) { console.error("스킬 숙련도 클라우드 저장 실패:", e); }
     }
-    if(typeof window.setBlackOrbSaveButtonState === "function"){
-      window.setBlackOrbSaveButtonState(document.querySelector(".black-orb-skill-save-btn"), "done");
-    }
+    if (typeof window.showBlackOrbSaveBubble === "function") window.showBlackOrbSaveBubble("스킬 숙련도 정보가 저장되었습니다.");
+    return settings;
   };
 
-  const prevOpenSkill = window.openBlackOrbSkillMasteryPopup;
-  window.openBlackOrbSkillMasteryPopup = function(){
-    if(typeof prevOpenSkill === "function") prevOpenSkill();
-    const saved = readSavedSkill();
-    if(saved) window.applyBlackOrbSkillMasterySettings(saved);
+  async function loadSkillMasterySettings(){
+    const local = storageGet(SKILL_STORAGE_KEY);
+    if (local) window.applyBlackOrbSkillMasterySettings(local);
     else window.updateBlackOrbSkillMasteryDamage();
-  };
-
-  function bindFinalBlackOrbCalculationPatch(){
-    RELICS.forEach(item => {
-      const el = $(item.input);
-      if(el){
-        el.removeAttribute("readonly");
-        el.addEventListener("input", () => {
-          window.updateBlackOrbRelicDamageOutputs();
-          saveRelicLocal(window.collectBlackOrbRelicSettings());
-        });
-        el.addEventListener("change", () => {
-          window.updateBlackOrbRelicDamageOutputs();
-          saveRelicLocal(window.collectBlackOrbRelicSettings());
-        });
-      }
-    });
-
-    const skill = $("blackOrbSkillMasteryLevel");
-    if(skill){
-      skill.removeAttribute("readonly");
-      skill.removeAttribute("max");
-      skill.addEventListener("input", () => {
-        window.updateBlackOrbSkillMasteryDamage();
-        saveSkillLocal(window.collectBlackOrbSkillMasterySettings());
-      });
-      skill.addEventListener("change", () => {
-        window.updateBlackOrbSkillMasteryDamage();
-        saveSkillLocal(window.collectBlackOrbSkillMasterySettings());
-      });
+    if (typeof window.loadBlackOrbSkillMasterySettingsFromCloud === "function") {
+      try { await window.loadBlackOrbSkillMasterySettingsFromCloud(); } catch(e) { console.error("스킬 숙련도 클라우드 불러오기 실패:", e); }
     }
-
-    const savedRelic = readSavedRelic();
-    if(savedRelic) window.applyBlackOrbRelicSettings(savedRelic);
-    else window.updateBlackOrbRelicDamageOutputs();
-
-    const savedSkill = readSavedSkill();
-    if(savedSkill) window.applyBlackOrbSkillMasterySettings(savedSkill);
-    else window.updateBlackOrbSkillMasteryDamage();
+    window.updateBlackOrbSkillMasteryDamage();
   }
 
-  if(document.readyState === "loading"){
-    document.addEventListener("DOMContentLoaded", bindFinalBlackOrbCalculationPatch);
-  }else{
-    bindFinalBlackOrbCalculationPatch();
-  }
-  window.addEventListener("load", () => {
-    setTimeout(bindFinalBlackOrbCalculationPatch, 300);
-    setTimeout(bindFinalBlackOrbCalculationPatch, 1200);
-    setTimeout(bindFinalBlackOrbCalculationPatch, 3000);
-  });
-})();
-</script>
-
-
-
-<script>
-/* ===== Stable patch: 유물/스킬 숙련도 계산 + 새로고침/업로드 유지 저장 ===== */
-(function(){
-  const RELIC_KEY = "blackOrbRelicSettings";
-  const SKILL_KEY = "blackOrbSkillMasterySettings";
-
-  const RELICS = [
-    { key:"typhoonEye",  input:"blackOrbRelicTyphoonEye",  output:"blackOrbRelicTyphoonEyeDamage",  element:"wind",  label:"바람" },
-    { key:"kingProof",   input:"blackOrbRelicKingProof",   output:"blackOrbRelicKingProofDamage",   element:"earth",label:"땅" },
-    { key:"silentFlame", input:"blackOrbRelicSilentFlame", output:"blackOrbRelicSilentFlameDamage", element:"fire",  label:"불" },
-    { key:"abyssDrop",   input:"blackOrbRelicAbyssDrop",   output:"blackOrbRelicAbyssDropDamage",   element:"water", label:"물" }
-  ];
-
-  function $(id){ return document.getElementById(id); }
-  function digits(value){ return String(value == null ? "" : value).replace(/[^0-9]/g, ""); }
-  function toInt(value){ const d = digits(value); return d === "" ? 0 : parseInt(d, 10); }
-  function clamp(n, min, max){ return Math.max(min, Math.min(max, n)); }
-
-  function setSaveDone(btn){
-    if(!btn) return;
-    const old = btn.textContent || "저장하기";
-    btn.textContent = "저장완료";
-    setTimeout(function(){ btn.textContent = old; }, 1200);
-  }
-
-  function relicCoeff(level){
-    if(level > 99) return 3;
-    if(level > 89) return 2.6;
-    if(level > 79) return 2.3;
-    if(level > 69) return 2;
-    if(level > 59) return 1.8;
-    if(level > 49) return 1.6;
-    if(level > 39) return 1.45;
-    if(level > 29) return 1.3;
-    if(level > 19) return 1.2;
-    if(level > 9) return 1.1;
-    return 1;
-  }
-
-  function formatPercent(n){
-    const v = Math.round((Number(n) || 0) * 100) / 100;
-    return v.toLocaleString("ko-KR", { maximumFractionDigits: 2 });
-  }
-
-  function relicDamage(level){
-    const lv = clamp(toInt(level), 0, 100);
-    return lv * relicCoeff(lv);
-  }
-
-  function relicBadge(row, value){
-    return '<span class="black-orb-relic-result-badge ' + row.element + '">' + row.label + '</span>' +
-           '<span class="black-orb-relic-result-value">+' + formatPercent(value) + '%</span>';
-  }
-
-  function normalizeRelicInputs(){
-    RELICS.forEach(function(row){
-      const input = $(row.input);
-      if(!input) return;
-      const d = digits(input.value);
-      input.value = d === "" ? "" : String(clamp(parseInt(d, 10) || 0, 0, 100));
-    });
-  }
-
-  function updateRelicDamage(){
-    RELICS.forEach(function(row){
-      const input = $(row.input);
-      const output = $(row.output);
-      if(!output) return;
-      output.innerHTML = relicBadge(row, relicDamage(input ? input.value : 0));
-    });
-  }
-
-  function collectRelicSettings(){
-    const values = {};
-    RELICS.forEach(function(row){
-      const input = $(row.input);
-      values[row.key] = input ? digits(input.value) : "";
-    });
-    values.savedAt = new Date().toISOString();
-    return values;
-  }
-
-  function applyRelicSettings(values){
-    if(!values || typeof values !== "object") { updateRelicDamage(); return; }
-    RELICS.forEach(function(row){
-      const input = $(row.input);
-      if(!input) return;
-      let v = values[row.key];
-      if(v == null) v = values[row.input];
-      if(v == null) v = values[row.key + "Level"];
-      if(v != null) input.value = digits(v);
-    });
-    normalizeRelicInputs();
-    updateRelicDamage();
-  }
-
-  function loadRelicLocal(){
-    try{
-      const raw = localStorage.getItem(RELIC_KEY);
-      return raw ? JSON.parse(raw) : null;
-    }catch(e){ return null; }
-  }
-
-  function saveRelicLocal(values){
-    try{ localStorage.setItem(RELIC_KEY, JSON.stringify(values)); }catch(e){}
-  }
-
-  async function saveRelicSettings(){
-    normalizeRelicInputs();
-    updateRelicDamage();
-    const values = collectRelicSettings();
-    saveRelicLocal(values);
-    if(typeof window.saveBlackOrbRelicSettingsToCloud === "function"){
-      try{ await window.saveBlackOrbRelicSettingsToCloud(values); }catch(e){ console.warn("유물 클라우드 저장 실패", e); }
-    }
-    setSaveDone(document.querySelector(".black-orb-relic-save-btn"));
-    return true;
-  }
-
-  function skillDamage(level){
-    const lv = toInt(level);
-    if(lv === 256) return 40345;
-    const q = Math.floor(lv / 5);
-    return Math.round((lv * 5 * Math.pow(1.07000005, q)) * 100) / 100;
-  }
-
-  function updateSkillDamage(){
-    const input = $("blackOrbSkillMasteryLevel");
-    const output = $("blackOrbSkillMasteryDamage");
-    if(!output) return;
-    const raw = input ? digits(input.value) : "";
-    if(input && input.value !== raw) input.value = raw;
-    if(raw === "") output.textContent = "데미지 증가량";
-    else output.textContent = "+" + formatPercent(skillDamage(raw)) + "%";
-  }
-
-  function collectSkillSettings(){
-    const input = $("blackOrbSkillMasteryLevel");
-    const level = input ? digits(input.value) : "";
-    return { level: level, damage: level === "" ? "" : ("+" + formatPercent(skillDamage(level)) + "%"), savedAt: new Date().toISOString() };
-  }
-
-  function applySkillSettings(values){
-    if(!values || typeof values !== "object") { updateSkillDamage(); return; }
-    const input = $("blackOrbSkillMasteryLevel");
-    if(input && values.level != null) input.value = digits(values.level);
-    updateSkillDamage();
-  }
-
-  function loadSkillLocal(){
-    try{
-      const raw = localStorage.getItem(SKILL_KEY);
-      return raw ? JSON.parse(raw) : null;
-    }catch(e){ return null; }
-  }
-
-  function saveSkillLocal(values){
-    try{ localStorage.setItem(SKILL_KEY, JSON.stringify(values)); }catch(e){}
-  }
-
-  async function saveSkillSettings(){
-    updateSkillDamage();
-    const values = collectSkillSettings();
-    saveSkillLocal(values);
-    if(typeof window.saveBlackOrbSkillMasterySettingsToCloud === "function"){
-      try{ await window.saveBlackOrbSkillMasterySettingsToCloud(values); }catch(e){ console.warn("스킬 숙련도 클라우드 저장 실패", e); }
-    }
-    setSaveDone(document.querySelector(".black-orb-skill-save-btn"));
-    return true;
-  }
-
-  function bindStablePatch(){
-    RELICS.forEach(function(row){
-      const input = $(row.input);
-      if(input && !input.dataset.relicStableBound){
-        input.dataset.relicStableBound = "1";
-        input.addEventListener("input", function(){ normalizeRelicInputs(); updateRelicDamage(); });
-        input.addEventListener("change", function(){ normalizeRelicInputs(); updateRelicDamage(); });
-      }
-    });
-
-    const relicBtn = document.querySelector(".black-orb-relic-save-btn");
-    if(relicBtn && !relicBtn.dataset.relicStableSaveBound){
-      relicBtn.dataset.relicStableSaveBound = "1";
-      relicBtn.addEventListener("click", function(e){ e.preventDefault(); e.stopImmediatePropagation(); saveRelicSettings(); }, true);
-    }
-
-    const skillInput = $("blackOrbSkillMasteryLevel");
-    if(skillInput && !skillInput.dataset.skillStableBound){
-      skillInput.dataset.skillStableBound = "1";
-      skillInput.addEventListener("input", updateSkillDamage);
-      skillInput.addEventListener("change", updateSkillDamage);
-    }
-
-    const skillBtn = document.querySelector(".black-orb-skill-save-btn");
-    if(skillBtn && !skillBtn.dataset.skillStableSaveBound){
-      skillBtn.dataset.skillStableSaveBound = "1";
-      skillBtn.addEventListener("click", function(e){ e.preventDefault(); e.stopImmediatePropagation(); saveSkillSettings(); }, true);
-    }
-
-    const relicSaved = loadRelicLocal();
-    if(relicSaved) applyRelicSettings(relicSaved); else updateRelicDamage();
-    const skillSaved = loadSkillLocal();
-    if(skillSaved) applySkillSettings(skillSaved); else updateSkillDamage();
-  }
-
-  window.calculateBlackOrbRelicDamagePercent = relicDamage;
-  window.updateBlackOrbRelicDamageSummary = updateRelicDamage;
-  window.collectBlackOrbRelicSettings = collectRelicSettings;
-  window.applyBlackOrbRelicSettings = applyRelicSettings;
-  window.saveBlackOrbRelicSettings = saveRelicSettings;
-
-  window.calculateBlackOrbSkillMasteryDamagePercent = skillDamage;
-  window.updateBlackOrbSkillMasteryDamage = updateSkillDamage;
-  window.collectBlackOrbSkillMasterySettings = collectSkillSettings;
-  window.applyBlackOrbSkillMasterySettings = applySkillSettings;
-  window.saveBlackOrbSkillMasterySettings = saveSkillSettings;
-
-  const oldRelicOpen = window.openBlackOrbRelicPopup;
-  window.openBlackOrbRelicPopup = function(){
-    if(typeof oldRelicOpen === "function") oldRelicOpen.apply(this, arguments);
-    applyRelicSettings(loadRelicLocal());
-    setTimeout(updateRelicDamage, 0);
-  };
-
-  const oldSkillOpen = window.openBlackOrbSkillMasteryPopup;
-  window.openBlackOrbSkillMasteryPopup = function(){
-    if(typeof oldSkillOpen === "function") oldSkillOpen.apply(this, arguments);
-    applySkillSettings(loadSkillLocal());
-    setTimeout(updateSkillDamage, 0);
-  };
-
-  function protectCloudLoaders(){
-    if(typeof window.loadBlackOrbRelicSettingsFromCloud === "function" && !window.loadBlackOrbRelicSettingsFromCloud.__stableWrapped){
-      const original = window.loadBlackOrbRelicSettingsFromCloud;
-      window.loadBlackOrbRelicSettingsFromCloud = async function(){
-        const local = loadRelicLocal();
-        if(local){ applyRelicSettings(local); return; }
-        await original.apply(this, arguments);
-        updateRelicDamage();
-      };
-      window.loadBlackOrbRelicSettingsFromCloud.__stableWrapped = true;
-    }
-    if(typeof window.loadBlackOrbSkillMasterySettingsFromCloud === "function" && !window.loadBlackOrbSkillMasterySettingsFromCloud.__stableWrapped){
-      const original = window.loadBlackOrbSkillMasterySettingsFromCloud;
-      window.loadBlackOrbSkillMasterySettingsFromCloud = async function(){
-        const local = loadSkillLocal();
-        if(local){ applySkillSettings(local); return; }
-        await original.apply(this, arguments);
-        updateSkillDamage();
-      };
-      window.loadBlackOrbSkillMasterySettingsFromCloud.__stableWrapped = true;
-    }
-  }
-
-  document.addEventListener("DOMContentLoaded", function(){ bindStablePatch(); protectCloudLoaders(); });
-  window.addEventListener("pageshow", function(){ setTimeout(function(){ bindStablePatch(); protectCloudLoaders(); }, 0); });
-  setTimeout(function(){ bindStablePatch(); protectCloudLoaders(); }, 0);
-  setTimeout(function(){ bindStablePatch(); protectCloudLoaders(); }, 600);
-  setInterval(protectCloudLoaders, 1200);
-})();
-</script>
-
-
-<script>
-/* FINAL relic save/load hardening v2
-   - 유물 레벨은 input id 그대로 저장한다.
-   - 예전 저장키(typhoonEye/kingProof...)와 새 저장키(blackOrbRelic...)를 둘 다 읽는다.
-   - 제왕의 증표 key 오타(KingsProof)를 제거하고 KingProof로 통일한다.
-*/
-(function(){
-  const RELIC_STORAGE_KEY = 'blackOrbRelicSettings';
-
-  const RELIC_META = [
-    { key:'typhoonEye', id:'blackOrbRelicTyphoonEye',    element:'wind',  label:'바람' },
-    { key:'kingProof',  id:'blackOrbRelicKingProof',     element:'earth', label:'땅' },
-    { key:'calmFlame',  id:'blackOrbRelicCalmFlame',     element:'fire',  label:'불' },
-    { key:'abyssDrop',  id:'blackOrbRelicAbyssWaterdrop',element:'water', label:'물' }
-  ];
-
-  function clampRelicLevel(v){
-    const n = parseInt(String(v ?? '').replace(/[^0-9]/g, ''), 10);
-    if (!Number.isFinite(n)) return '';
-    return String(Math.max(0, Math.min(100, n)));
-  }
-
-  function calcRelicDamage(level){
-    const lv = Number(level || 0);
-    let c = 1;
-    if (lv > 99) c = 3;
-    else if (lv > 89) c = 2.6;
-    else if (lv > 79) c = 2.3;
-    else if (lv > 69) c = 2;
-    else if (lv > 59) c = 1.8;
-    else if (lv > 49) c = 1.6;
-    else if (lv > 39) c = 1.45;
-    else if (lv > 29) c = 1.3;
-    else if (lv > 19) c = 1.2;
-    else if (lv > 9) c = 1.1;
-    return lv * c;
-  }
-
-  function fmtPercent(n){
-    const v = Math.round((Number(n) || 0) * 100) / 100;
-    return Number.isInteger(v) ? `+${v}%` : `+${v.toFixed(2)}%`;
-  }
-
-  function elementBadge(meta){
-    return `<span class="black-orb-element-badge ${meta.element}">${meta.label}</span>`;
-  }
-
-  function normalizeRelicSettings(settings){
-    const src = settings || {};
-    const out = {};
-    RELIC_META.forEach(meta => {
-      out[meta.id] = clampRelicLevel(
-        src[meta.id] ??
-        src[meta.key] ??
-        src[meta.id + 'Level'] ??
-        ''
-      );
-    });
-    return out;
-  }
-
-  function collectRelicSettings(){
-    const out = {};
-    RELIC_META.forEach(meta => {
-      const el = document.getElementById(meta.id);
-      out[meta.id] = clampRelicLevel(el ? el.value : '');
-    });
-    return out;
-  }
-
-  function renderRelicDamage(){
-    RELIC_META.forEach(meta => {
-      const input = document.getElementById(meta.id);
-      const box = document.getElementById(meta.id + 'Damage') || document.getElementById(meta.id + 'Result');
-      if (!input || !box) return;
-      input.value = clampRelicLevel(input.value);
-      const damage = calcRelicDamage(input.value);
-      box.innerHTML = `${elementBadge(meta)} <span>${fmtPercent(damage)}</span>`;
-    });
-  }
-
-  function applyRelicSettings(settings){
-    const fixed = normalizeRelicSettings(settings);
-    RELIC_META.forEach(meta => {
-      const el = document.getElementById(meta.id);
-      if (el) el.value = fixed[meta.id] || '';
-    });
-    renderRelicDamage();
-  }
-
-  function loadRelicLocal(){
-    try {
-      const raw = localStorage.getItem(RELIC_STORAGE_KEY);
-      if (!raw) return null;
-      return normalizeRelicSettings(JSON.parse(raw));
-    } catch(e) {
-      return null;
-    }
-  }
-
-  function saveRelicLocal(settings){
-    const fixed = normalizeRelicSettings(settings);
-    try { localStorage.setItem(RELIC_STORAGE_KEY, JSON.stringify(fixed)); } catch(e) {}
-    return fixed;
-  }
-
-  window.calculateBlackOrbRelicDamage = calcRelicDamage;
-  window.updateBlackOrbRelicDamages = renderRelicDamage;
-  window.collectBlackOrbRelicSettings = collectRelicSettings;
-  window.applyBlackOrbRelicSettings = applyRelicSettings;
-
-  const oldCloudLoad = window.loadBlackOrbRelicSettingsFromCloud;
-  window.loadBlackOrbRelicSettings = function(){
-    const local = loadRelicLocal();
-    if (local) applyRelicSettings(local);
-    else applyRelicSettings({});
-
-    if (typeof oldCloudLoad === 'function') {
-      return Promise.resolve(oldCloudLoad()).then(() => {
-        const afterLocal = loadRelicLocal();
-        if (afterLocal) applyRelicSettings(afterLocal);
+  function bindUnifiedEvents(){
+    relicRows.forEach(row => {
+      const input = qs(row.id);
+      if (!input || input.dataset.relicUnifiedBound === "1") return;
+      input.dataset.relicUnifiedBound = "1";
+      input.setAttribute("inputmode", "numeric");
+      input.addEventListener("input", () => {
+        const clean = cleanNumber(input.value);
+        if (input.value !== clean) input.value = clean;
         renderRelicDamage();
-      }).catch(() => renderRelicDamage());
-    }
-    return Promise.resolve();
-  };
+      });
+    });
 
-  window.saveBlackOrbRelicSettings = function(){
-    const fixed = saveRelicLocal(collectRelicSettings());
-    applyRelicSettings(fixed);
-
-    if (typeof window.saveBlackOrbRelicSettingsToCloud === 'function') {
-      Promise.resolve(window.saveBlackOrbRelicSettingsToCloud(fixed)).catch(function(err){
-        console.warn('Relic cloud save failed; localStorage saved.', err);
+    const skillInput = qs("blackOrbSkillMasteryLevel");
+    if (skillInput && skillInput.dataset.skillMasteryUnifiedBound !== "1") {
+      skillInput.dataset.skillMasteryUnifiedBound = "1";
+      skillInput.setAttribute("inputmode", "numeric");
+      skillInput.addEventListener("input", () => {
+        const clean = cleanNumber(skillInput.value);
+        if (skillInput.value !== clean) skillInput.value = clean;
+        window.updateBlackOrbSkillMasteryDamage();
       });
     }
-    if (typeof window.showBlackOrbBubble === 'function') {
-      window.showBlackOrbBubble('유물 설정을 저장했습니다.');
+  }
+
+  document.addEventListener("click", function(e){
+    const relicSaveButton = e.target.closest("#blackOrbRelicPopupOverlay .black-orb-popup-save-btn, #blackOrbRelicPopupOverlay button");
+    if (relicSaveButton && /저장하기/.test(relicSaveButton.textContent || "")) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      window.saveBlackOrbRelicSettings();
+      return;
     }
-  };
-
-  const oldOpen = window.openBlackOrbRelicPopup;
-  window.openBlackOrbRelicPopup = function(){
-    if (typeof oldOpen === 'function') oldOpen();
-    const local = loadRelicLocal();
-    if (local) applyRelicSettings(local);
-    renderRelicDamage();
-  };
-
-  document.addEventListener('input', function(e){
-    if (!e.target || !RELIC_META.some(meta => meta.id === e.target.id)) return;
-    e.target.value = clampRelicLevel(e.target.value);
-    renderRelicDamage();
+    const skillSaveButton = e.target.closest("#blackOrbSkillMasteryPopupOverlay .black-orb-popup-save-btn, #blackOrbSkillMasteryPopupOverlay button");
+    if (skillSaveButton && /저장하기/.test(skillSaveButton.textContent || "")) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      window.saveBlackOrbSkillMasterySettings();
+    }
   }, true);
 
-  document.addEventListener('DOMContentLoaded', function(){
-    const local = loadRelicLocal();
-    if (local) applyRelicSettings(local);
+  const oldOpenRelic = window.openBlackOrbRelicPopup;
+  window.openBlackOrbRelicPopup = function(){
+    if (typeof oldOpenRelic === "function") oldOpenRelic.apply(this, arguments);
+    bindUnifiedEvents();
+    const local = storageGet(RELIC_STORAGE_KEY);
+    if (local) window.applyBlackOrbRelicSettings(local);
     renderRelicDamage();
+  };
+
+  const oldOpenSkill = window.openBlackOrbSkillMasteryPopup;
+  window.openBlackOrbSkillMasteryPopup = function(){
+    if (typeof oldOpenSkill === "function") oldOpenSkill.apply(this, arguments);
+    bindUnifiedEvents();
+    const local = storageGet(SKILL_STORAGE_KEY);
+    if (local) window.applyBlackOrbSkillMasterySettings(local);
+    else window.updateBlackOrbSkillMasteryDamage();
+  };
+
+  document.addEventListener("DOMContentLoaded", function(){
+    bindUnifiedEvents();
+    loadRelicSettings();
+    loadSkillMasterySettings();
   });
 })();
 </script>
