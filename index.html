@@ -9202,5 +9202,107 @@ window.goToAdventureSkillSettings = goToAdventureSkillSettings;
 })();
 </script>
 
+
+<script>
+/* Final robust patch: relic damage render + persistent save/load */
+(function(){
+  const STORAGE_KEY = "blackOrbRelicSettings";
+  const ROWS = [
+    { inputId:"blackOrbRelicTyphoonEyeLevel", damageId:"blackOrbRelicTyphoonEyeDamage", element:"wind" },
+    { inputId:"blackOrbRelicEmperorProofLevel", damageId:"blackOrbRelicEmperorProofDamage", element:"earth" },
+    { inputId:"blackOrbRelicQuietFlameLevel", damageId:"blackOrbRelicQuietFlameDamage", element:"fire" },
+    { inputId:"blackOrbRelicAbyssWaterdropLevel", damageId:"blackOrbRelicAbyssWaterdropDamage", element:"water" }
+  ];
+  const arrayToObject = (arr) => ({
+    blackOrbRelicTyphoonEyeLevel: arr?.[0] ?? "",
+    blackOrbRelicEmperorProofLevel: arr?.[1] ?? "",
+    blackOrbRelicQuietFlameLevel: arr?.[2] ?? "",
+    blackOrbRelicAbyssWaterdropLevel: arr?.[3] ?? ""
+  });
+  const normalize = (raw) => Array.isArray(raw) ? arrayToObject(raw) : (raw || {});
+  function relicRate(level){
+    const x = Math.max(0, Number(String(level || "").replace(/,/g, "")) || 0);
+    let rate = 1;
+    if(x > 99) rate = 3;
+    else if(x > 89) rate = 2.6;
+    else if(x > 79) rate = 2.3;
+    else if(x > 69) rate = 2;
+    else if(x > 59) rate = 1.8;
+    else if(x > 49) rate = 1.6;
+    else if(x > 39) rate = 1.45;
+    else if(x > 29) rate = 1.3;
+    else if(x > 19) rate = 1.2;
+    else if(x > 9) rate = 1.1;
+    return x * rate;
+  }
+  function fmt(v){
+    if(!Number.isFinite(v)) return "+0%";
+    return "+" + (Number.isInteger(v) ? String(v) : v.toFixed(2).replace(/\.00$/, "").replace(/(\.\d)0$/, "$1")) + "%";
+  }
+  function elementBadge(element){
+    const map = {wind:"바람", earth:"땅", fire:"불", water:"물"};
+    return `<span class="black-orb-element-badge ${element}">${map[element] || ""}</span>`;
+  }
+  window.updateBlackOrbRelicDamageSummary = function(){
+    ROWS.forEach(row => {
+      const input = document.getElementById(row.inputId);
+      const out = document.getElementById(row.damageId);
+      if(!input || !out) return;
+      out.innerHTML = `${elementBadge(row.element)} <strong>${fmt(relicRate(input.value))}</strong>`;
+    });
+  };
+  window.collectBlackOrbRelicSettings = function(){
+    const values = {};
+    ROWS.forEach(row => values[row.inputId] = document.getElementById(row.inputId)?.value || "");
+    return values;
+  };
+  window.applyBlackOrbRelicSettings = function(settings){
+    const values = normalize(settings);
+    ROWS.forEach(row => {
+      const input = document.getElementById(row.inputId);
+      if(input && Object.prototype.hasOwnProperty.call(values, row.inputId)) input.value = values[row.inputId] || "";
+    });
+    window.updateBlackOrbRelicDamageSummary();
+  };
+  window.saveBlackOrbRelicSettings = async function(){
+    const values = window.collectBlackOrbRelicSettings();
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(values));
+    window.updateBlackOrbRelicDamageSummary();
+    if(window.saveBlackOrbRelicSettingsToCloud){
+      const result = await window.saveBlackOrbRelicSettingsToCloud(values);
+      if(!result || !result.ok){
+        if(typeof showBlackOrbSaveFail === "function") showBlackOrbSaveFail(".black-orb-relic-save-btn");
+        return;
+      }
+    }
+    if(typeof setBlackOrbSaveButtonState === "function") {
+      setBlackOrbSaveButtonState(document.querySelector(".black-orb-relic-save-btn"), "done");
+    }
+  };
+  const oldOpen = window.openBlackOrbRelicPopup;
+  window.openBlackOrbRelicPopup = function(){
+    if(typeof oldOpen === "function") oldOpen();
+    try{
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if(saved) window.applyBlackOrbRelicSettings(JSON.parse(saved));
+      else window.updateBlackOrbRelicDamageSummary();
+    }catch(e){ window.updateBlackOrbRelicDamageSummary(); }
+  };
+  document.addEventListener("input", function(e){
+    if(e.target && e.target.classList && e.target.classList.contains("black-orb-relic-input")){
+      window.updateBlackOrbRelicDamageSummary();
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(window.collectBlackOrbRelicSettings()));
+    }
+  }, true);
+  document.addEventListener("DOMContentLoaded", function(){
+    try{
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if(saved) window.applyBlackOrbRelicSettings(JSON.parse(saved));
+      else window.updateBlackOrbRelicDamageSummary();
+    }catch(e){ window.updateBlackOrbRelicDamageSummary(); }
+  });
+})();
+</script>
+
 </body>
 </html>
