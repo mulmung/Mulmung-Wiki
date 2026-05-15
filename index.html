@@ -5490,6 +5490,35 @@ let currentServer = "";
 let currentRole = "user";
 let currentPromotionStage = "";
 let currentBadges = [];
+
+window.saveBlackOrbSettingsToCloud = async function(detailStates) {
+  if (!auth.currentUser) {
+    return { ok: false, reason: "로그인이 필요합니다." };
+  }
+  try {
+    await setDoc(doc(db, "users", auth.currentUser.uid), {
+      blackOrbDetailSettings: detailStates,
+      blackOrbDetailSettingsUpdatedAt: serverTimestamp()
+    }, { merge: true });
+    return { ok: true };
+  } catch (error) {
+    console.error("블랙 오브 설정 저장 오류:", error);
+    return { ok: false, reason: error.message || "저장 중 오류가 발생했습니다." };
+  }
+};
+
+window.loadBlackOrbSettingsFromCloud = async function() {
+  if (!auth.currentUser) return null;
+  try {
+    const snap = await getDoc(doc(db, "users", auth.currentUser.uid));
+    if (!snap.exists()) return null;
+    return snap.data().blackOrbDetailSettings || null;
+  } catch (error) {
+    console.error("블랙 오브 설정 불러오기 오류:", error);
+    return null;
+  }
+};
+
 let presenceTimer = null;
 let statsTimer = null;
 const ONLINE_LIMIT_MS = 2 * 60 * 1000;
@@ -6297,6 +6326,10 @@ onAuthStateChanged(auth, async (user) => {
       startPresenceTimer(user);
       await refreshSiteStats();
       await window.loadSkillSettingsFromCloud();
+      if (window.loadBlackOrbSettingsFromCloud && window.applyBlackOrbCloudSettings) {
+        const blackOrbSettings = await window.loadBlackOrbSettingsFromCloud();
+        if (blackOrbSettings) window.applyBlackOrbCloudSettings(blackOrbSettings);
+      }
     } catch (error) {
       console.error("유저 정보 불러오기 오류:", error);
       userInfo.textContent = isAdminUser(user) ? "물멍" : "닉네임 미설정";
@@ -6600,6 +6633,61 @@ function loadBlackOrbDetailState(attr) {
   });
 }
 
+function getCurrentMainBlackOrbAttribute() {
+  const panel = document.getElementById("blackOrbPanel");
+  if (!panel) return "";
+  return ["wind", "earth", "water", "fire"].find((attr) => panel.classList.contains(`selected-${attr}`)) || "";
+}
+
+function applyBlackOrbSavedStateToMainLeft(attr) {
+  const state = blackOrbDetailPopupState[attr];
+  const box = document.querySelector("#blackOrbPanel .black-orb-option-box");
+  if (!state || !box) return;
+  const topInput = box.querySelector(".black-orb-main-input");
+  if (topInput) topInput.value = state.topValue || "";
+  const rows = box.querySelectorAll(".black-orb-detail-row");
+  rows.forEach((row, index) => {
+    const rowState = state.rows[index] || { value:'all', label:'모든', badgeClass:'all', number:'' };
+    const picker = row.querySelector(".black-orb-element-picker-btn");
+    const input = row.querySelector(".black-orb-small-input");
+    applyBlackOrbPickerState(picker, rowState);
+    if (input) input.value = rowState.number || "";
+    updateBlackOrbX2ForRow(row);
+  });
+  updateAllBlackOrbX2Badges();
+}
+
+function applyBlackOrbCloudSettings(settings) {
+  if (!settings || typeof settings !== "object") return;
+  ["wind","earth","water","fire"].forEach((attr) => {
+    const src = settings[attr];
+    const dest = blackOrbDetailPopupState[attr];
+    if (!src || !dest) return;
+    dest.topValue = typeof src.topValue === "string" ? src.topValue : "";
+    if (Array.isArray(src.rows)) {
+      dest.rows = src.rows.slice(0, 4).map((row) => ({
+        value: typeof row?.value === "string" ? row.value : "all",
+        label: typeof row?.label === "string" ? row.label : "모든",
+        badgeClass: typeof row?.badgeClass === "string" ? row.badgeClass : "all",
+        number: typeof row?.number === "string" ? row.number : ""
+      }));
+      while (dest.rows.length < 4) dest.rows.push({ value:'all', label:'모든', badgeClass:'all', number:'' });
+    }
+  });
+  persistBlackOrbDetailStates();
+  const mainAttr = getCurrentMainBlackOrbAttribute();
+  if (mainAttr) applyBlackOrbSavedStateToMainLeft(mainAttr);
+  const popup = document.getElementById("blackOrbDetailPopup");
+  if (popup?.dataset.currentAttribute) loadBlackOrbDetailState(popup.dataset.currentAttribute);
+}
+window.applyBlackOrbCloudSettings = applyBlackOrbCloudSettings;
+
+async function saveBlackOrbDetailStateToCloud() {
+  persistBlackOrbDetailStates();
+  if (!window.saveBlackOrbSettingsToCloud) return { ok:false, reason:"저장 기능을 불러오는 중입니다." };
+  return await window.saveBlackOrbSettingsToCloud(blackOrbDetailPopupState);
+}
+
 
 const BLACK_ORB_DETAIL_STORAGE_KEY = "mulmung_black_orb_detail_states_v1";
 function persistBlackOrbDetailStates() {
@@ -6633,20 +6721,30 @@ function restoreBlackOrbDetailStates() {
     console.warn("black orb detail state restore failed", error);
   }
 }
-function saveBlackOrbDetailStateToStorage() {
+async function saveBlackOrbDetailStateToStorage() {
   saveBlackOrbCurrentDetailState();
-  persistBlackOrbDetailStates();
+  const currentDetailAttr = document.getElementById("blackOrbDetailPopup")?.dataset.currentAttribute || "";
+  if (currentDetailAttr && getCurrentMainBlackOrbAttribute() === currentDetailAttr) {
+    applyBlackOrbSavedStateToMainLeft(currentDetailAttr);
+  }
   const btn = document.getElementById('blackOrbDetailSaveBtn');
   if (!btn) return;
   const original = btn.dataset.originalLabel || btn.textContent || '저장';
   btn.dataset.originalLabel = original;
-  btn.textContent = '저장 완료';
+  btn.disabled = true;
+  btn.textContent = '저장 중';
+  const result = await saveBlackOrbDetailStateToCloud();
+  btn.disabled = false;
+  btn.textContent = result && result.ok ? '저장 완료' : '임시 저장';
   btn.classList.add('saved');
   clearTimeout(window.blackOrbDetailSaveToastTimer);
   window.blackOrbDetailSaveToastTimer = setTimeout(() => {
     btn.textContent = original;
     btn.classList.remove('saved');
   }, 1200);
+  if (!result || !result.ok) {
+    alert((result && result.reason) || '로그인 상태를 확인해 주세요. 현재 기기에는 임시 저장되었습니다.');
+  }
 }
 
 function openBlackOrbMainAttributePopup() {
@@ -6715,6 +6813,7 @@ function selectBlackOrbMainAttribute(option) {
     button.className = `black-orb-main-attribute-btn selected ${safeValue}`;
     button.innerHTML = `<span class="black-orb-element-badge ${safeValue}">${label}</span>`;
   }
+  applyBlackOrbSavedStateToMainLeft(safeValue);
   updateAllBlackOrbX2Badges();
   closeBlackOrbMainAttributePopup();
 }
