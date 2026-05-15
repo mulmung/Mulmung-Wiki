@@ -8949,5 +8949,189 @@ window.addEventListener('DOMContentLoaded', syncBlackOrbPercentPickersFromLegacy
 })();
 </script>
 
+
+
+<style>
+/* 블랙 오브: 수치/속성 선택 팝업 크기와 레이어 통일 */
+#blackOrbPercentPopupOverlay{
+  z-index: 2147483000 !important;
+}
+#blackOrbPercentPopupOverlay .black-orb-percent-popup-content,
+.black-orb-percent-popup-content{
+  width: min(360px, 86vw) !important;
+  max-width: 360px !important;
+  padding: 24px 20px 24px !important;
+  border-radius: 28px !important;
+  background:#fff !important;
+  box-shadow: 0 18px 45px rgba(15,23,42,.22) !important;
+  position: relative !important;
+}
+.black-orb-percent-popup-title{
+  font-size: 24px !important;
+  line-height: 1.15 !important;
+  margin: 4px 0 22px !important;
+  text-align:center !important;
+  font-weight: 900 !important;
+  color:#111827 !important;
+}
+.black-orb-percent-choice-grid{
+  display:grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 12px 14px !important;
+  width:100% !important;
+}
+.black-orb-percent-choice-btn{
+  width:100% !important;
+  min-width:0 !important;
+  height:54px !important;
+  border-radius:18px !important;
+  font-size:18px !important;
+  font-weight:900 !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  line-height:1 !important;
+  border:0 !important;
+  box-shadow:0 8px 16px rgba(15,23,42,.10) !important;
+}
+.black-orb-percent-close-btn{
+  position:absolute !important;
+  top:18px !important;
+  right:18px !important;
+  width:44px !important;
+  height:44px !important;
+  border-radius:50% !important;
+  border:0 !important;
+  background:#0f172a !important;
+  color:#fff !important;
+  font-size:28px !important;
+  font-weight:900 !important;
+  line-height:44px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  box-shadow:0 10px 22px rgba(15,23,42,.24) !important;
+}
+.black-orb-percent-picker-btn,
+.black-orb-percent-picker-btn.black-orb-percent-none{
+  min-width:74px !important;
+  width:74px !important;
+  height:36px !important;
+  padding:0 8px !important;
+  border-radius:18px !important;
+  font-size:14px !important;
+  font-weight:900 !important;
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  line-height:1 !important;
+}
+.black-orb-option-line{
+  grid-template-columns: 74px 74px 34px !important;
+  column-gap:8px !important;
+  align-items:center !important;
+}
+@media (max-width:420px){
+  #blackOrbPercentPopupOverlay .black-orb-percent-popup-content,
+  .black-orb-percent-popup-content{
+    width:min(330px, 86vw) !important;
+    padding:22px 18px 22px !important;
+  }
+  .black-orb-percent-popup-title{font-size:23px !important;}
+  .black-orb-percent-choice-btn{height:50px !important;font-size:17px !important;}
+  .black-orb-percent-close-btn{width:42px !important;height:42px !important;font-size:27px !important;line-height:42px !important;}
+}
+</style>
+
+<script>
+(function(){
+  function markPercentNone(percentBtn){
+    if(!percentBtn) return;
+    percentBtn.dataset.percentValue = 'none';
+    percentBtn.textContent = '없음';
+    percentBtn.classList.add('black-orb-percent-none');
+  }
+  function markPercentDefault(percentBtn){
+    if(!percentBtn) return;
+    if(percentBtn.dataset.percentValue === 'none'){
+      percentBtn.dataset.percentValue = '';
+      percentBtn.textContent = '수치 선택';
+      percentBtn.classList.remove('black-orb-percent-none');
+    }
+  }
+  function getSameLinePercentButton(elementBtn){
+    if(!elementBtn) return null;
+    var line = elementBtn.closest('.black-orb-option-line, .black-orb-popup-option-line, .black-orb-attribute-option-line');
+    return line ? line.querySelector('.black-orb-percent-picker-btn') : null;
+  }
+  function syncLineByElementButton(elementBtn){
+    if(!elementBtn) return;
+    var value = elementBtn.dataset.element || elementBtn.dataset.value || elementBtn.dataset.selectedElement || '';
+    var percentBtn = getSameLinePercentButton(elementBtn);
+    if(value === 'none') markPercentNone(percentBtn);
+    else markPercentDefault(percentBtn);
+  }
+
+  var oldOpenElement = window.openBlackOrbElementPopup;
+  window.openBlackOrbElementPopup = function(button){
+    window.__blackOrbLastElementButton = button;
+    if(typeof oldOpenElement === 'function') return oldOpenElement(button);
+  };
+
+  var oldSelectElement = window.selectBlackOrbElementFromPopup;
+  window.selectBlackOrbElementFromPopup = function(value){
+    var target = window.__blackOrbLastElementButton;
+    var result;
+    if(typeof oldSelectElement === 'function') result = oldSelectElement(value);
+    if(value === 'none' && target){
+      markPercentNone(getSameLinePercentButton(target));
+    }else if(target){
+      markPercentDefault(getSameLinePercentButton(target));
+    }
+    window.__blackOrbLastElementButton = null;
+    return result;
+  };
+
+  var oldOpenPercent = window.openBlackOrbPercentPopup;
+  window.openBlackOrbPercentPopup = function(button){
+    var line = button && button.closest('.black-orb-option-line, .black-orb-popup-option-line, .black-orb-attribute-option-line');
+    var elementBtn = line ? line.querySelector('.black-orb-element-picker-btn') : null;
+    var elementValue = elementBtn ? (elementBtn.dataset.element || elementBtn.dataset.value || elementBtn.dataset.selectedElement || '') : '';
+    if(elementValue === 'none'){
+      markPercentNone(button);
+      return;
+    }
+    window.__blackOrbLastPercentButton = button;
+    if(typeof oldOpenPercent === 'function') oldOpenPercent(button);
+    var overlay = document.getElementById('blackOrbPercentPopupOverlay');
+    if(overlay){
+      overlay.style.zIndex = '2147483000';
+      overlay.style.display = 'flex';
+      document.body.appendChild(overlay);
+    }
+  };
+
+  var oldSelectPercent = window.selectBlackOrbPercentValue;
+  window.selectBlackOrbPercentValue = function(value){
+    var result;
+    if(typeof oldSelectPercent === 'function') result = oldSelectPercent(value);
+    var btn = window.__blackOrbLastPercentButton;
+    if(btn && value !== 'none'){
+      btn.dataset.percentValue = String(value);
+      btn.textContent = '+' + value + '%';
+      btn.classList.remove('black-orb-percent-none');
+    }
+    window.__blackOrbLastPercentButton = null;
+    return result;
+  };
+
+  function applyInitialSync(){
+    document.querySelectorAll('.black-orb-element-picker-btn').forEach(syncLineByElementButton);
+  }
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', applyInitialSync);
+  else applyInitialSync();
+})();
+</script>
+
 </body>
 </html>
