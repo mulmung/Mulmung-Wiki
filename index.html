@@ -7020,6 +7020,8 @@ function showBlackOrbRelicTooltip(){const t=document.getElementById("blackOrbRel
 function collectBlackOrbRelicSettings(){const values={};BLACK_ORB_RELIC_FIELDS.forEach(id=>{const el=document.getElementById(id);values[id]=el?String(el.value||"").trim():""});return values}
 function applyBlackOrbRelicSettings(values){if(!values)return;BLACK_ORB_RELIC_FIELDS.forEach(id=>{const el=document.getElementById(id);if(el&&Object.prototype.hasOwnProperty.call(values,id))el.value=values[id]||""})}
 function isValidBlackOrbRelicLevel(value){if(value===""||value===null||value===undefined)return true;if(!/^\d+$/.test(String(value).trim()))return false;const n=Number(value);return Number.isInteger(n)&&n>=0&&n<=100}
+
+window.openBlackOrbRelicPopup=openBlackOrbRelicPopup;window.closeBlackOrbRelicPopup=closeBlackOrbRelicPopup;window.hideBlackOrbRelicTooltip=hideBlackOrbRelicTooltip;
 window.collectBlackOrbRelicSettings=collectBlackOrbRelicSettings;window.applyBlackOrbRelicSettings=applyBlackOrbRelicSettings;
 window.saveBlackOrbRelicSettings=async function(){const values=collectBlackOrbRelicSettings();if(!Object.values(values).every(isValidBlackOrbRelicLevel)){showBlackOrbRelicTooltip();return}hideBlackOrbRelicTooltip();localStorage.setItem("blackOrbRelicSettings",JSON.stringify(values));if(window.saveBlackOrbRelicSettingsToCloud){const result=await window.saveBlackOrbRelicSettingsToCloud(values);if(!result||!result.ok){alert(result&&result.reason==="login"?"로그인 후 저장할 수 있습니다.":"저장 중 오류가 발생했습니다.");return}}alert("유물 정보가 저장되었습니다.")};
 (function initBlackOrbRelicLocalSettings(){try{const saved=localStorage.getItem("blackOrbRelicSettings");if(saved)applyBlackOrbRelicSettings(JSON.parse(saved))}catch(e){console.warn("유물 저장값 불러오기 실패",e)}})();
