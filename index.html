@@ -7463,15 +7463,15 @@ function bindBlackOrbCompanionInputs() {
   });
   document.querySelectorAll(".companion-skill-level").forEach((input) => {
     input.addEventListener("input", () => {
-      input.value = input.value.replace(/\D/g, "").slice(0, 3);
+      input.value = input.value.replace(/\D/g, "").slice(0, 4);
       if (!input.value) return;
       const value = Number(input.value);
-      if (value < 0 || value > 100) showBlackOrbCompanionMessage();
+      if (value < 0 || value > 1500) showBlackOrbCompanionMessage();
     });
     input.addEventListener("blur", () => {
       if (!input.value) return;
       const value = Number(input.value);
-      if (value < 0 || value > 100) {
+      if (value < 0 || value > 1500) {
         showBlackOrbCompanionMessage();
         input.value = "";
       }
@@ -7485,13 +7485,13 @@ function validateBlackOrbCompanionInputs(showAlert = false) {
   document.querySelectorAll(".companion-skill-level").forEach((input) => {
     if (!input.value) return;
     const value = Number(input.value);
-    if (Number.isNaN(value) || value < 0 || value > 100) valid = false;
+    if (Number.isNaN(value) || value < 0 || value > 1500) valid = false;
   });
   if (msg) {
     msg.style.color = valid ? "#14b8a6" : "#ef4444";
-    msg.textContent = valid ? "" : "스킬 레벨은 0부터 100 사이로 설정해 주세요.";
+    msg.textContent = valid ? "" : "스킬 레벨은 0부터 1500 사이로 설정해 주세요.";
   }
-  if (!valid && showAlert) alert("스킬 레벨은 0부터 100 사이로 설정해 주세요.");
+  if (!valid && showAlert) alert("스킬 레벨은 0부터 1500 사이로 설정해 주세요.");
   return valid;
 }
 
@@ -7598,7 +7598,7 @@ window.goToAdventureSkillSettings = goToAdventureSkillSettings;
     const companionLevelsValid = collectValues("#blackOrbCompanionPopupBg .companion-level")
       .every(function(value){ return isIntegerInRange(value, 0, 9999, true); });
     const skillLevelsValid = collectValues("#blackOrbCompanionPopupBg .companion-skill-level")
-      .every(function(value){ return isIntegerInRange(value, 0, 100, true); });
+      .every(function(value){ return isIntegerInRange(value, 0, 1500, true); });
     return companionLevelsValid && skillLevelsValid;
   }
 
@@ -7945,13 +7945,13 @@ window.goToAdventureSkillSettings = goToAdventureSkillSettings;
   async function handleCompanionSave(btn){
     hideOldInlineMessage("blackOrbCompanionMsg");
     const companionInvalid = clearInvalidInputs("#blackOrbCompanionPopupBg .companion-level", 0, 9999, true);
-    const skillInvalid = clearInvalidInputs("#blackOrbCompanionPopupBg .companion-skill-level", 0, 100, true);
+    const skillInvalid = clearInvalidInputs("#blackOrbCompanionPopupBg .companion-skill-level", 0, 1500, true);
 
     if(companionInvalid || skillInvalid){
       let rangeText = "입력 범위";
-      if(companionInvalid && skillInvalid) rangeText = "동료 레벨 0~9999 / 스킬 레벨 0~100";
+      if(companionInvalid && skillInvalid) rangeText = "동료 레벨 0~9999 / 스킬 레벨 0~1500";
       else if(companionInvalid) rangeText = "0~9999";
-      else if(skillInvalid) rangeText = "0~100";
+      else if(skillInvalid) rangeText = "0~1500";
       failBlackOrbSave(btn, rangeText);
       return;
     }
@@ -8652,9 +8652,9 @@ window.goToAdventureSkillSettings = goToAdventureSkillSettings;
   async function saveCompanion(btn){
     hideOldMsgs();
     const badLevel=clearInvalid('#blackOrbCompanionPopupBg .companion-level',0,9999,true);
-    const badSkill=clearInvalid('#blackOrbCompanionPopupBg .companion-skill-level',0,100,true);
+    const badSkill=clearInvalid('#blackOrbCompanionPopupBg .companion-skill-level',0,1500,true);
     if(badLevel || badSkill){
-      const msg = badLevel && badSkill ? '동료 레벨 0~9999 / 스킬 레벨 0~100' : (badLevel ? '동료 레벨 0~9999' : '스킬 레벨 0~100');
+      const msg = badLevel && badSkill ? '동료 레벨 0~9999 / 스킬 레벨 0~1500' : (badLevel ? '동료 레벨 0~9999' : '스킬 레벨 0~1500');
       buttonState(btn,'fail',msg); return;
     }
     saveLocal('blackOrbCompanionSettings',{levels:collectValues('#blackOrbCompanionPopupBg .companion-level'), skillLevels:collectValues('#blackOrbCompanionPopupBg .companion-skill-level'), savedAt:new Date().toISOString()});
@@ -8748,6 +8748,65 @@ window.goToAdventureSkillSettings = goToAdventureSkillSettings;
 </script>
 
 
+
+
+<script id="black-orb-companion-damage-formula">
+(function(){
+  function rawNumber(value){
+    return String(value ?? "").replace(/,/g, "").replace(/[^0-9]/g, "");
+  }
+  function companionDamageBySkillLevel(value){
+    const raw = rawNumber(value);
+    if(raw === "") return 0;
+    const x = Number(raw);
+    if(!Number.isFinite(x) || x <= 0) return 0;
+    const q = Math.min(Math.floor(x / 10), 49);
+    const r = x > 490 ? x - 490 : x % 10;
+    return 10 * q * (q + 1) / 2 + r * (q + 1);
+  }
+  function formatDamage(value){
+    const n = Number(value) || 0;
+    return "+" + n.toLocaleString("ko-KR") + "%";
+  }
+  function updateBlackOrbCompanionDamageSummary(){
+    const skills = Array.from(document.querySelectorAll("#blackOrbCompanionPopupBg .companion-skill-level"));
+    const targets = [
+      "blackOrbCompanionWindDamage",
+      "blackOrbCompanionEarthDamage",
+      "blackOrbCompanionFireDamage",
+      "blackOrbCompanionWaterDamage"
+    ];
+    targets.forEach(function(id, index){
+      const target = document.getElementById(id);
+      if(!target) return;
+      const input = skills[index];
+      target.textContent = formatDamage(companionDamageBySkillLevel(input ? input.value : ""));
+    });
+  }
+  function bindBlackOrbCompanionDamageSummary(){
+    document.querySelectorAll("#blackOrbCompanionPopupBg .companion-skill-level").forEach(function(input){
+      if(input.dataset.companionDamageBound === "1") return;
+      input.dataset.companionDamageBound = "1";
+      input.addEventListener("input", updateBlackOrbCompanionDamageSummary);
+      input.addEventListener("change", updateBlackOrbCompanionDamageSummary);
+      input.addEventListener("blur", updateBlackOrbCompanionDamageSummary);
+    });
+    updateBlackOrbCompanionDamageSummary();
+  }
+  const prevOpen = window.openBlackOrbCompanionPopup;
+  window.openBlackOrbCompanionPopup = function(){
+    if(typeof prevOpen === "function") prevOpen.apply(this, arguments);
+    setTimeout(bindBlackOrbCompanionDamageSummary, 0);
+  };
+  window.updateBlackOrbCompanionDamageSummary = updateBlackOrbCompanionDamageSummary;
+  window.calculateBlackOrbCompanionDamage = companionDamageBySkillLevel;
+  if(document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", bindBlackOrbCompanionDamageSummary);
+  }else{
+    bindBlackOrbCompanionDamageSummary();
+  }
+})();
+</script>
 
 </body>
 </html>
