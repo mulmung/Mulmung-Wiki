@@ -8045,5 +8045,209 @@ window.goToAdventureSkillSettings = goToAdventureSkillSettings;
 })();
 </script>
 
+
+<script id="black-orb-final-force-patch">
+(function(){
+  function digitsOnly(value){
+    return String(value ?? "").replace(/,/g, "").replace(/[^\d]/g, "");
+  }
+  function comma(value){
+    const raw = digitsOnly(value);
+    return raw ? raw.replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "";
+  }
+  function applyComma(input){
+    if(!input || input.dataset.blackOrbCommaFinal === "1") return;
+    input.dataset.blackOrbCommaFinal = "1";
+    input.addEventListener("input", function(){
+      const before = input.value;
+      const after = comma(before);
+      input.value = after;
+    });
+  }
+  function setButtonState(btn, state){
+    if(!btn) return;
+    clearTimeout(btn._blackOrbStateTimer);
+    if(!btn.dataset.defaultText) btn.dataset.defaultText = btn.textContent || "저장하기";
+    btn.classList.remove("black-orb-save-done","black-orb-save-fail");
+    btn.classList.add(state === "done" ? "black-orb-save-done" : "black-orb-save-fail");
+    btn.textContent = state === "done" ? "저장 완료" : "저장 불가";
+    btn._blackOrbStateTimer = setTimeout(function(){
+      btn.classList.remove("black-orb-save-done","black-orb-save-fail");
+      btn.textContent = btn.dataset.defaultText || "저장하기";
+    }, 1600);
+  }
+  function getSaveWrap(btn){
+    return btn ? (btn.closest(".black-orb-order-statue-save-wrap") || btn.closest(".black-orb-companion-save-wrap") || btn.parentElement) : null;
+  }
+  function clearRangeTooltip(btn){
+    const wrap = getSaveWrap(btn);
+    if(wrap) wrap.querySelectorAll(".black-orb-range-tooltip").forEach(function(el){ el.remove(); });
+  }
+  function showRangeTooltip(btn, rangeText){
+    const wrap = getSaveWrap(btn);
+    if(!wrap) return;
+    clearRangeTooltip(btn);
+    const tip = document.createElement("div");
+    tip.className = "black-orb-range-tooltip show";
+    tip.textContent = rangeText + " 값으로 입력해주세요";
+    wrap.appendChild(tip);
+  }
+  function isInRange(value, min, max){
+    const raw = digitsOnly(value);
+    if(raw === "") return false;
+    const n = Number(raw);
+    return Number.isInteger(n) && n >= min && n <= max;
+  }
+  function ensureFinalStyles(){
+    if(document.getElementById("blackOrbFinalForcePatchStyle")) return;
+    const style = document.createElement("style");
+    style.id = "blackOrbFinalForcePatchStyle";
+    style.textContent = `
+      .black-orb-save-done{
+        background:#14b8a6 !important;
+        color:#fff !important;
+        border-color:#14b8a6 !important;
+      }
+      .black-orb-save-fail{
+        background:#ef4444 !important;
+        color:#fff !important;
+        border-color:#ef4444 !important;
+      }
+      .black-orb-range-tooltip{
+        position:relative;
+        display:none;
+        width:100%;
+        margin:10px auto 0;
+        padding:9px 12px;
+        border-radius:10px;
+        background:rgba(0,0,0,.6);
+        color:#fff;
+        font-size:13px;
+        font-weight:800;
+        line-height:1.3;
+        text-align:center;
+        box-shadow:0 8px 20px rgba(0,0,0,.16);
+        z-index:5;
+      }
+      .black-orb-range-tooltip.show{display:block;}
+      .black-orb-range-tooltip::before{
+        content:"";
+        position:absolute;
+        left:50%;
+        top:-7px;
+        transform:translateX(-50%);
+        border-left:7px solid transparent;
+        border-right:7px solid transparent;
+        border-bottom:7px solid rgba(0,0,0,.6);
+      }
+      .black-orb-resonance-body{
+        display:grid;
+        gap:14px;
+        width:100%;
+        max-width:420px;
+        margin:0 auto;
+      }
+      .black-orb-resonance-level-input{
+        width:100%;
+        height:54px;
+        border:3px solid rgba(20,184,166,.28);
+        border-radius:15px;
+        background:#fff;
+        color:#0f172a;
+        font-size:18px;
+        font-weight:900;
+        text-align:center;
+        outline:none;
+      }
+      .black-orb-resonance-level-input:focus{
+        border-color:#14b8a6;
+        box-shadow:0 0 0 4px rgba(20,184,166,.12);
+      }
+    `;
+    document.head.appendChild(style);
+  }
+  function openOrbResonancePopup(){
+    ensureFinalStyles();
+    const popup = document.getElementById("blackOrbDamageAmpPopup");
+    const title = document.getElementById("blackOrbDamageAmpPopupTitle");
+    const body = document.getElementById("blackOrbDamageAmpPlaceholder");
+    const orderBody = document.getElementById("blackOrbOrderStatueBody");
+    if(!popup || !title || !body) return;
+
+    title.textContent = "오브 공명";
+    if(orderBody) orderBody.style.display = "none";
+    body.style.display = "block";
+    body.innerHTML = `
+      <div class="black-orb-resonance-body">
+        <input id="blackOrbResonanceLevel" class="black-orb-resonance-level-input" type="text" inputmode="numeric" placeholder="레벨 입력" autocomplete="off" />
+        <div class="black-orb-order-statue-save-wrap">
+          <button id="blackOrbResonanceSaveBtn" type="button" class="black-orb-order-statue-save-btn">저장하기</button>
+        </div>
+      </div>
+    `;
+    const input = document.getElementById("blackOrbResonanceLevel");
+    try{
+      const saved = JSON.parse(localStorage.getItem("blackOrbResonanceSettings") || "null");
+      if(saved && saved.level !== undefined && input) input.value = comma(saved.level);
+    }catch(e){}
+    applyComma(input);
+    const saveBtn = document.getElementById("blackOrbResonanceSaveBtn");
+    if(saveBtn){
+      saveBtn.addEventListener("click", function(ev){
+        ev.preventDefault();
+        ev.stopPropagation();
+        clearRangeTooltip(saveBtn);
+        if(!isInRange(input.value, 0, 320)){
+          input.value = "";
+          setButtonState(saveBtn, "fail");
+          showRangeTooltip(saveBtn, "0~320");
+          return;
+        }
+        const level = Number(digitsOnly(input.value));
+        localStorage.setItem("blackOrbResonanceSettings", JSON.stringify({level:level, savedAt:new Date().toISOString()}));
+        input.value = comma(level);
+        setButtonState(saveBtn, "done");
+      });
+    }
+    popup.classList.add("active");
+  }
+  function ensureSkillMasteryTitle(){
+    const popup = document.getElementById("blackOrbSkillMasteryPopup");
+    if(!popup) return;
+    const card = popup.querySelector(".black-orb-skill-mastery-card") || popup.querySelector(".black-orb-popup-card") || popup.querySelector(".popup-card");
+    if(!card || card.querySelector(".black-orb-skill-mastery-title")) return;
+    const title = document.createElement("div");
+    title.className = "black-orb-skill-mastery-title";
+    title.textContent = "스킬 숙련도";
+    title.style.cssText = "margin:0 0 18px;text-align:center;font-size:28px;font-weight:900;color:#0f172a;";
+    const closeBtn = card.querySelector(".popup-floating-close-btn");
+    if(closeBtn && closeBtn.nextSibling) card.insertBefore(title, closeBtn.nextSibling);
+    else card.prepend(title);
+  }
+  function boot(){
+    ensureFinalStyles();
+    ensureSkillMasteryTitle();
+    document.querySelectorAll("input").forEach(applyComma);
+
+    document.addEventListener("click", function(ev){
+      const orbBtn = ev.target.closest("button");
+      if(!orbBtn) return;
+      const text = (orbBtn.textContent || "").trim();
+      const attr = orbBtn.getAttribute("onclick") || "";
+      if(text === "오브 공명" || attr.includes("오브 공명")){
+        ev.preventDefault();
+        ev.stopPropagation();
+        ev.stopImmediatePropagation();
+        openOrbResonancePopup();
+      }
+    }, true);
+  }
+  if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
+  else boot();
+
+  window.openBlackOrbOrbResonancePopupFinal = openOrbResonancePopup;
+})();
+</script>
+
 </body>
 </html>
