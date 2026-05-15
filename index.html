@@ -1209,6 +1209,30 @@ button.faq-flow-item:focus,button.faq-flow-item:focus-visible{outline:none;borde
 @media(max-width:768px){.black-orb-value-select-popup{max-width:132px !important;padding:12px 10px 14px !important;}.black-orb-value-popup-title{font-size:14px !important;}.black-orb-value-choice{width:46px;height:25px;min-height:25px;font-size:11px;padding:0 7px;}.black-orb-value-choice-grid{gap:6px;}}
 @media(max-width:380px){.black-orb-value-choice{width:42px;height:23px;min-height:23px;font-size:10px;padding:0 6px;}}
 
+
+/* 블랙 오브 비교 제목 / 변경 전 박스 비선택 처리 */
+.black-orb-compare-title{
+  display:flex;align-items:center;justify-content:center;
+  width:max-content;min-width:74px;height:30px;
+  margin:0 auto -2px;padding:0 14px;
+  border-radius:999px;background:#111827;color:#fff;
+  font-size:13px;font-weight:950;letter-spacing:-.03em;
+  box-shadow:0 6px 14px rgba(15,23,42,.18);
+  position:relative;z-index:1;
+}
+.black-orb-before-box .black-orb-element-picker,
+.black-orb-before-box .black-orb-value-badge{
+  pointer-events:none;cursor:default;
+}
+.black-orb-before-box .black-orb-element-picker:focus,
+.black-orb-before-box .black-orb-value-badge:focus{outline:none;}
+@media(max-width:768px){
+  .black-orb-compare-title{min-width:62px;height:25px;font-size:11px;padding:0 10px;margin-bottom:-3px;}
+}
+@media(max-width:380px){
+  .black-orb-compare-title{min-width:58px;height:23px;font-size:10.5px;padding:0 9px;}
+}
+
 </style>
 </head>
 <body>
@@ -2914,7 +2938,8 @@ function addSections() {
                 <span class="black-orb-slider"></span>
               </label>
             </div>
-        <div class="black-orb-option-box">
+            <div class="black-orb-compare-title">변경 전</div>
+        <div class="black-orb-option-box black-orb-before-box">
             <div class="black-orb-option-row">
               <span class="black-orb-plus">+</span>
               <input class="black-orb-input black-orb-comma-input" type="text" inputmode="numeric" placeholder="숫자 입력" autocomplete="off" />
@@ -2952,7 +2977,8 @@ function addSections() {
 
           <div class="black-orb-column">
             <div class="black-orb-toggle-spacer" aria-hidden="true"></div>
-        <div class="black-orb-option-box">
+            <div class="black-orb-compare-title">변경 후</div>
+        <div class="black-orb-option-box black-orb-after-box">
             <div class="black-orb-option-row">
               <span class="black-orb-plus">+</span>
               <input class="black-orb-input black-orb-comma-input" type="text" inputmode="numeric" placeholder="숫자 입력" autocomplete="off" />
@@ -6745,7 +6771,7 @@ function getCurrentMainBlackOrbAttribute() {
 
 function applyBlackOrbSavedStateToMainLeft(attr) {
   const state = blackOrbDetailPopupState[attr];
-  const box = document.querySelector("#blackOrbPanel .black-orb-option-box");
+  const box = document.querySelector("#blackOrbPanel .black-orb-before-box") || document.querySelector("#blackOrbPanel .black-orb-option-box");
   if (!state || !box) return;
   const topInput = box.querySelector(".black-orb-main-input, .black-orb-option-row .black-orb-input");
   if (topInput) topInput.value = state.topValue || "";
