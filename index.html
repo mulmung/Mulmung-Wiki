@@ -7564,6 +7564,10 @@ window.goToAdventureSkillSettings = goToAdventureSkillSettings;
   border-bottom:7px solid #111827;
 }
 @media(max-width:768px){.black-orb-range-tooltip{font-size:11px;max-width:240px;padding:8px 11px}}
+
+/* 동료 팝업 기존 안내 박스 숨김: 저장 버튼 아래 말풍선만 사용 */
+#blackOrbCompanionMsg{display:none !important;}
+#blackOrbCompanionMsg.show{display:none !important;}
 </style>
 <script>
 (function(){
@@ -7704,6 +7708,8 @@ window.goToAdventureSkillSettings = goToAdventureSkillSettings;
         if(!isIntegerInRange(input.value, 0, 100, true)) valid = false;
       });
     }
+
+    hideOldInlineMessage("blackOrbCompanionMsg");
 
     if(!valid){
       failBlackOrbSave(btn, getCompanionInvalidRangeText());
