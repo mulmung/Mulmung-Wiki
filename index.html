@@ -7509,5 +7509,277 @@ window.goToAdventureSkillSettings = goToAdventureSkillSettings;
 })();
 </script>
 
+
+<!-- Black Orb save button state final patch -->
+<style>
+.black-orb-save-done,
+.black-orb-companion-save-btn.black-orb-save-done,
+.black-orb-relic-save-btn.black-orb-save-done,
+.black-orb-skill-save-btn.black-orb-save-done,
+.black-orb-order-statue-save-btn.black-orb-save-done{
+  background:#14b8a6 !important;
+  color:#ffffff !important;
+  border-color:#14b8a6 !important;
+}
+
+.black-orb-save-fail,
+.black-orb-companion-save-btn.black-orb-save-fail,
+.black-orb-relic-save-btn.black-orb-save-fail,
+.black-orb-skill-save-btn.black-orb-save-fail,
+.black-orb-order-statue-save-btn.black-orb-save-fail{
+  background:#ef4444 !important;
+  color:#ffffff !important;
+  border-color:#ef4444 !important;
+}
+</style>
+<script>
+(function(){
+  const DONE_CLASS = "black-orb-save-done";
+  const FAIL_CLASS = "black-orb-save-fail";
+
+  function setBlackOrbSaveButtonState(btn, state){
+    if(!btn) return;
+    clearTimeout(btn._blackOrbSaveButtonTimer);
+
+    if(!btn.dataset.originalSaveText){
+      btn.dataset.originalSaveText = btn.textContent || "저장하기";
+    }
+
+    btn.classList.remove(DONE_CLASS, FAIL_CLASS);
+
+    if(state === "done"){
+      btn.classList.add(DONE_CLASS);
+      btn.textContent = "저장 완료";
+    }else if(state === "fail"){
+      btn.classList.add(FAIL_CLASS);
+      btn.textContent = "저장 불가";
+    }
+
+    btn._blackOrbSaveButtonTimer = setTimeout(function(){
+      btn.classList.remove(DONE_CLASS, FAIL_CLASS);
+      btn.textContent = btn.dataset.originalSaveText || "저장하기";
+    }, 1600);
+  }
+
+  function onlyDigits(value){
+    return String(value ?? "").replace(/,/g, "").trim();
+  }
+
+  function isIntegerInRange(value, min, max, allowEmpty){
+    const text = onlyDigits(value);
+    if(text === "") return !!allowEmpty;
+    if(!/^\d+$/.test(text)) return false;
+    const num = Number(text);
+    return Number.isInteger(num) && num >= min && num <= max;
+  }
+
+  function hideOldInlineMessage(id){
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.classList.remove("show");
+    el.textContent = "";
+  }
+
+  function collectInputsIn(containerSelector){
+    const container = document.querySelector(containerSelector);
+    if(!container) return {};
+    const data = {};
+    container.querySelectorAll("input, select").forEach(function(el, index){
+      const key = el.id || el.name || Array.from(el.classList).join("_") + "_" + index;
+      data[key] = el.value || "";
+    });
+    return data;
+  }
+
+  async function saveToCloudIfAvailable(fnName, values){
+    const fn = window[fnName];
+    if(typeof fn !== "function") return { ok:true };
+    try{
+      const result = await fn(values);
+      if(!result) return { ok:true };
+      return result;
+    }catch(error){
+      console.warn(fnName + " 실패:", error);
+      return { ok:false, reason:"error" };
+    }
+  }
+
+  async function handleCompanionSave(btn){
+    hideOldInlineMessage("blackOrbCompanionMsg");
+
+    let valid = true;
+    if(typeof window.validateBlackOrbCompanionInputs === "function"){
+      valid = window.validateBlackOrbCompanionInputs(false);
+    }else{
+      document.querySelectorAll("#blackOrbCompanionPopupBg .companion-skill-level").forEach(function(input){
+        if(!isIntegerInRange(input.value, 1, 100, true)) valid = false;
+      });
+    }
+
+    if(!valid){
+      setBlackOrbSaveButtonState(btn, "fail");
+      return;
+    }
+
+    const values = collectInputsIn("#blackOrbCompanionPopupBg");
+    localStorage.setItem("blackOrbCompanionSettings", JSON.stringify(values));
+
+    let result = { ok:true };
+    if(typeof window.saveBlackOrbCompanionSettingsToCloud === "function"){
+      result = await saveToCloudIfAvailable("saveBlackOrbCompanionSettingsToCloud", values);
+    }
+
+    setBlackOrbSaveButtonState(btn, result && result.ok !== false ? "done" : "fail");
+  }
+
+  async function handleRelicSave(btn){
+    hideOldInlineMessage("blackOrbRelicTooltip");
+
+    let valid = true;
+    document.querySelectorAll("#blackOrbRelicPopup .black-orb-relic-input, #blackOrbRelicPopupBg .black-orb-relic-input").forEach(function(input){
+      if(typeof window.isValidBlackOrbRelicLevel === "function"){
+        if(!window.isValidBlackOrbRelicLevel(String(input.value || "").trim())) valid = false;
+      }else if(!isIntegerInRange(input.value, 0, 100, true)){
+        valid = false;
+      }
+    });
+
+    if(!valid){
+      setBlackOrbSaveButtonState(btn, "fail");
+      return;
+    }
+
+    const values = typeof window.collectBlackOrbRelicSettings === "function"
+      ? window.collectBlackOrbRelicSettings()
+      : collectInputsIn("#blackOrbRelicPopup, #blackOrbRelicPopupBg");
+
+    localStorage.setItem("blackOrbRelicSettings", JSON.stringify(values));
+    const result = await saveToCloudIfAvailable("saveBlackOrbRelicSettingsToCloud", values);
+    setBlackOrbSaveButtonState(btn, result && result.ok !== false ? "done" : "fail");
+  }
+
+  async function handleSkillMasterySave(btn){
+    if(typeof window.hideBlackOrbSkillMasteryTooltip === "function"){
+      window.hideBlackOrbSkillMasteryTooltip();
+    }
+
+    const values = typeof window.collectBlackOrbSkillMasterySettings === "function"
+      ? window.collectBlackOrbSkillMasterySettings()
+      : {
+          level: document.getElementById("blackOrbSkillMasteryLevel")?.value || "",
+          damage: document.getElementById("blackOrbSkillMasteryDamage")?.textContent || ""
+        };
+
+    const valid = typeof window.isValidBlackOrbSkillMasteryLevel === "function"
+      ? window.isValidBlackOrbSkillMasteryLevel(values.level)
+      : isIntegerInRange(values.level, 1, 328, false);
+
+    if(!valid){
+      setBlackOrbSaveButtonState(btn, "fail");
+      return;
+    }
+
+    localStorage.setItem("blackOrbSkillMasterySettings", JSON.stringify(values));
+    const result = await saveToCloudIfAvailable("saveBlackOrbSkillMasterySettingsToCloud", values);
+    setBlackOrbSaveButtonState(btn, result && result.ok !== false ? "done" : "fail");
+  }
+
+  async function handleOrderStatueSave(btn){
+    if(typeof window.hideBlackOrbOrderStatueTooltip === "function"){
+      window.hideBlackOrbOrderStatueTooltip();
+    }
+
+    const values = typeof window.collectBlackOrbOrderStatueSettings === "function"
+      ? window.collectBlackOrbOrderStatueSettings()
+      : {
+          level: document.getElementById("blackOrbOrderStatueLevel")?.value || "",
+          wind: document.getElementById("blackOrbOrderStatueWindAmp")?.textContent || "증폭량",
+          earth: document.getElementById("blackOrbOrderStatueEarthAmp")?.textContent || "증폭량",
+          fire: document.getElementById("blackOrbOrderStatueFireAmp")?.textContent || "증폭량",
+          water: document.getElementById("blackOrbOrderStatueWaterAmp")?.textContent || "증폭량"
+        };
+
+    if(!isIntegerInRange(values.level, 1, 80, false)){
+      setBlackOrbSaveButtonState(btn, "fail");
+      return;
+    }
+
+    localStorage.setItem("blackOrbOrderStatueSettings", JSON.stringify(values));
+    const result = await saveToCloudIfAvailable("saveBlackOrbOrderStatueSettingsToCloud", values);
+    setBlackOrbSaveButtonState(btn, result && result.ok !== false ? "done" : "fail");
+  }
+
+  function renderResonanceSaveButton(){
+    const title = document.getElementById("blackOrbDamageAmpPopupTitle");
+    const body = document.getElementById("blackOrbDamageAmpPlaceholder");
+    if(!title || !body) return;
+    if(title.textContent.trim() !== "오브 공명") return;
+    if(document.getElementById("blackOrbResonanceSaveBtn")) return;
+
+    const wrap = document.createElement("div");
+    wrap.className = "black-orb-order-statue-save-wrap";
+    wrap.style.marginTop = "14px";
+    wrap.innerHTML = '<button id="blackOrbResonanceSaveBtn" type="button" class="black-orb-order-statue-save-btn">저장하기</button>';
+    body.appendChild(wrap);
+  }
+
+  function handleResonanceSave(btn){
+    localStorage.setItem("blackOrbResonanceSettings", JSON.stringify({
+      savedAt: new Date().toISOString()
+    }));
+    setBlackOrbSaveButtonState(btn, "done");
+  }
+
+  const originalOpenDamageAmpPopup = window.openBlackOrbDamageAmpPopup;
+  window.openBlackOrbDamageAmpPopup = function(title){
+    if(typeof originalOpenDamageAmpPopup === "function"){
+      originalOpenDamageAmpPopup(title);
+    }
+    setTimeout(renderResonanceSaveButton, 0);
+  };
+
+  document.addEventListener("click", function(event){
+    const companionBtn = event.target.closest(".black-orb-companion-save-btn");
+    const relicBtn = event.target.closest(".black-orb-relic-save-btn");
+    const skillBtn = event.target.closest(".black-orb-skill-save-btn");
+    const resonanceBtn = event.target.closest("#blackOrbResonanceSaveBtn");
+    const orderBtn = event.target.closest(".black-orb-order-statue-save-btn");
+
+    const btn = companionBtn || relicBtn || skillBtn || resonanceBtn || orderBtn;
+    if(!btn) return;
+
+    event.preventDefault();
+    event.stopPropagation();
+    event.stopImmediatePropagation();
+
+    if(companionBtn){
+      handleCompanionSave(companionBtn);
+      return;
+    }
+
+    if(relicBtn){
+      handleRelicSave(relicBtn);
+      return;
+    }
+
+    if(skillBtn){
+      handleSkillMasterySave(skillBtn);
+      return;
+    }
+
+    if(resonanceBtn){
+      handleResonanceSave(resonanceBtn);
+      return;
+    }
+
+    if(orderBtn){
+      handleOrderStatueSave(orderBtn);
+    }
+  }, true);
+
+  window.setBlackOrbSaveButtonState = setBlackOrbSaveButtonState;
+})();
+</script>
+
 </body>
 </html>
