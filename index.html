@@ -1220,10 +1220,17 @@ button.faq-flow-item:focus,button.faq-flow-item:focus-visible{outline:none;borde
   box-shadow:0 6px 14px rgba(15,23,42,.18);
   position:relative;z-index:1;
 }
+.black-orb-before-box .black-orb-input,
 .black-orb-before-box .black-orb-element-picker,
 .black-orb-before-box .black-orb-value-badge{
   pointer-events:none;cursor:default;
 }
+.black-orb-before-box .black-orb-input:disabled,
+.black-orb-before-box .black-orb-element-picker:disabled,
+.black-orb-before-box .black-orb-value-badge:disabled{
+  opacity:1;-webkit-text-fill-color:currentColor;
+}
+.black-orb-before-box .black-orb-input:focus,
 .black-orb-before-box .black-orb-element-picker:focus,
 .black-orb-before-box .black-orb-value-badge:focus{outline:none;}
 @media(max-width:768px){
@@ -2942,34 +2949,34 @@ function addSections() {
         <div class="black-orb-option-box black-orb-before-box">
             <div class="black-orb-option-row">
               <span class="black-orb-plus">+</span>
-              <input class="black-orb-input black-orb-comma-input" type="text" inputmode="numeric" placeholder="숫자 입력" autocomplete="off" />
+              <input class="black-orb-input black-orb-comma-input" type="text" disabled aria-disabled="true" inputmode="numeric" placeholder="숫자 입력" autocomplete="off" />
               <span class="black-orb-percent">%</span>
             </div>
 
             <div class="black-orb-divider"></div>
 
             <div class="black-orb-detail-row has-value-picker">
-              <button type="button" class="black-orb-element-picker" data-value="all" data-label="모든" data-class="all" onclick="openBlackOrbElementPopup(this)"><span class="black-orb-element-badge all">모든</span></button>
+              <button type="button" class="black-orb-element-picker" disabled aria-disabled="true" data-value="all" data-label="모든" data-class="all" onclick="openBlackOrbElementPopup(this)"><span class="black-orb-element-badge all">모든</span></button>
               <span class="black-orb-plus">+</span>
-              <button type="button" class="black-orb-none-badge black-orb-value-badge value-none" data-value="" data-label="없음" data-class="none" aria-label="수치 없음" onclick="openBlackOrbValuePopup(this)">없음</button>
+              <button type="button" class="black-orb-none-badge black-orb-value-badge value-none" disabled aria-disabled="true" data-value="" data-label="없음" data-class="none" aria-label="수치 없음" onclick="openBlackOrbValuePopup(this)">없음</button>
               <span class="black-orb-percent">%</span><span class="black-orb-x2-badge">×2</span>
             </div>
             <div class="black-orb-detail-row has-value-picker">
-              <button type="button" class="black-orb-element-picker" data-value="all" data-label="모든" data-class="all" onclick="openBlackOrbElementPopup(this)"><span class="black-orb-element-badge all">모든</span></button>
+              <button type="button" class="black-orb-element-picker" disabled aria-disabled="true" data-value="all" data-label="모든" data-class="all" onclick="openBlackOrbElementPopup(this)"><span class="black-orb-element-badge all">모든</span></button>
               <span class="black-orb-plus">+</span>
-              <button type="button" class="black-orb-none-badge black-orb-value-badge value-none" data-value="" data-label="없음" data-class="none" aria-label="수치 없음" onclick="openBlackOrbValuePopup(this)">없음</button>
+              <button type="button" class="black-orb-none-badge black-orb-value-badge value-none" disabled aria-disabled="true" data-value="" data-label="없음" data-class="none" aria-label="수치 없음" onclick="openBlackOrbValuePopup(this)">없음</button>
               <span class="black-orb-percent">%</span><span class="black-orb-x2-badge">×2</span>
             </div>
             <div class="black-orb-detail-row has-value-picker">
-              <button type="button" class="black-orb-element-picker" data-value="all" data-label="모든" data-class="all" onclick="openBlackOrbElementPopup(this)"><span class="black-orb-element-badge all">모든</span></button>
+              <button type="button" class="black-orb-element-picker" disabled aria-disabled="true" data-value="all" data-label="모든" data-class="all" onclick="openBlackOrbElementPopup(this)"><span class="black-orb-element-badge all">모든</span></button>
               <span class="black-orb-plus">+</span>
-              <button type="button" class="black-orb-none-badge black-orb-value-badge value-none" data-value="" data-label="없음" data-class="none" aria-label="수치 없음" onclick="openBlackOrbValuePopup(this)">없음</button>
+              <button type="button" class="black-orb-none-badge black-orb-value-badge value-none" disabled aria-disabled="true" data-value="" data-label="없음" data-class="none" aria-label="수치 없음" onclick="openBlackOrbValuePopup(this)">없음</button>
               <span class="black-orb-percent">%</span><span class="black-orb-x2-badge">×2</span>
             </div>
             <div class="black-orb-detail-row has-value-picker">
-              <button type="button" class="black-orb-element-picker" data-value="all" data-label="모든" data-class="all" onclick="openBlackOrbElementPopup(this)"><span class="black-orb-element-badge all">모든</span></button>
+              <button type="button" class="black-orb-element-picker" disabled aria-disabled="true" data-value="all" data-label="모든" data-class="all" onclick="openBlackOrbElementPopup(this)"><span class="black-orb-element-badge all">모든</span></button>
               <span class="black-orb-plus">+</span>
-              <button type="button" class="black-orb-none-badge black-orb-value-badge value-none" data-value="" data-label="없음" data-class="none" aria-label="수치 없음" onclick="openBlackOrbValuePopup(this)">없음</button>
+              <button type="button" class="black-orb-none-badge black-orb-value-badge value-none" disabled aria-disabled="true" data-value="" data-label="없음" data-class="none" aria-label="수치 없음" onclick="openBlackOrbValuePopup(this)">없음</button>
               <span class="black-orb-percent">%</span><span class="black-orb-x2-badge">×2</span>
             </div>
           </div>
@@ -6990,6 +6997,7 @@ window.closeBlackOrbDetailPopup = closeBlackOrbDetailPopup;
 
 let currentBlackOrbElementPicker = null;
 function openBlackOrbElementPopup(button) {
+  if (!button || button.disabled || button.closest('.black-orb-before-box')) return;
   currentBlackOrbElementPicker = button;
   const popup = document.getElementById("blackOrbElementPopupBg");
   if (popup) popup.classList.add("show");
@@ -7001,6 +7009,7 @@ function closeBlackOrbElementPopup(event) {
 }
 let currentBlackOrbValueButton = null;
 function openBlackOrbValuePopup(button) {
+  if (!button || button.disabled || button.closest('.black-orb-before-box')) return;
   const targetRow = button?.closest(".black-orb-detail-row, .black-orb-popup-detail-row");
   const picker = targetRow?.querySelector(".black-orb-element-picker");
   if (!picker || (picker.dataset.value || "all") === "none") {
