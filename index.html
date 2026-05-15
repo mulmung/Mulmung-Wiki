@@ -3324,10 +3324,10 @@ function addSections() {
             <div class="black-orb-companion-name fire">미호</div>
             <div class="black-orb-companion-name water">루나</div>
 
-            <input class="black-orb-companion-field companion-level" type="text" inputmode="numeric" maxlength="4" placeholder="동료 레벨" autocomplete="off" />
-            <input class="black-orb-companion-field companion-level" type="text" inputmode="numeric" maxlength="4" placeholder="동료 레벨" autocomplete="off" />
-            <input class="black-orb-companion-field companion-level" type="text" inputmode="numeric" maxlength="4" placeholder="동료 레벨" autocomplete="off" />
-            <input class="black-orb-companion-field companion-level" type="text" inputmode="numeric" maxlength="4" placeholder="동료 레벨" autocomplete="off" />
+            <input class="black-orb-companion-field companion-level" type="text" inputmode="numeric" maxlength="5" placeholder="동료 레벨" autocomplete="off" />
+            <input class="black-orb-companion-field companion-level" type="text" inputmode="numeric" maxlength="5" placeholder="동료 레벨" autocomplete="off" />
+            <input class="black-orb-companion-field companion-level" type="text" inputmode="numeric" maxlength="5" placeholder="동료 레벨" autocomplete="off" />
+            <input class="black-orb-companion-field companion-level" type="text" inputmode="numeric" maxlength="5" placeholder="동료 레벨" autocomplete="off" />
 
             <select class="black-orb-companion-field companion-job-page" aria-label="엘리 전직 페이지"><option value="">전직 페이지</option><option>I</option><option>II</option><option>III</option><option>IV</option><option>V</option><option>VI</option><option>VII</option></select>
             <select class="black-orb-companion-field companion-job-page" aria-label="지크 전직 페이지"><option value="">전직 페이지</option><option>I</option><option>II</option><option>III</option><option>IV</option><option>V</option><option>VI</option><option>VII</option></select>
@@ -7483,8 +7483,20 @@ window.goToAdventureSkillSettings = goToAdventureSkillSettings;
   };
 
   window.saveBlackOrbResonanceSettings = function(){
-    localStorage.setItem("blackOrbResonanceSettings", JSON.stringify({ savedAt: new Date().toISOString() }));
-    setBlackOrbSaveButtonState(document.getElementById("blackOrbResonanceSaveBtn"), "done");
+    const btn = document.getElementById("blackOrbResonanceSaveBtn");
+    const input = document.getElementById("blackOrbResonanceLevel");
+    if(input && !isIntegerInRange(input.value, 0, 320, false)){
+      input.value = "";
+      if(typeof failBlackOrbSave === "function") failBlackOrbSave(btn, "0~320");
+      else setBlackOrbSaveButtonState(btn, "fail");
+      return;
+    }
+    localStorage.setItem("blackOrbResonanceSettings", JSON.stringify({
+      level: input ? input.value : "",
+      savedAt: new Date().toISOString()
+    }));
+    if(typeof doneBlackOrbSave === "function") doneBlackOrbSave(btn);
+    else setBlackOrbSaveButtonState(btn, "done");
   };
 
   function renderBlackOrbResonanceSaveButton(){
@@ -7495,8 +7507,11 @@ window.goToAdventureSkillSettings = goToAdventureSkillSettings;
     placeholder.style.display = "block";
     placeholder.innerHTML = `
       <div style="width:100%;display:grid;gap:12px;">
-        <div style="display:flex;align-items:center;justify-content:center;min-height:38px;color:#64748b;font-size:15px;font-weight:900;">계산식 입력 예정</div>
-        <button id="blackOrbResonanceSaveBtn" type="button" class="black-orb-order-statue-save-btn" onclick="saveBlackOrbResonanceSettings()">저장하기</button>
+        <input id="blackOrbResonanceLevel" class="black-orb-order-statue-input" type="text" inputmode="numeric" placeholder="오브 공명 레벨" autocomplete="off" />
+        <div style="display:flex;align-items:center;justify-content:center;min-height:34px;color:#64748b;font-size:14px;font-weight:900;">0~320 입력</div>
+        <div class="black-orb-order-statue-save-wrap">
+          <button id="blackOrbResonanceSaveBtn" type="button" class="black-orb-order-statue-save-btn" onclick="saveBlackOrbResonanceSettings()">저장하기</button>
+        </div>
       </div>
     `;
   }
@@ -7534,11 +7549,7 @@ window.goToAdventureSkillSettings = goToAdventureSkillSettings;
 
 .black-orb-range-tooltip{
   display:none;
-  position:absolute;
-  left:50%;
-  top:calc(100% + 8px);
-  transform:translateX(-50%);
-  z-index:20;
+  z-index:9999;
   width:max-content;
   max-width:280px;
   padding:9px 13px;
@@ -7553,7 +7564,18 @@ window.goToAdventureSkillSettings = goToAdventureSkillSettings;
   pointer-events:none;
 }
 .black-orb-range-tooltip.show{display:block}
-.black-orb-range-tooltip::before{
+.black-orb-range-tooltip.is-static{
+  position:static;
+  margin:9px auto 0;
+  transform:none;
+}
+.black-orb-range-tooltip.is-floating{
+  position:absolute;
+  left:50%;
+  top:calc(100% + 8px);
+  transform:translateX(-50%);
+}
+.black-orb-range-tooltip.is-floating::before{
   content:"";
   position:absolute;
   left:50%;
@@ -7574,16 +7596,18 @@ window.goToAdventureSkillSettings = goToAdventureSkillSettings;
   const DONE_CLASS = "black-orb-save-done";
   const FAIL_CLASS = "black-orb-save-fail";
 
+  function getSaveWrap(btn){
+    if(!btn) return null;
+    return btn.closest(".black-orb-order-statue-save-wrap") || btn.closest(".black-orb-companion-save-wrap") || btn.parentElement;
+  }
+
   function setBlackOrbSaveButtonState(btn, state){
     if(!btn) return;
     clearTimeout(btn._blackOrbSaveButtonTimer);
-
     if(!btn.dataset.originalSaveText){
       btn.dataset.originalSaveText = btn.textContent || "저장하기";
     }
-
     btn.classList.remove(DONE_CLASS, FAIL_CLASS);
-
     if(state === "done"){
       btn.classList.add(DONE_CLASS);
       btn.textContent = "저장 완료";
@@ -7591,7 +7615,6 @@ window.goToAdventureSkillSettings = goToAdventureSkillSettings;
       btn.classList.add(FAIL_CLASS);
       btn.textContent = "저장 불가";
     }
-
     btn._blackOrbSaveButtonTimer = setTimeout(function(){
       btn.classList.remove(DONE_CLASS, FAIL_CLASS);
       btn.textContent = btn.dataset.originalSaveText || "저장하기";
@@ -7601,31 +7624,33 @@ window.goToAdventureSkillSettings = goToAdventureSkillSettings;
   function hideBlackOrbRangeTooltip(btn){
     if(!btn) return;
     clearTimeout(btn._blackOrbRangeTooltipTimer);
-    const wrap = btn.closest(".black-orb-order-statue-save-wrap") || btn.parentElement;
+    const wrap = getSaveWrap(btn);
     if(!wrap) return;
-    const old = wrap.querySelector(".black-orb-range-tooltip");
-    if(old){
-      old.classList.remove("show");
-      old.remove();
-    }
+    wrap.querySelectorAll(".black-orb-range-tooltip").forEach(function(old){ old.remove(); });
   }
 
   function showBlackOrbRangeTooltip(btn, rangeText){
     if(!btn) return;
-    const wrap = btn.closest(".black-orb-order-statue-save-wrap") || btn.parentElement;
+    const wrap = getSaveWrap(btn);
     if(!wrap) return;
-    if(getComputedStyle(wrap).position === "static"){
-      wrap.style.position = "relative";
-    }
     hideBlackOrbRangeTooltip(btn);
+
     const tip = document.createElement("div");
     tip.className = "black-orb-range-tooltip show";
     tip.textContent = rangeText + " 값으로 입력해주세요";
-    wrap.appendChild(tip);
+
+    if(btn.closest(".black-orb-order-statue-save-wrap")){
+      if(getComputedStyle(wrap).position === "static") wrap.style.position = "relative";
+      tip.classList.add("is-floating");
+      wrap.appendChild(tip);
+    }else{
+      tip.classList.add("is-static");
+      btn.insertAdjacentElement("afterend", tip);
+    }
+
     btn._blackOrbRangeTooltipTimer = setTimeout(function(){
-      tip.classList.remove("show");
       tip.remove();
-    }, 2200);
+    }, 2400);
   }
 
   function failBlackOrbSave(btn, rangeText){
@@ -7648,6 +7673,17 @@ window.goToAdventureSkillSettings = goToAdventureSkillSettings;
     if(!/^\d+$/.test(text)) return false;
     const num = Number(text);
     return Number.isInteger(num) && num >= min && num <= max;
+  }
+
+  function clearInvalidInputs(selector, min, max, allowEmpty){
+    let invalid = false;
+    document.querySelectorAll(selector).forEach(function(input){
+      if(!isIntegerInRange(input.value, min, max, allowEmpty)){
+        input.value = "";
+        invalid = true;
+      }
+    });
+    return invalid;
   }
 
   function hideOldInlineMessage(id){
@@ -7681,124 +7717,69 @@ window.goToAdventureSkillSettings = goToAdventureSkillSettings;
     }
   }
 
-
-  function getCompanionInvalidRangeText(){
-    let companionInvalid = false;
-    let skillInvalid = false;
-    document.querySelectorAll("#blackOrbCompanionPopupBg .companion-level").forEach(function(input){
-      if(!isIntegerInRange(input.value, 0, 9999, true)) companionInvalid = true;
-    });
-    document.querySelectorAll("#blackOrbCompanionPopupBg .companion-skill-level").forEach(function(input){
-      if(!isIntegerInRange(input.value, 0, 100, true)) skillInvalid = true;
-    });
-    if(companionInvalid && skillInvalid) return "동료 레벨 0~9999 / 스킬 레벨 0~100";
-    if(companionInvalid) return "0~9999";
-    if(skillInvalid) return "0~100";
-    return "입력 범위";
-  }
-
   async function handleCompanionSave(btn){
     hideOldInlineMessage("blackOrbCompanionMsg");
+    const companionInvalid = clearInvalidInputs("#blackOrbCompanionPopupBg .companion-level", 0, 9999, true);
+    const skillInvalid = clearInvalidInputs("#blackOrbCompanionPopupBg .companion-skill-level", 0, 100, true);
 
-    let valid = true;
-    if(typeof window.validateBlackOrbCompanionInputs === "function"){
-      valid = window.validateBlackOrbCompanionInputs(false);
-    }else{
-      document.querySelectorAll("#blackOrbCompanionPopupBg .companion-skill-level").forEach(function(input){
-        if(!isIntegerInRange(input.value, 0, 100, true)) valid = false;
-      });
-    }
-
-    hideOldInlineMessage("blackOrbCompanionMsg");
-
-    if(!valid){
-      failBlackOrbSave(btn, getCompanionInvalidRangeText());
+    if(companionInvalid || skillInvalid){
+      let rangeText = "입력 범위";
+      if(companionInvalid && skillInvalid) rangeText = "동료 레벨 0~9999 / 스킬 레벨 0~100";
+      else if(companionInvalid) rangeText = "0~9999";
+      else if(skillInvalid) rangeText = "0~100";
+      failBlackOrbSave(btn, rangeText);
       return;
     }
 
     const values = collectInputsIn("#blackOrbCompanionPopupBg");
     localStorage.setItem("blackOrbCompanionSettings", JSON.stringify(values));
-
-    let result = { ok:true };
-    if(typeof window.saveBlackOrbCompanionSettingsToCloud === "function"){
-      result = await saveToCloudIfAvailable("saveBlackOrbCompanionSettingsToCloud", values);
-    }
-
+    const result = await saveToCloudIfAvailable("saveBlackOrbCompanionSettingsToCloud", values);
     if(result && result.ok !== false){ doneBlackOrbSave(btn); } else { failBlackOrbSave(btn, "저장 가능"); }
   }
 
   async function handleRelicSave(btn){
-    hideOldInlineMessage("blackOrbRelicTooltip");
-
-    let valid = true;
-    document.querySelectorAll("#blackOrbRelicPopup .black-orb-relic-input, #blackOrbRelicPopupBg .black-orb-relic-input").forEach(function(input){
-      if(typeof window.isValidBlackOrbRelicLevel === "function"){
-        if(!window.isValidBlackOrbRelicLevel(String(input.value || "").trim())) valid = false;
-      }else if(!isIntegerInRange(input.value, 0, 100, true)){
-        valid = false;
-      }
-    });
-
-    if(!valid){
+    const invalid = clearInvalidInputs("#blackOrbRelicPopup .black-orb-relic-input, #blackOrbRelicPopupBg .black-orb-relic-input", 0, 100, true);
+    if(invalid){
       failBlackOrbSave(btn, "0~100");
       return;
     }
-
-    const values = typeof window.collectBlackOrbRelicSettings === "function"
-      ? window.collectBlackOrbRelicSettings()
-      : collectInputsIn("#blackOrbRelicPopup, #blackOrbRelicPopupBg");
-
+    if(typeof window.hideBlackOrbRelicTooltip === "function") window.hideBlackOrbRelicTooltip();
+    const values = typeof window.collectBlackOrbRelicSettings === "function" ? window.collectBlackOrbRelicSettings() : collectInputsIn("#blackOrbRelicPopup, #blackOrbRelicPopupBg");
     localStorage.setItem("blackOrbRelicSettings", JSON.stringify(values));
     const result = await saveToCloudIfAvailable("saveBlackOrbRelicSettingsToCloud", values);
     if(result && result.ok !== false){ doneBlackOrbSave(btn); } else { failBlackOrbSave(btn, "저장 가능"); }
   }
 
   async function handleSkillMasterySave(btn){
-    if(typeof window.hideBlackOrbSkillMasteryTooltip === "function"){
-      window.hideBlackOrbSkillMasteryTooltip();
-    }
-
-    const values = typeof window.collectBlackOrbSkillMasterySettings === "function"
-      ? window.collectBlackOrbSkillMasterySettings()
-      : {
-          level: document.getElementById("blackOrbSkillMasteryLevel")?.value || "",
-          damage: document.getElementById("blackOrbSkillMasteryDamage")?.textContent || ""
-        };
-
-    const valid = typeof window.isValidBlackOrbSkillMasteryLevel === "function"
-      ? window.isValidBlackOrbSkillMasteryLevel(values.level)
-      : isIntegerInRange(values.level, 0, 328, false);
-
-    if(!valid){
+    const invalid = clearInvalidInputs("#blackOrbSkillMasteryLevel", 0, 328, false);
+    if(invalid){
       failBlackOrbSave(btn, "0~328");
       return;
     }
-
+    if(typeof window.hideBlackOrbSkillMasteryTooltip === "function") window.hideBlackOrbSkillMasteryTooltip();
+    const values = typeof window.collectBlackOrbSkillMasterySettings === "function" ? window.collectBlackOrbSkillMasterySettings() : {
+      level: document.getElementById("blackOrbSkillMasteryLevel")?.value || "",
+      damage: document.getElementById("blackOrbSkillMasteryDamage")?.textContent || ""
+    };
     localStorage.setItem("blackOrbSkillMasterySettings", JSON.stringify(values));
     const result = await saveToCloudIfAvailable("saveBlackOrbSkillMasterySettingsToCloud", values);
     if(result && result.ok !== false){ doneBlackOrbSave(btn); } else { failBlackOrbSave(btn, "저장 가능"); }
   }
 
   async function handleOrderStatueSave(btn){
-    if(typeof window.hideBlackOrbOrderStatueTooltip === "function"){
-      window.hideBlackOrbOrderStatueTooltip();
-    }
-
-    const values = typeof window.collectBlackOrbOrderStatueSettings === "function"
-      ? window.collectBlackOrbOrderStatueSettings()
-      : {
-          level: document.getElementById("blackOrbOrderStatueLevel")?.value || "",
-          wind: document.getElementById("blackOrbOrderStatueWindAmp")?.textContent || "증폭량",
-          earth: document.getElementById("blackOrbOrderStatueEarthAmp")?.textContent || "증폭량",
-          fire: document.getElementById("blackOrbOrderStatueFireAmp")?.textContent || "증폭량",
-          water: document.getElementById("blackOrbOrderStatueWaterAmp")?.textContent || "증폭량"
-        };
-
-    if(!isIntegerInRange(values.level, 0, 80, false)){
+    const invalid = clearInvalidInputs("#blackOrbOrderStatueLevel", 0, 80, false);
+    if(invalid){
       failBlackOrbSave(btn, "0~80");
       return;
     }
-
+    if(typeof window.hideBlackOrbOrderStatueTooltip === "function") window.hideBlackOrbOrderStatueTooltip();
+    const values = typeof window.collectBlackOrbOrderStatueSettings === "function" ? window.collectBlackOrbOrderStatueSettings() : {
+      level: document.getElementById("blackOrbOrderStatueLevel")?.value || "",
+      wind: document.getElementById("blackOrbOrderStatueWindAmp")?.textContent || "증폭량",
+      earth: document.getElementById("blackOrbOrderStatueEarthAmp")?.textContent || "증폭량",
+      fire: document.getElementById("blackOrbOrderStatueFireAmp")?.textContent || "증폭량",
+      water: document.getElementById("blackOrbOrderStatueWaterAmp")?.textContent || "증폭량"
+    };
     localStorage.setItem("blackOrbOrderStatueSettings", JSON.stringify(values));
     const result = await saveToCloudIfAvailable("saveBlackOrbOrderStatueSettingsToCloud", values);
     if(result && result.ok !== false){ doneBlackOrbSave(btn); } else { failBlackOrbSave(btn, "저장 가능"); }
@@ -7810,16 +7791,26 @@ window.goToAdventureSkillSettings = goToAdventureSkillSettings;
     if(!title || !body) return;
     if(title.textContent.trim() !== "오브 공명") return;
     if(document.getElementById("blackOrbResonanceSaveBtn")) return;
-
-    const wrap = document.createElement("div");
-    wrap.className = "black-orb-order-statue-save-wrap";
-    wrap.style.marginTop = "14px";
-    wrap.innerHTML = '<button id="blackOrbResonanceSaveBtn" type="button" class="black-orb-order-statue-save-btn">저장하기</button>';
-    body.appendChild(wrap);
+    body.innerHTML = `
+      <div style="width:100%;display:grid;gap:12px;">
+        <input id="blackOrbResonanceLevel" class="black-orb-order-statue-input" type="text" inputmode="numeric" placeholder="오브 공명 레벨" autocomplete="off" />
+        <div style="display:flex;align-items:center;justify-content:center;min-height:34px;color:#64748b;font-size:14px;font-weight:900;">0~320 입력</div>
+        <div class="black-orb-order-statue-save-wrap">
+          <button id="blackOrbResonanceSaveBtn" type="button" class="black-orb-order-statue-save-btn">저장하기</button>
+        </div>
+      </div>
+    `;
   }
 
   function handleResonanceSave(btn){
+    const input = document.getElementById("blackOrbResonanceLevel");
+    if(!input || !isIntegerInRange(input.value, 0, 320, false)){
+      if(input) input.value = "";
+      failBlackOrbSave(btn, "0~320");
+      return;
+    }
     localStorage.setItem("blackOrbResonanceSettings", JSON.stringify({
+      level: input.value || "",
       savedAt: new Date().toISOString()
     }));
     doneBlackOrbSave(btn);
@@ -7827,9 +7818,7 @@ window.goToAdventureSkillSettings = goToAdventureSkillSettings;
 
   const originalOpenDamageAmpPopup = window.openBlackOrbDamageAmpPopup;
   window.openBlackOrbDamageAmpPopup = function(title){
-    if(typeof originalOpenDamageAmpPopup === "function"){
-      originalOpenDamageAmpPopup(title);
-    }
+    if(typeof originalOpenDamageAmpPopup === "function") originalOpenDamageAmpPopup(title);
     setTimeout(renderResonanceSaveButton, 0);
   };
 
@@ -7839,40 +7828,53 @@ window.goToAdventureSkillSettings = goToAdventureSkillSettings;
     const skillBtn = event.target.closest(".black-orb-skill-save-btn");
     const resonanceBtn = event.target.closest("#blackOrbResonanceSaveBtn");
     const orderBtn = event.target.closest(".black-orb-order-statue-save-btn");
-
     const btn = companionBtn || relicBtn || skillBtn || resonanceBtn || orderBtn;
     if(!btn) return;
-
     event.preventDefault();
     event.stopPropagation();
     event.stopImmediatePropagation();
-
-    if(companionBtn){
-      handleCompanionSave(companionBtn);
-      return;
-    }
-
-    if(relicBtn){
-      handleRelicSave(relicBtn);
-      return;
-    }
-
-    if(skillBtn){
-      handleSkillMasterySave(skillBtn);
-      return;
-    }
-
-    if(resonanceBtn){
-      handleResonanceSave(resonanceBtn);
-      return;
-    }
-
-    if(orderBtn){
-      handleOrderStatueSave(orderBtn);
-    }
+    if(companionBtn){ handleCompanionSave(companionBtn); return; }
+    if(relicBtn){ handleRelicSave(relicBtn); return; }
+    if(skillBtn){ handleSkillMasterySave(skillBtn); return; }
+    if(resonanceBtn){ handleResonanceSave(resonanceBtn); return; }
+    if(orderBtn){ handleOrderStatueSave(orderBtn); }
   }, true);
 
   window.setBlackOrbSaveButtonState = setBlackOrbSaveButtonState;
+})();
+</script>
+
+
+<!-- Black Orb auto comma format patch -->
+<script>
+(function(){
+  function formatBlackOrbNumberWithComma(value){
+    const raw = String(value || "").replace(/,/g, "").replace(/[^0-9]/g, "");
+    return raw ? raw.replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "";
+  }
+
+  function shouldFormatBlackOrbNumberInput(input){
+    if(!input || input.tagName !== "INPUT") return false;
+    if(input.type && input.type.toLowerCase() === "number") return false;
+    if(input.classList.contains("black-orb-comma-input")) return true;
+    if(input.classList.contains("companion-level")) return true;
+    if(input.classList.contains("black-orb-order-statue-input")) return true;
+    if(input.id === "blackOrbResonanceLevel") return true;
+    return false;
+  }
+
+  function applyBlackOrbCommaFormat(input){
+    if(!shouldFormatBlackOrbNumberInput(input)) return;
+    const formatted = formatBlackOrbNumberWithComma(input.value);
+    if(input.value !== formatted) input.value = formatted;
+  }
+
+  document.addEventListener("input", function(event){
+    applyBlackOrbCommaFormat(event.target);
+  }, true);
+
+  window.formatBlackOrbNumberWithComma = formatBlackOrbNumberWithComma;
+  window.applyBlackOrbCommaFormat = applyBlackOrbCommaFormat;
 })();
 </script>
 
