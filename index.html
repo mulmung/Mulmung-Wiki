@@ -1437,7 +1437,6 @@ button.faq-flow-item:focus,button.faq-flow-item:focus-visible{outline:none;borde
             <span class="sidebar-stat-label">누적 접속</span>
             <span class="sidebar-stat-value"><span id="totalVisitCount">-</span><span class="sidebar-stat-unit">회</span></span>
           </div>
-          <button type="button" id="blackOrbDetailSaveBtn" class="black-orb-detail-save-btn" onclick="saveBlackOrbDetailStateToStorage()">저장</button>
         </div>
       </div>
       <div class="sidebar-auth-card">
@@ -6684,8 +6683,9 @@ window.applyBlackOrbCloudSettings = applyBlackOrbCloudSettings;
 
 async function saveBlackOrbDetailStateToCloud() {
   persistBlackOrbDetailStates();
-  if (!window.saveBlackOrbSettingsToCloud) return { ok:false, reason:"저장 기능을 불러오는 중입니다." };
-  return await window.saveBlackOrbSettingsToCloud(blackOrbDetailPopupState);
+  if (!window.saveBlackOrbSettingsToCloud) return { ok:true, reason:"브라우저에 저장되었습니다." };
+  const result = await window.saveBlackOrbSettingsToCloud(blackOrbDetailPopupState);
+  return result && result.ok ? result : { ok:true, reason:"브라우저에 저장되었습니다." };
 }
 
 
@@ -6772,7 +6772,7 @@ function clearBlackOrbX2Class(badge) {
 function updateBlackOrbX2ForRow(row) {
   if (!row) return;
   const badge = row.querySelector(".black-orb-x2-badge");
-  const picker = row.querySelector(".black-orb-element-picker");
+  const picker = row.querySelector(".black-orb-element-picker, .black-orb-element-picker-btn");
   if (!badge || !picker) return;
   clearBlackOrbX2Class(badge);
   const rowValue = picker.dataset.class || picker.dataset.value || "all";
