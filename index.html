@@ -1571,6 +1571,66 @@ button.faq-flow-item:focus,button.faq-flow-item:focus-visible{outline:none;borde
   .black-orb-popup-detail-row.has-value-picker{grid-template-columns:minmax(34px,auto) minmax(70px,1fr) auto !important;}
 }
 
+
+/* 블랙 오브 옵션 수치: 팝업 선택형 */
+.black-orb-detail-row.has-value-picker,
+.black-orb-popup-detail-row.has-value-picker {
+  grid-template-columns: minmax(58px, .82fr) minmax(92px, 1.18fr) 34px !important;
+  column-gap: 7px !important;
+}
+.black-orb-detail-row.has-value-picker > .black-orb-plus,
+.black-orb-detail-row.has-value-picker > .black-orb-percent,
+.black-orb-popup-detail-row.has-value-picker > .black-orb-plus,
+.black-orb-popup-detail-row.has-value-picker > .black-orb-percent {
+  display: none !important;
+}
+.black-orb-value-picker {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-width: 0 !important;
+}
+.black-orb-percent-picker-btn {
+  width: 100%;
+  min-height: 38px;
+  border: 2px solid rgba(45, 212, 191, .35);
+  border-radius: 999px;
+  background: #ffffff;
+  color: #111827;
+  font-weight: 950;
+  font-size: 13px;
+  letter-spacing: -0.04em;
+  box-shadow: 0 8px 18px rgba(15, 23, 42, .08);
+}
+.black-orb-percent-picker-btn.value-0 { background:#6b7280; border-color:#6b7280; color:#fff; }
+.black-orb-percent-picker-btn.value-2 { background:#f8fafc; color:#111827; }
+.black-orb-percent-picker-btn.value-3 { background:#22c55e; color:#fff; border-color:#22c55e; }
+.black-orb-percent-picker-btn.value-4 { background:#f97316; color:#fff; border-color:#f97316; }
+.black-orb-percent-picker-btn.value-5 { background:#8b5cf6; color:#fff; border-color:#8b5cf6; }
+.black-orb-percent-picker-btn.value-6 { background:#ef4444; color:#fff; border-color:#ef4444; }
+.black-orb-percent-picker-btn.value-7 { background:#3b82f6; color:#fff; border-color:#3b82f6; }
+.black-orb-percent-popup-overlay { position:fixed; inset:0; z-index:3600; display:none; align-items:center; justify-content:center; background:rgba(15,23,42,.45); padding:18px; }
+.black-orb-percent-popup-overlay.show { display:flex; }
+.black-orb-percent-popup { width:min(280px,88vw); position:relative; background:#fff; border-radius:24px; padding:28px 20px 20px; box-shadow:0 22px 48px rgba(15,23,42,.25); }
+.black-orb-percent-popup h4 { text-align:center; font-size:23px; line-height:1.15; margin:0 40px 18px; font-weight:950; color:#111827; letter-spacing:-.06em; }
+.black-orb-percent-popup-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+.black-orb-percent-choice-btn { min-height:48px; border:0; border-radius:18px; font-size:16px; font-weight:950; box-shadow:0 8px 18px rgba(15,23,42,.09); }
+.black-orb-percent-choice-btn.value-0 { background:#6b7280; color:#fff; }
+.black-orb-percent-choice-btn.value-2 { background:#f8fafc; color:#111827; border:1px solid #e5e7eb; }
+.black-orb-percent-choice-btn.value-3 { background:#22c55e; color:#fff; }
+.black-orb-percent-choice-btn.value-4 { background:#f97316; color:#fff; }
+.black-orb-percent-choice-btn.value-5 { background:#8b5cf6; color:#fff; }
+.black-orb-percent-choice-btn.value-6 { background:#ef4444; color:#fff; }
+.black-orb-percent-choice-btn.value-7 { background:#3b82f6; color:#fff; }
+@media (max-width:520px){
+  .black-orb-detail-row.has-value-picker,.black-orb-popup-detail-row.has-value-picker{grid-template-columns:minmax(52px,.78fr) minmax(82px,1.22fr) 30px !important;column-gap:5px !important;}
+  .black-orb-percent-picker-btn{min-height:35px;font-size:12px;padding:0 4px;}
+  .black-orb-percent-popup{width:min(260px,86vw);padding:26px 18px 18px;}
+  .black-orb-percent-popup h4{font-size:21px;margin-bottom:16px;}
+  .black-orb-percent-choice-btn{min-height:44px;font-size:15px;}
+}
+
 </style>
 </head>
 <body>
@@ -3289,13 +3349,8 @@ function addSections() {
               <button type="button" class="black-orb-element-picker" data-value="all" data-label="모든" data-class="all" onclick="openBlackOrbElementPopup(this)"><span class="black-orb-element-badge all">모든</span></button>
               <span class="black-orb-plus">+</span>
               <div class="black-orb-value-picker" data-black-orb-value-picker data-selected="">
-                <span class="black-orb-zero-pill">+0%</span>
-                <button type="button" class="black-orb-value-btn value-2" data-value="2">+2%</button>
-                <button type="button" class="black-orb-value-btn value-3" data-value="3">+3%</button>
-                <button type="button" class="black-orb-value-btn value-4" data-value="4">+4%</button>
-                <button type="button" class="black-orb-value-btn value-5" data-value="5">+5%</button>
-                <button type="button" class="black-orb-value-btn value-6" data-value="6">+6%</button>
-                <button type="button" class="black-orb-value-btn value-7" data-value="7">+7%</button>
+                <button type="button" class="black-orb-percent-picker-btn" onclick="openBlackOrbPercentPopup(this)">선택</button>
+                <input type="hidden" class="black-orb-percent-hidden-input black-orb-input black-orb-small-input" value="">
               </div>
               <span class="black-orb-percent">%</span><span class="black-orb-x2-badge">×2</span>
             </div>
@@ -3303,13 +3358,8 @@ function addSections() {
               <button type="button" class="black-orb-element-picker" data-value="all" data-label="모든" data-class="all" onclick="openBlackOrbElementPopup(this)"><span class="black-orb-element-badge all">모든</span></button>
               <span class="black-orb-plus">+</span>
               <div class="black-orb-value-picker" data-black-orb-value-picker data-selected="">
-                <span class="black-orb-zero-pill">+0%</span>
-                <button type="button" class="black-orb-value-btn value-2" data-value="2">+2%</button>
-                <button type="button" class="black-orb-value-btn value-3" data-value="3">+3%</button>
-                <button type="button" class="black-orb-value-btn value-4" data-value="4">+4%</button>
-                <button type="button" class="black-orb-value-btn value-5" data-value="5">+5%</button>
-                <button type="button" class="black-orb-value-btn value-6" data-value="6">+6%</button>
-                <button type="button" class="black-orb-value-btn value-7" data-value="7">+7%</button>
+                <button type="button" class="black-orb-percent-picker-btn" onclick="openBlackOrbPercentPopup(this)">선택</button>
+                <input type="hidden" class="black-orb-percent-hidden-input black-orb-input black-orb-small-input" value="">
               </div>
               <span class="black-orb-percent">%</span><span class="black-orb-x2-badge">×2</span>
             </div>
@@ -3317,13 +3367,8 @@ function addSections() {
               <button type="button" class="black-orb-element-picker" data-value="all" data-label="모든" data-class="all" onclick="openBlackOrbElementPopup(this)"><span class="black-orb-element-badge all">모든</span></button>
               <span class="black-orb-plus">+</span>
               <div class="black-orb-value-picker" data-black-orb-value-picker data-selected="">
-                <span class="black-orb-zero-pill">+0%</span>
-                <button type="button" class="black-orb-value-btn value-2" data-value="2">+2%</button>
-                <button type="button" class="black-orb-value-btn value-3" data-value="3">+3%</button>
-                <button type="button" class="black-orb-value-btn value-4" data-value="4">+4%</button>
-                <button type="button" class="black-orb-value-btn value-5" data-value="5">+5%</button>
-                <button type="button" class="black-orb-value-btn value-6" data-value="6">+6%</button>
-                <button type="button" class="black-orb-value-btn value-7" data-value="7">+7%</button>
+                <button type="button" class="black-orb-percent-picker-btn" onclick="openBlackOrbPercentPopup(this)">선택</button>
+                <input type="hidden" class="black-orb-percent-hidden-input black-orb-input black-orb-small-input" value="">
               </div>
               <span class="black-orb-percent">%</span><span class="black-orb-x2-badge">×2</span>
             </div>
@@ -3331,13 +3376,8 @@ function addSections() {
               <button type="button" class="black-orb-element-picker" data-value="all" data-label="모든" data-class="all" onclick="openBlackOrbElementPopup(this)"><span class="black-orb-element-badge all">모든</span></button>
               <span class="black-orb-plus">+</span>
               <div class="black-orb-value-picker" data-black-orb-value-picker data-selected="">
-                <span class="black-orb-zero-pill">+0%</span>
-                <button type="button" class="black-orb-value-btn value-2" data-value="2">+2%</button>
-                <button type="button" class="black-orb-value-btn value-3" data-value="3">+3%</button>
-                <button type="button" class="black-orb-value-btn value-4" data-value="4">+4%</button>
-                <button type="button" class="black-orb-value-btn value-5" data-value="5">+5%</button>
-                <button type="button" class="black-orb-value-btn value-6" data-value="6">+6%</button>
-                <button type="button" class="black-orb-value-btn value-7" data-value="7">+7%</button>
+                <button type="button" class="black-orb-percent-picker-btn" onclick="openBlackOrbPercentPopup(this)">선택</button>
+                <input type="hidden" class="black-orb-percent-hidden-input black-orb-input black-orb-small-input" value="">
               </div>
               <span class="black-orb-percent">%</span><span class="black-orb-x2-badge">×2</span>
             </div>
@@ -3359,13 +3399,8 @@ function addSections() {
               <button type="button" class="black-orb-element-picker" data-value="all" data-label="모든" data-class="all" onclick="openBlackOrbElementPopup(this)"><span class="black-orb-element-badge all">모든</span></button>
               <span class="black-orb-plus">+</span>
               <div class="black-orb-value-picker" data-black-orb-value-picker data-selected="">
-                <span class="black-orb-zero-pill">+0%</span>
-                <button type="button" class="black-orb-value-btn value-2" data-value="2">+2%</button>
-                <button type="button" class="black-orb-value-btn value-3" data-value="3">+3%</button>
-                <button type="button" class="black-orb-value-btn value-4" data-value="4">+4%</button>
-                <button type="button" class="black-orb-value-btn value-5" data-value="5">+5%</button>
-                <button type="button" class="black-orb-value-btn value-6" data-value="6">+6%</button>
-                <button type="button" class="black-orb-value-btn value-7" data-value="7">+7%</button>
+                <button type="button" class="black-orb-percent-picker-btn" onclick="openBlackOrbPercentPopup(this)">선택</button>
+                <input type="hidden" class="black-orb-percent-hidden-input black-orb-input black-orb-small-input" value="">
               </div>
               <span class="black-orb-percent">%</span><span class="black-orb-x2-badge">×2</span>
             </div>
@@ -3373,13 +3408,8 @@ function addSections() {
               <button type="button" class="black-orb-element-picker" data-value="all" data-label="모든" data-class="all" onclick="openBlackOrbElementPopup(this)"><span class="black-orb-element-badge all">모든</span></button>
               <span class="black-orb-plus">+</span>
               <div class="black-orb-value-picker" data-black-orb-value-picker data-selected="">
-                <span class="black-orb-zero-pill">+0%</span>
-                <button type="button" class="black-orb-value-btn value-2" data-value="2">+2%</button>
-                <button type="button" class="black-orb-value-btn value-3" data-value="3">+3%</button>
-                <button type="button" class="black-orb-value-btn value-4" data-value="4">+4%</button>
-                <button type="button" class="black-orb-value-btn value-5" data-value="5">+5%</button>
-                <button type="button" class="black-orb-value-btn value-6" data-value="6">+6%</button>
-                <button type="button" class="black-orb-value-btn value-7" data-value="7">+7%</button>
+                <button type="button" class="black-orb-percent-picker-btn" onclick="openBlackOrbPercentPopup(this)">선택</button>
+                <input type="hidden" class="black-orb-percent-hidden-input black-orb-input black-orb-small-input" value="">
               </div>
               <span class="black-orb-percent">%</span><span class="black-orb-x2-badge">×2</span>
             </div>
@@ -3387,13 +3417,8 @@ function addSections() {
               <button type="button" class="black-orb-element-picker" data-value="all" data-label="모든" data-class="all" onclick="openBlackOrbElementPopup(this)"><span class="black-orb-element-badge all">모든</span></button>
               <span class="black-orb-plus">+</span>
               <div class="black-orb-value-picker" data-black-orb-value-picker data-selected="">
-                <span class="black-orb-zero-pill">+0%</span>
-                <button type="button" class="black-orb-value-btn value-2" data-value="2">+2%</button>
-                <button type="button" class="black-orb-value-btn value-3" data-value="3">+3%</button>
-                <button type="button" class="black-orb-value-btn value-4" data-value="4">+4%</button>
-                <button type="button" class="black-orb-value-btn value-5" data-value="5">+5%</button>
-                <button type="button" class="black-orb-value-btn value-6" data-value="6">+6%</button>
-                <button type="button" class="black-orb-value-btn value-7" data-value="7">+7%</button>
+                <button type="button" class="black-orb-percent-picker-btn" onclick="openBlackOrbPercentPopup(this)">선택</button>
+                <input type="hidden" class="black-orb-percent-hidden-input black-orb-input black-orb-small-input" value="">
               </div>
               <span class="black-orb-percent">%</span><span class="black-orb-x2-badge">×2</span>
             </div>
@@ -3401,13 +3426,8 @@ function addSections() {
               <button type="button" class="black-orb-element-picker" data-value="all" data-label="모든" data-class="all" onclick="openBlackOrbElementPopup(this)"><span class="black-orb-element-badge all">모든</span></button>
               <span class="black-orb-plus">+</span>
               <div class="black-orb-value-picker" data-black-orb-value-picker data-selected="">
-                <span class="black-orb-zero-pill">+0%</span>
-                <button type="button" class="black-orb-value-btn value-2" data-value="2">+2%</button>
-                <button type="button" class="black-orb-value-btn value-3" data-value="3">+3%</button>
-                <button type="button" class="black-orb-value-btn value-4" data-value="4">+4%</button>
-                <button type="button" class="black-orb-value-btn value-5" data-value="5">+5%</button>
-                <button type="button" class="black-orb-value-btn value-6" data-value="6">+6%</button>
-                <button type="button" class="black-orb-value-btn value-7" data-value="7">+7%</button>
+                <button type="button" class="black-orb-percent-picker-btn" onclick="openBlackOrbPercentPopup(this)">선택</button>
+                <input type="hidden" class="black-orb-percent-hidden-input black-orb-input black-orb-small-input" value="">
               </div>
               <span class="black-orb-percent">%</span><span class="black-orb-x2-badge">×2</span>
             </div>
@@ -3567,13 +3587,8 @@ function addSections() {
               <button type="button" class="black-orb-element-picker black-orb-popup-picker" data-value="all" data-label="모든" data-class="all" onclick="openBlackOrbElementPopup(this)"><span class="black-orb-element-badge all">모든</span></button>
               <span class="black-orb-plus">+</span>
               <div class="black-orb-value-picker" data-black-orb-value-picker data-selected="">
-                <span class="black-orb-zero-pill">+0%</span>
-                <button type="button" class="black-orb-value-btn value-2" data-value="2">+2%</button>
-                <button type="button" class="black-orb-value-btn value-3" data-value="3">+3%</button>
-                <button type="button" class="black-orb-value-btn value-4" data-value="4">+4%</button>
-                <button type="button" class="black-orb-value-btn value-5" data-value="5">+5%</button>
-                <button type="button" class="black-orb-value-btn value-6" data-value="6">+6%</button>
-                <button type="button" class="black-orb-value-btn value-7" data-value="7">+7%</button>
+                <button type="button" class="black-orb-percent-picker-btn" onclick="openBlackOrbPercentPopup(this)">선택</button>
+                <input type="hidden" class="black-orb-percent-hidden-input black-orb-input black-orb-small-input" value="">
               </div>
               <span class="black-orb-percent">%</span><span class="black-orb-x2-badge">×2</span>
             </div>
@@ -3581,13 +3596,8 @@ function addSections() {
               <button type="button" class="black-orb-element-picker black-orb-popup-picker" data-value="all" data-label="모든" data-class="all" onclick="openBlackOrbElementPopup(this)"><span class="black-orb-element-badge all">모든</span></button>
               <span class="black-orb-plus">+</span>
               <div class="black-orb-value-picker" data-black-orb-value-picker data-selected="">
-                <span class="black-orb-zero-pill">+0%</span>
-                <button type="button" class="black-orb-value-btn value-2" data-value="2">+2%</button>
-                <button type="button" class="black-orb-value-btn value-3" data-value="3">+3%</button>
-                <button type="button" class="black-orb-value-btn value-4" data-value="4">+4%</button>
-                <button type="button" class="black-orb-value-btn value-5" data-value="5">+5%</button>
-                <button type="button" class="black-orb-value-btn value-6" data-value="6">+6%</button>
-                <button type="button" class="black-orb-value-btn value-7" data-value="7">+7%</button>
+                <button type="button" class="black-orb-percent-picker-btn" onclick="openBlackOrbPercentPopup(this)">선택</button>
+                <input type="hidden" class="black-orb-percent-hidden-input black-orb-input black-orb-small-input" value="">
               </div>
               <span class="black-orb-percent">%</span><span class="black-orb-x2-badge">×2</span>
             </div>
@@ -3595,13 +3605,8 @@ function addSections() {
               <button type="button" class="black-orb-element-picker black-orb-popup-picker" data-value="all" data-label="모든" data-class="all" onclick="openBlackOrbElementPopup(this)"><span class="black-orb-element-badge all">모든</span></button>
               <span class="black-orb-plus">+</span>
               <div class="black-orb-value-picker" data-black-orb-value-picker data-selected="">
-                <span class="black-orb-zero-pill">+0%</span>
-                <button type="button" class="black-orb-value-btn value-2" data-value="2">+2%</button>
-                <button type="button" class="black-orb-value-btn value-3" data-value="3">+3%</button>
-                <button type="button" class="black-orb-value-btn value-4" data-value="4">+4%</button>
-                <button type="button" class="black-orb-value-btn value-5" data-value="5">+5%</button>
-                <button type="button" class="black-orb-value-btn value-6" data-value="6">+6%</button>
-                <button type="button" class="black-orb-value-btn value-7" data-value="7">+7%</button>
+                <button type="button" class="black-orb-percent-picker-btn" onclick="openBlackOrbPercentPopup(this)">선택</button>
+                <input type="hidden" class="black-orb-percent-hidden-input black-orb-input black-orb-small-input" value="">
               </div>
               <span class="black-orb-percent">%</span><span class="black-orb-x2-badge">×2</span>
             </div>
@@ -3609,13 +3614,8 @@ function addSections() {
               <button type="button" class="black-orb-element-picker black-orb-popup-picker" data-value="all" data-label="모든" data-class="all" onclick="openBlackOrbElementPopup(this)"><span class="black-orb-element-badge all">모든</span></button>
               <span class="black-orb-plus">+</span>
               <div class="black-orb-value-picker" data-black-orb-value-picker data-selected="">
-                <span class="black-orb-zero-pill">+0%</span>
-                <button type="button" class="black-orb-value-btn value-2" data-value="2">+2%</button>
-                <button type="button" class="black-orb-value-btn value-3" data-value="3">+3%</button>
-                <button type="button" class="black-orb-value-btn value-4" data-value="4">+4%</button>
-                <button type="button" class="black-orb-value-btn value-5" data-value="5">+5%</button>
-                <button type="button" class="black-orb-value-btn value-6" data-value="6">+6%</button>
-                <button type="button" class="black-orb-value-btn value-7" data-value="7">+7%</button>
+                <button type="button" class="black-orb-percent-picker-btn" onclick="openBlackOrbPercentPopup(this)">선택</button>
+                <input type="hidden" class="black-orb-percent-hidden-input black-orb-input black-orb-small-input" value="">
               </div>
               <span class="black-orb-percent">%</span><span class="black-orb-x2-badge">×2</span>
             </div>
@@ -8688,6 +8688,249 @@ window.goToAdventureSkillSettings = goToAdventureSkillSettings;
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', function(){ applyCommas(); ensureResonanceBody()?.style && (document.getElementById('blackOrbResonanceBody').style.display='none'); });
   else { applyCommas(); const b=ensureResonanceBody(); if(b) b.style.display='none'; }
   window.openBlackOrbOrbResonancePopupFinal = openResonance;
+})();
+</script>
+
+
+<div id="blackOrbPercentPopupOverlay" class="black-orb-percent-popup-overlay" onclick="closeBlackOrbPercentPopup(event)">
+  <div class="black-orb-percent-popup" onclick="event.stopPropagation()">
+    <button type="button" class="black-orb-attr-popup-close" onclick="closeBlackOrbPercentPopup()">×</button>
+    <h4>수치 선택</h4>
+    <div class="black-orb-percent-popup-grid">
+      <button type="button" class="black-orb-percent-choice-btn value-0" onclick="selectBlackOrbPercentValue(0)">없음</button>
+      <button type="button" class="black-orb-percent-choice-btn value-2" onclick="selectBlackOrbPercentValue(2)">+2%</button>
+      <button type="button" class="black-orb-percent-choice-btn value-3" onclick="selectBlackOrbPercentValue(3)">+3%</button>
+      <button type="button" class="black-orb-percent-choice-btn value-4" onclick="selectBlackOrbPercentValue(4)">+4%</button>
+      <button type="button" class="black-orb-percent-choice-btn value-5" onclick="selectBlackOrbPercentValue(5)">+5%</button>
+      <button type="button" class="black-orb-percent-choice-btn value-6" onclick="selectBlackOrbPercentValue(6)">+6%</button>
+      <button type="button" class="black-orb-percent-choice-btn value-7" onclick="selectBlackOrbPercentValue(7)">+7%</button>
+    </div>
+  </div>
+</div>
+<script>
+let blackOrbCurrentPercentPicker = null;
+function setBlackOrbPercentPickerValue(picker, value) {
+  if (!picker) return;
+  const n = Number(value);
+  const btn = picker.querySelector('.black-orb-percent-picker-btn');
+  const hidden = picker.querySelector('.black-orb-percent-hidden-input');
+  picker.dataset.selected = Number.isFinite(n) ? String(n) : '';
+  if (hidden) hidden.value = Number.isFinite(n) ? String(n) : '';
+  if (btn) {
+    btn.className = 'black-orb-percent-picker-btn';
+    if (Number.isFinite(n)) {
+      btn.classList.add('value-' + n);
+      btn.textContent = n === 0 ? '없음' : '+' + n + '%';
+    } else {
+      btn.textContent = '선택';
+    }
+  }
+}
+function openBlackOrbPercentPopup(button) {
+  blackOrbCurrentPercentPicker = button ? button.closest('[data-black-orb-value-picker]') : null;
+  const overlay = document.getElementById('blackOrbPercentPopupOverlay');
+  if (overlay) overlay.classList.add('show');
+}
+function closeBlackOrbPercentPopup(event) {
+  const overlay = document.getElementById('blackOrbPercentPopupOverlay');
+  if (overlay) overlay.classList.remove('show');
+  blackOrbCurrentPercentPicker = null;
+}
+function selectBlackOrbPercentValue(value) {
+  setBlackOrbPercentPickerValue(blackOrbCurrentPercentPicker, value);
+  const row = blackOrbCurrentPercentPicker ? blackOrbCurrentPercentPicker.closest('.black-orb-detail-row, .black-orb-popup-detail-row') : null;
+  if (typeof updateBlackOrbX2ForRow === 'function') updateBlackOrbX2ForRow(row);
+  if (typeof updateAllBlackOrbX2Badges === 'function') updateAllBlackOrbX2Badges();
+  closeBlackOrbPercentPopup();
+}
+function syncBlackOrbPercentPickersFromLegacyInputs() {
+  document.querySelectorAll('[data-black-orb-value-picker]').forEach((picker) => {
+    const hidden = picker.querySelector('.black-orb-percent-hidden-input');
+    const v = hidden && hidden.value !== '' ? Number(hidden.value) : NaN;
+    if (Number.isFinite(v)) setBlackOrbPercentPickerValue(picker, v);
+  });
+}
+const originalApplyBlackOrbPickerStateForPercent = window.applyBlackOrbPickerState;
+if (typeof originalApplyBlackOrbPickerStateForPercent === 'function') {
+  window.applyBlackOrbPickerState = function(button, rowState) {
+    originalApplyBlackOrbPickerStateForPercent(button, rowState);
+    const row = button ? button.closest('.black-orb-detail-row, .black-orb-popup-detail-row') : null;
+    const picker = row ? row.querySelector('[data-black-orb-value-picker]') : null;
+    if (picker && rowState && rowState.number !== undefined && rowState.number !== '') setBlackOrbPercentPickerValue(picker, Number(String(rowState.number).replace(/,/g,'')));
+    if (picker && button && button.dataset.value === 'none') setBlackOrbPercentPickerValue(picker, 0);
+  };
+}
+document.addEventListener('click', function(e) {
+  const choice = e.target.closest('.black-orb-element-choice-btn');
+  if (!choice) return;
+  const targetButton = window.currentBlackOrbElementButton;
+  setTimeout(() => {
+    const row = targetButton ? targetButton.closest('.black-orb-detail-row, .black-orb-popup-detail-row') : null;
+    const picker = row ? row.querySelector('[data-black-orb-value-picker]') : null;
+    if (picker && choice.dataset.value === 'none') setBlackOrbPercentPickerValue(picker, 0);
+  }, 0);
+}, true);
+window.addEventListener('DOMContentLoaded', syncBlackOrbPercentPickersFromLegacyInputs);
+</script>
+
+
+
+<style>
+/* 블랙 오브: 속성 없음이면 수치도 없음으로 고정, 수치 팝업에서는 +2~+7만 선택 */
+#blackOrbPercentPopupOverlay .black-orb-percent-choice-btn.value-0{
+  display:none !important;
+}
+.black-orb-detail-row.black-orb-element-none .black-orb-plus,
+.black-orb-detail-row.black-orb-element-none .black-orb-percent,
+.black-orb-popup-detail-row.black-orb-element-none .black-orb-plus,
+.black-orb-popup-detail-row.black-orb-element-none .black-orb-percent{
+  visibility:hidden !important;
+}
+.black-orb-detail-row.black-orb-element-none .black-orb-percent-picker-btn,
+.black-orb-popup-detail-row.black-orb-element-none .black-orb-percent-picker-btn{
+  background:#6b7280 !important;
+  color:#ffffff !important;
+  border-color:#6b7280 !important;
+  box-shadow:none !important;
+}
+.black-orb-detail-row.black-orb-element-none [data-black-orb-value-picker],
+.black-orb-popup-detail-row.black-orb-element-none [data-black-orb-value-picker]{
+  pointer-events:none !important;
+}
+.black-orb-detail-row.black-orb-element-none .black-orb-x2-badge,
+.black-orb-popup-detail-row.black-orb-element-none .black-orb-x2-badge{
+  opacity:.35 !important;
+}
+</style>
+<script>
+(function(){
+  function rowOf(el){
+    return el ? el.closest('.black-orb-detail-row, .black-orb-popup-detail-row') : null;
+  }
+  function elementBtn(row){
+    return row ? row.querySelector('[data-black-orb-element-picker], .black-orb-element-picker') : null;
+  }
+  function valuePicker(row){
+    return row ? row.querySelector('[data-black-orb-value-picker]') : null;
+  }
+  function valueButton(picker){
+    return picker ? picker.querySelector('.black-orb-percent-picker-btn') : null;
+  }
+  function hiddenInput(picker){
+    return picker ? picker.querySelector('.black-orb-percent-hidden-input, .black-orb-small-input, .black-orb-input') : null;
+  }
+  function elementValue(btn){
+    if(!btn) return 'all';
+    const v = btn.dataset ? (btn.dataset.value || '') : '';
+    if(v) return v;
+    const t = (btn.textContent || '').trim();
+    if(t === '없음') return 'none';
+    if(t === '바람') return 'wind';
+    if(t === '땅') return 'earth';
+    if(t === '불') return 'fire';
+    if(t === '물') return 'water';
+    return 'all';
+  }
+  function setPickerToNone(picker){
+    if(!picker) return;
+    const btn = valueButton(picker);
+    const hidden = hiddenInput(picker);
+    picker.dataset.selected = '0';
+    if(hidden) hidden.value = '0';
+    if(btn){
+      btn.className = 'black-orb-percent-picker-btn value-0';
+      btn.textContent = '없음';
+    }
+  }
+  function clearPickerIfNone(picker){
+    if(!picker) return;
+    const btn = valueButton(picker);
+    const hidden = hiddenInput(picker);
+    const selected = Number(picker.dataset.selected || (hidden ? hidden.value : '') || '');
+    if(selected >= 2 && selected <= 7){
+      if(typeof window.setBlackOrbPercentPickerValue === 'function') window.setBlackOrbPercentPickerValue(picker, selected);
+      return;
+    }
+    picker.dataset.selected = '';
+    if(hidden) hidden.value = '';
+    if(btn){
+      btn.className = 'black-orb-percent-picker-btn';
+      btn.textContent = '수치 선택';
+    }
+  }
+  window.syncBlackOrbElementNoneValueRow = function(row){
+    if(!row) return;
+    const eBtn = elementBtn(row);
+    const picker = valuePicker(row);
+    if(!picker) return;
+    if(elementValue(eBtn) === 'none'){
+      row.classList.add('black-orb-element-none');
+      setPickerToNone(picker);
+    }else{
+      row.classList.remove('black-orb-element-none');
+      clearPickerIfNone(picker);
+    }
+    if(typeof updateBlackOrbX2ForRow === 'function') updateBlackOrbX2ForRow(row);
+  };
+  window.syncAllBlackOrbElementNoneValueRows = function(){
+    document.querySelectorAll('.black-orb-detail-row, .black-orb-popup-detail-row').forEach(function(row){
+      if(elementBtn(row) && valuePicker(row)) window.syncBlackOrbElementNoneValueRow(row);
+    });
+  };
+
+  const oldSelectElement = window.selectBlackOrbElementFromPopup;
+  window.selectBlackOrbElementFromPopup = function(value, label, cssClass){
+    if(typeof oldSelectElement === 'function') oldSelectElement(value, label, cssClass);
+    setTimeout(function(){
+      const rows = document.querySelectorAll('.black-orb-detail-row, .black-orb-popup-detail-row');
+      rows.forEach(function(row){ window.syncBlackOrbElementNoneValueRow(row); });
+    }, 0);
+  };
+
+  const oldOpenPercent = window.openBlackOrbPercentPopup;
+  window.openBlackOrbPercentPopup = function(button){
+    const row = rowOf(button);
+    if(elementValue(elementBtn(row)) === 'none'){
+      window.syncBlackOrbElementNoneValueRow(row);
+      return;
+    }
+    if(typeof oldOpenPercent === 'function') return oldOpenPercent(button);
+  };
+
+  const oldSelectPercent = window.selectBlackOrbPercentValue;
+  window.selectBlackOrbPercentValue = function(value){
+    const n = Number(value);
+    if(!(n >= 2 && n <= 7)) return;
+    if(typeof oldSelectPercent === 'function') return oldSelectPercent(n);
+  };
+
+  const oldSetPercent = window.setBlackOrbPercentPickerValue;
+  window.setBlackOrbPercentPickerValue = function(picker, value){
+    const row = rowOf(picker);
+    if(elementValue(elementBtn(row)) === 'none'){
+      setPickerToNone(picker);
+      if(row) row.classList.add('black-orb-element-none');
+      return;
+    }
+    const n = Number(value);
+    if(!(n >= 2 && n <= 7)){
+      clearPickerIfNone(picker);
+      return;
+    }
+    if(typeof oldSetPercent === 'function') return oldSetPercent(picker, n);
+  };
+
+  document.addEventListener('click', function(e){
+    const choice = e.target.closest('.black-orb-element-choice-btn');
+    if(!choice) return;
+    setTimeout(function(){ window.syncAllBlackOrbElementNoneValueRows(); }, 0);
+  }, true);
+  document.addEventListener('DOMContentLoaded', function(){
+    const noneChoice = document.querySelector('#blackOrbPercentPopupOverlay .black-orb-percent-choice-btn.value-0');
+    if(noneChoice) noneChoice.remove();
+    window.syncAllBlackOrbElementNoneValueRows();
+  });
+  setTimeout(function(){ window.syncAllBlackOrbElementNoneValueRows(); }, 300);
 })();
 </script>
 
