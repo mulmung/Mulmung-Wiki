@@ -82,6 +82,14 @@ button::-moz-focus-inner{border:0}
 .black-orb-attribute-btn.water{background:var(--water-color);color:#fff}
 .black-orb-attribute-btn.fire{background:var(--fire-color);color:#fff}
 .black-orb-attribute-btn:hover{transform:translateY(-1px);filter:brightness(.98)}
+
+.black-orb-basic-info-wrap{margin-top:18px;padding:16px 14px;border:1.5px solid rgba(20,184,166,.28);border-radius:22px;background:linear-gradient(180deg,rgba(240,253,250,.85),rgba(255,255,255,.95));box-shadow:0 10px 20px rgba(15,23,42,.06)}
+.black-orb-basic-info-title{display:flex;align-items:center;justify-content:center;width:max-content;min-width:92px;height:34px;margin:-34px auto 12px;padding:0 18px;border-radius:999px;background:#111827;color:#fff;font-size:14px;font-weight:950;box-shadow:0 8px 18px rgba(15,23,42,.18)}
+.black-orb-basic-info-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.black-orb-basic-info-btn{min-height:48px;border:2px solid rgba(20,184,166,.55);border-radius:16px;background:#fff;color:#111827;font-size:14px;font-weight:950;cursor:pointer;box-shadow:0 8px 16px rgba(15,23,42,.08);word-break:keep-all}
+.black-orb-basic-info-btn:hover{transform:translateY(-1px);background:#f0fdfa}
+
+@media(max-width:768px){.black-orb-basic-info-wrap{margin-top:16px;padding:14px 12px;border-radius:18px}.black-orb-basic-info-title{height:30px;min-width:82px;margin:-30px auto 10px;font-size:12px;padding:0 14px}.black-orb-basic-info-grid{gap:7px}.black-orb-basic-info-btn{min-height:42px;border-radius:13px;font-size:12px;padding:0 4px}}
 .black-orb-detail-popup-bg{display:none;position:fixed;inset:0;z-index:3650;background:rgba(0,0,0,.48);padding:20px}
 .black-orb-detail-popup-bg.show{display:flex;align-items:center;justify-content:center}
 .black-orb-detail-popup{--black-orb-popup-color:#14b8a6;width:100%;max-width:420px;padding:22px 18px 18px;border:3px solid var(--black-orb-popup-color);border-radius:24px;background:#fff;box-shadow:0 16px 42px rgba(0,0,0,.30);color:#111827}
@@ -3183,8 +3191,17 @@ function addSections() {
       <div class="black-orb-attribute-button-grid" aria-label="속성별 블랙 오브 옵션">
         <button type="button" class="black-orb-attribute-btn wind" onclick="openBlackOrbDetailPopup('wind','바람')">바람</button>
         <button type="button" class="black-orb-attribute-btn earth" onclick="openBlackOrbDetailPopup('earth','땅')">땅</button>
-        <button type="button" class="black-orb-attribute-btn water" onclick="openBlackOrbDetailPopup('water','물')">물</button>
         <button type="button" class="black-orb-attribute-btn fire" onclick="openBlackOrbDetailPopup('fire','불')">불</button>
+        <button type="button" class="black-orb-attribute-btn water" onclick="openBlackOrbDetailPopup('water','물')">물</button>
+      </div>
+
+      <div class="black-orb-basic-info-wrap" aria-label="블랙 오브 기본 정보">
+        <div class="black-orb-basic-info-title">기본 정보</div>
+        <div class="black-orb-basic-info-grid">
+          <button type="button" class="black-orb-basic-info-btn">동료</button>
+          <button type="button" class="black-orb-basic-info-btn">유물</button>
+          <button type="button" class="black-orb-basic-info-btn">스킬 숙련도</button>
+        </div>
       </div>
 
       <div id="blackOrbMainAttributePopupBg" class="black-orb-element-popup-bg" onclick="closeBlackOrbMainAttributePopup(event)">
