@@ -8249,5 +8249,234 @@ window.goToAdventureSkillSettings = goToAdventureSkillSettings;
 })();
 </script>
 
+
+
+<!-- Black Orb unified range tooltip + 5 popup save override -->
+<style>
+  /* 기존 안내문/이전 말풍선은 숨기고, 새 범위 말풍선만 사용 */
+  .black-orb-relic-tooltip,
+  .black-orb-skill-tooltip,
+  .black-orb-order-statue-tooltip{
+    display:none !important;
+  }
+  .black-orb-range-tooltip{
+    position:relative !important;
+    display:none;
+    width:max-content;
+    max-width:min(300px, 92%);
+    margin:10px auto 0 !important;
+    padding:9px 14px !important;
+    border-radius:9px !important;
+    background:rgba(0,0,0,.6) !important;
+    color:#fff !important;
+    font-size:13px !important;
+    font-weight:900 !important;
+    line-height:1.25 !important;
+    text-align:center !important;
+    white-space:normal !important;
+    box-shadow:0 8px 18px rgba(15,23,42,.18) !important;
+    z-index:30 !important;
+  }
+  .black-orb-range-tooltip.show{display:block !important;}
+  .black-orb-range-tooltip::before{
+    content:"";
+    position:absolute;
+    left:50%;
+    top:-7px;
+    transform:translateX(-50%);
+    width:0;
+    height:0;
+    border-left:8px solid transparent;
+    border-right:8px solid transparent;
+    border-bottom:8px solid rgba(0,0,0,.6);
+  }
+  .black-orb-resonance-body{
+    width:100%;
+    display:grid;
+    gap:14px;
+    padding:20px 16px 18px;
+    border:4px solid rgba(20,184,166,.22);
+    border-radius:18px;
+    background:#fff;
+  }
+  .black-orb-save-btn-fail{
+    background:#ef4444 !important;
+    color:#fff !important;
+  }
+  .black-orb-save-btn-done{
+    background:#10b981 !important;
+    color:#fff !important;
+  }
+  @media(max-width:768px){
+    .black-orb-range-tooltip{font-size:12px !important;padding:8px 12px !important;max-width:240px;}
+  }
+</style>
+<script>
+(function(){
+  function rawNumber(v){ return String(v ?? '').replace(/,/g,'').replace(/[^0-9]/g,''); }
+  function fmt(v){ const r=rawNumber(v); return r ? r.replace(/\B(?=(\d{3})+(?!\d))/g, ',') : ''; }
+  function n(v){ const r=rawNumber(v); return r === '' ? NaN : Number(r); }
+  function inRange(v,min,max,allowBlank){ const r=rawNumber(v); if(r==='') return !!allowBlank; const x=Number(r); return Number.isInteger(x) && x>=min && x<=max; }
+  function clearInvalid(selector,min,max,allowBlank){
+    let bad=false;
+    document.querySelectorAll(selector).forEach(function(input){
+      if(!inRange(input.value,min,max,allowBlank)){ input.value=''; bad=true; }
+    });
+    return bad;
+  }
+  function clearTooltip(btn){
+    if(!btn) return;
+    const wrap=btn.parentElement || btn.closest('div');
+    if(wrap) wrap.querySelectorAll('.black-orb-range-tooltip').forEach(el=>el.remove());
+    clearTimeout(btn._rangeTipTimer);
+  }
+  function showTooltip(btn, rangeText){
+    if(!btn) return;
+    clearTooltip(btn);
+    const wrap=btn.parentElement || btn.closest('div');
+    if(!wrap) return;
+    const tip=document.createElement('div');
+    tip.className='black-orb-range-tooltip show';
+    tip.textContent=String(rangeText).includes('입력해주세요') ? rangeText : (rangeText + ' 값으로 입력해주세요');
+    btn.insertAdjacentElement('afterend', tip);
+    btn._rangeTipTimer=setTimeout(function(){ tip.remove(); }, 2600);
+  }
+  function buttonState(btn,state,rangeText){
+    if(!btn) return;
+    clearTimeout(btn._saveStateTimer);
+    btn.classList.remove('black-orb-save-btn-done','black-orb-save-btn-fail');
+    if(state==='done'){
+      clearTooltip(btn);
+      btn.classList.add('black-orb-save-btn-done');
+      btn.textContent='저장 완료';
+    }else if(state==='fail'){
+      btn.classList.add('black-orb-save-btn-fail');
+      btn.textContent='저장 불가';
+      showTooltip(btn, rangeText || '입력 범위');
+    }else{
+      clearTooltip(btn);
+      btn.textContent='저장하기';
+    }
+    btn._saveStateTimer=setTimeout(function(){
+      btn.classList.remove('black-orb-save-btn-done','black-orb-save-btn-fail');
+      btn.textContent='저장하기';
+    }, 1800);
+  }
+  function hideOldMsgs(){
+    ['blackOrbCompanionMsg','blackOrbRelicTooltip','blackOrbSkillMasteryTooltip','blackOrbOrderStatueTooltip'].forEach(function(id){
+      const el=document.getElementById(id); if(el){ el.textContent=''; el.classList.remove('show'); }
+    });
+  }
+  function applyCommas(root=document){
+    root.querySelectorAll('input').forEach(function(input){
+      if(input.type && input.type.toLowerCase()==='number') return;
+      if(input.matches('.black-orb-comma-input,.companion-level,.companion-skill-level,.black-orb-skill-input,.black-orb-order-statue-input,#blackOrbResonanceLevel')){
+        input.addEventListener('input', function(){ input.value=fmt(input.value); });
+        if(input.value) input.value=fmt(input.value);
+      }
+    });
+  }
+  function saveLocal(key, value){ try{ localStorage.setItem(key, JSON.stringify(value)); }catch(e){} }
+  function collectValues(selector){
+    return Array.from(document.querySelectorAll(selector)).map(el => el.value || el.textContent || '');
+  }
+  async function saveCompanion(btn){
+    hideOldMsgs();
+    const badLevel=clearInvalid('#blackOrbCompanionPopupBg .companion-level',0,9999,true);
+    const badSkill=clearInvalid('#blackOrbCompanionPopupBg .companion-skill-level',0,100,true);
+    if(badLevel || badSkill){
+      const msg = badLevel && badSkill ? '동료 레벨 0~9999 / 스킬 레벨 0~100' : (badLevel ? '동료 레벨 0~9999' : '스킬 레벨 0~100');
+      buttonState(btn,'fail',msg); return;
+    }
+    saveLocal('blackOrbCompanionSettings',{levels:collectValues('#blackOrbCompanionPopupBg .companion-level'), skillLevels:collectValues('#blackOrbCompanionPopupBg .companion-skill-level'), savedAt:new Date().toISOString()});
+    buttonState(btn,'done');
+  }
+  async function saveRelic(btn){
+    hideOldMsgs();
+    if(clearInvalid('#blackOrbRelicPopup .black-orb-relic-input',0,100,true)){ buttonState(btn,'fail','0~100'); return; }
+    saveLocal('blackOrbRelicSettings', collectValues('#blackOrbRelicPopup .black-orb-relic-input'));
+    buttonState(btn,'done');
+  }
+  async function saveSkill(btn){
+    hideOldMsgs();
+    if(clearInvalid('#blackOrbSkillMasteryLevel',0,328,false)){ buttonState(btn,'fail','0~328'); return; }
+    saveLocal('blackOrbSkillMasterySettings',{level:document.getElementById('blackOrbSkillMasteryLevel')?.value || '', savedAt:new Date().toISOString()});
+    buttonState(btn,'done');
+  }
+  async function saveOrder(btn){
+    hideOldMsgs();
+    if(clearInvalid('#blackOrbOrderStatueLevel',0,80,false)){ buttonState(btn,'fail','0~80'); return; }
+    saveLocal('blackOrbOrderStatueSettings',{level:document.getElementById('blackOrbOrderStatueLevel')?.value || '', savedAt:new Date().toISOString()});
+    buttonState(btn,'done');
+  }
+  function ensureResonanceBody(){
+    const popup=document.getElementById('blackOrbDamageAmpPopup');
+    const card=popup?.querySelector('.black-orb-damage-amp-popup-card');
+    if(!card) return null;
+    let body=document.getElementById('blackOrbResonanceBody');
+    if(!body){
+      body=document.createElement('div');
+      body.id='blackOrbResonanceBody';
+      body.className='black-orb-resonance-body';
+      body.innerHTML='<input id="blackOrbResonanceLevel" class="black-orb-order-statue-input" type="text" inputmode="numeric" placeholder="레벨 입력" autocomplete="off" />\n<button id="blackOrbResonanceSaveBtn" type="button" class="black-orb-order-statue-save-btn">저장하기</button>';
+      card.appendChild(body);
+      applyCommas(body);
+    }
+    return body;
+  }
+  function openResonance(){
+    const popup=document.getElementById('blackOrbDamageAmpPopup');
+    const title=document.getElementById('blackOrbDamageAmpPopupTitle');
+    const placeholder=document.getElementById('blackOrbDamageAmpPlaceholder');
+    const order=document.getElementById('blackOrbOrderStatueBody');
+    const body=ensureResonanceBody();
+    if(title) title.textContent='오브 공명';
+    if(placeholder) placeholder.style.display='none';
+    if(order) order.style.display='none';
+    if(body) body.style.display='grid';
+    const btn=document.getElementById('blackOrbResonanceSaveBtn');
+    if(btn) buttonState(btn,'reset');
+    if(popup) popup.classList.add('active');
+  }
+  function openOrder(){
+    const body=document.getElementById('blackOrbResonanceBody'); if(body) body.style.display='none';
+    if(typeof window.openBlackOrbDamageAmpPopup === 'function'){
+      try{ window.openBlackOrbDamageAmpPopup('질서의 신상'); }catch(e){}
+    }
+    const title=document.getElementById('blackOrbDamageAmpPopupTitle'); if(title) title.textContent='질서의 신상';
+    const placeholder=document.getElementById('blackOrbDamageAmpPlaceholder'); if(placeholder) placeholder.style.display='none';
+    const order=document.getElementById('blackOrbOrderStatueBody'); if(order) order.style.display='grid';
+    const popup=document.getElementById('blackOrbDamageAmpPopup'); if(popup) popup.classList.add('active');
+  }
+  function saveResonance(btn){
+    hideOldMsgs();
+    if(clearInvalid('#blackOrbResonanceLevel',0,320,false)){ buttonState(btn,'fail','0~320'); return; }
+    saveLocal('blackOrbResonanceSettings',{level:document.getElementById('blackOrbResonanceLevel')?.value || '', savedAt:new Date().toISOString()});
+    buttonState(btn,'done');
+  }
+  // window capture에서 기존 document capture보다 먼저 가로채서 5개 팝업 저장 동작을 통일
+  window.addEventListener('click', function(e){
+    const btn=e.target.closest && e.target.closest('button');
+    if(!btn) return;
+    const txt=(btn.textContent||'').trim();
+    const onclick=btn.getAttribute('onclick')||'';
+    if(txt==='오브 공명' || onclick.includes('오브 공명')){ e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation(); openResonance(); return; }
+    if(txt==='질서의 신상' || onclick.includes('질서의 신상')){ e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation(); openOrder(); return; }
+    if(btn.matches('.black-orb-companion-save-btn')){ e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation(); saveCompanion(btn); return; }
+    if(btn.matches('.black-orb-relic-save-btn')){ e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation(); saveRelic(btn); return; }
+    if(btn.matches('.black-orb-skill-save-btn')){ e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation(); saveSkill(btn); return; }
+    if(btn.matches('.black-orb-order-statue-save-btn') && btn.id !== 'blackOrbResonanceSaveBtn'){
+      const title=(document.getElementById('blackOrbDamageAmpPopupTitle')?.textContent||'').trim();
+      if(title==='오브 공명'){ e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation(); saveResonance(btn); return; }
+      e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation(); saveOrder(btn); return;
+    }
+    if(btn.id==='blackOrbResonanceSaveBtn'){ e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation(); saveResonance(btn); return; }
+  }, true);
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', function(){ applyCommas(); ensureResonanceBody()?.style && (document.getElementById('blackOrbResonanceBody').style.display='none'); });
+  else { applyCommas(); const b=ensureResonanceBody(); if(b) b.style.display='none'; }
+  window.openBlackOrbOrbResonancePopupFinal = openResonance;
+})();
+</script>
+
 </body>
 </html>
