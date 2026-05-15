@@ -360,7 +360,9 @@ body.skill-can-manage .skill-manage-only{display:inline-block}
 .profile-popup h3{margin:0 0 16px;font-size:24px;font-weight:950;text-align:center}
 .profile-field{margin-bottom:14px}
 .profile-field label{display:block;margin-bottom:7px;font-size:14px;font-weight:950;color:#374151}
-.profile-input,.profile-select{width:100%;border:2px solid #e5e7eb;border-radius:16px;padding:13px 14px;background:#ffffff;color:#111827;font-size:16px;font-weight:900;outline:none}
+.profile-input,.profile-select{position:relative;z-index:3;pointer-events:auto;width:100%;border:2px solid #e5e7eb;border-radius:16px;padding:13px 14px;background:#ffffff;color:#111827;font-size:16px;font-weight:900;outline:none}
+.profile-popup .profile-field{position:relative;z-index:2}
+.profile-popup .popup-floating-close-btn{position:absolute;top:12px;right:12px;margin:0;z-index:5}
 .profile-input:focus,.profile-select:focus{border-color:#111827}
 .profile-help{margin:-4px 0 16px;font-size:13px;font-weight:800;color:#6b7280;line-height:1.45;text-align:center}
 .profile-action-row{display:grid;grid-template-columns:1fr 1fr;gap:9px}
@@ -5994,10 +5996,22 @@ function openProfilePopup() {
   const promotionSelect = document.getElementById("profilePromotionSelect");
   if (!popup || !nicknameInput || !promotionSelect) return;
   const serverInputs = document.querySelectorAll('input[name="profileServer"]');
+  nicknameInput.disabled = false;
+  nicknameInput.readOnly = false;
+  nicknameInput.removeAttribute("disabled");
+  nicknameInput.removeAttribute("readonly");
+  nicknameInput.style.pointerEvents = "auto";
   nicknameInput.value = currentNickname || "";
   serverInputs.forEach(radio => { radio.checked = currentServer ? radio.value === currentServer : false; });
   promotionSelect.innerHTML = `<option value="">승급 미설정</option>` + promotionStages.map(stage => `<option value="${stage}" ${stage === currentPromotionStage ? "selected" : ""}>${stage}</option>`).join("");
   popup.classList.add("show");
+  setTimeout(() => {
+    try {
+      nicknameInput.focus({ preventScroll: true });
+      const valueLength = nicknameInput.value.length;
+      nicknameInput.setSelectionRange(valueLength, valueLength);
+    } catch (error) {}
+  }, 80);
 }
 function closeProfilePopup() {
   const popup = document.getElementById("profilePopupBg");
