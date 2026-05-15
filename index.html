@@ -1270,6 +1270,51 @@ button.faq-flow-item:focus,button.faq-flow-item:focus-visible{outline:none;borde
   box-shadow:0 8px 18px rgba(15,23,42,.18);
 }
 .black-orb-apply-btn:hover{filter:brightness(.96)}
+.black-orb-main-attribute-row{position:relative;overflow:visible;}
+.black-orb-main-warning-bubble{
+  position:absolute;
+  left:50%;
+  bottom:calc(100% + 8px);
+  transform:translateX(-50%) translateY(4px);
+  display:none;
+  min-width:210px;
+  max-width:min(86vw,300px);
+  padding:9px 12px;
+  border-radius:12px;
+  background:#111827;
+  color:#fff;
+  font-size:12px;
+  font-weight:850;
+  line-height:1.35;
+  text-align:center;
+  word-break:keep-all;
+  box-shadow:0 10px 24px rgba(15,23,42,.24);
+  z-index:15;
+}
+.black-orb-main-warning-bubble::after{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:100%;
+  transform:translateX(-50%);
+  width:0;
+  height:0;
+  border-left:7px solid transparent;
+  border-right:7px solid transparent;
+  border-top:8px solid #111827;
+}
+.black-orb-main-warning-bubble.show{
+  display:block;
+  animation:blackOrbBubblePop .16s ease-out forwards;
+}
+@keyframes blackOrbBubblePop{
+  from{opacity:0;transform:translateX(-50%) translateY(8px)}
+  to{opacity:1;transform:translateX(-50%) translateY(0)}
+}
+@media(max-width:768px){
+  .black-orb-main-warning-bubble{min-width:190px;font-size:11px;padding:8px 10px;border-radius:11px;bottom:calc(100% + 7px)}
+}
+
 .black-orb-confirm-popup{
   width:100%;
   max-width:330px;
@@ -3021,6 +3066,7 @@ function addSections() {
 
       <div class="black-orb-panel" id="blackOrbPanel">
         <div class="black-orb-main-attribute-row">
+          <div id="blackOrbMainWarningBubble" class="black-orb-main-warning-bubble" role="status" aria-live="polite">먼저 변경할 메인 속성을 선택해 주세요.</div>
           <button type="button" id="blackOrbMainAttributeBtn" class="black-orb-main-attribute-btn" onclick="openBlackOrbMainAttributePopup()">속성 선택</button>
         </div>
         <div class="black-orb-compare-grid">
@@ -7078,10 +7124,28 @@ function resetBlackOrbAfterOptionBox() {
   applyBlackOrbOptionBoxState(afterBox, createBlackOrbDetailPopupState());
   updateAllBlackOrbX2Badges();
 }
+
+let blackOrbMainWarningTimer = null;
+function showBlackOrbMainAttributeWarning() {
+  const bubble = document.getElementById('blackOrbMainWarningBubble');
+  if (!bubble) return;
+  bubble.classList.add('show');
+  if (blackOrbMainWarningTimer) clearTimeout(blackOrbMainWarningTimer);
+  blackOrbMainWarningTimer = setTimeout(() => {
+    bubble.classList.remove('show');
+  }, 2200);
+}
+function hideBlackOrbMainAttributeWarning() {
+  const bubble = document.getElementById('blackOrbMainWarningBubble');
+  if (blackOrbMainWarningTimer) clearTimeout(blackOrbMainWarningTimer);
+  blackOrbMainWarningTimer = null;
+  if (bubble) bubble.classList.remove('show');
+}
+
 function openBlackOrbApplyConfirmPopup() {
   const mainAttr = getCurrentMainBlackOrbAttribute();
   if (!mainAttr) {
-    alert('먼저 변경할 메인 속성을 선택해 주세요.');
+    showBlackOrbMainAttributeWarning();
     return;
   }
   const popup = document.getElementById('blackOrbApplyConfirmPopupBg');
@@ -7096,7 +7160,7 @@ async function applyBlackOrbAfterToBefore() {
   const mainAttr = getCurrentMainBlackOrbAttribute();
   if (!mainAttr || !blackOrbDetailPopupState[mainAttr]) {
     closeBlackOrbApplyConfirmPopup();
-    alert('먼저 변경할 메인 속성을 선택해 주세요.');
+    showBlackOrbMainAttributeWarning();
     return;
   }
   const afterBox = document.querySelector('#blackOrbPanel .black-orb-after-box');
@@ -7119,6 +7183,7 @@ async function applyBlackOrbAfterToBefore() {
 }
 
 function openBlackOrbMainAttributePopup() {
+  hideBlackOrbMainAttributeWarning();
   const popup = document.getElementById("blackOrbMainAttributePopupBg");
   if (popup) popup.classList.add("show");
 }
@@ -7170,6 +7235,7 @@ function syncBlackOrbDetailPopupSize() {
   if (rect.height > 0) popup.style.setProperty("--black-orb-detail-box-height", `${Math.round(rect.height)}px`);
 }
 function selectBlackOrbMainAttribute(option) {
+  hideBlackOrbMainAttributeWarning();
   const value = option.dataset.value || "wind";
   const label = option.dataset.label || "바람";
   const allowed = ["wind", "earth", "water", "fire"];
