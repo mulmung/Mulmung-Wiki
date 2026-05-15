@@ -9075,5 +9075,132 @@ window.goToAdventureSkillSettings = goToAdventureSkillSettings;
 })();
 </script>
 
+
+
+<!-- 유물 증가 데미지 계산/저장 최종 보정 -->
+<style>
+  .black-orb-relic-damage{display:flex !important;align-items:center !important;justify-content:center !important;gap:6px !important;padding:6px 8px !important;min-width:0 !important;white-space:nowrap !important;color:#111827 !important;font-weight:900 !important;}
+  .black-orb-relic-damage .relic-result-badge{display:inline-flex;align-items:center;justify-content:center;min-width:42px;height:28px;padding:0 12px;border-radius:999px;font-size:14px;font-weight:900;line-height:1;color:#fff;}
+  .black-orb-relic-damage .relic-result-badge.wind{background:#19d5c3;color:#fff;}
+  .black-orb-relic-damage .relic-result-badge.earth{background:#ffc45f;color:#111827;}
+  .black-orb-relic-damage .relic-result-badge.fire{background:#d81e0c;color:#fff;}
+  .black-orb-relic-damage .relic-result-badge.water{background:#070078;color:#fff;}
+  .black-orb-relic-damage .relic-result-value{display:inline-flex;align-items:center;justify-content:center;font-size:15px;font-weight:900;color:#111827;line-height:1;}
+  @media (max-width:520px){.black-orb-relic-damage{gap:4px !important;padding:5px 4px !important;}.black-orb-relic-damage .relic-result-badge{min-width:34px;height:24px;padding:0 8px;font-size:12px;}.black-orb-relic-damage .relic-result-value{font-size:13px;}}
+</style>
+<script>
+(function(){
+  const STORAGE_KEY = "blackOrbRelicSettings";
+  const RELIC_ROWS = [
+    { inputId:"blackOrbRelicTyphoonEye", damageId:"blackOrbRelicTyphoonEyeDamage", key:"typhoonEye", element:"wind", label:"바람" },
+    { inputId:"blackOrbRelicEmperorProof", damageId:"blackOrbRelicEmperorProofDamage", key:"emperorProof", element:"earth", label:"땅" },
+    { inputId:"blackOrbRelicQuietFlame", damageId:"blackOrbRelicQuietFlameDamage", key:"quietFlame", element:"fire", label:"불" },
+    { inputId:"blackOrbRelicAbyssWaterdrop", damageId:"blackOrbRelicAbyssWaterdropDamage", key:"abyssWaterdrop", element:"water", label:"물" }
+  ];
+  function cleanNumber(value){ return String(value ?? "").replace(/[^0-9]/g, ""); }
+  function relicMultiplier(level){
+    if(level > 99) return 3;
+    if(level > 89) return 2.6;
+    if(level > 79) return 2.3;
+    if(level > 69) return 2;
+    if(level > 59) return 1.8;
+    if(level > 49) return 1.6;
+    if(level > 39) return 1.45;
+    if(level > 29) return 1.3;
+    if(level > 19) return 1.2;
+    if(level > 9) return 1.1;
+    return 1;
+  }
+  function formatPercent(value){
+    const rounded = Math.round((Number(value) || 0) * 100) / 100;
+    return Number.isInteger(rounded) ? String(rounded) : String(rounded).replace(/\.0+$/, "");
+  }
+  function calculateRelicDamage(levelValue){
+    const level = Number(cleanNumber(levelValue));
+    if(!Number.isFinite(level) || level <= 0) return 0;
+    return level * relicMultiplier(level);
+  }
+  function renderRelicDamage(row){
+    const input = document.getElementById(row.inputId);
+    const output = document.getElementById(row.damageId);
+    if(!output) return;
+    const damage = calculateRelicDamage(input ? input.value : "");
+    output.innerHTML = '<span class="relic-result-badge '+ row.element +'">'+ row.label +'</span><span class="relic-result-value">+'+ formatPercent(damage) +'%</span>';
+  }
+  function updateAllRelicDamage(){ RELIC_ROWS.forEach(renderRelicDamage); }
+  function collectRelicSettings(){
+    const values = {};
+    RELIC_ROWS.forEach(row => {
+      const input = document.getElementById(row.inputId);
+      values[row.inputId] = input ? cleanNumber(input.value) : "";
+      values[row.key] = values[row.inputId];
+      values[row.damageId] = document.getElementById(row.damageId)?.textContent?.trim() || "";
+    });
+    return values;
+  }
+  function applyRelicSettings(values){
+    if(!values) return;
+    RELIC_ROWS.forEach(row => {
+      const input = document.getElementById(row.inputId);
+      if(!input) return;
+      const savedValue = values[row.inputId] ?? values[row.key] ?? "";
+      input.value = cleanNumber(savedValue);
+    });
+    updateAllRelicDamage();
+  }
+  function saveRelicSettingsLocal(){ try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(collectRelicSettings())); }catch(e){} }
+  function loadRelicSettingsLocal(){
+    try{
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if(saved) applyRelicSettings(JSON.parse(saved));
+      else updateAllRelicDamage();
+    }catch(e){ updateAllRelicDamage(); }
+  }
+  function isValidRelicLevel(value){
+    const v = cleanNumber(value);
+    if(v === "") return true;
+    const n = Number(v);
+    return Number.isInteger(n) && n >= 0 && n <= 100;
+  }
+  window.collectBlackOrbRelicSettings = collectRelicSettings;
+  window.applyBlackOrbRelicSettings = applyRelicSettings;
+  window.updateBlackOrbRelicDamage = updateAllRelicDamage;
+  window.isValidBlackOrbRelicLevel = isValidRelicLevel;
+  window.saveBlackOrbRelicSettings = async function(){
+    const values = collectRelicSettings();
+    const valid = RELIC_ROWS.every(row => isValidRelicLevel(values[row.inputId]));
+    if(!valid){
+      if(window.showBlackOrbRelicTooltip) window.showBlackOrbRelicTooltip();
+      return;
+    }
+    if(window.hideBlackOrbRelicTooltip) window.hideBlackOrbRelicTooltip();
+    saveRelicSettingsLocal();
+    if(window.saveBlackOrbRelicSettingsToCloud){
+      const result = await window.saveBlackOrbRelicSettingsToCloud(values);
+      if(!result || !result.ok){
+        if(window.showBlackOrbSaveFail) window.showBlackOrbSaveFail(".black-orb-relic-save-btn");
+        return;
+      }
+    }
+    if(window.setBlackOrbSaveButtonState) window.setBlackOrbSaveButtonState(document.querySelector(".black-orb-relic-save-btn"), "done");
+  };
+  document.addEventListener("input", function(e){
+    const row = RELIC_ROWS.find(r => e.target && e.target.id === r.inputId);
+    if(!row) return;
+    const cleaned = cleanNumber(e.target.value);
+    if(e.target.value !== cleaned) e.target.value = cleaned;
+    renderRelicDamage(row);
+    saveRelicSettingsLocal();
+  });
+  const originalOpen = window.openBlackOrbRelicPopup;
+  window.openBlackOrbRelicPopup = function(){
+    if(typeof originalOpen === "function") originalOpen.apply(this, arguments);
+    setTimeout(loadRelicSettingsLocal, 0);
+  };
+  if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", loadRelicSettingsLocal);
+  else loadRelicSettingsLocal();
+})();
+</script>
+
 </body>
 </html>
