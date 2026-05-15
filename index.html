@@ -1422,6 +1422,8 @@ button.faq-flow-item:focus,button.faq-flow-item:focus-visible{outline:none;borde
 
 
 .black-orb-companion-save-btn{width:100%;height:46px;margin-top:14px;border:0;border-radius:18px;background:#0f172a;color:#fff;font-size:16px;font-weight:900;box-shadow:0 10px 22px rgba(15,23,42,.18);cursor:pointer}.black-orb-companion-save-btn:active{transform:translateY(1px)}.black-orb-companion-name.wind{background:#14d4c0!important;color:#fff!important}.black-orb-companion-name.ground{background:#ffc45f!important;color:#fff!important}.black-orb-companion-name.fire{background:#c21a08!important;color:#fff!important}.black-orb-companion-name.water{background:#07006e!important;color:#fff!important}
+.black-orb-relic-popup-card{width:min(92vw,430px);padding:28px 24px 24px;border:4px solid var(--wind-color);border-radius:26px;background:#fff;box-shadow:0 20px 45px rgba(15,23,42,.28);position:relative}.black-orb-relic-title{font-size:28px;font-weight:900;text-align:center;margin:10px 0 24px;color:#0f172a}.black-orb-relic-list{display:flex;flex-direction:column;gap:12px}.black-orb-relic-row{display:grid;grid-template-columns:1.25fr 1fr;gap:10px;align-items:center}.black-orb-relic-name{height:52px;border-radius:16px;background:#0f172a;color:#fff;font-weight:900;display:flex;align-items:center;justify-content:center;font-size:15px;text-align:center;box-shadow:0 8px 18px rgba(15,23,42,.18)}.black-orb-relic-input{width:100%;height:52px;border:3px solid rgba(20,184,166,.35);border-radius:16px;text-align:center;font-size:15px;font-weight:900;color:#0f172a;background:#fbfdff;outline:none}.black-orb-relic-input:focus{border-color:var(--wind-color);box-shadow:0 0 0 3px rgba(20,184,166,.15)}.black-orb-relic-save-wrap{position:relative;margin-top:18px}.black-orb-relic-save-btn{width:100%;height:58px;border:0;border-radius:18px;background:#0f172a;color:#fff;font-size:20px;font-weight:900;cursor:pointer}.black-orb-relic-tooltip{display:none;position:absolute;left:50%;top:calc(100% + 12px);transform:translateX(-50%);width:max-content;max-width:100%;padding:10px 14px;border-radius:14px;background:rgba(15,23,42,.82);color:#fff;font-size:13px;font-weight:800;text-align:center;z-index:20;box-shadow:0 10px 20px rgba(15,23,42,.25)}.black-orb-relic-tooltip:before{content:"";position:absolute;left:50%;bottom:100%;transform:translateX(-50%);border-left:8px solid transparent;border-right:8px solid transparent;border-bottom:9px solid rgba(15,23,42,.82)}.black-orb-relic-tooltip.show{display:block}@media(max-width:520px){.black-orb-relic-popup-card{padding:24px 18px 20px;border-radius:24px}.black-orb-relic-title{font-size:25px}.black-orb-relic-row{grid-template-columns:1.15fr 1fr;gap:8px}.black-orb-relic-name,.black-orb-relic-input{height:48px;font-size:13px}.black-orb-relic-save-btn{height:54px;font-size:18px}.black-orb-relic-tooltip{font-size:12px}}
+
 </style>
 </head>
 <body>
@@ -3214,12 +3216,30 @@ function addSections() {
         <div class="black-orb-basic-info-title">기본 정보</div>
         <div class="black-orb-basic-info-grid">
           <button type="button" class="black-orb-basic-info-btn" onclick="openBlackOrbCompanionPopup()">동료</button>
-          <button type="button" class="black-orb-basic-info-btn">유물</button>
+          <button type="button" class="black-orb-basic-info-btn" onclick="openBlackOrbRelicPopup()">유물</button>
           <button type="button" class="black-orb-basic-info-btn">스킬 숙련도</button>
         </div>
       </div>
 
 
+
+
+      <div id="blackOrbRelicPopup" class="black-orb-popup-overlay" onclick="closeBlackOrbRelicPopup(event)">
+        <div class="black-orb-relic-popup-card" onclick="event.stopPropagation()">
+          <button type="button" class="popup-floating-close-btn" onclick="closeBlackOrbRelicPopup()">×</button>
+          <div class="black-orb-relic-title">유물</div>
+          <div class="black-orb-relic-list">
+            <div class="black-orb-relic-row"><div class="black-orb-relic-name">태풍의 눈</div><input id="blackOrbRelicTyphoonEye" class="black-orb-relic-input" type="number" min="0" max="100" inputmode="numeric" placeholder="레벨 입력" /></div>
+            <div class="black-orb-relic-row"><div class="black-orb-relic-name">제왕의 증표</div><input id="blackOrbRelicKingProof" class="black-orb-relic-input" type="number" min="0" max="100" inputmode="numeric" placeholder="레벨 입력" /></div>
+            <div class="black-orb-relic-row"><div class="black-orb-relic-name">고요의 화염</div><input id="blackOrbRelicSilentFlame" class="black-orb-relic-input" type="number" min="0" max="100" inputmode="numeric" placeholder="레벨 입력" /></div>
+            <div class="black-orb-relic-row"><div class="black-orb-relic-name">심연의 물망울</div><input id="blackOrbRelicAbyssDrop" class="black-orb-relic-input" type="number" min="0" max="100" inputmode="numeric" placeholder="레벨 입력" /></div>
+          </div>
+          <div class="black-orb-relic-save-wrap">
+            <button type="button" class="black-orb-relic-save-btn" onclick="saveBlackOrbRelicSettings()">저장하기</button>
+            <div id="blackOrbRelicTooltip" class="black-orb-relic-tooltip">1부터 100 사이 숫자만 입력 가능합니다.</div>
+          </div>
+        </div>
+      </div>
 
       <div id="blackOrbCompanionPopupBg" class="black-orb-companion-popup-bg" onclick="closeBlackOrbCompanionPopup(event)">
         <div class="black-orb-companion-popup" onclick="event.stopPropagation()">
@@ -5559,6 +5579,35 @@ let currentRole = "user";
 let currentPromotionStage = "";
 let currentBadges = [];
 
+
+window.saveBlackOrbRelicSettingsToCloud = async function(settings) {
+  if (!auth.currentUser) return { ok: false, reason: "login" };
+  try {
+    await setDoc(doc(db, "users", auth.currentUser.uid), {
+      blackOrbRelicSettings: settings,
+      blackOrbRelicSettingsUpdatedAt: serverTimestamp()
+    }, { merge: true });
+    return { ok: true };
+  } catch (error) {
+    console.error("유물 정보 저장 실패:", error);
+    return { ok: false, reason: "error" };
+  }
+};
+
+window.loadBlackOrbRelicSettingsFromCloud = async function() {
+  if (!auth.currentUser) return;
+  try {
+    const snap = await getDoc(doc(db, "users", auth.currentUser.uid));
+    const settings = snap.exists() ? snap.data().blackOrbRelicSettings : null;
+    if (settings && window.applyBlackOrbRelicSettings) {
+      window.applyBlackOrbRelicSettings(settings);
+      localStorage.setItem("blackOrbRelicSettings", JSON.stringify(settings));
+    }
+  } catch (error) {
+    console.error("유물 정보 불러오기 실패:", error);
+  }
+};
+
 window.saveBlackOrbSettingsToCloud = async function(detailStates) {
   if (!auth.currentUser) {
     return { ok: false, reason: "로그인이 필요합니다." };
@@ -6961,6 +7010,19 @@ window.openBlackOrbElementPopup = openBlackOrbElementPopup;
 window.closeBlackOrbElementPopup = closeBlackOrbElementPopup;
 window.selectBlackOrbElementFromPopup = selectBlackOrbElementFromPopup;
 window.saveBlackOrbDetailStateToStorage = saveBlackOrbDetailStateToStorage;
+
+
+const BLACK_ORB_RELIC_FIELDS=["blackOrbRelicTyphoonEye","blackOrbRelicKingProof","blackOrbRelicSilentFlame","blackOrbRelicAbyssDrop"];
+function openBlackOrbRelicPopup(){const p=document.getElementById("blackOrbRelicPopup");hideBlackOrbRelicTooltip();if(p)p.classList.add("active")}
+function closeBlackOrbRelicPopup(event){if(event&&event.target&&event.target.id!=="blackOrbRelicPopup")return;const p=document.getElementById("blackOrbRelicPopup");if(p)p.classList.remove("active");hideBlackOrbRelicTooltip()}
+function hideBlackOrbRelicTooltip(){const t=document.getElementById("blackOrbRelicTooltip");if(t)t.classList.remove("show")}
+function showBlackOrbRelicTooltip(){const t=document.getElementById("blackOrbRelicTooltip");if(!t)return;t.classList.add("show");clearTimeout(window.blackOrbRelicTooltipTimer);window.blackOrbRelicTooltipTimer=setTimeout(()=>t.classList.remove("show"),2400)}
+function collectBlackOrbRelicSettings(){const values={};BLACK_ORB_RELIC_FIELDS.forEach(id=>{const el=document.getElementById(id);values[id]=el?String(el.value||"").trim():""});return values}
+function applyBlackOrbRelicSettings(values){if(!values)return;BLACK_ORB_RELIC_FIELDS.forEach(id=>{const el=document.getElementById(id);if(el&&Object.prototype.hasOwnProperty.call(values,id))el.value=values[id]||""})}
+function isValidBlackOrbRelicLevel(value){if(value===""||value===null||value===undefined)return true;if(!/^\d+$/.test(String(value).trim()))return false;const n=Number(value);return Number.isInteger(n)&&n>=0&&n<=100}
+window.collectBlackOrbRelicSettings=collectBlackOrbRelicSettings;window.applyBlackOrbRelicSettings=applyBlackOrbRelicSettings;
+window.saveBlackOrbRelicSettings=async function(){const values=collectBlackOrbRelicSettings();if(!Object.values(values).every(isValidBlackOrbRelicLevel)){showBlackOrbRelicTooltip();return}hideBlackOrbRelicTooltip();localStorage.setItem("blackOrbRelicSettings",JSON.stringify(values));if(window.saveBlackOrbRelicSettingsToCloud){const result=await window.saveBlackOrbRelicSettingsToCloud(values);if(!result||!result.ok){alert(result&&result.reason==="login"?"로그인 후 저장할 수 있습니다.":"저장 중 오류가 발생했습니다.");return}}alert("유물 정보가 저장되었습니다.")};
+(function initBlackOrbRelicLocalSettings(){try{const saved=localStorage.getItem("blackOrbRelicSettings");if(saved)applyBlackOrbRelicSettings(JSON.parse(saved))}catch(e){console.warn("유물 저장값 불러오기 실패",e)}})();
 
 function openBlackOrbCompanionPopup() {
   const popup = document.getElementById("blackOrbCompanionPopupBg");
