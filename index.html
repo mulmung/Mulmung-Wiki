@@ -9304,5 +9304,164 @@ window.goToAdventureSkillSettings = goToAdventureSkillSettings;
 })();
 </script>
 
+
+<script>
+/* 최종 보정: 블랙 오브 > 스킬 숙련도 계산/저장/복구 */
+(function(){
+  const STORAGE_KEY = "blackOrbSkillMasterySettings";
+  const LEGACY_KEYS = ["blackOrbSkillMasterySettings"];
+
+  function getLevelInput(){ return document.getElementById("blackOrbSkillMasteryLevel"); }
+  function getDamageBox(){ return document.getElementById("blackOrbSkillMasteryDamage"); }
+  function getSaveBtn(){ return document.querySelector(".black-orb-skill-save-btn"); }
+
+  function normalizeDigits(value){
+    return String(value || "").replace(/[^0-9]/g, "");
+  }
+
+  function parseLevel(value){
+    const digits = normalizeDigits(value);
+    if(digits === "") return null;
+    const n = Number(digits);
+    return Number.isFinite(n) ? n : null;
+  }
+
+  function isValidSkillMasteryLevel(value){
+    const n = parseLevel(value);
+    return n !== null && Number.isInteger(n) && n >= 0 && n <= 328;
+  }
+
+  function calculateSkillMasteryDamage(level){
+    const n = Number(level);
+    if(!Number.isFinite(n)) return null;
+    if(n === 256) return 40345;
+    const quotient = Math.floor(n / 5);
+    return Math.round((n * 5 * Math.pow(1.07000005, quotient)) * 100) / 100;
+  }
+
+  function formatDamage(value){
+    if(value === null || value === undefined || !Number.isFinite(Number(value))) return "데미지 증가량";
+    const n = Number(value);
+    const text = Number.isInteger(n) ? String(n) : n.toFixed(2).replace(/\.00$/, "").replace(/(\.\d)0$/, "$1");
+    return "+" + text + "%";
+  }
+
+  function updateSkillMasteryDamage(){
+    const input = getLevelInput();
+    const box = getDamageBox();
+    if(!input || !box) return;
+    const level = parseLevel(input.value);
+    if(level === null){
+      box.textContent = "데미지 증가량";
+      return;
+    }
+    box.textContent = formatDamage(calculateSkillMasteryDamage(level));
+  }
+
+  function collectSettings(){
+    const input = getLevelInput();
+    const levelText = normalizeDigits(input ? input.value : "");
+    const level = levelText === "" ? "" : String(Number(levelText));
+    const damage = level === "" ? "" : formatDamage(calculateSkillMasteryDamage(Number(level)));
+    return { level, damage, savedAt: new Date().toISOString() };
+  }
+
+  function applySettings(values){
+    if(!values) return;
+    const input = getLevelInput();
+    if(input && Object.prototype.hasOwnProperty.call(values, "level")){
+      input.value = normalizeDigits(values.level);
+    }
+    updateSkillMasteryDamage();
+  }
+
+  function loadLocalSettings(){
+    for(const key of LEGACY_KEYS){
+      try{
+        const raw = localStorage.getItem(key);
+        if(!raw) continue;
+        const parsed = JSON.parse(raw);
+        if(parsed && typeof parsed === "object") return parsed;
+      }catch(e){}
+    }
+    return null;
+  }
+
+  function saveLocalSettings(values){
+    try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(values)); }catch(e){}
+  }
+
+  async function saveSettings(){
+    const input = getLevelInput();
+    const btn = getSaveBtn();
+    const value = input ? input.value : "";
+    if(!isValidSkillMasteryLevel(value)){
+      if(typeof window.showBlackOrbSkillMasteryTooltip === "function") window.showBlackOrbSkillMasteryTooltip();
+      if(btn){
+        const old = btn.textContent;
+        btn.textContent = "0~328";
+        btn.classList.add("save-fail");
+        setTimeout(function(){ btn.textContent = old || "저장하기"; btn.classList.remove("save-fail"); }, 1200);
+      }
+      return false;
+    }
+    if(typeof window.hideBlackOrbSkillMasteryTooltip === "function") window.hideBlackOrbSkillMasteryTooltip();
+    updateSkillMasteryDamage();
+    const values = collectSettings();
+    saveLocalSettings(values);
+    if(typeof window.saveBlackOrbSkillMasterySettingsToCloud === "function"){
+      try{ await window.saveBlackOrbSkillMasterySettingsToCloud(values); }catch(e){}
+    }
+    if(btn){
+      const old = btn.textContent;
+      btn.textContent = "저장완료";
+      setTimeout(function(){ btn.textContent = old || "저장하기"; }, 1200);
+    }
+    return true;
+  }
+
+  window.calculateBlackOrbSkillMasteryDamage = updateSkillMasteryDamage;
+  window.collectBlackOrbSkillMasterySettings = collectSettings;
+  window.applyBlackOrbSkillMasterySettings = applySettings;
+  window.isValidBlackOrbSkillMasteryLevel = isValidSkillMasteryLevel;
+  window.saveBlackOrbSkillMasterySettings = saveSettings;
+
+  const previousOpen = window.openBlackOrbSkillMasteryPopup;
+  window.openBlackOrbSkillMasteryPopup = function(){
+    if(typeof previousOpen === "function") previousOpen.apply(this, arguments);
+    applySettings(loadLocalSettings());
+    setTimeout(updateSkillMasteryDamage, 0);
+  };
+
+  function bind(){
+    const input = getLevelInput();
+    if(input && !input.dataset.skillMasteryFormulaBound){
+      input.dataset.skillMasteryFormulaBound = "1";
+      input.addEventListener("input", function(){
+        const cleaned = normalizeDigits(input.value);
+        if(input.value !== cleaned) input.value = cleaned;
+        updateSkillMasteryDamage();
+      });
+      input.addEventListener("change", updateSkillMasteryDamage);
+    }
+    const btn = getSaveBtn();
+    if(btn && !btn.dataset.skillMasterySaveBound){
+      btn.dataset.skillMasterySaveBound = "1";
+      btn.addEventListener("click", function(ev){
+        ev.preventDefault();
+        ev.stopImmediatePropagation();
+        saveSettings();
+      }, true);
+    }
+    applySettings(loadLocalSettings());
+  }
+
+  document.addEventListener("DOMContentLoaded", bind);
+  window.addEventListener("pageshow", function(){ setTimeout(bind, 0); });
+  setTimeout(bind, 0);
+  setTimeout(bind, 500);
+})();
+</script>
+
 </body>
 </html>
