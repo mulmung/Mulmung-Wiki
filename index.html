@@ -1189,6 +1189,26 @@ button.faq-flow-item:focus,button.faq-flow-item:focus-visible{outline:none;borde
 .black-orb-none-badge{border:2px solid #6b7280;border-radius:999px;background:#6b7280;color:#fff;line-height:1;white-space:nowrap;display:inline-flex;align-items:center;justify-content:center;box-shadow:0 8px 16px rgba(15,23,42,.12);pointer-events:none;}
 @media(max-width:768px){.black-orb-element-popup-title{font-size:18px !important;}.black-orb-detail-row.has-value-picker,.black-orb-popup-detail-row.has-value-picker{grid-template-columns:minmax(40px,46px) minmax(40px,46px) 26px !important;column-gap:5px !important;}.black-orb-detail-row.has-value-picker .black-orb-element-badge,.black-orb-popup-detail-row.has-value-picker .black-orb-element-badge,.black-orb-none-badge{height:25px !important;min-height:25px !important;font-size:11px !important;padding:0 7px !important;}}
 @media(max-width:380px){.black-orb-detail-row.has-value-picker,.black-orb-popup-detail-row.has-value-picker{grid-template-columns:minmax(38px,42px) minmax(38px,42px) 24px !important;column-gap:4px !important;}.black-orb-detail-row.has-value-picker .black-orb-element-badge,.black-orb-popup-detail-row.has-value-picker .black-orb-element-badge,.black-orb-none-badge{height:23px !important;min-height:23px !important;font-size:10px !important;padding:0 6px !important;}}
+
+
+/* 블랙 오브 수치 선택 팝업 */
+.black-orb-none-badge.black-orb-value-badge{cursor:pointer;pointer-events:auto !important;}
+.black-orb-none-badge.black-orb-value-badge.value-none{background:#6b7280;color:#fff;border-color:#6b7280;}
+.black-orb-none-badge.black-orb-value-badge.grade-normal{background:#fff;color:#111827;border:1px solid #d1d5db;}
+.black-orb-none-badge.black-orb-value-badge.grade-advanced{background:#22c55e;color:#fff;border-color:#22c55e;}
+.black-orb-none-badge.black-orb-value-badge.grade-rare{background:#fb923c;color:#fff;border-color:#fb923c;}
+.black-orb-none-badge.black-orb-value-badge.grade-hero{background:#a855f7;color:#fff;border-color:#a855f7;}
+.black-orb-none-badge.black-orb-value-badge.grade-legend{background:#ef4444;color:#fff;border-color:#ef4444;}
+.black-orb-none-badge.black-orb-value-badge.grade-myth{background:#5ac8fa;color:#fff;border-color:#5ac8fa;}
+.black-orb-value-select-popup{max-width:150px !important;padding:14px 12px 16px !important;}
+.black-orb-value-popup-head{min-height:auto !important;margin-bottom:10px !important;padding:0 !important;justify-content:center !important;}
+.black-orb-value-popup-title{font-size:15px !important;line-height:1.15 !important;letter-spacing:-0.04em !important;white-space:nowrap !important;text-align:center !important;}
+.black-orb-value-choice-grid{display:grid;grid-template-columns:1fr;justify-items:center;gap:7px;}
+.black-orb-value-choice{width:54px;height:30px;min-height:30px;padding:0 7px;border-radius:999px;border:2px solid transparent;font-size:13px;font-weight:950;line-height:1;display:inline-flex;align-items:center;justify-content:center;white-space:nowrap;box-shadow:0 8px 16px rgba(15,23,42,.12);cursor:pointer;}
+.black-orb-value-choice.grade-normal{border:1px solid #d1d5db;}
+@media(max-width:768px){.black-orb-value-select-popup{max-width:132px !important;padding:12px 10px 14px !important;}.black-orb-value-popup-title{font-size:14px !important;}.black-orb-value-choice{width:46px;height:25px;min-height:25px;font-size:11px;padding:0 7px;}.black-orb-value-choice-grid{gap:6px;}}
+@media(max-width:380px){.black-orb-value-choice{width:42px;height:23px;min-height:23px;font-size:10px;padding:0 6px;}}
+
 </style>
 </head>
 <body>
@@ -2906,25 +2926,25 @@ function addSections() {
             <div class="black-orb-detail-row has-value-picker">
               <button type="button" class="black-orb-element-picker" data-value="all" data-label="모든" data-class="all" onclick="openBlackOrbElementPopup(this)"><span class="black-orb-element-badge all">모든</span></button>
               <span class="black-orb-plus">+</span>
-              <button type="button" class="black-orb-none-badge" aria-label="수치 없음">없음</button>
+              <button type="button" class="black-orb-none-badge black-orb-value-badge value-none" data-value="" data-label="없음" data-class="none" aria-label="수치 없음" onclick="openBlackOrbValuePopup(this)">없음</button>
               <span class="black-orb-percent">%</span><span class="black-orb-x2-badge">×2</span>
             </div>
             <div class="black-orb-detail-row has-value-picker">
               <button type="button" class="black-orb-element-picker" data-value="all" data-label="모든" data-class="all" onclick="openBlackOrbElementPopup(this)"><span class="black-orb-element-badge all">모든</span></button>
               <span class="black-orb-plus">+</span>
-              <button type="button" class="black-orb-none-badge" aria-label="수치 없음">없음</button>
+              <button type="button" class="black-orb-none-badge black-orb-value-badge value-none" data-value="" data-label="없음" data-class="none" aria-label="수치 없음" onclick="openBlackOrbValuePopup(this)">없음</button>
               <span class="black-orb-percent">%</span><span class="black-orb-x2-badge">×2</span>
             </div>
             <div class="black-orb-detail-row has-value-picker">
               <button type="button" class="black-orb-element-picker" data-value="all" data-label="모든" data-class="all" onclick="openBlackOrbElementPopup(this)"><span class="black-orb-element-badge all">모든</span></button>
               <span class="black-orb-plus">+</span>
-              <button type="button" class="black-orb-none-badge" aria-label="수치 없음">없음</button>
+              <button type="button" class="black-orb-none-badge black-orb-value-badge value-none" data-value="" data-label="없음" data-class="none" aria-label="수치 없음" onclick="openBlackOrbValuePopup(this)">없음</button>
               <span class="black-orb-percent">%</span><span class="black-orb-x2-badge">×2</span>
             </div>
             <div class="black-orb-detail-row has-value-picker">
               <button type="button" class="black-orb-element-picker" data-value="all" data-label="모든" data-class="all" onclick="openBlackOrbElementPopup(this)"><span class="black-orb-element-badge all">모든</span></button>
               <span class="black-orb-plus">+</span>
-              <button type="button" class="black-orb-none-badge" aria-label="수치 없음">없음</button>
+              <button type="button" class="black-orb-none-badge black-orb-value-badge value-none" data-value="" data-label="없음" data-class="none" aria-label="수치 없음" onclick="openBlackOrbValuePopup(this)">없음</button>
               <span class="black-orb-percent">%</span><span class="black-orb-x2-badge">×2</span>
             </div>
           </div>
@@ -2944,25 +2964,25 @@ function addSections() {
             <div class="black-orb-detail-row has-value-picker">
               <button type="button" class="black-orb-element-picker" data-value="all" data-label="모든" data-class="all" onclick="openBlackOrbElementPopup(this)"><span class="black-orb-element-badge all">모든</span></button>
               <span class="black-orb-plus">+</span>
-              <button type="button" class="black-orb-none-badge" aria-label="수치 없음">없음</button>
+              <button type="button" class="black-orb-none-badge black-orb-value-badge value-none" data-value="" data-label="없음" data-class="none" aria-label="수치 없음" onclick="openBlackOrbValuePopup(this)">없음</button>
               <span class="black-orb-percent">%</span><span class="black-orb-x2-badge">×2</span>
             </div>
             <div class="black-orb-detail-row has-value-picker">
               <button type="button" class="black-orb-element-picker" data-value="all" data-label="모든" data-class="all" onclick="openBlackOrbElementPopup(this)"><span class="black-orb-element-badge all">모든</span></button>
               <span class="black-orb-plus">+</span>
-              <button type="button" class="black-orb-none-badge" aria-label="수치 없음">없음</button>
+              <button type="button" class="black-orb-none-badge black-orb-value-badge value-none" data-value="" data-label="없음" data-class="none" aria-label="수치 없음" onclick="openBlackOrbValuePopup(this)">없음</button>
               <span class="black-orb-percent">%</span><span class="black-orb-x2-badge">×2</span>
             </div>
             <div class="black-orb-detail-row has-value-picker">
               <button type="button" class="black-orb-element-picker" data-value="all" data-label="모든" data-class="all" onclick="openBlackOrbElementPopup(this)"><span class="black-orb-element-badge all">모든</span></button>
               <span class="black-orb-plus">+</span>
-              <button type="button" class="black-orb-none-badge" aria-label="수치 없음">없음</button>
+              <button type="button" class="black-orb-none-badge black-orb-value-badge value-none" data-value="" data-label="없음" data-class="none" aria-label="수치 없음" onclick="openBlackOrbValuePopup(this)">없음</button>
               <span class="black-orb-percent">%</span><span class="black-orb-x2-badge">×2</span>
             </div>
             <div class="black-orb-detail-row has-value-picker">
               <button type="button" class="black-orb-element-picker" data-value="all" data-label="모든" data-class="all" onclick="openBlackOrbElementPopup(this)"><span class="black-orb-element-badge all">모든</span></button>
               <span class="black-orb-plus">+</span>
-              <button type="button" class="black-orb-none-badge" aria-label="수치 없음">없음</button>
+              <button type="button" class="black-orb-none-badge black-orb-value-badge value-none" data-value="" data-label="없음" data-class="none" aria-label="수치 없음" onclick="openBlackOrbValuePopup(this)">없음</button>
               <span class="black-orb-percent">%</span><span class="black-orb-x2-badge">×2</span>
             </div>
           </div>
@@ -3120,25 +3140,25 @@ function addSections() {
             <div class="black-orb-popup-detail-row has-value-picker">
               <button type="button" class="black-orb-element-picker black-orb-popup-picker" data-value="all" data-label="모든" data-class="all" onclick="openBlackOrbElementPopup(this)"><span class="black-orb-element-badge all">모든</span></button>
               <span class="black-orb-plus">+</span>
-              <button type="button" class="black-orb-none-badge" aria-label="수치 없음">없음</button>
+              <button type="button" class="black-orb-none-badge black-orb-value-badge value-none" data-value="" data-label="없음" data-class="none" aria-label="수치 없음" onclick="openBlackOrbValuePopup(this)">없음</button>
               <span class="black-orb-percent">%</span><span class="black-orb-x2-badge">×2</span>
             </div>
             <div class="black-orb-popup-detail-row has-value-picker">
               <button type="button" class="black-orb-element-picker black-orb-popup-picker" data-value="all" data-label="모든" data-class="all" onclick="openBlackOrbElementPopup(this)"><span class="black-orb-element-badge all">모든</span></button>
               <span class="black-orb-plus">+</span>
-              <button type="button" class="black-orb-none-badge" aria-label="수치 없음">없음</button>
+              <button type="button" class="black-orb-none-badge black-orb-value-badge value-none" data-value="" data-label="없음" data-class="none" aria-label="수치 없음" onclick="openBlackOrbValuePopup(this)">없음</button>
               <span class="black-orb-percent">%</span><span class="black-orb-x2-badge">×2</span>
             </div>
             <div class="black-orb-popup-detail-row has-value-picker">
               <button type="button" class="black-orb-element-picker black-orb-popup-picker" data-value="all" data-label="모든" data-class="all" onclick="openBlackOrbElementPopup(this)"><span class="black-orb-element-badge all">모든</span></button>
               <span class="black-orb-plus">+</span>
-              <button type="button" class="black-orb-none-badge" aria-label="수치 없음">없음</button>
+              <button type="button" class="black-orb-none-badge black-orb-value-badge value-none" data-value="" data-label="없음" data-class="none" aria-label="수치 없음" onclick="openBlackOrbValuePopup(this)">없음</button>
               <span class="black-orb-percent">%</span><span class="black-orb-x2-badge">×2</span>
             </div>
             <div class="black-orb-popup-detail-row has-value-picker">
               <button type="button" class="black-orb-element-picker black-orb-popup-picker" data-value="all" data-label="모든" data-class="all" onclick="openBlackOrbElementPopup(this)"><span class="black-orb-element-badge all">모든</span></button>
               <span class="black-orb-plus">+</span>
-              <button type="button" class="black-orb-none-badge" aria-label="수치 없음">없음</button>
+              <button type="button" class="black-orb-none-badge black-orb-value-badge value-none" data-value="" data-label="없음" data-class="none" aria-label="수치 없음" onclick="openBlackOrbValuePopup(this)">없음</button>
               <span class="black-orb-percent">%</span><span class="black-orb-x2-badge">×2</span>
             </div>
           </div>
@@ -3159,6 +3179,22 @@ function addSections() {
             <button type="button" class="black-orb-element-choice" data-value="earth" data-label="땅" data-class="earth" onclick="selectBlackOrbElementFromPopup(this)"><span class="black-orb-element-badge earth">땅</span></button>
             <button type="button" class="black-orb-element-choice" data-value="fire" data-label="불" data-class="fire" onclick="selectBlackOrbElementFromPopup(this)"><span class="black-orb-element-badge fire">불</span></button>
             <button type="button" class="black-orb-element-choice" data-value="water" data-label="물" data-class="water" onclick="selectBlackOrbElementFromPopup(this)"><span class="black-orb-element-badge water">물</span></button>
+          </div>
+        </div>
+      </div>
+
+      <div id="blackOrbValuePopupBg" class="black-orb-element-popup-bg" onclick="closeBlackOrbValuePopup(event)">
+        <div class="black-orb-element-popup black-orb-value-select-popup" onclick="event.stopPropagation()">
+          <div class="black-orb-element-popup-head black-orb-value-popup-head">
+            <h3 class="black-orb-element-popup-title black-orb-value-popup-title">수치 선택</h3>
+          </div>
+          <div class="black-orb-value-choice-grid">
+            <button type="button" class="black-orb-value-choice grade-normal" data-value="2" data-label="+2%" data-class="grade-normal" onclick="selectBlackOrbValueFromPopup(this)">+2%</button>
+            <button type="button" class="black-orb-value-choice grade-advanced" data-value="3" data-label="+3%" data-class="grade-advanced" onclick="selectBlackOrbValueFromPopup(this)">+3%</button>
+            <button type="button" class="black-orb-value-choice grade-rare" data-value="4" data-label="+4%" data-class="grade-rare" onclick="selectBlackOrbValueFromPopup(this)">+4%</button>
+            <button type="button" class="black-orb-value-choice grade-hero" data-value="5" data-label="+5%" data-class="grade-hero" onclick="selectBlackOrbValueFromPopup(this)">+5%</button>
+            <button type="button" class="black-orb-value-choice grade-legend" data-value="6" data-label="+6%" data-class="grade-legend" onclick="selectBlackOrbValueFromPopup(this)">+6%</button>
+            <button type="button" class="black-orb-value-choice grade-myth" data-value="7" data-label="+7%" data-class="grade-myth" onclick="selectBlackOrbValueFromPopup(this)">+7%</button>
           </div>
         </div>
       </div>
@@ -6633,8 +6669,24 @@ restoreBlackOrbDetailStates();
 function createBlackOrbDetailPopupState() {
   return {
     topValue: "",
-    rows: Array.from({ length: 4 }, () => ({ value: "all", label: "모든", badgeClass: "all", number: "" }))
+    rows: Array.from({ length: 4 }, () => ({ value: "all", label: "모든", badgeClass: "all", number: "", percentValue: "", percentLabel: "없음", percentClass: "none" }))
   };
+}
+function applyBlackOrbValueState(button, rowState) {
+  if (!button) return;
+  const value = rowState?.percentValue || "";
+  const label = rowState?.percentLabel || "없음";
+  const badgeClass = rowState?.percentClass || "none";
+  button.dataset.value = value;
+  button.dataset.label = label;
+  button.dataset.class = badgeClass;
+  button.textContent = label;
+  button.className = `black-orb-none-badge black-orb-value-badge value-${badgeClass}`;
+  if (badgeClass !== "none") button.classList.add(badgeClass);
+}
+function resetBlackOrbValueForRow(row) {
+  const valueButton = row?.querySelector(".black-orb-value-badge");
+  if (valueButton) applyBlackOrbValueState(valueButton, { percentValue:"", percentLabel:"없음", percentClass:"none" });
 }
 function applyBlackOrbPickerState(button, rowState) {
   if (!button || !rowState) return;
@@ -6642,6 +6694,9 @@ function applyBlackOrbPickerState(button, rowState) {
   button.dataset.label = rowState.label || "모든";
   button.dataset.class = rowState.badgeClass || "all";
   button.innerHTML = `<span class="black-orb-element-badge ${button.dataset.class}">${button.dataset.label}</span>`;
+  const row = button.closest(".black-orb-detail-row, .black-orb-popup-detail-row");
+  const valueButton = row?.querySelector(".black-orb-value-badge");
+  if (valueButton) applyBlackOrbValueState(valueButton, rowState);
 }
 function saveBlackOrbCurrentDetailState() {
   const popup = document.getElementById("blackOrbDetailPopup");
@@ -6658,7 +6713,10 @@ function saveBlackOrbCurrentDetailState() {
       value: picker?.dataset.value || 'all',
       label: picker?.dataset.label || '모든',
       badgeClass: picker?.dataset.class || 'all',
-      number: input?.value || ''
+      number: input?.value || '',
+      percentValue: row.querySelector('.black-orb-value-badge')?.dataset.value || '',
+      percentLabel: row.querySelector('.black-orb-value-badge')?.dataset.label || '없음',
+      percentClass: row.querySelector('.black-orb-value-badge')?.dataset.class || 'none'
     };
   });
 }
@@ -6670,7 +6728,7 @@ function loadBlackOrbDetailState(attr) {
   if (topInput) topInput.value = state.topValue || "";
   const rows = popup.querySelectorAll('.black-orb-popup-detail-row');
   rows.forEach((row, index) => {
-    const rowState = state.rows[index] || { value:'all', label:'모든', badgeClass:'all', number:'' };
+    const rowState = state.rows[index] || { value:'all', label:'모든', badgeClass:'all', number:'', percentValue:'', percentLabel:'없음', percentClass:'none' };
     const picker = row.querySelector('.black-orb-element-picker');
     const input = row.querySelector('.black-orb-input');
     applyBlackOrbPickerState(picker, rowState);
@@ -6693,7 +6751,7 @@ function applyBlackOrbSavedStateToMainLeft(attr) {
   if (topInput) topInput.value = state.topValue || "";
   const rows = box.querySelectorAll(".black-orb-detail-row");
   rows.forEach((row, index) => {
-    const rowState = state.rows[index] || { value:'all', label:'모든', badgeClass:'all', number:'' };
+    const rowState = state.rows[index] || { value:'all', label:'모든', badgeClass:'all', number:'', percentValue:'', percentLabel:'없음', percentClass:'none' };
     const picker = row.querySelector(".black-orb-element-picker-btn, .black-orb-element-picker");
     const input = row.querySelector(".black-orb-small-input, .black-orb-input");
     applyBlackOrbPickerState(picker, rowState);
@@ -6715,9 +6773,12 @@ function applyBlackOrbCloudSettings(settings) {
         value: typeof row?.value === "string" ? row.value : "all",
         label: typeof row?.label === "string" ? row.label : "모든",
         badgeClass: typeof row?.badgeClass === "string" ? row.badgeClass : "all",
-        number: typeof row?.number === "string" ? row.number : ""
+        number: typeof row?.number === "string" ? row.number : "",
+        percentValue: typeof row?.percentValue === "string" ? row.percentValue : "",
+        percentLabel: typeof row?.percentLabel === "string" ? row.percentLabel : "없음",
+        percentClass: typeof row?.percentClass === "string" ? row.percentClass : "none"
       }));
-      while (dest.rows.length < 4) dest.rows.push({ value:'all', label:'모든', badgeClass:'all', number:'' });
+      while (dest.rows.length < 4) dest.rows.push({ value:'all', label:'모든', badgeClass:'all', number:'', percentValue:'', percentLabel:'없음', percentClass:'none' });
     }
   });
   persistBlackOrbDetailStates();
@@ -6759,9 +6820,12 @@ function restoreBlackOrbDetailStates() {
           value: typeof row?.value === 'string' ? row.value : 'all',
           label: typeof row?.label === 'string' ? row.label : '모든',
           badgeClass: typeof row?.badgeClass === 'string' ? row.badgeClass : 'all',
-          number: typeof row?.number === 'string' ? row.number : ''
+          number: typeof row?.number === 'string' ? row.number : '',
+          percentValue: typeof row?.percentValue === 'string' ? row.percentValue : '',
+          percentLabel: typeof row?.percentLabel === 'string' ? row.percentLabel : '없음',
+          percentClass: typeof row?.percentClass === 'string' ? row.percentClass : 'none'
         }));
-        while (dest.rows.length < 4) dest.rows.push({ value:'all', label:'모든', badgeClass:'all', number:'' });
+        while (dest.rows.length < 4) dest.rows.push({ value:'all', label:'모든', badgeClass:'all', number:'', percentValue:'', percentLabel:'없음', percentClass:'none' });
       }
     });
   } catch (error) {
@@ -6909,6 +6973,40 @@ function closeBlackOrbElementPopup(event) {
   const popup = document.getElementById("blackOrbElementPopupBg");
   if (popup) popup.classList.remove("show");
 }
+let currentBlackOrbValueButton = null;
+function openBlackOrbValuePopup(button) {
+  const targetRow = button?.closest(".black-orb-detail-row, .black-orb-popup-detail-row");
+  const picker = targetRow?.querySelector(".black-orb-element-picker");
+  if (!picker || (picker.dataset.value || "all") === "none") {
+    resetBlackOrbValueForRow(targetRow);
+    return;
+  }
+  currentBlackOrbValueButton = button;
+  const popup = document.getElementById("blackOrbValuePopupBg");
+  if (popup) popup.classList.add("show");
+}
+function closeBlackOrbValuePopup(event) {
+  if (event && event.target && event.currentTarget && event.target !== event.currentTarget) return;
+  const popup = document.getElementById("blackOrbValuePopupBg");
+  if (popup) popup.classList.remove("show");
+}
+function selectBlackOrbValueFromPopup(option) {
+  if (!currentBlackOrbValueButton) return;
+  const targetRow = currentBlackOrbValueButton.closest(".black-orb-detail-row, .black-orb-popup-detail-row");
+  const picker = targetRow?.querySelector(".black-orb-element-picker");
+  if (!picker || (picker.dataset.value || "all") === "none") {
+    resetBlackOrbValueForRow(targetRow);
+    closeBlackOrbValuePopup();
+    return;
+  }
+  applyBlackOrbValueState(currentBlackOrbValueButton, {
+    percentValue: option.dataset.value || "",
+    percentLabel: option.dataset.label || "없음",
+    percentClass: option.dataset.class || "none"
+  });
+  if (targetRow && targetRow.closest('#blackOrbDetailPopup')) saveBlackOrbCurrentDetailState();
+  closeBlackOrbValuePopup();
+}
 function selectBlackOrbElementFromPopup(option) {
   if (!currentBlackOrbElementPicker) return;
   const value = option.dataset.value || "all";
@@ -6920,12 +7018,15 @@ function selectBlackOrbElementFromPopup(option) {
   currentBlackOrbElementPicker.innerHTML = `<span class="black-orb-element-badge ${badgeClass}">${label}</span>`;
   const targetRow = currentBlackOrbElementPicker.closest(".black-orb-detail-row, .black-orb-popup-detail-row");
   if (value === "none" && targetRow) {
+    resetBlackOrbValueForRow(targetRow);
     const input = targetRow.querySelector(".black-orb-input");
     if (input) {
       input.value = "0";
       input.dispatchEvent(new Event("input", { bubbles: true }));
       input.dispatchEvent(new Event("change", { bubbles: true }));
     }
+  } else if (targetRow) {
+    resetBlackOrbValueForRow(targetRow);
   }
   updateBlackOrbX2ForRow(targetRow);
   if (targetRow && targetRow.closest('#blackOrbDetailPopup')) saveBlackOrbCurrentDetailState();
@@ -6942,6 +7043,9 @@ window.addEventListener("resize", syncBlackOrbDetailPopupSize);
 window.openBlackOrbElementPopup = openBlackOrbElementPopup;
 window.closeBlackOrbElementPopup = closeBlackOrbElementPopup;
 window.selectBlackOrbElementFromPopup = selectBlackOrbElementFromPopup;
+window.openBlackOrbValuePopup = openBlackOrbValuePopup;
+window.closeBlackOrbValuePopup = closeBlackOrbValuePopup;
+window.selectBlackOrbValueFromPopup = selectBlackOrbValueFromPopup;
 window.saveBlackOrbDetailStateToStorage = saveBlackOrbDetailStateToStorage;
 
 
@@ -7339,6 +7443,26 @@ window.goToAdventureSkillSettings = goToAdventureSkillSettings;
 /* 동료 팝업 기존 안내 박스 숨김: 저장 버튼 아래 말풍선만 사용 */
 #blackOrbCompanionMsg{display:none !important;}
 #blackOrbCompanionMsg.show{display:none !important;}
+
+
+/* 블랙 오브 수치 선택 팝업 */
+.black-orb-none-badge.black-orb-value-badge{cursor:pointer;pointer-events:auto !important;}
+.black-orb-none-badge.black-orb-value-badge.value-none{background:#6b7280;color:#fff;border-color:#6b7280;}
+.black-orb-none-badge.black-orb-value-badge.grade-normal{background:#fff;color:#111827;border:1px solid #d1d5db;}
+.black-orb-none-badge.black-orb-value-badge.grade-advanced{background:#22c55e;color:#fff;border-color:#22c55e;}
+.black-orb-none-badge.black-orb-value-badge.grade-rare{background:#fb923c;color:#fff;border-color:#fb923c;}
+.black-orb-none-badge.black-orb-value-badge.grade-hero{background:#a855f7;color:#fff;border-color:#a855f7;}
+.black-orb-none-badge.black-orb-value-badge.grade-legend{background:#ef4444;color:#fff;border-color:#ef4444;}
+.black-orb-none-badge.black-orb-value-badge.grade-myth{background:#5ac8fa;color:#fff;border-color:#5ac8fa;}
+.black-orb-value-select-popup{max-width:150px !important;padding:14px 12px 16px !important;}
+.black-orb-value-popup-head{min-height:auto !important;margin-bottom:10px !important;padding:0 !important;justify-content:center !important;}
+.black-orb-value-popup-title{font-size:15px !important;line-height:1.15 !important;letter-spacing:-0.04em !important;white-space:nowrap !important;text-align:center !important;}
+.black-orb-value-choice-grid{display:grid;grid-template-columns:1fr;justify-items:center;gap:7px;}
+.black-orb-value-choice{width:54px;height:30px;min-height:30px;padding:0 7px;border-radius:999px;border:2px solid transparent;font-size:13px;font-weight:950;line-height:1;display:inline-flex;align-items:center;justify-content:center;white-space:nowrap;box-shadow:0 8px 16px rgba(15,23,42,.12);cursor:pointer;}
+.black-orb-value-choice.grade-normal{border:1px solid #d1d5db;}
+@media(max-width:768px){.black-orb-value-select-popup{max-width:132px !important;padding:12px 10px 14px !important;}.black-orb-value-popup-title{font-size:14px !important;}.black-orb-value-choice{width:46px;height:25px;min-height:25px;font-size:11px;padding:0 7px;}.black-orb-value-choice-grid{gap:6px;}}
+@media(max-width:380px){.black-orb-value-choice{width:42px;height:23px;min-height:23px;font-size:10px;padding:0 6px;}}
+
 </style>
 <script>
 (function(){
@@ -8063,6 +8187,26 @@ window.goToAdventureSkillSettings = goToAdventureSkillSettings;
 .black-orb-element-select-close{display:none !important;}
 .black-orb-element-select-popup .black-orb-element-popup-head{padding-left:0 !important;padding-right:0 !important;}
 @media(max-width:768px){.black-orb-element-select-popup .black-orb-element-popup-head{padding-left:0 !important;padding-right:0 !important;}}
+
+
+/* 블랙 오브 수치 선택 팝업 */
+.black-orb-none-badge.black-orb-value-badge{cursor:pointer;pointer-events:auto !important;}
+.black-orb-none-badge.black-orb-value-badge.value-none{background:#6b7280;color:#fff;border-color:#6b7280;}
+.black-orb-none-badge.black-orb-value-badge.grade-normal{background:#fff;color:#111827;border:1px solid #d1d5db;}
+.black-orb-none-badge.black-orb-value-badge.grade-advanced{background:#22c55e;color:#fff;border-color:#22c55e;}
+.black-orb-none-badge.black-orb-value-badge.grade-rare{background:#fb923c;color:#fff;border-color:#fb923c;}
+.black-orb-none-badge.black-orb-value-badge.grade-hero{background:#a855f7;color:#fff;border-color:#a855f7;}
+.black-orb-none-badge.black-orb-value-badge.grade-legend{background:#ef4444;color:#fff;border-color:#ef4444;}
+.black-orb-none-badge.black-orb-value-badge.grade-myth{background:#5ac8fa;color:#fff;border-color:#5ac8fa;}
+.black-orb-value-select-popup{max-width:150px !important;padding:14px 12px 16px !important;}
+.black-orb-value-popup-head{min-height:auto !important;margin-bottom:10px !important;padding:0 !important;justify-content:center !important;}
+.black-orb-value-popup-title{font-size:15px !important;line-height:1.15 !important;letter-spacing:-0.04em !important;white-space:nowrap !important;text-align:center !important;}
+.black-orb-value-choice-grid{display:grid;grid-template-columns:1fr;justify-items:center;gap:7px;}
+.black-orb-value-choice{width:54px;height:30px;min-height:30px;padding:0 7px;border-radius:999px;border:2px solid transparent;font-size:13px;font-weight:950;line-height:1;display:inline-flex;align-items:center;justify-content:center;white-space:nowrap;box-shadow:0 8px 16px rgba(15,23,42,.12);cursor:pointer;}
+.black-orb-value-choice.grade-normal{border:1px solid #d1d5db;}
+@media(max-width:768px){.black-orb-value-select-popup{max-width:132px !important;padding:12px 10px 14px !important;}.black-orb-value-popup-title{font-size:14px !important;}.black-orb-value-choice{width:46px;height:25px;min-height:25px;font-size:11px;padding:0 7px;}.black-orb-value-choice-grid{gap:6px;}}
+@media(max-width:380px){.black-orb-value-choice{width:42px;height:23px;min-height:23px;font-size:10px;padding:0 6px;}}
+
 </style>
 <script>
 (function(){
