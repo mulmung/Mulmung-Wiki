@@ -8764,11 +8764,41 @@ window.goToAdventureSkillSettings = goToAdventureSkillSettings;
     const r = x > 490 ? x - 490 : x % 10;
     return 10 * q * (q + 1) / 2 + r * (q + 1);
   }
+  const companionLevelCoefficientTable = {
+    1: 0.005, 2: 0.01, 3: 0.015, 4: 0.02, 5: 0.03, 6: 0.04, 7: 0.05,
+    8: 0.06, 9: 0.07, 10: 0.08, 11: 0.09, 12: 0.1, 13: 0.11, 14: 0.12,
+    15: 0.13, 16: 0.14, 17: 0.15, 18: 0.16, 19: 0.17, 20: 0.18, 21: 0.19,
+    22: 0.2, 23: 0.21, 24: 0.22, 25: 0.23, 26: 0.24, 27: 0.25, 28: 0.26,
+    29: 0.27, 30: 0.28, 31: 0.29, 32: 0.3, 33: 0.31, 34: 0.32, 35: 0.33,
+    36: 0.34, 37: 0.35, 38: 0.36, 39: 0.37, 40: 0.38, 41: 0.39, 42: 0.4,
+    43: 0.41, 44: 0.42, 45: 0.43, 46: 0.44, 47: 0.45, 48: 0.46, 49: 0.47
+  };
+  function companionDamageByLevel(levelValue, pageValue, countValue){
+    const levelRaw = rawNumber(levelValue);
+    const pageRaw = rawNumber(pageValue);
+    const countRaw = rawNumber(countValue);
+    if(levelRaw === "" || pageRaw === "" || countRaw === "") return 0;
+    const level = Number(levelRaw);
+    const page = Number(pageRaw);
+    const count = Number(countRaw);
+    if(!Number.isFinite(level) || !Number.isFinite(page) || !Number.isFinite(count)) return 0;
+    if(level <= 0 || page <= 0 || count <= 0) return 0;
+    const index = (page - 1) * 7 + count;
+    const coefficient = companionLevelCoefficientTable[index] || 0;
+    // 계수표 값은 0.005 = 0.5%처럼 백분율 기준이므로 화면 표시용 % 값으로 변환한다.
+    return level * coefficient * 100;
+  }
+  function companionTotalDamage(levelValue, pageValue, countValue, skillValue){
+    return companionDamageBySkillLevel(skillValue) + companionDamageByLevel(levelValue, pageValue, countValue);
+  }
   function formatDamage(value){
     const n = Number(value) || 0;
-    return "+" + n.toLocaleString("ko-KR") + "%";
+    return "+" + n.toLocaleString("ko-KR", { maximumFractionDigits: 3 }) + "%";
   }
   function updateBlackOrbCompanionDamageSummary(){
+    const levels = Array.from(document.querySelectorAll("#blackOrbCompanionPopupBg .companion-level"));
+    const pages = Array.from(document.querySelectorAll("#blackOrbCompanionPopupBg .companion-job-page"));
+    const counts = Array.from(document.querySelectorAll("#blackOrbCompanionPopupBg .companion-job-count"));
     const skills = Array.from(document.querySelectorAll("#blackOrbCompanionPopupBg .companion-skill-level"));
     const targets = [
       "blackOrbCompanionWindDamage",
@@ -8779,12 +8809,16 @@ window.goToAdventureSkillSettings = goToAdventureSkillSettings;
     targets.forEach(function(id, index){
       const target = document.getElementById(id);
       if(!target) return;
-      const input = skills[index];
-      target.textContent = formatDamage(companionDamageBySkillLevel(input ? input.value : ""));
+      target.textContent = formatDamage(companionTotalDamage(
+        levels[index] ? levels[index].value : "",
+        pages[index] ? pages[index].value : "",
+        counts[index] ? counts[index].value : "",
+        skills[index] ? skills[index].value : ""
+      ));
     });
   }
   function bindBlackOrbCompanionDamageSummary(){
-    document.querySelectorAll("#blackOrbCompanionPopupBg .companion-skill-level").forEach(function(input){
+    document.querySelectorAll("#blackOrbCompanionPopupBg .companion-level, #blackOrbCompanionPopupBg .companion-job-page, #blackOrbCompanionPopupBg .companion-job-count, #blackOrbCompanionPopupBg .companion-skill-level").forEach(function(input){
       if(input.dataset.companionDamageBound === "1") return;
       input.dataset.companionDamageBound = "1";
       input.addEventListener("input", updateBlackOrbCompanionDamageSummary);
