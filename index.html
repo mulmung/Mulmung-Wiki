@@ -3219,7 +3219,7 @@ function addSections() {
         <div class="black-orb-basic-info-grid">
           <button type="button" class="black-orb-basic-info-btn" onclick="openBlackOrbCompanionPopup()">동료</button>
           <button type="button" class="black-orb-basic-info-btn" onclick="openBlackOrbRelicPopup()">유물</button>
-          <button type="button" class="black-orb-basic-info-btn" onclick="openBlackOrbSkillMasteryPopup()">스킬 숙련도</button>
+          <button type="button" id="blackOrbSkillMasteryOpenBtn" class="black-orb-basic-info-btn" onclick="openBlackOrbSkillMasteryPopup()">스킬 숙련도</button>
         </div>
       </div>
 
@@ -5531,6 +5531,82 @@ renderSavedSettingCollection();
       <button class="adventure-popup-close-btn popup-bottom-close-hidden" type="button" onclick="closeAdventurePopup()">닫기</button>
     </div>
   </div>
+<script>
+(function(){
+  function getSkillMasteryPopup(){ return document.getElementById("blackOrbSkillMasteryPopup"); }
+  function getSkillMasteryTooltip(){ return document.getElementById("blackOrbSkillMasteryTooltip"); }
+  window.hideBlackOrbSkillMasteryTooltip = function(){
+    const tooltip = getSkillMasteryTooltip();
+    if (tooltip) tooltip.classList.remove("show");
+  };
+  window.showBlackOrbSkillMasteryTooltip = function(){
+    const tooltip = getSkillMasteryTooltip();
+    if (!tooltip) return;
+    tooltip.classList.add("show");
+    clearTimeout(window.blackOrbSkillMasteryTooltipTimer);
+    window.blackOrbSkillMasteryTooltipTimer = setTimeout(() => tooltip.classList.remove("show"), 2400);
+  };
+  window.openBlackOrbSkillMasteryPopup = function(){
+    const popup = getSkillMasteryPopup();
+    window.hideBlackOrbSkillMasteryTooltip();
+    if (popup) popup.classList.add("active");
+  };
+  window.closeBlackOrbSkillMasteryPopup = function(event){
+    if (event && event.target && event.target.id !== "blackOrbSkillMasteryPopup") return;
+    const popup = getSkillMasteryPopup();
+    if (popup) popup.classList.remove("active");
+    window.hideBlackOrbSkillMasteryTooltip();
+  };
+  window.collectBlackOrbSkillMasterySettings = function(){
+    const level = document.getElementById("blackOrbSkillMasteryLevel");
+    const damage = document.getElementById("blackOrbSkillMasteryDamage");
+    return {
+      level: level ? String(level.value || "").trim() : "",
+      damage: damage ? String(damage.textContent || "").trim() : ""
+    };
+  };
+  window.applyBlackOrbSkillMasterySettings = function(values){
+    if (!values) return;
+    const level = document.getElementById("blackOrbSkillMasteryLevel");
+    const damage = document.getElementById("blackOrbSkillMasteryDamage");
+    if (level && Object.prototype.hasOwnProperty.call(values, "level")) level.value = values.level || "";
+    if (damage && values.damage) damage.textContent = values.damage;
+  };
+  window.isValidBlackOrbSkillMasteryLevel = function(value){
+    if (value === "" || value === null || value === undefined) return false;
+    if (!/^\d+$/.test(String(value).trim())) return false;
+    const n = Number(value);
+    return Number.isInteger(n) && n >= 1 && n <= 328;
+  };
+  window.saveBlackOrbSkillMasterySettings = async function(){
+    const values = window.collectBlackOrbSkillMasterySettings();
+    if (!window.isValidBlackOrbSkillMasteryLevel(values.level)) {
+      window.showBlackOrbSkillMasteryTooltip();
+      return;
+    }
+    window.hideBlackOrbSkillMasteryTooltip();
+    localStorage.setItem("blackOrbSkillMasterySettings", JSON.stringify(values));
+    if (window.saveBlackOrbSkillMasterySettingsToCloud) {
+      const result = await window.saveBlackOrbSkillMasterySettingsToCloud(values);
+      if (!result || !result.ok) {
+        alert(result && result.reason === "login" ? "로그인 후 저장할 수 있습니다." : "저장 중 오류가 발생했습니다.");
+        return;
+      }
+    }
+    alert("스킬 숙련도 정보가 저장되었습니다.");
+  };
+  document.addEventListener("DOMContentLoaded", function(){
+    const btn = document.getElementById("blackOrbSkillMasteryOpenBtn");
+    if (btn) btn.addEventListener("click", window.openBlackOrbSkillMasteryPopup);
+    try {
+      const saved = localStorage.getItem("blackOrbSkillMasterySettings");
+      if (saved) window.applyBlackOrbSkillMasterySettings(JSON.parse(saved));
+    } catch (e) {
+      console.warn("스킬 숙련도 저장값 불러오기 실패", e);
+    }
+  });
+})();
+</script>
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
   import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
