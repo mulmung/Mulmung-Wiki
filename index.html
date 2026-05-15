@@ -8773,13 +8773,19 @@ window.goToAdventureSkillSettings = goToAdventureSkillSettings;
     36: 0.34, 37: 0.35, 38: 0.36, 39: 0.37, 40: 0.38, 41: 0.39, 42: 0.4,
     43: 0.41, 44: 0.42, 45: 0.43, 46: 0.44, 47: 0.45, 48: 0.46, 49: 0.47
   };
+  function parseCompanionJobPage(value){
+    const text = String(value ?? "").trim().toUpperCase();
+    const romanMap = { I: 1, II: 2, III: 3, IV: 4, V: 5, VI: 6, VII: 7 };
+    if(romanMap[text]) return romanMap[text];
+    const raw = rawNumber(text);
+    return raw === "" ? 0 : Number(raw);
+  }
   function companionDamageByLevel(levelValue, pageValue, countValue){
     const levelRaw = rawNumber(levelValue);
-    const pageRaw = rawNumber(pageValue);
     const countRaw = rawNumber(countValue);
-    if(levelRaw === "" || pageRaw === "" || countRaw === "") return 0;
+    if(levelRaw === "" || countRaw === "") return 0;
     const level = Number(levelRaw);
-    const page = Number(pageRaw);
+    const page = parseCompanionJobPage(pageValue);
     const count = Number(countRaw);
     if(!Number.isFinite(level) || !Number.isFinite(page) || !Number.isFinite(count)) return 0;
     if(level <= 0 || page <= 0 || count <= 0) return 0;
@@ -8833,7 +8839,7 @@ window.goToAdventureSkillSettings = goToAdventureSkillSettings;
     setTimeout(bindBlackOrbCompanionDamageSummary, 0);
   };
   window.updateBlackOrbCompanionDamageSummary = updateBlackOrbCompanionDamageSummary;
-  window.calculateBlackOrbCompanionDamage = companionDamageBySkillLevel;
+  window.calculateBlackOrbCompanionDamage = companionTotalDamage;
   if(document.readyState === "loading"){
     document.addEventListener("DOMContentLoaded", bindBlackOrbCompanionDamageSummary);
   }else{
