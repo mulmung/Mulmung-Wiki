@@ -9133,5 +9133,173 @@ window.addEventListener('DOMContentLoaded', syncBlackOrbPercentPickersFromLegacy
 })();
 </script>
 
+
+
+<style>
+/* black orb percent popup final compact sync patch */
+#blackOrbPercentPopupOverlay{
+  z-index: 12050 !important;
+}
+#blackOrbPercentPopupOverlay.show{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+}
+#blackOrbPercentPopupOverlay .black-orb-percent-popup{
+  width:min(320px, 86vw) !important;
+  max-width:320px !important;
+  min-height:0 !important;
+  padding:22px 20px 24px !important;
+  border-radius:24px !important;
+  background:#fff !important;
+  box-shadow:0 24px 70px rgba(15,23,42,.22) !important;
+  position:relative !important;
+}
+#blackOrbPercentPopupOverlay .black-orb-percent-popup-title{
+  margin:0 44px 18px !important;
+  font-size:24px !important;
+  line-height:1.15 !important;
+  font-weight:900 !important;
+  text-align:center !important;
+  color:#0f172a !important;
+  white-space:nowrap !important;
+}
+#blackOrbPercentPopupOverlay .black-orb-percent-popup-close,
+#blackOrbPercentPopupOverlay .black-orb-popup-close-top{
+  position:absolute !important;
+  top:16px !important;
+  right:16px !important;
+  width:38px !important;
+  height:38px !important;
+  border-radius:999px !important;
+  border:0 !important;
+  background:#0b1020 !important;
+  color:#fff !important;
+  font-size:22px !important;
+  font-weight:900 !important;
+  line-height:1 !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  box-shadow:0 10px 24px rgba(15,23,42,.18) !important;
+  cursor:pointer !important;
+  z-index:2 !important;
+}
+#blackOrbPercentPopupOverlay .black-orb-percent-grid{
+  display:grid !important;
+  grid-template-columns:repeat(2, minmax(0, 1fr)) !important;
+  gap:10px 12px !important;
+  width:100% !important;
+}
+#blackOrbPercentPopupOverlay .black-orb-percent-choice-btn{
+  width:100% !important;
+  height:48px !important;
+  min-height:48px !important;
+  border-radius:16px !important;
+  border:0 !important;
+  font-size:17px !important;
+  font-weight:900 !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  box-shadow:0 8px 20px rgba(15,23,42,.10) !important;
+  padding:0 !important;
+}
+.black-orb-value-picker{
+  width:74px !important;
+  min-width:74px !important;
+  flex:0 0 74px !important;
+}
+.black-orb-percent-picker-btn{
+  width:74px !important;
+  min-width:74px !important;
+  height:36px !important;
+  border-radius:999px !important;
+  padding:0 8px !important;
+  font-size:12px !important;
+  font-weight:900 !important;
+  white-space:nowrap !important;
+  line-height:1 !important;
+}
+.black-orb-percent-picker-btn.value-0{
+  background:#6b7280 !important;
+  color:#fff !important;
+  border-color:#6b7280 !important;
+  box-shadow:0 8px 18px rgba(107,114,128,.24) !important;
+}
+</style>
+<script>
+(function(){
+  function getValuePickerFromElementButton(btn){
+    const row = btn ? btn.closest('.black-orb-detail-row, .black-orb-popup-detail-row') : null;
+    return row ? row.querySelector('[data-black-orb-value-picker]') : null;
+  }
+  function setPercentNoneFromElementButton(btn){
+    const picker = getValuePickerFromElementButton(btn);
+    if (!picker) return;
+    const elementValue = (btn && btn.dataset && btn.dataset.value) ? btn.dataset.value : '';
+    const text = (btn ? btn.textContent : '').trim();
+    if (elementValue === 'none' || text === '없음') {
+      if (typeof window.setBlackOrbPercentPickerValue === 'function') {
+        window.setBlackOrbPercentPickerValue(picker, 0);
+      } else {
+        const pbtn = picker.querySelector('.black-orb-percent-picker-btn');
+        const hidden = picker.querySelector('.black-orb-percent-hidden-input');
+        picker.dataset.selected = '0';
+        if (hidden) hidden.value = '0';
+        if (pbtn) {
+          pbtn.className = 'black-orb-percent-picker-btn value-0';
+          pbtn.textContent = '없음';
+        }
+      }
+      const row = btn.closest('.black-orb-detail-row, .black-orb-popup-detail-row');
+      if (typeof window.updateBlackOrbX2ForRow === 'function') window.updateBlackOrbX2ForRow(row);
+      if (typeof window.updateAllBlackOrbX2Badges === 'function') window.updateAllBlackOrbX2Badges();
+    }
+  }
+
+  const oldOpenElement = window.openBlackOrbElementPopup;
+  if (typeof oldOpenElement === 'function') {
+    window.openBlackOrbElementPopup = function(button){
+      window.__blackOrbCurrentElementButton = button || null;
+      return oldOpenElement.apply(this, arguments);
+    };
+  }
+
+  const oldSelectElement = window.selectBlackOrbElementFromPopup;
+  if (typeof oldSelectElement === 'function') {
+    window.selectBlackOrbElementFromPopup = function(value){
+      const targetButton = window.__blackOrbCurrentElementButton || null;
+      const result = oldSelectElement.apply(this, arguments);
+      window.setTimeout(function(){ setPercentNoneFromElementButton(targetButton); }, 0);
+      return result;
+    };
+  }
+
+  window.closeBlackOrbPercentPopup = function(event){
+    const overlay = document.getElementById('blackOrbPercentPopupOverlay');
+    if (!overlay) return;
+    overlay.classList.remove('show');
+    window.blackOrbCurrentPercentPicker = null;
+  };
+
+  document.addEventListener('DOMContentLoaded', function(){
+    document.querySelectorAll('.black-orb-element-picker').forEach(setPercentNoneFromElementButton);
+    const overlay = document.getElementById('blackOrbPercentPopupOverlay');
+    if (overlay) {
+      overlay.addEventListener('click', function(e){
+        if (e.target === overlay) window.closeBlackOrbPercentPopup();
+      }, true);
+      overlay.querySelectorAll('.black-orb-percent-popup-close, .black-orb-popup-close-top').forEach(function(btn){
+        btn.addEventListener('click', function(e){
+          e.preventDefault();
+          e.stopPropagation();
+          window.closeBlackOrbPercentPopup();
+        }, true);
+      });
+    }
+  });
+})();
+</script>
 </body>
 </html>
