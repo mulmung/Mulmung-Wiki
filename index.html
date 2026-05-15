@@ -6642,13 +6642,13 @@ function applyBlackOrbSavedStateToMainLeft(attr) {
   const state = blackOrbDetailPopupState[attr];
   const box = document.querySelector("#blackOrbPanel .black-orb-option-box");
   if (!state || !box) return;
-  const topInput = box.querySelector(".black-orb-main-input");
+  const topInput = box.querySelector(".black-orb-main-input, .black-orb-option-row .black-orb-input");
   if (topInput) topInput.value = state.topValue || "";
   const rows = box.querySelectorAll(".black-orb-detail-row");
   rows.forEach((row, index) => {
     const rowState = state.rows[index] || { value:'all', label:'모든', badgeClass:'all', number:'' };
-    const picker = row.querySelector(".black-orb-element-picker-btn");
-    const input = row.querySelector(".black-orb-small-input");
+    const picker = row.querySelector(".black-orb-element-picker-btn, .black-orb-element-picker");
+    const input = row.querySelector(".black-orb-small-input, .black-orb-input");
     applyBlackOrbPickerState(picker, rowState);
     if (input) input.value = rowState.number || "";
     updateBlackOrbX2ForRow(row);
