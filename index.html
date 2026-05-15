@@ -1447,6 +1447,28 @@ button.faq-flow-item:focus,button.faq-flow-item:focus-visible{outline:none;borde
 
 .black-orb-skill-popup-card{width:min(88vw,320px);padding:24px 18px 18px;border:4px solid #14b8a6;border-radius:24px;background:#fff;box-shadow:0 20px 45px rgba(15,23,42,.28);position:relative}.black-orb-skill-body{display:flex;flex-direction:column;gap:12px;padding-top:18px}.black-orb-skill-input{width:100%;height:48px;border:3px solid rgba(20,184,166,.35);border-radius:16px;text-align:center;font-size:16px;font-weight:900;color:#0f172a;background:#fbfdff;outline:none}.black-orb-skill-input::placeholder{color:#7b8798}.black-orb-skill-input:focus{border-color:#14b8a6;box-shadow:0 0 0 3px rgba(20,184,166,.15)}.black-orb-skill-damage{width:100%;height:48px;border:3px solid rgba(20,184,166,.25);border-radius:16px;background:#f8fafc;color:#64748b;font-size:16px;font-weight:900;display:flex;align-items:center;justify-content:center;text-align:center}.black-orb-skill-save-wrap{position:relative}.black-orb-skill-save-btn{width:100%;height:50px;border:0;border-radius:16px;background:#0f172a;color:#fff;font-size:18px;font-weight:900;cursor:pointer}.black-orb-skill-tooltip{display:none;position:absolute;left:50%;top:calc(100% + 12px);transform:translateX(-50%);width:max-content;max-width:100%;padding:10px 14px;border-radius:14px;background:rgba(15,23,42,.82);color:#fff;font-size:13px;font-weight:800;text-align:center;z-index:20;box-shadow:0 10px 20px rgba(15,23,42,.25);white-space:nowrap}.black-orb-skill-tooltip:before{content:"";position:absolute;left:50%;bottom:100%;transform:translateX(-50%);border-left:8px solid transparent;border-right:8px solid transparent;border-bottom:9px solid rgba(15,23,42,.82)}.black-orb-skill-tooltip.show{display:block}@media(max-width:520px){.black-orb-skill-popup-card{width:min(86vw,300px);padding:22px 14px 16px;border-radius:22px}.black-orb-skill-body{gap:10px;padding-top:16px}.black-orb-skill-input,.black-orb-skill-damage{height:44px;font-size:15px;border-radius:14px}.black-orb-skill-save-btn{height:46px;font-size:17px}.black-orb-skill-tooltip{font-size:12px}}
 
+
+/* 블랙 오브 저장 버튼 상태 표시 */
+.black-orb-save-done,
+.black-orb-relic-save-btn.black-orb-save-done,
+.black-orb-skill-save-btn.black-orb-save-done,
+.black-orb-order-statue-save-btn.black-orb-save-done,
+.black-orb-companion-save-btn.black-orb-save-done{
+  background:#14b8a6 !important;
+  color:#fff !important;
+  border-color:#14b8a6 !important;
+}
+
+.black-orb-save-fail,
+.black-orb-relic-save-btn.black-orb-save-fail,
+.black-orb-skill-save-btn.black-orb-save-fail,
+.black-orb-order-statue-save-btn.black-orb-save-fail,
+.black-orb-companion-save-btn.black-orb-save-fail{
+  background:#ef4444 !important;
+  color:#fff !important;
+  border-color:#ef4444 !important;
+}
+
 </style>
 </head>
 <body>
@@ -7313,5 +7335,226 @@ window.closeAdventurePopup = closeAdventurePopup;
 window.calculateAdventureFloor = calculateAdventureFloor;
 window.goToAdventureSkillSettings = goToAdventureSkillSettings;
 </script>
+
+<script>
+(function(){
+  function setBlackOrbSaveButtonState(button, state){
+    if(!button) return;
+    clearTimeout(button._blackOrbSaveTimer);
+
+    if(!button.dataset.defaultText){
+      button.dataset.defaultText = button.textContent || "저장하기";
+    }
+
+    button.classList.remove("black-orb-save-done", "black-orb-save-fail");
+
+    if(state === "done"){
+      button.classList.add("black-orb-save-done");
+      button.textContent = "저장 완료";
+    }else if(state === "fail"){
+      button.classList.add("black-orb-save-fail");
+      button.textContent = "저장 불가";
+    }
+
+    button._blackOrbSaveTimer = setTimeout(function(){
+      button.classList.remove("black-orb-save-done", "black-orb-save-fail");
+      button.textContent = button.dataset.defaultText || "저장하기";
+    }, 1600);
+  }
+
+  function showBlackOrbSaveDone(selector){
+    setBlackOrbSaveButtonState(document.querySelector(selector), "done");
+  }
+
+  function showBlackOrbSaveFail(selector){
+    setBlackOrbSaveButtonState(document.querySelector(selector), "fail");
+  }
+
+  function isIntegerInRange(value, min, max, allowBlank){
+    const text = String(value ?? "").trim();
+    if(text === "") return !!allowBlank;
+    if(!/^\d+$/.test(text)) return false;
+    const number = Number(text);
+    return Number.isInteger(number) && number >= min && number <= max;
+  }
+
+  function collectValues(selector){
+    return Array.from(document.querySelectorAll(selector)).map(function(input){
+      return String(input.value || "").trim();
+    });
+  }
+
+  function validateBlackOrbRelicPopup(){
+    return collectValues("#blackOrbRelicPopup .black-orb-relic-input")
+      .every(function(value){ return isIntegerInRange(value, 0, 100, true); });
+  }
+
+  function validateBlackOrbSkillMasteryPopup(){
+    const input = document.getElementById("blackOrbSkillMasteryLevel");
+    return isIntegerInRange(input ? input.value : "", 1, 328, false);
+  }
+
+  function validateBlackOrbOrderStatuePopup(){
+    const input = document.getElementById("blackOrbOrderStatueLevel");
+    return isIntegerInRange(input ? input.value : "", 1, 80, false);
+  }
+
+  function validateBlackOrbCompanionPopup(){
+    const companionLevelsValid = collectValues("#blackOrbCompanionPopupBg .companion-level")
+      .every(function(value){ return isIntegerInRange(value, 1, 9999, true); });
+
+    const skillLevelsValid = collectValues("#blackOrbCompanionPopupBg .companion-skill-level")
+      .every(function(value){ return isIntegerInRange(value, 1, 100, true); });
+
+    return companionLevelsValid && skillLevelsValid;
+  }
+
+  function collectBlackOrbCompanionLocalSettings(){
+    const getValues = function(selector){
+      return Array.from(document.querySelectorAll(selector)).map(function(el){
+        return String(el.value || "").trim();
+      });
+    };
+
+    return {
+      companionLevels: getValues("#blackOrbCompanionPopupBg .companion-level"),
+      jobPages: getValues("#blackOrbCompanionPopupBg .companion-job-page"),
+      jobCounts: getValues("#blackOrbCompanionPopupBg .companion-job-count"),
+      skillLevels: getValues("#blackOrbCompanionPopupBg .companion-skill-level"),
+      savedAt: new Date().toISOString()
+    };
+  }
+
+  function hideOldMessage(id){
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.classList.remove("show");
+    el.textContent = "";
+  }
+
+  window.saveBlackOrbRelicSettings = async function(){
+    if(!validateBlackOrbRelicPopup()){
+      if(window.showBlackOrbRelicTooltip) window.showBlackOrbRelicTooltip();
+      showBlackOrbSaveFail(".black-orb-relic-save-btn");
+      return;
+    }
+
+    if(window.hideBlackOrbRelicTooltip) window.hideBlackOrbRelicTooltip();
+
+    const values = window.collectBlackOrbRelicSettings ? window.collectBlackOrbRelicSettings() : {};
+    localStorage.setItem("blackOrbRelicSettings", JSON.stringify(values));
+
+    if(window.saveBlackOrbRelicSettingsToCloud){
+      const result = await window.saveBlackOrbRelicSettingsToCloud(values);
+      if(!result || !result.ok){
+        showBlackOrbSaveFail(".black-orb-relic-save-btn");
+        return;
+      }
+    }
+
+    showBlackOrbSaveDone(".black-orb-relic-save-btn");
+  };
+
+  window.saveBlackOrbSkillMasterySettings = async function(){
+    if(!validateBlackOrbSkillMasteryPopup()){
+      if(window.showBlackOrbSkillMasteryTooltip) window.showBlackOrbSkillMasteryTooltip();
+      showBlackOrbSaveFail(".black-orb-skill-save-btn");
+      return;
+    }
+
+    if(window.hideBlackOrbSkillMasteryTooltip) window.hideBlackOrbSkillMasteryTooltip();
+
+    const values = window.collectBlackOrbSkillMasterySettings ? window.collectBlackOrbSkillMasterySettings() : {};
+    localStorage.setItem("blackOrbSkillMasterySettings", JSON.stringify(values));
+
+    if(window.saveBlackOrbSkillMasterySettingsToCloud){
+      const result = await window.saveBlackOrbSkillMasterySettingsToCloud(values);
+      if(!result || !result.ok){
+        showBlackOrbSaveFail(".black-orb-skill-save-btn");
+        return;
+      }
+    }
+
+    showBlackOrbSaveDone(".black-orb-skill-save-btn");
+  };
+
+  window.saveBlackOrbOrderStatueSettings = async function(){
+    if(!validateBlackOrbOrderStatuePopup()){
+      if(window.showBlackOrbOrderStatueTooltip) window.showBlackOrbOrderStatueTooltip();
+      showBlackOrbSaveFail(".black-orb-order-statue-save-btn");
+      return;
+    }
+
+    if(window.hideBlackOrbOrderStatueTooltip) window.hideBlackOrbOrderStatueTooltip();
+
+    const values = window.collectBlackOrbOrderStatueSettings ? window.collectBlackOrbOrderStatueSettings() : {};
+    localStorage.setItem("blackOrbOrderStatueSettings", JSON.stringify(values));
+
+    if(window.saveBlackOrbOrderStatueSettingsToCloud){
+      const result = await window.saveBlackOrbOrderStatueSettingsToCloud(values);
+      if(!result || !result.ok){
+        showBlackOrbSaveFail(".black-orb-order-statue-save-btn");
+        return;
+      }
+    }
+
+    showBlackOrbSaveDone(".black-orb-order-statue-save-btn");
+  };
+
+  window.saveBlackOrbCompanionSettings = async function(){
+    hideOldMessage("blackOrbCompanionMsg");
+
+    if(!validateBlackOrbCompanionPopup()){
+      showBlackOrbSaveFail(".black-orb-companion-save-btn");
+      return;
+    }
+
+    const values = collectBlackOrbCompanionLocalSettings();
+    localStorage.setItem("blackOrbCompanionSettings", JSON.stringify(values));
+
+    if(window.saveBlackOrbCompanionSettingsToCloud){
+      const result = await window.saveBlackOrbCompanionSettingsToCloud(values);
+      if(!result || !result.ok){
+        showBlackOrbSaveFail(".black-orb-companion-save-btn");
+        return;
+      }
+    }
+
+    showBlackOrbSaveDone(".black-orb-companion-save-btn");
+  };
+
+  window.saveBlackOrbResonanceSettings = function(){
+    localStorage.setItem("blackOrbResonanceSettings", JSON.stringify({
+      savedAt: new Date().toISOString()
+    }));
+    setBlackOrbSaveButtonState(document.getElementById("blackOrbResonanceSaveBtn"), "done");
+  };
+
+  function renderBlackOrbResonanceSaveButton(){
+    const title = document.getElementById("blackOrbDamageAmpPopupTitle");
+    const placeholder = document.getElementById("blackOrbDamageAmpPlaceholder");
+
+    if(!title || !placeholder) return;
+    if(title.textContent.trim() !== "오브 공명") return;
+
+    placeholder.style.display = "block";
+    placeholder.innerHTML = `
+      <div style="width:100%;display:grid;gap:12px;">
+        <div style="display:flex;align-items:center;justify-content:center;min-height:38px;color:#64748b;font-size:15px;font-weight:900;">계산식 입력 예정</div>
+        <button id="blackOrbResonanceSaveBtn" type="button" class="black-orb-order-statue-save-btn" onclick="saveBlackOrbResonanceSettings()">저장하기</button>
+      </div>
+    `;
+  }
+
+  const originalOpenBlackOrbDamageAmpPopup = window.openBlackOrbDamageAmpPopup;
+  window.openBlackOrbDamageAmpPopup = function(title){
+    if(typeof originalOpenBlackOrbDamageAmpPopup === "function"){
+      originalOpenBlackOrbDamageAmpPopup(title);
+    }
+    setTimeout(renderBlackOrbResonanceSaveButton, 0);
+  };
+})();
+</script>
+
 </body>
 </html>
