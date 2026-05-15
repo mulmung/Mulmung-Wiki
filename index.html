@@ -8944,10 +8944,10 @@ window.goToAdventureSkillSettings = goToAdventureSkillSettings;
 /* 유물 증가 데미지 계산/표시 최종 보정 */
 (function(){
   const RELIC_ROWS = [
-    { inputId: "blackOrbRelicWindLevel",  damageId: "blackOrbRelicWindDamage",  label: "바람", element: "wind" },
-    { inputId: "blackOrbRelicEarthLevel", damageId: "blackOrbRelicEarthDamage", label: "땅",   element: "earth" },
-    { inputId: "blackOrbRelicFireLevel",  damageId: "blackOrbRelicFireDamage",  label: "불",   element: "fire" },
-    { inputId: "blackOrbRelicWaterLevel", damageId: "blackOrbRelicWaterDamage", label: "물",   element: "water" }
+    { inputId: "blackOrbRelicTyphoonEye",   damageId: "blackOrbRelicTyphoonEyeDamage",   label: "바람", element: "wind" },
+    { inputId: "blackOrbRelicKingProof",    damageId: "blackOrbRelicKingProofDamage",    label: "땅",   element: "earth" },
+    { inputId: "blackOrbRelicSilentFlame",  damageId: "blackOrbRelicSilentFlameDamage",  label: "불",   element: "fire" },
+    { inputId: "blackOrbRelicAbyssDrop",    damageId: "blackOrbRelicAbyssDropDamage",    label: "물",   element: "water" }
   ];
 
   const style = document.createElement("style");
@@ -9062,6 +9062,12 @@ window.goToAdventureSkillSettings = goToAdventureSkillSettings;
     });
     window.updateBlackOrbRelicDamageSummary();
   }
+
+  const previousOpenRelicPopup = window.openBlackOrbRelicPopup;
+  window.openBlackOrbRelicPopup = function(){
+    if(typeof previousOpenRelicPopup === "function") previousOpenRelicPopup.apply(this, arguments);
+    setTimeout(bindRelicDamageEvents, 0);
+  };
 
   if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", bindRelicDamageEvents);
   else bindRelicDamageEvents();
