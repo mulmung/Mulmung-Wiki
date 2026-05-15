@@ -1251,6 +1251,73 @@ button.faq-flow-item:focus,button.faq-flow-item:focus-visible{outline:none;borde
   .black-orb-compare-title{min-width:58px;height:23px;font-size:10.5px;padding:0 9px;}
 }
 
+/* 블랙 오브 변경하기 버튼 / 확인 팝업 */
+.black-orb-apply-row{
+  display:flex;
+  justify-content:center;
+  margin:14px 0 0;
+}
+.black-orb-apply-btn{
+  min-width:132px;
+  height:42px;
+  border:none;
+  border-radius:999px;
+  background:#111827;
+  color:#fff;
+  font-size:15px;
+  font-weight:950;
+  cursor:pointer;
+  box-shadow:0 8px 18px rgba(15,23,42,.18);
+}
+.black-orb-apply-btn:hover{filter:brightness(.96)}
+.black-orb-confirm-popup{
+  width:100%;
+  max-width:330px;
+  padding:22px 18px 18px;
+  border-radius:22px;
+  background:#fff;
+  box-shadow:0 16px 42px rgba(0,0,0,.30);
+  text-align:center;
+}
+.black-orb-confirm-title{
+  margin:0 0 10px;
+  font-size:18px;
+  font-weight:950;
+  color:#111827;
+  letter-spacing:-.04em;
+}
+.black-orb-confirm-text{
+  margin:0 0 16px;
+  color:#4b5563;
+  font-size:13px;
+  font-weight:850;
+  line-height:1.55;
+  word-break:keep-all;
+}
+.black-orb-confirm-actions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+}
+.black-orb-confirm-cancel,.black-orb-confirm-apply{
+  height:40px;
+  border:none;
+  border-radius:999px;
+  font-size:14px;
+  font-weight:950;
+  cursor:pointer;
+}
+.black-orb-confirm-cancel{background:#e5e7eb;color:#111827}
+.black-orb-confirm-apply{background:#111827;color:#fff}
+@media(max-width:768px){
+  .black-orb-apply-row{margin-top:10px}
+  .black-orb-apply-btn{min-width:116px;height:38px;font-size:13px}
+  .black-orb-confirm-popup{max-width:300px;padding:20px 16px 16px}
+  .black-orb-confirm-title{font-size:16px}
+  .black-orb-confirm-text{font-size:12px}
+  .black-orb-confirm-cancel,.black-orb-confirm-apply{height:38px;font-size:13px}
+}
+
 </style>
 </head>
 <body>
@@ -3041,6 +3108,9 @@ function addSections() {
           </div>
           </div>
         </div>
+        <div class="black-orb-apply-row">
+          <button type="button" class="black-orb-apply-btn" onclick="openBlackOrbApplyConfirmPopup()">변경하기</button>
+        </div>
       </div>
 
       <div class="black-orb-attribute-setting-wrap" aria-label="속성별 오브 설정">
@@ -3251,6 +3321,17 @@ function addSections() {
             <button type="button" class="black-orb-value-choice grade-hero" data-value="5" data-label="+5%" data-class="grade-hero" onclick="selectBlackOrbValueFromPopup(this)">+5%</button>
             <button type="button" class="black-orb-value-choice grade-legend" data-value="6" data-label="+6%" data-class="grade-legend" onclick="selectBlackOrbValueFromPopup(this)">+6%</button>
             <button type="button" class="black-orb-value-choice grade-myth" data-value="7" data-label="+7%" data-class="grade-myth" onclick="selectBlackOrbValueFromPopup(this)">+7%</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="blackOrbApplyConfirmPopupBg" class="black-orb-element-popup-bg" onclick="closeBlackOrbApplyConfirmPopup(event)">
+        <div class="black-orb-confirm-popup" onclick="event.stopPropagation()">
+          <h3 class="black-orb-confirm-title">정말 변경하시겠습니까?</h3>
+          <p class="black-orb-confirm-text">현재 선택한 속성의 기존 오브 세팅값이<br />변경 후 옵션으로 바뀝니다.</p>
+          <div class="black-orb-confirm-actions">
+            <button type="button" class="black-orb-confirm-cancel" onclick="closeBlackOrbApplyConfirmPopup()">취소</button>
+            <button type="button" class="black-orb-confirm-apply" onclick="applyBlackOrbAfterToBefore()">변경하기</button>
           </div>
         </div>
       </div>
@@ -6956,6 +7037,87 @@ async function saveBlackOrbDetailStateToStorage() {
   }
 }
 
+function collectBlackOrbOptionBoxState(box) {
+  const topInput = box?.querySelector('.black-orb-option-row .black-orb-input');
+  const rows = box ? Array.from(box.querySelectorAll('.black-orb-detail-row')) : [];
+  return {
+    topValue: topInput ? topInput.value : '',
+    rows: rows.map((row) => {
+      const picker = row.querySelector('.black-orb-element-picker');
+      const valueButton = row.querySelector('.black-orb-value-badge');
+      const input = row.querySelector('.black-orb-input');
+      return {
+        value: picker?.dataset.value || 'all',
+        label: picker?.dataset.label || '모든',
+        badgeClass: picker?.dataset.class || 'all',
+        number: input?.value || '',
+        percentValue: valueButton?.dataset.value || '',
+        percentLabel: valueButton?.dataset.label || '없음',
+        percentClass: valueButton?.dataset.class || 'none'
+      };
+    })
+  };
+}
+function applyBlackOrbOptionBoxState(box, state) {
+  if (!box || !state) return;
+  const topInput = box.querySelector('.black-orb-option-row .black-orb-input');
+  if (topInput) topInput.value = state.topValue || '';
+  const rows = box.querySelectorAll('.black-orb-detail-row');
+  rows.forEach((row, index) => {
+    const rowState = state.rows?.[index] || { value:'all', label:'모든', badgeClass:'all', number:'', percentValue:'', percentLabel:'없음', percentClass:'none' };
+    const picker = row.querySelector('.black-orb-element-picker');
+    const input = row.querySelector('.black-orb-input');
+    applyBlackOrbPickerState(picker, rowState);
+    if (input) input.value = rowState.number || '';
+    updateBlackOrbX2ForRow(row);
+  });
+}
+function resetBlackOrbAfterOptionBox() {
+  const afterBox = document.querySelector('#blackOrbPanel .black-orb-after-box');
+  if (!afterBox) return;
+  applyBlackOrbOptionBoxState(afterBox, createBlackOrbDetailPopupState());
+  updateAllBlackOrbX2Badges();
+}
+function openBlackOrbApplyConfirmPopup() {
+  const mainAttr = getCurrentMainBlackOrbAttribute();
+  if (!mainAttr) {
+    alert('먼저 변경할 메인 속성을 선택해 주세요.');
+    return;
+  }
+  const popup = document.getElementById('blackOrbApplyConfirmPopupBg');
+  if (popup) popup.classList.add('show');
+}
+function closeBlackOrbApplyConfirmPopup(event) {
+  if (event && event.target && event.currentTarget && event.target !== event.currentTarget) return;
+  const popup = document.getElementById('blackOrbApplyConfirmPopupBg');
+  if (popup) popup.classList.remove('show');
+}
+async function applyBlackOrbAfterToBefore() {
+  const mainAttr = getCurrentMainBlackOrbAttribute();
+  if (!mainAttr || !blackOrbDetailPopupState[mainAttr]) {
+    closeBlackOrbApplyConfirmPopup();
+    alert('먼저 변경할 메인 속성을 선택해 주세요.');
+    return;
+  }
+  const afterBox = document.querySelector('#blackOrbPanel .black-orb-after-box');
+  const beforeBox = document.querySelector('#blackOrbPanel .black-orb-before-box');
+  if (!afterBox || !beforeBox) return;
+  const nextState = collectBlackOrbOptionBoxState(afterBox);
+  while (nextState.rows.length < 4) nextState.rows.push({ value:'all', label:'모든', badgeClass:'all', number:'', percentValue:'', percentLabel:'없음', percentClass:'none' });
+  blackOrbDetailPopupState[mainAttr] = {
+    topValue: nextState.topValue || '',
+    rows: nextState.rows.slice(0, 4)
+  };
+  applyBlackOrbOptionBoxState(beforeBox, blackOrbDetailPopupState[mainAttr]);
+  const detailPopup = document.getElementById('blackOrbDetailPopup');
+  if (detailPopup?.dataset.currentAttribute === mainAttr) loadBlackOrbDetailState(mainAttr);
+  resetBlackOrbAfterOptionBox();
+  persistBlackOrbDetailStates();
+  updateAllBlackOrbX2Badges();
+  closeBlackOrbApplyConfirmPopup();
+  await saveBlackOrbDetailStateToCloud();
+}
+
 function openBlackOrbMainAttributePopup() {
   const popup = document.getElementById("blackOrbMainAttributePopupBg");
   if (popup) popup.classList.add("show");
@@ -7054,6 +7216,9 @@ function closeBlackOrbDetailPopup(event) {
   const popupBg = document.getElementById("blackOrbDetailPopupBg");
   if (popupBg) popupBg.classList.remove("show");
 }
+window.openBlackOrbApplyConfirmPopup = openBlackOrbApplyConfirmPopup;
+window.closeBlackOrbApplyConfirmPopup = closeBlackOrbApplyConfirmPopup;
+window.applyBlackOrbAfterToBefore = applyBlackOrbAfterToBefore;
 window.openBlackOrbMainAttributePopup = openBlackOrbMainAttributePopup;
 window.closeBlackOrbMainAttributePopup = closeBlackOrbMainAttributePopup;
 window.selectBlackOrbMainAttribute = selectBlackOrbMainAttribute;
