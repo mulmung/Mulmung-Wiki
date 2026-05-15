@@ -1572,7 +1572,7 @@ button.faq-flow-item:focus,button.faq-flow-item:focus-visible{outline:none;borde
     </div>
   </div>
   <div class="profile-popup-bg" id="profilePopupBg" onclick="closeProfilePopup()">
-    <div class="profile-popup" onclick="event.stopPropagation()">
+    <div class="profile-popup" onclick="event.stopPropagation()" onpointerdown="event.stopPropagation()" ontouchstart="event.stopPropagation()" onmousedown="event.stopPropagation()">
       <button class="popup-floating-close-btn" type="button" onclick="closeProfilePopup()" aria-label="닫기">×</button>
       <h3>내 정보 설정</h3>
       <div class="profile-field">
@@ -6012,9 +6012,13 @@ function openProfilePopup() {
   nicknameInput.removeAttribute("disabled");
   nicknameInput.removeAttribute("readonly");
   nicknameInput.style.pointerEvents = "auto";
+  nicknameInput.style.userSelect = "text";
+  nicknameInput.style.webkitUserSelect = "text";
+  nicknameInput.tabIndex = 0;
   nicknameInput.value = currentNickname || "";
   serverInputs.forEach(radio => { radio.checked = currentServer ? radio.value === currentServer : false; });
   promotionSelect.innerHTML = `<option value="">승급 미설정</option>` + promotionStages.map(stage => `<option value="${stage}" ${stage === currentPromotionStage ? "selected" : ""}>${stage}</option>`).join("");
+  bindProfileInputTouchFix();
   popup.classList.add("show");
   setTimeout(() => {
     try {
@@ -6023,6 +6027,32 @@ function openProfilePopup() {
       nicknameInput.setSelectionRange(valueLength, valueLength);
     } catch (error) {}
   }, 80);
+
+}
+function bindProfileInputTouchFix() {
+  const popup = document.getElementById("profilePopupBg");
+  const card = popup ? popup.querySelector(".profile-popup") : null;
+  const nicknameInput = document.getElementById("profileNicknameInput");
+  const promotionSelect = document.getElementById("profilePromotionSelect");
+  if (!popup || !card || !nicknameInput) return;
+  if (nicknameInput.dataset.profileTouchFixed === "1") return;
+  nicknameInput.dataset.profileTouchFixed = "1";
+  [card, nicknameInput, promotionSelect].filter(Boolean).forEach(el => {
+    ["pointerdown", "touchstart", "mousedown", "click"].forEach(eventName => {
+      el.addEventListener(eventName, event => {
+        event.stopPropagation();
+      }, { passive: true });
+    });
+  });
+  ["focus", "input", "keydown", "keyup", "compositionstart", "compositionend"].forEach(eventName => {
+    nicknameInput.addEventListener(eventName, () => {
+      nicknameInput.disabled = false;
+      nicknameInput.readOnly = false;
+      nicknameInput.removeAttribute("disabled");
+      nicknameInput.removeAttribute("readonly");
+      nicknameInput.style.pointerEvents = "auto";
+    });
+  });
 }
 function closeProfilePopup() {
   const popup = document.getElementById("profilePopupBg");
@@ -7984,13 +8014,24 @@ window.goToAdventureSkillSettings = goToAdventureSkillSettings;
     const raw = digitsOnly(value);
     return raw ? raw.replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "";
   }
+  function shouldFinalCommaInput(input){
+    if(!input || input.tagName !== "INPUT") return false;
+    return input.classList.contains("black-orb-comma-input") ||
+      input.classList.contains("companion-level") ||
+      input.classList.contains("companion-skill-level") ||
+      input.classList.contains("black-orb-order-statue-input") ||
+      input.classList.contains("black-orb-relic-level") ||
+      input.id === "blackOrbResonanceLevel" ||
+      input.id === "blackOrbSkillMasteryLevel" ||
+      input.id === "blackOrbOrderStatueLevel";
+  }
   function applyComma(input){
-    if(!input || input.dataset.blackOrbCommaFinal === "1") return;
+    if(!shouldFinalCommaInput(input) || input.dataset.blackOrbCommaFinal === "1") return;
     input.dataset.blackOrbCommaFinal = "1";
     input.addEventListener("input", function(){
       const before = input.value;
       const after = comma(before);
-      input.value = after;
+      if(input.value !== after) input.value = after;
     });
   }
   function setButtonState(btn, state){
@@ -8277,6 +8318,15 @@ window.goToAdventureSkillSettings = goToAdventureSkillSettings;
 @media(max-width:768px){.black-orb-value-select-popup{max-width:132px !important;padding:12px 10px 14px !important;}.black-orb-value-popup-title{font-size:14px !important;}.black-orb-value-choice{width:46px;height:25px;min-height:25px;font-size:11px;padding:0 7px;}.black-orb-value-choice-grid{gap:6px;}}
 @media(max-width:380px){.black-orb-value-choice{width:42px;height:23px;min-height:23px;font-size:10px;padding:0 6px;}}
 
+
+/* Profile popup input touch/focus fix */
+.profile-popup{position:relative !important;isolation:isolate;}
+.profile-popup .popup-floating-close-btn{position:absolute !important;top:12px !important;right:12px !important;left:auto !important;margin:0 !important;z-index:20 !important;}
+.profile-popup h3{position:relative;z-index:1;padding-right:36px;padding-left:36px;}
+.profile-popup .profile-field,.profile-popup .profile-action-row,.profile-popup .profile-help{position:relative;z-index:10;}
+.profile-popup .profile-input,.profile-popup .profile-select,.profile-popup input,.profile-popup select{position:relative !important;z-index:15 !important;pointer-events:auto !important;-webkit-user-select:text !important;user-select:text !important;touch-action:manipulation;}
+.profile-popup .profile-input:disabled,.profile-popup .profile-select:disabled{opacity:1;}
+@media(max-width:768px){.profile-popup .popup-floating-close-btn{top:10px !important;right:10px !important}.profile-popup h3{padding-right:30px;padding-left:30px}}
 </style>
 <script>
 (function(){
