@@ -1464,6 +1464,20 @@ button.faq-flow-item:focus,button.faq-flow-item:focus-visible{outline:none;borde
 @media(max-width:768px){.black-orb-skill-title{font-size:21px;margin:8px 34px 12px}}
 .black-orb-resonance-body{width:100%;display:grid;gap:12px;}
 .black-orb-resonance-range-text{display:flex;align-items:center;justify-content:center;min-height:30px;color:#64748b;font-size:13px;font-weight:900;}
+
+/* 블랙 오브 속성 선택 팝업 2열 고정: [모든][없음] / [바람][땅] / [불][물] */
+.black-orb-element-select-grid{
+  display:grid !important;
+  grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  gap:8px !important;
+}
+.black-orb-element-select-grid .black-orb-element-choice,
+.black-orb-element-select-grid .black-orb-element-choice-all{
+  grid-column:auto !important;
+  justify-self:stretch !important;
+  width:100% !important;
+}
+
 </style>
 </head>
 <body>
