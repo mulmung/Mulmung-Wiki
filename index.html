@@ -108,10 +108,22 @@ button::-moz-focus-inner{border:0}
 .black-orb-damage-amp-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .black-orb-damage-amp-btn{min-height:48px;border:2px solid rgba(20,184,166,.55);border-radius:16px;background:#fff;color:#111827;font-size:14px;font-weight:950;cursor:pointer;box-shadow:0 8px 16px rgba(15,23,42,.08);word-break:keep-all}
 .black-orb-damage-amp-btn:hover{transform:translateY(-1px);background:#f0fdfa}
-.black-orb-damage-amp-popup-card{width:min(88vw,320px);padding:24px 18px 18px;border:4px solid #14b8a6;border-radius:24px;background:#fff;box-shadow:0 20px 45px rgba(15,23,42,.28);position:relative;text-align:center}
+.black-orb-damage-amp-popup-card{width:min(88vw,390px);padding:24px 18px 18px;border:4px solid #14b8a6;border-radius:24px;background:#fff;box-shadow:0 20px 45px rgba(15,23,42,.28);position:relative;text-align:center}
 .black-orb-damage-amp-popup-title{font-size:24px;font-weight:950;margin:8px 34px 14px;color:#0f172a;word-break:keep-all}
 .black-orb-damage-amp-popup-body{min-height:52px;border:3px solid rgba(20,184,166,.25);border-radius:16px;background:#f8fafc;color:#64748b;font-size:16px;font-weight:900;display:flex;align-items:center;justify-content:center;text-align:center;padding:12px}
-@media(max-width:768px){.black-orb-damage-amp-wrap{margin-top:16px;padding:14px 12px;border-radius:18px}.black-orb-damage-amp-title{height:30px;min-width:92px;margin:-30px auto 10px;font-size:12px;padding:0 14px}.black-orb-damage-amp-grid{gap:7px}.black-orb-damage-amp-btn{min-height:42px;border-radius:13px;font-size:12px;padding:0 4px}.black-orb-damage-amp-popup-card{width:min(86vw,300px);padding:22px 14px 16px;border-radius:22px}.black-orb-damage-amp-popup-title{font-size:21px}.black-orb-damage-amp-popup-body{min-height:48px;font-size:14px;border-radius:14px}}
+.black-orb-order-statue-body{display:grid;gap:12px}
+.black-orb-order-statue-input{width:100%;height:46px;border:2px solid rgba(20,184,166,.38);border-radius:16px;background:#f8fafc;color:#111827;text-align:center;font-size:16px;font-weight:950;outline:none}
+.black-orb-order-statue-input:focus{border-color:#14b8a6;box-shadow:0 0 0 3px rgba(20,184,166,.14);background:#fff}
+.black-orb-order-statue-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;align-items:stretch}
+.black-orb-order-statue-element,.black-orb-order-statue-value{min-height:38px;border-radius:14px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:13px;font-weight:950;line-height:1.15;word-break:keep-all}
+.black-orb-order-statue-element.wind{background:var(--wind-color);color:#fff}.black-orb-order-statue-element.earth{background:var(--earth-color);color:#111827}.black-orb-order-statue-element.fire{background:var(--fire-color);color:#fff}.black-orb-order-statue-element.water{background:var(--water-color);color:#fff}
+.black-orb-order-statue-value{border:2px solid rgba(20,184,166,.30);background:#fff;color:#0f766e}
+.black-orb-order-statue-save-wrap{position:relative;padding-bottom:0}
+.black-orb-order-statue-save-btn{width:100%;height:44px;border:none;border-radius:999px;background:#111827;color:#fff;font-size:15px;font-weight:950;cursor:pointer}
+.black-orb-order-statue-tooltip{display:none;position:absolute;left:50%;top:calc(100% + 8px);transform:translateX(-50%);z-index:5;width:max-content;max-width:260px;padding:9px 12px;border-radius:999px;background:#111827;color:#fff;font-size:12px;font-weight:900;box-shadow:0 8px 18px rgba(15,23,42,.22);white-space:nowrap}
+.black-orb-order-statue-tooltip.show{display:block}
+.black-orb-order-statue-tooltip::before{content:"";position:absolute;left:50%;top:-6px;transform:translateX(-50%);border-left:6px solid transparent;border-right:6px solid transparent;border-bottom:7px solid #111827}
+@media(max-width:768px){.black-orb-damage-amp-wrap{margin-top:16px;padding:14px 12px;border-radius:18px}.black-orb-damage-amp-title{height:30px;min-width:92px;margin:-30px auto 10px;font-size:12px;padding:0 14px}.black-orb-damage-amp-grid{gap:7px}.black-orb-damage-amp-btn{min-height:42px;border-radius:13px;font-size:12px;padding:0 4px}.black-orb-damage-amp-popup-card{width:min(86vw,330px);padding:22px 14px 16px;border-radius:22px}.black-orb-damage-amp-popup-title{font-size:21px}.black-orb-damage-amp-popup-body{min-height:48px;font-size:14px;border-radius:14px}.black-orb-order-statue-grid{gap:5px}.black-orb-order-statue-element,.black-orb-order-statue-value{min-height:34px;border-radius:12px;font-size:11px}.black-orb-order-statue-input{height:42px;font-size:15px}.black-orb-order-statue-save-btn{height:42px;font-size:14px}.black-orb-order-statue-tooltip{font-size:11px;max-width:230px}}
 .black-orb-detail-popup-bg{display:none;position:fixed;inset:0;z-index:3650;background:rgba(0,0,0,.48);padding:20px}
 .black-orb-detail-popup-bg.show{display:flex;align-items:center;justify-content:center}
 .black-orb-detail-popup{--black-orb-popup-color:#14b8a6;width:100%;max-width:420px;padding:22px 18px 18px;border:3px solid var(--black-orb-popup-color);border-radius:24px;background:#fff;box-shadow:0 16px 42px rgba(0,0,0,.30);color:#111827}
@@ -3279,7 +3291,24 @@ function addSections() {
         <div class="black-orb-damage-amp-popup-card" onclick="event.stopPropagation()">
           <button type="button" class="popup-floating-close-btn" onclick="closeBlackOrbDamageAmpPopup()">×</button>
           <div id="blackOrbDamageAmpPopupTitle" class="black-orb-damage-amp-popup-title">증폭 데미지</div>
-          <div class="black-orb-damage-amp-popup-body">계산식 입력 예정</div>
+          <div id="blackOrbDamageAmpPlaceholder" class="black-orb-damage-amp-popup-body">계산식 입력 예정</div>
+          <div id="blackOrbOrderStatueBody" class="black-orb-order-statue-body" style="display:none;">
+            <input id="blackOrbOrderStatueLevel" class="black-orb-order-statue-input" type="number" min="1" max="80" inputmode="numeric" placeholder="레벨 입력" autocomplete="off" />
+            <div class="black-orb-order-statue-grid" aria-label="질서의 신상 속성별 증폭량">
+              <div class="black-orb-order-statue-element wind">바람</div>
+              <div class="black-orb-order-statue-element earth">땅</div>
+              <div class="black-orb-order-statue-element fire">불</div>
+              <div class="black-orb-order-statue-element water">물</div>
+              <div id="blackOrbOrderStatueWindAmp" class="black-orb-order-statue-value">증폭량</div>
+              <div id="blackOrbOrderStatueEarthAmp" class="black-orb-order-statue-value">증폭량</div>
+              <div id="blackOrbOrderStatueFireAmp" class="black-orb-order-statue-value">증폭량</div>
+              <div id="blackOrbOrderStatueWaterAmp" class="black-orb-order-statue-value">증폭량</div>
+            </div>
+            <div class="black-orb-order-statue-save-wrap">
+              <button type="button" class="black-orb-order-statue-save-btn" onclick="saveBlackOrbOrderStatueSettings()">저장하기</button>
+              <div id="blackOrbOrderStatueTooltip" class="black-orb-order-statue-tooltip">1에서 80까지만 입력할 수 있습니다.</div>
+            </div>
+          </div>
         </div>
       </div>
       <div id="blackOrbCompanionPopupBg" class="black-orb-companion-popup-bg" onclick="closeBlackOrbCompanionPopup(event)">
@@ -7191,9 +7220,16 @@ window.collectBlackOrbSkillMasterySettings=collectBlackOrbSkillMasterySettings;w
 window.saveBlackOrbSkillMasterySettings=async function(){const values=collectBlackOrbSkillMasterySettings();if(!isValidBlackOrbSkillMasteryLevel(values.level)){showBlackOrbSkillMasteryTooltip();return}hideBlackOrbSkillMasteryTooltip();localStorage.setItem("blackOrbSkillMasterySettings",JSON.stringify(values));if(window.saveBlackOrbSkillMasterySettingsToCloud){const result=await window.saveBlackOrbSkillMasterySettingsToCloud(values);if(!result||!result.ok){alert(result&&result.reason==="login"?"로그인 후 저장할 수 있습니다.":"저장 중 오류가 발생했습니다.");return}}alert("스킬 숙련도 정보가 저장되었습니다.")};
 (function initBlackOrbSkillMasteryLocalSettings(){try{const saved=localStorage.getItem("blackOrbSkillMasterySettings");if(saved)applyBlackOrbSkillMasterySettings(JSON.parse(saved))}catch(e){console.warn("스킬 숙련도 저장값 불러오기 실패",e)}})();
 
-function openBlackOrbDamageAmpPopup(title){const p=document.getElementById("blackOrbDamageAmpPopup");const t=document.getElementById("blackOrbDamageAmpPopupTitle");if(t)t.textContent=title||"증폭 데미지";if(p)p.classList.add("active")}
-function closeBlackOrbDamageAmpPopup(event){if(event&&event.target&&event.target.id!=="blackOrbDamageAmpPopup")return;const p=document.getElementById("blackOrbDamageAmpPopup");if(p)p.classList.remove("active")}
-window.openBlackOrbDamageAmpPopup=openBlackOrbDamageAmpPopup;window.closeBlackOrbDamageAmpPopup=closeBlackOrbDamageAmpPopup;
+function openBlackOrbDamageAmpPopup(title){const p=document.getElementById("blackOrbDamageAmpPopup");const t=document.getElementById("blackOrbDamageAmpPopupTitle");const placeholder=document.getElementById("blackOrbDamageAmpPlaceholder");const orderBody=document.getElementById("blackOrbOrderStatueBody");if(t)t.textContent=title||"증폭 데미지";hideBlackOrbOrderStatueTooltip();if(title==="질서의 신상"){if(placeholder)placeholder.style.display="none";if(orderBody)orderBody.style.display="grid";}else{if(placeholder){placeholder.style.display="flex";placeholder.textContent="계산식 입력 예정";}if(orderBody)orderBody.style.display="none";}if(p)p.classList.add("active")}
+function closeBlackOrbDamageAmpPopup(event){if(event&&event.target&&event.target.id!=="blackOrbDamageAmpPopup")return;const p=document.getElementById("blackOrbDamageAmpPopup");if(p)p.classList.remove("active");hideBlackOrbOrderStatueTooltip()}
+function hideBlackOrbOrderStatueTooltip(){const t=document.getElementById("blackOrbOrderStatueTooltip");if(t)t.classList.remove("show")}
+function showBlackOrbOrderStatueTooltip(){const t=document.getElementById("blackOrbOrderStatueTooltip");if(!t)return;t.classList.add("show");clearTimeout(window.blackOrbOrderStatueTooltipTimer);window.blackOrbOrderStatueTooltipTimer=setTimeout(()=>t.classList.remove("show"),2400)}
+function isValidBlackOrbOrderStatueLevel(value){if(value===""||value===null||value===undefined)return false;if(!/^\d+$/.test(String(value).trim()))return false;const n=Number(value);return Number.isInteger(n)&&n>=1&&n<=80}
+function collectBlackOrbOrderStatueSettings(){const level=document.getElementById("blackOrbOrderStatueLevel");return{level:level?String(level.value||"").trim():"",wind:document.getElementById("blackOrbOrderStatueWindAmp")?.textContent||"증폭량",earth:document.getElementById("blackOrbOrderStatueEarthAmp")?.textContent||"증폭량",fire:document.getElementById("blackOrbOrderStatueFireAmp")?.textContent||"증폭량",water:document.getElementById("blackOrbOrderStatueWaterAmp")?.textContent||"증폭량"}}
+function applyBlackOrbOrderStatueSettings(values){if(!values)return;const level=document.getElementById("blackOrbOrderStatueLevel");if(level&&Object.prototype.hasOwnProperty.call(values,"level"))level.value=values.level||"";[["blackOrbOrderStatueWindAmp","wind"],["blackOrbOrderStatueEarthAmp","earth"],["blackOrbOrderStatueFireAmp","fire"],["blackOrbOrderStatueWaterAmp","water"]].forEach(([id,key])=>{const el=document.getElementById(id);if(el&&values[key])el.textContent=values[key]})}
+window.saveBlackOrbOrderStatueSettings=async function(){const values=collectBlackOrbOrderStatueSettings();if(!isValidBlackOrbOrderStatueLevel(values.level)){showBlackOrbOrderStatueTooltip();return}hideBlackOrbOrderStatueTooltip();localStorage.setItem("blackOrbOrderStatueSettings",JSON.stringify(values));if(window.saveBlackOrbOrderStatueSettingsToCloud){const result=await window.saveBlackOrbOrderStatueSettingsToCloud(values);if(!result||!result.ok){alert(result&&result.reason==="login"?"로그인 후 저장할 수 있습니다.":"저장 중 오류가 발생했습니다.");return}}alert("질서의 신상 정보가 저장되었습니다.")};
+(function initBlackOrbOrderStatueLocalSettings(){try{const saved=localStorage.getItem("blackOrbOrderStatueSettings");if(saved)applyBlackOrbOrderStatueSettings(JSON.parse(saved))}catch(e){console.warn("질서의 신상 저장값 불러오기 실패",e)}})();
+window.openBlackOrbDamageAmpPopup=openBlackOrbDamageAmpPopup;window.closeBlackOrbDamageAmpPopup=closeBlackOrbDamageAmpPopup;window.hideBlackOrbOrderStatueTooltip=hideBlackOrbOrderStatueTooltip;window.showBlackOrbOrderStatueTooltip=showBlackOrbOrderStatueTooltip;window.collectBlackOrbOrderStatueSettings=collectBlackOrbOrderStatueSettings;window.applyBlackOrbOrderStatueSettings=applyBlackOrbOrderStatueSettings;
 
 function openBlackOrbCompanionPopup() {
   const popup = document.getElementById("blackOrbCompanionPopupBg");
