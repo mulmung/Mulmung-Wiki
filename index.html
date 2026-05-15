@@ -60,6 +60,7 @@ button::-moz-focus-inner{border:0}
 .black-orb-element-picker{border:none;background:transparent;padding:0;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;min-width:44px;flex:0 0 auto}
 .black-orb-element-badge{display:inline-flex;align-items:center;justify-content:center;min-width:44px;height:30px;padding:0 10px;border-radius:999px;color:#ffffff;font-size:13px;font-weight:950;line-height:1;white-space:nowrap;box-shadow:0 5px 12px rgba(15,23,42,.12)}
 .black-orb-element-badge.all{background:#000;color:#fff}
+.black-orb-element-badge.none{background:#6b7280;color:#fff}
 .black-orb-element-badge.wind{background:var(--wind-color);color:#fff}
 .black-orb-element-badge.earth{background:var(--earth-color);color:#111827}
 .black-orb-element-badge.fire{background:var(--fire-color);color:#fff}
@@ -3428,6 +3429,7 @@ function addSections() {
           </div>
           <div class="black-orb-element-choice-grid black-orb-element-select-grid">
             <button type="button" class="black-orb-element-choice black-orb-element-choice-all" data-value="all" data-label="모든" data-class="all" onclick="selectBlackOrbElementFromPopup(this)"><span class="black-orb-element-badge all">모든</span></button>
+            <button type="button" class="black-orb-element-choice" data-value="none" data-label="없음" data-class="none" onclick="selectBlackOrbElementFromPopup(this)"><span class="black-orb-element-badge none">없음</span></button>
             <button type="button" class="black-orb-element-choice" data-value="wind" data-label="바람" data-class="wind" onclick="selectBlackOrbElementFromPopup(this)"><span class="black-orb-element-badge wind">바람</span></button>
             <button type="button" class="black-orb-element-choice" data-value="earth" data-label="땅" data-class="earth" onclick="selectBlackOrbElementFromPopup(this)"><span class="black-orb-element-badge earth">땅</span></button>
             <button type="button" class="black-orb-element-choice" data-value="fire" data-label="불" data-class="fire" onclick="selectBlackOrbElementFromPopup(this)"><span class="black-orb-element-badge fire">불</span></button>
