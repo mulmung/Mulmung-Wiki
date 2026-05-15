@@ -1575,8 +1575,9 @@ button.faq-flow-item:focus,button.faq-flow-item:focus-visible{outline:none;borde
 /* 블랙 오브 옵션 수치: 팝업 선택형 */
 .black-orb-detail-row.has-value-picker,
 .black-orb-popup-detail-row.has-value-picker {
-  grid-template-columns: minmax(58px, .82fr) minmax(92px, 1.18fr) 34px !important;
-  column-gap: 7px !important;
+  grid-template-columns: minmax(58px, 1fr) minmax(58px, 1fr) 32px !important;
+  column-gap: 6px !important;
+  align-items:center !important;
 }
 .black-orb-detail-row.has-value-picker > .black-orb-plus,
 .black-orb-detail-row.has-value-picker > .black-orb-percent,
@@ -1593,42 +1594,55 @@ button.faq-flow-item:focus,button.faq-flow-item:focus-visible{outline:none;borde
 }
 .black-orb-percent-picker-btn {
   width: 100%;
-  min-height: 38px;
-  border: 2px solid rgba(45, 212, 191, .35);
+  min-width: 0;
+  height: 34px;
+  border: 2px solid rgba(45, 212, 191, .28);
   border-radius: 999px;
   background: #ffffff;
   color: #111827;
   font-weight: 950;
-  font-size: 13px;
-  letter-spacing: -0.04em;
-  box-shadow: 0 8px 18px rgba(15, 23, 42, .08);
+  font-size: 12px;
+  letter-spacing: -0.05em;
+  line-height:1;
+  white-space: nowrap;
+  padding: 0 8px;
+  box-shadow: 0 6px 14px rgba(15, 23, 42, .08);
 }
 .black-orb-percent-picker-btn.value-0 { background:#6b7280; border-color:#6b7280; color:#fff; }
-.black-orb-percent-picker-btn.value-2 { background:#f8fafc; color:#111827; }
+.black-orb-percent-picker-btn.value-2 { background:#f8fafc; color:#111827; border-color:#e5e7eb; }
 .black-orb-percent-picker-btn.value-3 { background:#22c55e; color:#fff; border-color:#22c55e; }
 .black-orb-percent-picker-btn.value-4 { background:#f97316; color:#fff; border-color:#f97316; }
 .black-orb-percent-picker-btn.value-5 { background:#8b5cf6; color:#fff; border-color:#8b5cf6; }
 .black-orb-percent-picker-btn.value-6 { background:#ef4444; color:#fff; border-color:#ef4444; }
 .black-orb-percent-picker-btn.value-7 { background:#3b82f6; color:#fff; border-color:#3b82f6; }
-.black-orb-percent-popup-overlay { position:fixed; inset:0; z-index:3600; display:none; align-items:center; justify-content:center; background:rgba(15,23,42,.45); padding:18px; }
+.black-orb-percent-popup-overlay { position:fixed; inset:0; z-index:3600; display:none; align-items:center; justify-content:center; background:rgba(0,0,0,.45); padding:20px; }
 .black-orb-percent-popup-overlay.show { display:flex; }
-.black-orb-percent-popup { width:min(280px,88vw); position:relative; background:#fff; border-radius:24px; padding:28px 20px 20px; box-shadow:0 22px 48px rgba(15,23,42,.25); }
-.black-orb-percent-popup h4 { text-align:center; font-size:23px; line-height:1.15; margin:0 40px 18px; font-weight:950; color:#111827; letter-spacing:-.06em; }
-.black-orb-percent-popup-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
-.black-orb-percent-choice-btn { min-height:48px; border:0; border-radius:18px; font-size:16px; font-weight:950; box-shadow:0 8px 18px rgba(15,23,42,.09); }
-.black-orb-percent-choice-btn.value-0 { background:#6b7280; color:#fff; }
+.black-orb-percent-popup {
+  width:100%;
+  max-width:320px;
+  padding:22px 18px 18px;
+  border-radius:22px;
+  background:#fff;
+  box-shadow:0 14px 38px rgba(0,0,0,.28);
+  text-align:center;
+}
+.black-orb-percent-popup-head{position:relative;display:flex;align-items:center;justify-content:center;margin-bottom:16px;}
+.black-orb-percent-popup-title{margin:0 !important;text-align:center;width:100%;font-size:22px !important;line-height:1.15 !important;white-space:nowrap !important;letter-spacing:-1px !important;font-weight:950;color:#111827;}
+.black-orb-percent-popup-grid{display:grid;grid-template-columns:repeat(2,minmax(112px,1fr));gap:10px;}
+.black-orb-percent-choice-btn{min-height:62px;border:0;border-radius:18px;padding:10px 8px;font-size:16px;font-weight:950;box-shadow:0 8px 18px rgba(15,23,42,.09);}
 .black-orb-percent-choice-btn.value-2 { background:#f8fafc; color:#111827; border:1px solid #e5e7eb; }
 .black-orb-percent-choice-btn.value-3 { background:#22c55e; color:#fff; }
 .black-orb-percent-choice-btn.value-4 { background:#f97316; color:#fff; }
 .black-orb-percent-choice-btn.value-5 { background:#8b5cf6; color:#fff; }
 .black-orb-percent-choice-btn.value-6 { background:#ef4444; color:#fff; }
 .black-orb-percent-choice-btn.value-7 { background:#3b82f6; color:#fff; }
-@media (max-width:520px){
-  .black-orb-detail-row.has-value-picker,.black-orb-popup-detail-row.has-value-picker{grid-template-columns:minmax(52px,.78fr) minmax(82px,1.22fr) 30px !important;column-gap:5px !important;}
-  .black-orb-percent-picker-btn{min-height:35px;font-size:12px;padding:0 4px;}
-  .black-orb-percent-popup{width:min(260px,86vw);padding:26px 18px 18px;}
-  .black-orb-percent-popup h4{font-size:21px;margin-bottom:16px;}
-  .black-orb-percent-choice-btn{min-height:44px;font-size:15px;}
+@media (max-width:768px){
+  .black-orb-percent-popup{max-width:300px;padding:20px 16px 16px;}
+  .black-orb-percent-popup-title{font-size:18px !important;}
+  .black-orb-percent-popup-grid{grid-template-columns:repeat(2,minmax(84px,1fr));gap:5px;}
+  .black-orb-percent-choice-btn{min-height:42px;border-radius:14px;padding:6px 4px;font-size:13px;}
+  .black-orb-detail-row.has-value-picker,.black-orb-popup-detail-row.has-value-picker{grid-template-columns:minmax(52px,1fr) minmax(52px,1fr) 28px !important;column-gap:4px !important;}
+  .black-orb-percent-picker-btn{height:28px;font-size:10px;padding:0 6px;}
 }
 
 </style>
@@ -8694,10 +8708,11 @@ window.goToAdventureSkillSettings = goToAdventureSkillSettings;
 
 <div id="blackOrbPercentPopupOverlay" class="black-orb-percent-popup-overlay" onclick="closeBlackOrbPercentPopup(event)">
   <div class="black-orb-percent-popup" onclick="event.stopPropagation()">
-    <button type="button" class="black-orb-attr-popup-close" onclick="closeBlackOrbPercentPopup()">×</button>
-    <h4>수치 선택</h4>
+    <div class="black-orb-percent-popup-head">
+      <h4 class="black-orb-percent-popup-title">수치 선택</h4>
+      <button class="popup-floating-close-btn black-orb-popup-close-top" type="button" onclick="closeBlackOrbPercentPopup()" aria-label="닫기">×</button>
+    </div>
     <div class="black-orb-percent-popup-grid">
-      <button type="button" class="black-orb-percent-choice-btn value-0" onclick="selectBlackOrbPercentValue(0)">없음</button>
       <button type="button" class="black-orb-percent-choice-btn value-2" onclick="selectBlackOrbPercentValue(2)">+2%</button>
       <button type="button" class="black-orb-percent-choice-btn value-3" onclick="selectBlackOrbPercentValue(3)">+3%</button>
       <button type="button" class="black-orb-percent-choice-btn value-4" onclick="selectBlackOrbPercentValue(4)">+4%</button>
