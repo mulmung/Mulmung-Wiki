@@ -8657,7 +8657,18 @@ window.goToAdventureSkillSettings = goToAdventureSkillSettings;
       const msg = badLevel && badSkill ? '동료 레벨 0~9999 / 스킬 레벨 0~1500' : (badLevel ? '동료 레벨 0~9999' : '스킬 레벨 0~1500');
       buttonState(btn,'fail',msg); return;
     }
-    saveLocal('blackOrbCompanionSettings',{levels:collectValues('#blackOrbCompanionPopupBg .companion-level'), skillLevels:collectValues('#blackOrbCompanionPopupBg .companion-skill-level'), savedAt:new Date().toISOString()});
+    const values = {
+      companionLevels: collectValues('#blackOrbCompanionPopupBg .companion-level'),
+      jobPages: collectValues('#blackOrbCompanionPopupBg .companion-job-page'),
+      jobCounts: collectValues('#blackOrbCompanionPopupBg .companion-job-count'),
+      skillLevels: collectValues('#blackOrbCompanionPopupBg .companion-skill-level'),
+      savedAt: new Date().toISOString()
+    };
+    localStorage.setItem('blackOrbCompanionSettings', JSON.stringify(values));
+    if(window.saveBlackOrbCompanionSettingsToCloud){
+      const result = await window.saveBlackOrbCompanionSettingsToCloud(values);
+      if(!result || !result.ok){ buttonState(btn,'fail'); return; }
+    }
     buttonState(btn,'done');
   }
   async function saveRelic(btn){
@@ -8844,6 +8855,86 @@ window.goToAdventureSkillSettings = goToAdventureSkillSettings;
     document.addEventListener("DOMContentLoaded", bindBlackOrbCompanionDamageSummary);
   }else{
     bindBlackOrbCompanionDamageSummary();
+  }
+})();
+</script>
+
+
+
+<script>
+/* Black Orb companion local/cloud restore patch */
+(function(){
+  const STORAGE_KEY = "blackOrbCompanionSettings";
+  const POPUP = "#blackOrbCompanionPopupBg";
+
+  function getSavedCompanionSettings(){
+    try{
+      const raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? JSON.parse(raw) : null;
+    }catch(error){
+      console.warn("동료 설정 localStorage 불러오기 실패:", error);
+      return null;
+    }
+  }
+
+  function normalizeSavedCompanionSettings(settings){
+    if(!settings || typeof settings !== "object") return null;
+    return {
+      companionLevels: Array.isArray(settings.companionLevels) ? settings.companionLevels : (Array.isArray(settings.levels) ? settings.levels : []),
+      jobPages: Array.isArray(settings.jobPages) ? settings.jobPages : [],
+      jobCounts: Array.isArray(settings.jobCounts) ? settings.jobCounts : [],
+      skillLevels: Array.isArray(settings.skillLevels) ? settings.skillLevels : [],
+      savedAt: settings.savedAt || new Date().toISOString()
+    };
+  }
+
+  function setValues(selector, values){
+    const arr = Array.isArray(values) ? values : [];
+    document.querySelectorAll(selector).forEach(function(el, index){
+      el.value = arr[index] || "";
+    });
+  }
+
+  function applyCompanionSettings(settings){
+    const normalized = normalizeSavedCompanionSettings(settings);
+    if(!normalized) return;
+    setValues(POPUP + " .companion-level", normalized.companionLevels);
+    setValues(POPUP + " .companion-job-page", normalized.jobPages);
+    setValues(POPUP + " .companion-job-count", normalized.jobCounts);
+    setValues(POPUP + " .companion-skill-level", normalized.skillLevels);
+    if(typeof window.updateBlackOrbCompanionDamageSummary === "function"){
+      window.updateBlackOrbCompanionDamageSummary();
+    }
+  }
+
+  const prevApplyCloud = window.applyBlackOrbCompanionCloudSettings;
+  window.applyBlackOrbCompanionCloudSettings = function(settings){
+    const normalized = normalizeSavedCompanionSettings(settings);
+    if(normalized){
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(normalized));
+      applyCompanionSettings(normalized);
+      return;
+    }
+    if(typeof prevApplyCloud === "function") prevApplyCloud.apply(this, arguments);
+  };
+
+  window.applyBlackOrbCompanionLocalSettings = applyCompanionSettings;
+  window.loadBlackOrbCompanionLocalSettings = function(){
+    applyCompanionSettings(getSavedCompanionSettings());
+  };
+
+  const prevOpenCompanion = window.openBlackOrbCompanionPopup;
+  window.openBlackOrbCompanionPopup = function(){
+    if(typeof prevOpenCompanion === "function") prevOpenCompanion.apply(this, arguments);
+    setTimeout(function(){
+      window.loadBlackOrbCompanionLocalSettings();
+    }, 0);
+  };
+
+  if(document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", window.loadBlackOrbCompanionLocalSettings);
+  }else{
+    window.loadBlackOrbCompanionLocalSettings();
   }
 })();
 </script>
