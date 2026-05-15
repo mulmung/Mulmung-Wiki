@@ -1420,6 +1420,8 @@ button.faq-flow-item:focus,button.faq-flow-item:focus-visible{outline:none;borde
   .black-orb-main-attribute-choice-grid .black-orb-element-badge{min-width:54px !important;height:26px !important;font-size:11px !important;padding:0 10px !important}
 }
 
+
+.black-orb-companion-save-btn{width:100%;height:46px;margin-top:14px;border:0;border-radius:18px;background:#0f172a;color:#fff;font-size:16px;font-weight:900;box-shadow:0 10px 22px rgba(15,23,42,.18);cursor:pointer}.black-orb-companion-save-btn:active{transform:translateY(1px)}.black-orb-companion-name.wind{background:#14d4c0!important;color:#fff!important}.black-orb-companion-name.ground{background:#ffc45f!important;color:#fff!important}.black-orb-companion-name.fire{background:#c21a08!important;color:#fff!important}.black-orb-companion-name.water{background:#07006e!important;color:#fff!important}
 </style>
 </head>
 <body>
@@ -3224,10 +3226,10 @@ function addSections() {
           <button class="popup-floating-close-btn black-orb-popup-close-top" type="button" onclick="closeBlackOrbCompanionPopup()" aria-label="닫기">×</button>
           <h3 class="black-orb-companion-title">동료</h3>
           <div class="black-orb-companion-grid">
-            <div class="black-orb-companion-name">엘리</div>
-            <div class="black-orb-companion-name">지크</div>
-            <div class="black-orb-companion-name">미호</div>
-            <div class="black-orb-companion-name">루나</div>
+            <div class="black-orb-companion-name wind">엘리</div>
+            <div class="black-orb-companion-name ground">지크</div>
+            <div class="black-orb-companion-name fire">미호</div>
+            <div class="black-orb-companion-name water">루나</div>
 
             <input class="black-orb-companion-field companion-level" type="text" inputmode="numeric" maxlength="4" placeholder="동료 레벨" autocomplete="off" />
             <input class="black-orb-companion-field companion-level" type="text" inputmode="numeric" maxlength="4" placeholder="동료 레벨" autocomplete="off" />
@@ -3249,7 +3251,8 @@ function addSections() {
             <input class="black-orb-companion-field companion-skill-level" type="text" inputmode="numeric" placeholder="스킬 레벨" autocomplete="off" />
             <input class="black-orb-companion-field companion-skill-level" type="text" inputmode="numeric" placeholder="스킬 레벨" autocomplete="off" />
           </div>
-          <div id="blackOrbCompanionMsg" class="black-orb-companion-msg">스킬 레벨은 1부터 100 사이로 설정해 주세요.</div>
+          <div id="blackOrbCompanionMsg" class="black-orb-companion-msg"></div>
+          <button type="button" class="black-orb-companion-save-btn" onclick="saveBlackOrbCompanionSettings()">저장하기</button>
         </div>
       </div>
 
@@ -6395,6 +6398,10 @@ onAuthStateChanged(auth, async (user) => {
         const blackOrbSettings = await window.loadBlackOrbSettingsFromCloud();
         if (blackOrbSettings) window.applyBlackOrbCloudSettings(blackOrbSettings);
       }
+      if (window.loadBlackOrbCompanionSettingsFromCloud && window.applyBlackOrbCompanionCloudSettings) {
+        const companionSettings = await window.loadBlackOrbCompanionSettingsFromCloud();
+        if (companionSettings) window.applyBlackOrbCompanionCloudSettings(companionSettings);
+      }
     } catch (error) {
       console.error("유저 정보 불러오기 오류:", error);
       userInfo.textContent = isAdminUser(user) ? "물멍" : "닉네임 미설정";
@@ -6994,6 +7001,40 @@ function bindBlackOrbCompanionInputs() {
     });
   });
 }
+
+function validateBlackOrbCompanionInputs(showAlert = false) {
+  const msg = document.getElementById("blackOrbCompanionMsg");
+  let valid = true;
+  document.querySelectorAll(".companion-skill-level").forEach((input) => {
+    if (!input.value) return;
+    const value = Number(input.value);
+    if (Number.isNaN(value) || value < 1 || value > 100) valid = false;
+  });
+  if (msg) {
+    msg.style.color = valid ? "#14b8a6" : "#ef4444";
+    msg.textContent = valid ? "" : "스킬 레벨은 1부터 100 사이로 설정해 주세요.";
+  }
+  if (!valid && showAlert) alert("스킬 레벨은 1부터 100 사이로 설정해 주세요.");
+  return valid;
+}
+
+window.saveBlackOrbCompanionSettings = async function() {
+  const msg = document.getElementById("blackOrbCompanionMsg");
+  if (!validateBlackOrbCompanionInputs(true)) return;
+  if (!window.saveBlackOrbCompanionSettingsToCloud) {
+    if (msg) {
+      msg.style.color = "#ef4444";
+      msg.textContent = "저장 기능을 불러오지 못했습니다.";
+    }
+    return;
+  }
+  const result = await window.saveBlackOrbCompanionSettingsToCloud();
+  if (msg) {
+    msg.style.color = result.ok ? "#14b8a6" : "#ef4444";
+    msg.textContent = result.ok ? "저장되었습니다." : (result.reason || "저장에 실패했습니다.");
+  }
+};
+
 bindBlackOrbCompanionInputs();
 window.openBlackOrbCompanionPopup = openBlackOrbCompanionPopup;
 window.closeBlackOrbCompanionPopup = closeBlackOrbCompanionPopup;
