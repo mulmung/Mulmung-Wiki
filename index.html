@@ -10394,5 +10394,150 @@ window.goToAdventureSkillSettings = goToAdventureSkillSettings;
 })();
 </script>
 
+
+
+<style id="relic-skill-save-ui-restore-style">
+/* 유물/스킬숙련도 저장 버튼 원래 크기 복구 + 저장 상태 표시 */
+.black-orb-relic-save-btn,
+.black-orb-relic-save-btn-fixed,
+.black-orb-skill-save-btn,
+.black-orb-skill-save-btn-fixed{
+  width:100% !important;
+  min-height:56px !important;
+  padding:12px 16px !important;
+  border:0 !important;
+  border-radius:16px !important;
+  background:#101727 !important;
+  color:#ffffff !important;
+  font-size:20px !important;
+  font-weight:900 !important;
+  line-height:1.1 !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  box-sizing:border-box !important;
+}
+.black-orb-relic-save-btn.is-saved,
+.black-orb-relic-save-btn-fixed.is-saved,
+.black-orb-skill-save-btn.is-saved,
+.black-orb-skill-save-btn-fixed.is-saved{
+  background:#14b8a6 !important;
+}
+.black-orb-relic-save-message,
+.black-orb-skill-save-message{
+  position:relative;
+  margin:8px auto 0;
+  width:max-content;
+  max-width:92%;
+  padding:8px 12px;
+  border-radius:999px;
+  background:#101727;
+  color:#fff;
+  font-size:13px;
+  font-weight:900;
+  line-height:1.2;
+  text-align:center;
+  box-shadow:0 8px 18px rgba(15,23,42,.18);
+  display:none;
+}
+.black-orb-relic-save-message::before,
+.black-orb-skill-save-message::before{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:-6px;
+  transform:translateX(-50%);
+  border-left:6px solid transparent;
+  border-right:6px solid transparent;
+  border-bottom:7px solid #101727;
+}
+.black-orb-relic-save-message.active,
+.black-orb-skill-save-message.active{display:block;}
+.black-orb-relic-save-message.success,
+.black-orb-skill-save-message.success{background:#14b8a6;}
+.black-orb-relic-save-message.success::before,
+.black-orb-skill-save-message.success::before{border-bottom-color:#14b8a6;}
+.relic-damage-badge.earth{background:#F6BE58 !important;color:#111827 !important;}
+@media(max-width:640px){
+  .black-orb-relic-save-btn,
+  .black-orb-relic-save-btn-fixed,
+  .black-orb-skill-save-btn,
+  .black-orb-skill-save-btn-fixed{
+    min-height:54px !important;
+    padding:11px 14px !important;
+    border-radius:16px !important;
+    font-size:20px !important;
+  }
+}
+</style>
+
+<script id="relic-skill-save-ui-restore-script">
+(function(){
+  'use strict';
+  const RELIC_STORAGE_KEY='blackOrbRelicSettings_v1';
+  const SKILL_STORAGE_KEY='blackOrbSkillMasterySettings_v1';
+  const relicRows=[
+    {key:'typhoonEye', label:'바람', element:'wind', ids:['blackOrbRelicTyphoonEye','blackOrbRelicTyphoonEyeLevel'], damageIds:['blackOrbRelicTyphoonEyeDamage','blackOrbRelicTyphoonEyeDamageCell']},
+    {key:'kingProof', label:'땅', element:'earth', ids:['blackOrbRelicKingProof','blackOrbRelicKingProofLevel','blackOrbRelicKingsProof','blackOrbRelicKingsProofLevel'], damageIds:['blackOrbRelicKingProofDamage','blackOrbRelicKingProofDamageCell','blackOrbRelicKingsProofDamage','blackOrbRelicKingsProofDamageCell']},
+    {key:'silentFlame', label:'불', element:'fire', ids:['blackOrbRelicSilentFlame','blackOrbRelicSilentFlameLevel'], damageIds:['blackOrbRelicSilentFlameDamage','blackOrbRelicSilentFlameDamageCell']},
+    {key:'abyssDrop', label:'물', element:'water', ids:['blackOrbRelicAbyssDrop','blackOrbRelicAbyssDropLevel','blackOrbRelicAbyssWaterdrop','blackOrbRelicAbyssWaterdropLevel'], damageIds:['blackOrbRelicAbyssDropDamage','blackOrbRelicAbyssDropDamageCell','blackOrbRelicAbyssWaterdropDamage','blackOrbRelicAbyssWaterdropDamageCell']}
+  ];
+  function byId(id){return document.getElementById(id)}
+  function qs(s){return document.querySelector(s)}
+  function first(ids){for(const id of ids){const el=byId(id);if(el)return el}return null}
+  function num(v){return Number(String(v??'').replace(/,/g,'').trim())||0}
+  function fmt(n){const r=Math.round(n*100)/100;return Number.isInteger(r)?String(r):r.toFixed(2).replace(/0$/,'').replace(/\.00$/,'')}
+  function calcRelicDamage(lv){lv=num(lv);if(lv<=0)return 0;let c=1;if(lv>99)c=3;else if(lv>89)c=2.6;else if(lv>79)c=2.3;else if(lv>69)c=2;else if(lv>59)c=1.8;else if(lv>49)c=1.6;else if(lv>39)c=1.45;else if(lv>29)c=1.3;else if(lv>19)c=1.2;else if(lv>9)c=1.1;return lv*c}
+  function renderRow(row){const input=first(row.ids);const out=first(row.damageIds);if(!out)return;const v=calcRelicDamage(input?input.value:0);out.innerHTML='<div class="black-orb-relic-damage-display"><span class="relic-damage-badge '+row.element+'">'+row.label+'</span><span class="relic-damage-value">+'+fmt(v)+'%</span></div>'}
+  function renderAll(){relicRows.forEach(renderRow)}
+  function relicData(){const d={};relicRows.forEach(r=>{const i=first(r.ids);d[r.key]=i?String(i.value||'').replace(/[^0-9]/g,''):''});d.updatedAt=Date.now();return d}
+  function applyRelicData(data){if(!data||typeof data!=='object')return;const aliases={kingProof:['kingProof','kingsProof'],abyssDrop:['abyssDrop','abyssWaterdrop'],typhoonEye:['typhoonEye'],silentFlame:['silentFlame']};relicRows.forEach(r=>{const i=first(r.ids);if(!i)return;let v='';for(const k of [r.key,...(aliases[r.key]||[]),...r.ids]){if(data[k]!==undefined&&data[k]!==null&&data[k]!==''){v=data[k];break}}if(v!=='')i.value=String(v).replace(/[^0-9]/g,'')});renderAll()}
+  function msgAfter(btn, cls){let m=btn.parentElement.querySelector('.'+cls);if(!m){m=document.createElement('div');m.className=cls;btn.insertAdjacentElement('afterend',m)}return m}
+  function showMsg(btn, cls, text, success){const m=msgAfter(btn,cls);m.textContent=text;m.classList.toggle('success',!!success);m.classList.add('active');clearTimeout(m._t);m._t=setTimeout(()=>m.classList.remove('active'),1800)}
+  function flashSaved(btn, text, msgCls){const old=btn.textContent;btn.classList.add('is-saved');btn.textContent='저장 완료';showMsg(btn,msgCls,text||'저장 완료',true);clearTimeout(btn._t);btn._t=setTimeout(()=>{btn.classList.remove('is-saved');btn.textContent=old||'저장하기'},1200)}
+  function validRelic(){for(const r of relicRows){const i=first(r.ids);const v=num(i?i.value:0);if(v<1||v>100)return false}return true}
+  window.saveBlackOrbRelicSettings=function(){
+    const btn=qs('.black-orb-relic-save-btn, .black-orb-relic-save-btn-fixed');
+    if(!validRelic()){if(btn)showMsg(btn,'black-orb-relic-save-message','유물 레벨은 1에서 100까지만 넣을 수 있어요.',false);return false}
+    const data=relicData();
+    [RELIC_STORAGE_KEY,'blackOrbRelicSettings','blackOrbRelicSettings_unified'].forEach(k=>localStorage.setItem(k,JSON.stringify(data)));
+    renderAll();
+    if(typeof window.saveBlackOrbRelicSettingsToCloud==='function')Promise.resolve(window.saveBlackOrbRelicSettingsToCloud(data)).catch(console.warn);
+    if(btn)flashSaved(btn,'유물 저장 완료','black-orb-relic-save-message');
+    return true;
+  };
+  window.loadBlackOrbRelicSettings=function(){let data=null;for(const k of [RELIC_STORAGE_KEY,'blackOrbRelicSettings','blackOrbRelicSettings_unified']){try{data=JSON.parse(localStorage.getItem(k)||'null')}catch(e){data=null}if(data)break}applyRelicData(data||{})};
+  function calcSkill(lv){const x=num(lv);if(x<=0)return 0;if(x===256)return 40345;return Math.round((x*5*Math.pow(1.07000005,Math.floor(x/5)))*100)/100}
+  function skillInput(){return qs('#blackOrbSkillMasteryLevel, #blackOrbSkillMasteryInput, .black-orb-skill-mastery-input')}
+  function skillOut(){return qs('#blackOrbSkillMasteryDamage, #blackOrbSkillMasteryDamageValue, .black-orb-skill-mastery-damage')}
+  window.updateBlackOrbSkillMasteryDamage=function(){const i=skillInput(),o=skillOut();if(!o)return;const v=calcSkill(i?i.value:0);o.textContent=v>0?'+'+fmt(v)+'%':'데미지 증가량'};
+  window.saveBlackOrbSkillMasterySettings=function(){
+    const i=skillInput();const btn=qs('.black-orb-skill-save-btn, .black-orb-skill-save-btn-fixed');const v=num(i?i.value:0);
+    if(v<1||v>256){if(btn)showMsg(btn,'black-orb-skill-save-message','스킬 숙련도 레벨은 1에서 256까지만 넣을 수 있어요.',false);return false}
+    const data={level:String(v),updatedAt:Date.now()}; if(i)i.value=data.level;
+    [SKILL_STORAGE_KEY,'blackOrbSkillMasterySettings'].forEach(k=>localStorage.setItem(k,JSON.stringify(data)));
+    window.updateBlackOrbSkillMasteryDamage();
+    if(typeof window.saveBlackOrbSkillMasterySettingsToCloud==='function')Promise.resolve(window.saveBlackOrbSkillMasterySettingsToCloud(data)).catch(console.warn);
+    if(btn)flashSaved(btn,'스킬 숙련도 저장 완료','black-orb-skill-save-message');
+    return true;
+  };
+  window.loadBlackOrbSkillMasterySettings=function(){let data=null;for(const k of [SKILL_STORAGE_KEY,'blackOrbSkillMasterySettings']){try{data=JSON.parse(localStorage.getItem(k)||'null')}catch(e){data=null}if(data)break}const i=skillInput();if(i&&data&&data.level!==undefined)i.value=String(data.level).replace(/[^0-9]/g,'');window.updateBlackOrbSkillMasteryDamage()};
+  function restore(){
+    const rb=qs('.black-orb-relic-save-btn, .black-orb-relic-save-btn-fixed');
+    if(rb){rb.classList.add('black-orb-relic-save-btn');rb.onclick=e=>{e.preventDefault();e.stopPropagation();window.saveBlackOrbRelicSettings();return false};}
+    const sb=qs('.black-orb-skill-save-btn, .black-orb-skill-save-btn-fixed');
+    if(sb){sb.classList.add('black-orb-skill-save-btn');sb.onclick=e=>{e.preventDefault();e.stopPropagation();window.saveBlackOrbSkillMasterySettings();return false};}
+    relicRows.forEach(r=>{const i=first(r.ids);if(!i)return;i.removeAttribute('disabled');i.removeAttribute('readonly');i.setAttribute('inputmode','numeric');i.oninput=function(){this.value=String(this.value||'').replace(/[^0-9]/g,'');renderRow(r)}});
+    const si=skillInput();if(si){si.removeAttribute('disabled');si.removeAttribute('readonly');si.setAttribute('inputmode','numeric');si.oninput=function(){this.value=String(this.value||'').replace(/[^0-9]/g,'');window.updateBlackOrbSkillMasteryDamage()}};
+    renderAll();window.updateBlackOrbSkillMasteryDamage();
+  }
+  const oldOpenRelic=window.openBlackOrbRelicPopup;window.openBlackOrbRelicPopup=function(){if(typeof oldOpenRelic==='function')oldOpenRelic();window.loadBlackOrbRelicSettings();restore();};
+  const oldOpenSkill=window.openBlackOrbSkillMasteryPopup;window.openBlackOrbSkillMasteryPopup=function(){if(typeof oldOpenSkill==='function')oldOpenSkill();window.loadBlackOrbSkillMasterySettings();restore();};
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>{window.loadBlackOrbRelicSettings();window.loadBlackOrbSkillMasterySettings();restore();});
+  else {window.loadBlackOrbRelicSettings();window.loadBlackOrbSkillMasterySettings();restore();}
+  window.addEventListener('load',()=>{setTimeout(restore,120);setTimeout(restore,520);setTimeout(restore,1000)});
+})();
+</script>
+
 </body>
 </html>
