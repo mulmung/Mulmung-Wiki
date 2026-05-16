@@ -11254,5 +11254,273 @@ window.goToAdventureSkillSettings = goToAdventureSkillSettings;
 })();
 </script>
 
+
+<style id="black-orb-amplify-option-sum-style">
+  /* 증폭 데미지 3배열 + 부가 옵션 합계 팝업 */
+  .black-orb-damage-amp-grid{
+    grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+  }
+  .black-orb-amp-sum-placeholder{
+    display:block !important;
+    padding:0 !important;
+    border:none !important;
+    background:transparent !important;
+  }
+  .black-orb-amp-sum-body{
+    display:grid;
+    gap:12px;
+    width:100%;
+  }
+  .black-orb-amp-sum-desc{
+    margin:0;
+    color:#64748b;
+    font-size:12px;
+    font-weight:850;
+    line-height:1.4;
+    word-break:keep-all;
+  }
+  .black-orb-amp-sum-grid{
+    display:grid;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:7px;
+  }
+  .black-orb-amp-sum-item{
+    display:grid;
+    grid-template-rows:auto auto;
+    gap:7px;
+    min-width:0;
+  }
+  .black-orb-amp-sum-label{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-height:34px;
+    border-radius:13px;
+    color:#fff;
+    font-size:12px;
+    font-weight:950;
+    box-shadow:0 6px 14px rgba(15,23,42,.10);
+  }
+  .black-orb-amp-sum-label.fire{background:var(--fire-color)}
+  .black-orb-amp-sum-label.water{background:var(--water-color)}
+  .black-orb-amp-sum-label.wind{background:var(--wind-color)}
+  .black-orb-amp-sum-label.earth{background:var(--earth-color);color:#111827}
+  .black-orb-amp-sum-value{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-height:36px;
+    padding:0 4px;
+    border:2px solid rgba(20,184,166,.35);
+    border-radius:13px;
+    background:#fff;
+    color:#0f766e;
+    font-size:12px;
+    font-weight:950;
+    letter-spacing:-.03em;
+    white-space:nowrap;
+  }
+  @media(max-width:768px){
+    .black-orb-damage-amp-grid{gap:6px !important;}
+    .black-orb-damage-amp-btn{font-size:11px !important;padding:0 2px !important;min-height:40px !important;}
+    .black-orb-amp-sum-grid{gap:5px;}
+    .black-orb-amp-sum-label{min-height:30px;border-radius:11px;font-size:11px;}
+    .black-orb-amp-sum-value{min-height:32px;border-radius:11px;font-size:10.5px;padding:0 2px;}
+    .black-orb-amp-sum-desc{font-size:11px;}
+  }
+</style>
+
+<script id="black-orb-amplify-option-sum-script">
+(function(){
+  'use strict';
+
+  const STORAGE_KEY = 'mulmung_black_orb_detail_states_v1';
+  const ATTRS = ['wind','earth','fire','water'];
+  const DISPLAY = [
+    {key:'fire', label:'불'},
+    {key:'water', label:'물'},
+    {key:'wind', label:'바람'},
+    {key:'earth', label:'땅'}
+  ];
+
+  function toNumber(value){
+    const n = Number(String(value ?? '').replace(/,/g,'').replace(/[^0-9.\-]/g,''));
+    return Number.isFinite(n) ? n : 0;
+  }
+
+  function formatPercent(value){
+    const rounded = Math.round((Number(value) || 0) * 100) / 100;
+    return '+' + rounded.toLocaleString('ko-KR', {maximumFractionDigits:2}) + '%';
+  }
+
+  function emptyState(){
+    return {
+      wind:{topValue:'', rows:[]},
+      earth:{topValue:'', rows:[]},
+      fire:{topValue:'', rows:[]},
+      water:{topValue:'', rows:[]}
+    };
+  }
+
+  function readDetailStates(){
+    try{
+      if(typeof blackOrbDetailPopupState !== 'undefined' && blackOrbDetailPopupState){
+        return blackOrbDetailPopupState;
+      }
+    }catch(e){}
+    try{
+      return JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null') || emptyState();
+    }catch(e){
+      return emptyState();
+    }
+  }
+
+  function getRowValue(row){
+    return row && (row.value || row.badgeClass || 'all') || 'all';
+  }
+
+  function addToTarget(totals, target, value){
+    if(!value) return;
+    if(target === 'none') return;
+    if(target === 'all'){
+      ATTRS.forEach(function(attr){ totals[attr] += value; });
+      return;
+    }
+    if(Object.prototype.hasOwnProperty.call(totals, target)) totals[target] += value;
+  }
+
+  function calculateTotals(){
+    const states = readDetailStates();
+    const totals = {wind:0, earth:0, fire:0, water:0};
+
+    ATTRS.forEach(function(ownerAttr){
+      const state = states && states[ownerAttr];
+      const rows = Array.isArray(state && state.rows) ? state.rows : [];
+      rows.slice(0,4).forEach(function(row){
+        const target = getRowValue(row);
+        const baseValue = toNumber(row && row.percentValue);
+        if(!baseValue) return;
+        const multiplier = target === ownerAttr ? 2 : 1;
+        addToTarget(totals, target, baseValue * multiplier);
+      });
+    });
+
+    return totals;
+  }
+
+  function ensureSummaryButton(){
+    const grid = document.querySelector('.black-orb-damage-amp-grid');
+    if(!grid) return null;
+    let btn = document.getElementById('blackOrbAmpOptionSumOpenBtn');
+    if(!btn){
+      btn = document.createElement('button');
+      btn.type = 'button';
+      btn.id = 'blackOrbAmpOptionSumOpenBtn';
+      btn.className = 'black-orb-damage-amp-btn';
+      btn.textContent = '합계';
+      btn.addEventListener('click', function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        openSummaryPopup();
+      });
+      grid.appendChild(btn);
+    }
+    return btn;
+  }
+
+  function renderSummaryBody(){
+    const title = document.getElementById('blackOrbDamageAmpPopupTitle');
+    const placeholder = document.getElementById('blackOrbDamageAmpPlaceholder');
+    const orderBody = document.getElementById('blackOrbOrderStatueBody');
+    if(!title || !placeholder) return false;
+
+    if((title.textContent || '').trim() !== '합계') return false;
+
+    const totals = calculateTotals();
+    if(orderBody) orderBody.style.display = 'none';
+    placeholder.style.display = 'block';
+    placeholder.className = 'black-orb-damage-amp-popup-body black-orb-amp-sum-placeholder';
+    placeholder.innerHTML = `
+      <div class="black-orb-amp-sum-body" aria-label="속성별 오브 부가 옵션 합계">
+        <p class="black-orb-amp-sum-desc">속성별 오브 팝업의 부가 옵션 수치만 합산한 값입니다.</p>
+        <div class="black-orb-amp-sum-grid">
+          ${DISPLAY.map(function(item){
+            return `<div class="black-orb-amp-sum-item"><span class="black-orb-amp-sum-label ${item.key}">${item.label}</span><span id="blackOrbAmpSum_${item.key}" class="black-orb-amp-sum-value">${formatPercent(totals[item.key])}</span></div>`;
+          }).join('')}
+        </div>
+      </div>
+    `;
+    return true;
+  }
+
+  function openSummaryPopup(){
+    const popup = document.getElementById('blackOrbDamageAmpPopup');
+    const title = document.getElementById('blackOrbDamageAmpPopupTitle');
+    if(title) title.textContent = '합계';
+    renderSummaryBody();
+    if(popup) popup.classList.add('active');
+  }
+
+  function wrapDamageAmpOpen(){
+    const fn = window.openBlackOrbDamageAmpPopup;
+    if(typeof fn !== 'function' || fn.__ampOptionSumWrapped) return;
+    const wrapped = function(title){
+      if(title === '합계'){
+        openSummaryPopup();
+        return false;
+      }
+      const ret = fn.apply(this, arguments);
+      setTimeout(function(){
+        const t = document.getElementById('blackOrbDamageAmpPopupTitle');
+        if(t && (t.textContent || '').trim() === '합계') renderSummaryBody();
+      }, 0);
+      return ret;
+    };
+    wrapped.__ampOptionSumWrapped = true;
+    window.openBlackOrbDamageAmpPopup = wrapped;
+  }
+
+  function bindClicks(){
+    if(document.documentElement.dataset.blackOrbAmpSumClickBound === '1') return;
+    document.documentElement.dataset.blackOrbAmpSumClickBound = '1';
+    document.addEventListener('click', function(e){
+      const btn = e.target && e.target.closest ? e.target.closest('button') : null;
+      if(!btn) return;
+      if(btn.id === 'blackOrbAmpOptionSumOpenBtn' || (btn.textContent || '').trim() === '합계'){
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        openSummaryPopup();
+      }
+    }, true);
+  }
+
+  function refreshIfOpen(){
+    const title = document.getElementById('blackOrbDamageAmpPopupTitle');
+    if(title && (title.textContent || '').trim() === '합계') renderSummaryBody();
+  }
+
+  function install(){
+    ensureSummaryButton();
+    wrapDamageAmpOpen();
+    bindClicks();
+    refreshIfOpen();
+  }
+
+  window.calculateBlackOrbAmplifyOptionTotals = calculateTotals;
+  window.openBlackOrbAmplifyOptionSumPopup = openSummaryPopup;
+  window.updateBlackOrbAmplifyOptionSumPopup = refreshIfOpen;
+
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', install);
+  else install();
+  window.addEventListener('load', function(){
+    install();
+    setTimeout(install, 300);
+    setTimeout(install, 1000);
+  });
+  window.addEventListener('pageshow', function(){ setTimeout(install, 0); });
+})();
+</script>
+
 </body>
 </html>
