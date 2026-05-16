@@ -3077,6 +3077,10 @@ function addSections() {
       <p>드롭다운 숫자와 계산식은 추후 정리하여 업데이트할 예정입니다.</p>
 
       <div class="black-orb-panel" id="blackOrbPanel">
+        <div class="black-orb-level-row" aria-label="블랙 오브 레벨 입력">
+          <label for="blackOrbMainLevelInput" class="black-orb-level-label">오브 레벨</label>
+          <input id="blackOrbMainLevelInput" class="black-orb-level-input" type="text" inputmode="numeric" placeholder="레벨 입력" autocomplete="off" />
+        </div>
         <div class="black-orb-main-attribute-row">
           <div id="blackOrbMainWarningBubble" class="black-orb-main-warning-bubble" role="status" aria-live="polite">먼저 변경할 메인 속성을 선택해 주세요.</div>
           <button type="button" id="blackOrbMainAttributeBtn" class="black-orb-main-attribute-btn" onclick="openBlackOrbMainAttributePopup()">속성 선택</button>
@@ -3203,7 +3207,7 @@ function addSections() {
         <div class="black-orb-damage-amp-title">증폭 데미지</div>
         <div class="black-orb-damage-amp-grid">
           <button type="button" class="black-orb-damage-amp-btn" onclick="openBlackOrbDamageAmpPopup('질서의 신상')">질서의 신상</button>
-          <button type="button" class="black-orb-damage-amp-btn" onclick="openBlackOrbDamageAmpPopup('오브 공명')">오브 공명</button>
+          <button type="button" id="blackOrbResonanceOpenBtn" class="black-orb-damage-amp-btn" onclick="openBlackOrbDamageAmpPopup('오브 공명')">오브 공명</button>
         </div>
       </div>
 
@@ -10704,6 +10708,212 @@ window.goToAdventureSkillSettings = goToAdventureSkillSettings;
     setTimeout(window.updateBlackOrbIncreaseDamageTotal, 1500);
   });
   window.addEventListener('pageshow', function(){ setTimeout(installIncreaseTotalPatch, 0); });
+})();
+</script>
+
+
+<style>
+  /* 블랙 오브 레벨 입력 + 오브 공명 해금 상태 */
+  .black-orb-level-row{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    max-width:360px;
+    margin:0 auto 10px;
+    padding:10px 12px;
+    border:1px solid #ccfbf1;
+    border-radius:18px;
+    background:#fff;
+    box-shadow:0 6px 14px rgba(15,23,42,.05);
+  }
+  .black-orb-level-label{
+    flex:0 0 auto;
+    color:#111827;
+    font-size:14px;
+    font-weight:950;
+    white-space:nowrap;
+  }
+  .black-orb-level-input{
+    width:100%;
+    max-width:170px;
+    height:38px;
+    border:2px solid #99f6e4;
+    border-radius:14px;
+    background:#f8fafc;
+    color:#111827;
+    text-align:center;
+    font-size:15px;
+    font-weight:950;
+    outline:none;
+  }
+  .black-orb-level-input:focus{
+    border-color:#14b8a6;
+    background:#fff;
+    box-shadow:0 0 0 3px rgba(20,184,166,.14);
+  }
+  .black-orb-level-input::placeholder{color:#6b7280;font-weight:900;}
+  .black-orb-damage-amp-btn.resonance-locked,
+  .black-orb-damage-amp-btn:disabled{
+    border-color:#d1d5db !important;
+    background:#e5e7eb !important;
+    color:#9ca3af !important;
+    cursor:not-allowed !important;
+    box-shadow:none !important;
+    transform:none !important;
+  }
+  .black-orb-resonance-lock-msg{
+    display:none;
+    position:relative;
+    grid-column:1/-1;
+    margin:4px auto 0;
+    padding:8px 12px;
+    border-radius:999px;
+    background:#111827;
+    color:#fff;
+    font-size:12px;
+    font-weight:900;
+    line-height:1.2;
+    text-align:center;
+    white-space:nowrap;
+    box-shadow:0 8px 18px rgba(15,23,42,.18);
+  }
+  .black-orb-resonance-lock-msg.show{display:block;}
+  .black-orb-resonance-lock-msg::before{
+    content:"";
+    position:absolute;
+    left:50%;
+    top:-6px;
+    transform:translateX(-50%);
+    border-left:6px solid transparent;
+    border-right:6px solid transparent;
+    border-bottom:7px solid #111827;
+  }
+  @media(max-width:768px){
+    .black-orb-level-row{max-width:300px;margin-bottom:8px;padding:8px 10px;border-radius:16px;gap:8px;}
+    .black-orb-level-label{font-size:13px;}
+    .black-orb-level-input{max-width:150px;height:34px;border-radius:12px;font-size:13px;}
+    .black-orb-resonance-lock-msg{font-size:11px;max-width:260px;white-space:normal;border-radius:14px;}
+  }
+</style>
+<script>
+(function(){
+  'use strict';
+
+  const LEVEL_KEY = 'blackOrbMainLevel';
+  let lockTimer = null;
+  let originalDamageAmpOpen = null;
+
+  function onlyDigits(value){
+    return String(value || '').replace(/[^0-9]/g, '');
+  }
+
+  function getOrbLevel(){
+    const input = document.getElementById('blackOrbMainLevelInput');
+    const raw = input ? input.value : localStorage.getItem(LEVEL_KEY);
+    const n = parseInt(onlyDigits(raw), 10);
+    return Number.isFinite(n) ? n : 0;
+  }
+
+  function ensureLockMessage(){
+    const grid = document.querySelector('.black-orb-damage-amp-grid');
+    if(!grid) return null;
+    let msg = document.getElementById('blackOrbResonanceLockMsg');
+    if(!msg){
+      msg = document.createElement('div');
+      msg.id = 'blackOrbResonanceLockMsg';
+      msg.className = 'black-orb-resonance-lock-msg';
+      msg.textContent = '오브 공명은 블랙 오브 16레벨 이상부터 적용됩니다.';
+      grid.appendChild(msg);
+    }
+    return msg;
+  }
+
+  function showLockMessage(){
+    const msg = ensureLockMessage();
+    if(!msg) return;
+    msg.classList.add('show');
+    clearTimeout(lockTimer);
+    lockTimer = setTimeout(function(){ msg.classList.remove('show'); }, 1800);
+  }
+
+  function updateResonanceButtonState(){
+    const btn = document.getElementById('blackOrbResonanceOpenBtn') || Array.from(document.querySelectorAll('.black-orb-damage-amp-btn')).find(function(b){ return (b.textContent || '').trim() === '오브 공명'; });
+    if(!btn) return;
+    const unlocked = getOrbLevel() >= 16;
+    btn.disabled = !unlocked;
+    btn.setAttribute('aria-disabled', String(!unlocked));
+    btn.classList.toggle('resonance-locked', !unlocked);
+    btn.title = unlocked ? '' : '블랙 오브 16레벨 이상부터 적용됩니다.';
+    if(unlocked){
+      const msg = document.getElementById('blackOrbResonanceLockMsg');
+      if(msg) msg.classList.remove('show');
+    }
+  }
+
+  function bindOrbLevelInput(){
+    const input = document.getElementById('blackOrbMainLevelInput');
+    if(!input || input.dataset.orbLevelBound === '1') return;
+    input.dataset.orbLevelBound = '1';
+    input.value = onlyDigits(localStorage.getItem(LEVEL_KEY) || input.value || '');
+    input.addEventListener('input', function(){
+      const clean = onlyDigits(input.value);
+      if(input.value !== clean) input.value = clean;
+      localStorage.setItem(LEVEL_KEY, clean);
+      updateResonanceButtonState();
+    });
+    input.addEventListener('change', function(){
+      input.value = onlyDigits(input.value);
+      localStorage.setItem(LEVEL_KEY, input.value);
+      updateResonanceButtonState();
+    });
+  }
+
+  function patchDamageAmpOpen(){
+    if(typeof window.openBlackOrbDamageAmpPopup === 'function' && !window.openBlackOrbDamageAmpPopup.__orbLevelGuarded){
+      originalDamageAmpOpen = window.openBlackOrbDamageAmpPopup;
+      const guarded = function(title){
+        if(title === '오브 공명' && getOrbLevel() < 16){
+          showLockMessage();
+          updateResonanceButtonState();
+          return false;
+        }
+        return originalDamageAmpOpen.apply(this, arguments);
+      };
+      guarded.__orbLevelGuarded = true;
+      window.openBlackOrbDamageAmpPopup = guarded;
+    }
+  }
+
+  function bindDisabledClickHint(){
+    const btn = document.getElementById('blackOrbResonanceOpenBtn') || Array.from(document.querySelectorAll('.black-orb-damage-amp-btn')).find(function(b){ return (b.textContent || '').trim() === '오브 공명'; });
+    if(!btn || btn.dataset.orbLevelHintBound === '1') return;
+    btn.dataset.orbLevelHintBound = '1';
+    btn.addEventListener('click', function(e){
+      if(getOrbLevel() < 16){
+        e.preventDefault();
+        e.stopPropagation();
+        showLockMessage();
+      }
+    }, true);
+  }
+
+  function installOrbLevelGate(){
+    bindOrbLevelInput();
+    ensureLockMessage();
+    patchDamageAmpOpen();
+    bindDisabledClickHint();
+    updateResonanceButtonState();
+  }
+
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', installOrbLevelGate);
+  else installOrbLevelGate();
+  window.addEventListener('load', function(){
+    installOrbLevelGate();
+    setTimeout(installOrbLevelGate, 300);
+    setTimeout(installOrbLevelGate, 1000);
+  });
+  window.addEventListener('pageshow', installOrbLevelGate);
 })();
 </script>
 
