@@ -11863,11 +11863,19 @@ window.goToAdventureSkillSettings = goToAdventureSkillSettings;
     letter-spacing:-.055em;
   }
   .black-orb-final-damage-diff{
-    background:rgba(240,253,250,.95);
+    background:#64748b;
+    color:#fff;
   }
-  .black-orb-final-damage-diff strong.positive{color:#0f766e;}
-  .black-orb-final-damage-diff strong.negative{color:#dc2626;}
-  .black-orb-final-damage-diff strong.zero{color:#64748b;}
+  .black-orb-final-damage-diff span,
+  .black-orb-final-damage-diff strong{
+    color:#fff;
+  }
+  .black-orb-final-damage-diff.positive{background:#16a34a;}
+  .black-orb-final-damage-diff.negative{background:#dc2626;}
+  .black-orb-final-damage-diff.zero{background:#64748b;}
+  .black-orb-final-damage-diff strong.positive,
+  .black-orb-final-damage-diff strong.negative,
+  .black-orb-final-damage-diff strong.zero{color:#fff;}
   @media(max-width:768px){
     .black-orb-final-damage-compare{margin-top:18px;padding:18px 7px 10px;border-radius:18px;}
     .black-orb-final-damage-compare-title{height:27px;min-width:118px;padding:0 12px;font-size:11.5px;}
@@ -12117,9 +12125,15 @@ window.goToAdventureSkillSettings = goToAdventureSkillSettings;
       if(beforeEl) beforeEl.textContent = formatPercent(beforeDamage[item.key]);
       if(afterEl) afterEl.textContent = formatPercent(afterDamage[item.key]);
       if(diffEl){
+        const diffStateClass = diff > 0 ? 'positive' : (diff < 0 ? 'negative' : 'zero');
         diffEl.textContent = formatPercent(diff);
         diffEl.classList.remove('positive','negative','zero');
-        diffEl.classList.add(diff > 0 ? 'positive' : (diff < 0 ? 'negative' : 'zero'));
+        diffEl.classList.add(diffStateClass);
+        const diffRow = diffEl.closest('.black-orb-final-damage-diff');
+        if(diffRow){
+          diffRow.classList.remove('positive','negative','zero');
+          diffRow.classList.add(diffStateClass);
+        }
       }
     });
     return {before:beforeDamage, after:afterDamage};
