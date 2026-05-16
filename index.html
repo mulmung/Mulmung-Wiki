@@ -5921,6 +5921,96 @@ window.loadBlackOrbSettingsFromCloud = async function () {
         return null;
     }
 };
+
+async function saveBlackOrbUserField(fieldName, value) {
+    if (!auth.currentUser)
+        return { ok: false, reason: "login" };
+    try {
+        const payload = {};
+        payload[fieldName] = value;
+        payload[fieldName + "UpdatedAt"] = serverTimestamp();
+        await setDoc(doc(db, "users", auth.currentUser.uid), payload, { merge: true });
+        return { ok: true };
+    }
+    catch (error) {
+        console.error(fieldName + " 저장 실패:", error);
+        return { ok: false, reason: "error" };
+    }
+}
+async function loadBlackOrbUserField(fieldName) {
+    if (!auth.currentUser)
+        return null;
+    try {
+        const snap = await getDoc(doc(db, "users", auth.currentUser.uid));
+        if (!snap.exists())
+            return null;
+        const data = snap.data();
+        return data ? data[fieldName] : null;
+    }
+    catch (error) {
+        console.error(fieldName + " 불러오기 실패:", error);
+        return null;
+    }
+}
+window.saveBlackOrbCompanionSettingsToCloud = function (settings) {
+    return saveBlackOrbUserField("blackOrbCompanionSettings", settings);
+};
+window.loadBlackOrbCompanionSettingsFromCloud = function () {
+    return loadBlackOrbUserField("blackOrbCompanionSettings");
+};
+window.saveBlackOrbOrderStatueSettingsToCloud = function (settings) {
+    return saveBlackOrbUserField("blackOrbOrderStatueSettings", settings);
+};
+window.loadBlackOrbOrderStatueSettingsFromCloud = async function () {
+    const settings = await loadBlackOrbUserField("blackOrbOrderStatueSettings");
+    if (settings) {
+        try { localStorage.setItem("blackOrbOrderStatueSettings", JSON.stringify(settings)); } catch (e) {}
+        if (typeof window.applyBlackOrbOrderStatueSettings === "function")
+            window.applyBlackOrbOrderStatueSettings(settings);
+        if (typeof window.updateBlackOrbDamageAmpTotal === "function")
+            window.updateBlackOrbDamageAmpTotal();
+        if (typeof window.updateBlackOrbAmplifyDamageTotal === "function")
+            window.updateBlackOrbAmplifyDamageTotal();
+    }
+    return settings;
+};
+window.saveBlackOrbResonanceSettingsToCloud = function (settings) {
+    return saveBlackOrbUserField("blackOrbResonanceSettings", settings);
+};
+window.loadBlackOrbResonanceSettingsFromCloud = async function () {
+    const settings = await loadBlackOrbUserField("blackOrbResonanceSettings");
+    if (settings) {
+        try { localStorage.setItem("blackOrbResonanceSettings", JSON.stringify(settings)); } catch (e) {}
+        const input = document.getElementById("blackOrbResonanceLevel");
+        if (input && settings.level !== undefined && settings.level !== null) {
+            input.value = String(settings.level).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            input.dispatchEvent(new Event("input", { bubbles: true }));
+        }
+        if (typeof window.updateBlackOrbDamageAmpTotal === "function")
+            window.updateBlackOrbDamageAmpTotal();
+        if (typeof window.updateBlackOrbAmplifyDamageTotal === "function")
+            window.updateBlackOrbAmplifyDamageTotal();
+    }
+    return settings;
+};
+window.saveBlackOrbMainLevelToCloud = function (level) {
+    const clean = String(level || "").replace(/[^0-9]/g, "");
+    return saveBlackOrbUserField("blackOrbMainLevel", clean);
+};
+window.loadBlackOrbMainLevelFromCloud = async function () {
+    const level = await loadBlackOrbUserField("blackOrbMainLevel");
+    if (level !== null && level !== undefined && String(level).trim() !== "") {
+        const clean = String(level).replace(/[^0-9]/g, "");
+        try { localStorage.setItem("blackOrbMainLevel", clean); } catch (e) {}
+        const input = document.getElementById("blackOrbMainLevelInput");
+        if (input) {
+            input.value = clean;
+            input.dispatchEvent(new Event("input", { bubbles: true }));
+            input.dispatchEvent(new Event("change", { bubbles: true }));
+        }
+    }
+    return level;
+};
 let presenceTimer = null;
 let statsTimer = null;
 const ONLINE_LIMIT_MS = 2 * 60 * 1000;
@@ -6842,6 +6932,15 @@ onAuthStateChanged(auth, async (user) => {
                 const companionSettings = await window.loadBlackOrbCompanionSettingsFromCloud();
                 if (companionSettings)
                     window.applyBlackOrbCompanionCloudSettings(companionSettings);
+            }
+            if (window.loadBlackOrbOrderStatueSettingsFromCloud) {
+                await window.loadBlackOrbOrderStatueSettingsFromCloud();
+            }
+            if (window.loadBlackOrbResonanceSettingsFromCloud) {
+                await window.loadBlackOrbResonanceSettingsFromCloud();
+            }
+            if (window.loadBlackOrbMainLevelFromCloud) {
+                await window.loadBlackOrbMainLevelFromCloud();
             }
         }
         catch (error) {
@@ -12876,6 +12975,73 @@ window.goToAdventureSkillSettings = goToAdventureSkillSettings;
         bind();
     window.addEventListener('load', function () { bind(); setTimeout(updateCompare, 500); setTimeout(updateCompare, 1200); });
     window.addEventListener('pageshow', function () { setTimeout(updateCompare, 0); });
+})();
+</script>
+
+
+<script>
+(function () {
+    'use strict';
+    function digits(value) {
+        return String(value || '').replace(/[^0-9]/g, '');
+    }
+    function parseJSON(raw) {
+        try { return JSON.parse(raw || 'null'); } catch (e) { return null; }
+    }
+    function syncResonanceToCloud() {
+        if (typeof window.saveBlackOrbResonanceSettingsToCloud !== 'function')
+            return;
+        var saved = parseJSON(localStorage.getItem('blackOrbResonanceSettings')) || {};
+        var input = document.getElementById('blackOrbResonanceLevel');
+        if (input && input.value !== '')
+            saved.level = digits(input.value);
+        if (saved && saved.level !== undefined)
+            Promise.resolve(window.saveBlackOrbResonanceSettingsToCloud(saved)).catch(function (e) { console.warn('오브 공명 저장 동기화 실패:', e); });
+    }
+    function installResonanceCloudWrap() {
+        if (typeof window.saveBlackOrbResonanceSettings !== 'function' || window.saveBlackOrbResonanceSettings.__cloudWrapped)
+            return;
+        var original = window.saveBlackOrbResonanceSettings;
+        window.saveBlackOrbResonanceSettings = function () {
+            var result = original.apply(this, arguments);
+            Promise.resolve(result).finally(function () { setTimeout(syncResonanceToCloud, 0); });
+            return result;
+        };
+        window.saveBlackOrbResonanceSettings.__cloudWrapped = true;
+    }
+    function installMainLevelCloudSync() {
+        var input = document.getElementById('blackOrbMainLevelInput');
+        if (!input || input.dataset.mainLevelCloudSync === '1')
+            return;
+        input.dataset.mainLevelCloudSync = '1';
+        var timer = null;
+        function save() {
+            if (typeof window.saveBlackOrbMainLevelToCloud !== 'function')
+                return;
+            clearTimeout(timer);
+            timer = setTimeout(function () {
+                Promise.resolve(window.saveBlackOrbMainLevelToCloud(digits(input.value))).catch(function (e) { console.warn('오브 레벨 저장 동기화 실패:', e); });
+            }, 350);
+        }
+        input.addEventListener('input', save);
+        input.addEventListener('change', save);
+        input.addEventListener('blur', save);
+    }
+    function installBlackOrbMissingCloudSync() {
+        installResonanceCloudWrap();
+        installMainLevelCloudSync();
+    }
+    window.installBlackOrbMissingCloudSync = installBlackOrbMissingCloudSync;
+    if (document.readyState === 'loading')
+        document.addEventListener('DOMContentLoaded', installBlackOrbMissingCloudSync);
+    else
+        installBlackOrbMissingCloudSync();
+    window.addEventListener('load', function () {
+        installBlackOrbMissingCloudSync();
+        setTimeout(installBlackOrbMissingCloudSync, 500);
+        setTimeout(installBlackOrbMissingCloudSync, 1500);
+    });
+    window.addEventListener('pageshow', function () { setTimeout(installBlackOrbMissingCloudSync, 0); });
 })();
 </script>
 
