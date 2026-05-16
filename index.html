@@ -963,6 +963,7 @@ button.faq-flow-item:focus,button.faq-flow-item:focus-visible{outline:none;borde
 .soul-engrave-line.green{stroke:#98D05B;}
 .soul-engrave-line.blue{stroke:#7483E6;}
 .soul-engrave-line.yellow{stroke:#F0DC57;}
+.soul-engrave-line.purple{stroke:#A56AE8;}
 .soul-engrave-node{position:absolute;
   left:50%;
   top:50%;
@@ -981,6 +982,7 @@ button.faq-flow-item:focus,button.faq-flow-item:focus-visible{outline:none;borde
 .soul-engrave-node.green{background:#98D05B;}
 .soul-engrave-node.blue{background:#7483E6;}
 .soul-engrave-node.yellow{background:#F0DC57;}
+.soul-engrave-node.purple{background:#A56AE8;}
 @media(max-width:768px){.soul-engrave-board{max-width:244px;}.soul-engrave-grid.cols-4{max-width:244px;}.soul-engrave-node{width:32px;height:32px;font-size:0;}.soul-engrave-line{stroke-width:.23;}.soul-engrave-cell::before,.soul-engrave-cell.empty-fill::before{inset:5px;border-radius:12px;}}
 /* 블랙 오브 계산기: ×2 배지와 좁은 숫자칸 조정 */
 .black-orb-x2-badge{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:999px;background:#0f766e;color:#fff;font-size:11px;font-weight:950;line-height:1;box-shadow:0 4px 10px rgba(15,118,110,.18);white-space:nowrap;flex:0 0 auto}
@@ -4922,6 +4924,118 @@ function getSoulWeaponEngraveGridHtml(name) {
             '<div class="soul-engrave-grid cols-4">' + gridHtml + '</div>' +
             '</div>';
     }
+
+    if (name === "의지") {
+        const uijiCells = [
+            { color: "red" }, { color: "red" }, { color: "blue" }, { color: "blue" },
+            { color: "green" }, { color: "red" }, { color: "blue" }, null,
+            { color: "green" }, { color: "red" }, { color: "blue" }, null,
+            { color: "green" }, { color: "green" }, null, null
+        ];
+        const gridHtml = uijiCells.map(cell => {
+            if (!cell)
+                return '<div class="soul-engrave-cell empty-fill"></div>';
+            return '<div class="soul-engrave-cell has-node"><span class="soul-engrave-node ' + cell.color + '" aria-hidden="true"></span></div>';
+        }).join('');
+        return '<div class="soul-engrave-board" aria-label="의지 4x4 각인 추천 배치">' +
+            '<svg class="soul-engrave-line-svg" viewBox="0 0 4 4" aria-hidden="true">' +
+            '<path class="soul-engrave-line red" d="M .5 .5 L 1.5 .5 L 1.5 1.5 L 1.5 2.5" />' +
+            '<path class="soul-engrave-line blue" d="M 2.5 .5 L 3.5 .5 M 2.5 .5 L 2.5 1.5 L 2.5 2.5" />' +
+            '<path class="soul-engrave-line green" d="M .5 1.5 L .5 2.5 L .5 3.5 L 1.5 3.5" />' +
+            '</svg>' +
+            '<div class="soul-engrave-grid cols-4">' + gridHtml + '</div>' +
+            '</div>';
+    }
+    if (name === "투지") {
+        const tujiCells = [
+            null, { color: "red" }, { color: "red" }, { color: "red" },
+            null, { color: "red" }, { color: "green" }, { color: "green" },
+            null, { color: "blue" }, null, { color: "green" },
+            { color: "blue" }, { color: "blue" }, { color: "blue" }, { color: "green" }
+        ];
+        const gridHtml = tujiCells.map(cell => {
+            if (!cell)
+                return '<div class="soul-engrave-cell empty-fill"></div>';
+            return '<div class="soul-engrave-cell has-node"><span class="soul-engrave-node ' + cell.color + '" aria-hidden="true"></span></div>';
+        }).join('');
+        return '<div class="soul-engrave-board" aria-label="투지 4x4 각인 추천 배치">' +
+            '<svg class="soul-engrave-line-svg" viewBox="0 0 4 4" aria-hidden="true">' +
+            '<path class="soul-engrave-line red" d="M 1.5 .5 L 2.5 .5 L 3.5 .5 M 1.5 .5 L 1.5 1.5" />' +
+            '<path class="soul-engrave-line green" d="M 2.5 1.5 L 3.5 1.5 L 3.5 2.5 L 3.5 3.5" />' +
+            '<path class="soul-engrave-line blue" d="M 1.5 2.5 L 1.5 3.5 M .5 3.5 L 1.5 3.5 L 2.5 3.5" />' +
+            '</svg>' +
+            '<div class="soul-engrave-grid cols-4">' + gridHtml + '</div>' +
+            '</div>';
+    }
+    if (name === "소망") {
+        const somangCells = [
+            { color: "green" }, { color: "blue" }, { color: "blue" }, { color: "blue" },
+            { color: "green" }, { color: "blue" }, { color: "yellow" }, { color: "yellow" },
+            { color: "green" }, { color: "green" }, { color: "red" }, { color: "yellow" },
+            { color: "red" }, { color: "red" }, { color: "red" }, { color: "yellow" }
+        ];
+        const gridHtml = somangCells.map(cell => {
+            if (!cell)
+                return '<div class="soul-engrave-cell empty-fill"></div>';
+            return '<div class="soul-engrave-cell has-node"><span class="soul-engrave-node ' + cell.color + '" aria-hidden="true"></span></div>';
+        }).join('');
+        return '<div class="soul-engrave-board" aria-label="소망 4x4 각인 추천 배치">' +
+            '<svg class="soul-engrave-line-svg" viewBox="0 0 4 4" aria-hidden="true">' +
+            '<path class="soul-engrave-line green" d="M .5 .5 L .5 1.5 L .5 2.5 L 1.5 2.5" />' +
+            '<path class="soul-engrave-line blue" d="M 1.5 .5 L 2.5 .5 L 3.5 .5 M 1.5 .5 L 1.5 1.5" />' +
+            '<path class="soul-engrave-line yellow" d="M 2.5 1.5 L 3.5 1.5 L 3.5 2.5 L 3.5 3.5" />' +
+            '<path class="soul-engrave-line red" d="M 2.5 2.5 L 2.5 3.5 L 1.5 3.5 L .5 3.5" />' +
+            '</svg>' +
+            '<div class="soul-engrave-grid cols-4">' + gridHtml + '</div>' +
+            '</div>';
+    }
+    if (name === "평정") {
+        const pyeongjeongCells = [
+            { color: "green" }, { color: "green" }, { color: "green" }, { color: "red" }, null,
+            { color: "green" }, { color: "red" }, { color: "red" }, { color: "red" }, null,
+            null, { color: "purple" }, { color: "purple" }, { color: "blue" }, { color: "blue" },
+            null, null, { color: "purple" }, { color: "purple" }, { color: "blue" },
+            null, null, null, null, { color: "blue" }
+        ];
+        const gridHtml = pyeongjeongCells.map(cell => {
+            if (!cell)
+                return '<div class="soul-engrave-cell empty-fill"></div>';
+            return '<div class="soul-engrave-cell has-node"><span class="soul-engrave-node ' + cell.color + '" aria-hidden="true"></span></div>';
+        }).join('');
+        return '<div class="soul-engrave-board" aria-label="평정 5x5 각인 추천 배치">' +
+            '<svg class="soul-engrave-line-svg" viewBox="0 0 5 5" aria-hidden="true">' +
+            '<path class="soul-engrave-line green" d="M .5 .5 L 1.5 .5 L 2.5 .5 M .5 .5 L .5 1.5" />' +
+            '<path class="soul-engrave-line red" d="M 3.5 .5 L 3.5 1.5 L 2.5 1.5 L 1.5 1.5" />' +
+            '<path class="soul-engrave-line purple" d="M 1.5 2.5 L 2.5 2.5 L 2.5 3.5 L 3.5 3.5" />' +
+            '<path class="soul-engrave-line blue" d="M 3.5 2.5 L 4.5 2.5 L 4.5 3.5 L 4.5 4.5" />' +
+            '</svg>' +
+            '<div class="soul-engrave-grid cols-5">' + gridHtml + '</div>' +
+            '</div>';
+    }
+    if (name === "로망") {
+        const romanceCells = [
+            null, { color: "purple" }, null, { color: "red" }, null,
+            { color: "purple" }, { color: "purple" }, { color: "red" }, { color: "red" }, { color: "red" },
+            { color: "purple" }, { color: "blue" }, { color: "blue" }, { color: "blue" }, { color: "blue" },
+            null, { color: "green" }, { color: "green" }, { color: "green" }, null,
+            null, null, { color: "green" }, null, null
+        ];
+        const gridHtml = romanceCells.map(cell => {
+            if (!cell)
+                return '<div class="soul-engrave-cell empty-fill"></div>';
+            return '<div class="soul-engrave-cell has-node"><span class="soul-engrave-node ' + cell.color + '" aria-hidden="true"></span></div>';
+        }).join('');
+        return '<div class="soul-engrave-board" aria-label="로망 5x5 각인 추천 배치">' +
+            '<svg class="soul-engrave-line-svg" viewBox="0 0 5 5" aria-hidden="true">' +
+            '<path class="soul-engrave-line purple" d="M 1.5 .5 L 1.5 1.5 L .5 1.5 L .5 2.5" />' +
+            '<path class="soul-engrave-line red" d="M 3.5 .5 L 3.5 1.5 M 2.5 1.5 L 3.5 1.5 L 4.5 1.5" />' +
+            '<path class="soul-engrave-line blue" d="M 1.5 2.5 L 2.5 2.5 L 3.5 2.5 L 4.5 2.5" />' +
+            '<path class="soul-engrave-line green" d="M 1.5 3.5 L 2.5 3.5 L 3.5 3.5 M 2.5 3.5 L 2.5 4.5" />' +
+            '</svg>' +
+            '<div class="soul-engrave-grid cols-5">' + gridHtml + '</div>' +
+            '</div>';
+    }
+
     const isFourByFour = somangIndex >= 0 && index <= somangIndex;
     const cols = isFourByFour ? 4 : 5;
     const size = cols * cols;
