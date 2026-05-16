@@ -11079,7 +11079,7 @@ window.goToAdventureSkillSettings = goToAdventureSkillSettings;
           <div id="blackOrbResonanceAmpValue" class="black-orb-resonance-result-value">+0%</div>
         </div>
         <div class="black-orb-order-statue-save-wrap">
-          <button id="blackOrbResonanceFormulaSaveBtn" type="button" class="black-orb-order-statue-save-btn">저장하기</button>
+          <button id="blackOrbResonanceFormulaSaveBtn" type="button" class="black-orb-resonance-save-btn">저장하기</button>
           <div id="blackOrbResonanceTooltip" class="black-orb-resonance-tooltip">0~320까지만 입력할 수 있습니다.</div>
         </div>
       </div>
@@ -11174,6 +11174,83 @@ window.goToAdventureSkillSettings = goToAdventureSkillSettings;
     setTimeout(install, 1000);
   });
   window.addEventListener('pageshow', install);
+})();
+</script>
+
+
+<style id="black-orb-resonance-duplicate-remove-style">
+  .black-orb-resonance-save-btn{
+    width:100%;
+    height:44px;
+    border:none;
+    border-radius:999px;
+    background:#111827;
+    color:#fff;
+    font-size:15px;
+    font-weight:950;
+    cursor:pointer;
+  }
+  @media(max-width:768px){.black-orb-resonance-save-btn{height:42px;font-size:14px}}
+</style>
+
+<script id="black-orb-resonance-duplicate-remove-script">
+(function(){
+  'use strict';
+
+  function cleanupOrbResonancePopup(){
+    const popup = document.getElementById('blackOrbDamageAmpPopup');
+    const title = document.getElementById('blackOrbDamageAmpPopupTitle');
+    const placeholder = document.getElementById('blackOrbDamageAmpPlaceholder');
+    if(!popup || !title || !placeholder) return;
+
+    const isResonance = (title.textContent || '').trim() === '오브 공명';
+    const bodies = Array.from(popup.querySelectorAll('.black-orb-resonance-body'));
+
+    if(isResonance){
+      bodies.forEach(function(body){
+        if(!placeholder.contains(body)) body.remove();
+      });
+      placeholder.style.display = 'block';
+      const orderBody = document.getElementById('blackOrbOrderStatueBody');
+      if(orderBody) orderBody.style.display = 'none';
+      if(typeof window.renderBlackOrbResonanceFormulaBody === 'function' && !placeholder.querySelector('#blackOrbResonanceFormulaSaveBtn')){
+        try{ window.renderBlackOrbResonanceFormulaBody(); }catch(e){}
+      }
+    }else{
+      bodies.forEach(function(body){
+        if(!placeholder.contains(body)) body.style.display = 'none';
+      });
+    }
+  }
+
+  function install(){
+    cleanupOrbResonancePopup();
+    const popup = document.getElementById('blackOrbDamageAmpPopup');
+    if(popup && popup.dataset.resonanceDuplicateCleanup !== '1'){
+      popup.dataset.resonanceDuplicateCleanup = '1';
+      const observer = new MutationObserver(function(){
+        setTimeout(cleanupOrbResonancePopup, 0);
+      });
+      observer.observe(popup, {childList:true, subtree:true, characterData:true, attributes:true, attributeFilter:['class','style']});
+    }
+    document.addEventListener('click', function(e){
+      const btn = e.target.closest && e.target.closest('button');
+      if(!btn) return;
+      const txt = (btn.textContent || '').trim();
+      if(txt === '오브 공명' || btn.id === 'blackOrbResonanceFormulaSaveBtn'){
+        setTimeout(cleanupOrbResonancePopup, 0);
+        setTimeout(cleanupOrbResonancePopup, 80);
+      }
+    }, true);
+  }
+
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', install);
+  else install();
+  window.addEventListener('load', function(){
+    install();
+    setTimeout(cleanupOrbResonancePopup, 300);
+  });
+  window.addEventListener('pageshow', function(){ setTimeout(cleanupOrbResonancePopup, 0); });
 })();
 </script>
 
