@@ -4927,9 +4927,9 @@ function getSoulWeaponEngraveGridHtml(name) {
 
     if (name === "의지") {
         const uijiCells = [
-            { color: "red" }, { color: "red" }, { color: "blue" }, { color: "blue" },
-            { color: "red" }, { color: "red" }, { color: "blue" }, null,
-            { color: "red" }, { color: "red" }, { color: "blue" }, null,
+            { color: "red" }, { color: "red" }, { color: "orange" }, { color: "orange" },
+            { color: "red" }, { color: "red" }, { color: "orange" }, null,
+            { color: "red" }, { color: "red" }, { color: "orange" }, null,
             { color: "red" }, { color: "red" }, null, null
         ];
         const gridHtml = uijiCells.map(cell => {
@@ -4940,8 +4940,8 @@ function getSoulWeaponEngraveGridHtml(name) {
         return '<div class="soul-engrave-board" aria-label="의지 4x4 각인 추천 배치">' +
             '<svg class="soul-engrave-line-svg" viewBox="0 0 4 4" aria-hidden="true">' +
             '<path class="soul-engrave-line red" d="M .5 .5 L 1.5 .5 L 1.5 1.5 L 1.5 2.5" />' +
-            '<path class="soul-engrave-line red" d="M .5 .5 L .5 1.5 L .5 2.5 L .5 3.5 L 1.5 3.5" />' +
-            '<path class="soul-engrave-line blue" d="M 2.5 .5 L 3.5 .5 M 2.5 .5 L 2.5 1.5 L 2.5 2.5" />' +
+            '<path class="soul-engrave-line red" d="M .5 1.5 L .5 2.5 L .5 3.5 L 1.5 3.5" />' +
+            '<path class="soul-engrave-line orange" d="M 2.5 .5 L 3.5 .5 M 2.5 .5 L 2.5 1.5 L 2.5 2.5" />' +
             '</svg>' +
             '<div class="soul-engrave-grid cols-4">' + gridHtml + '</div>' +
             '</div>';
@@ -4961,7 +4961,7 @@ function getSoulWeaponEngraveGridHtml(name) {
         return '<div class="soul-engrave-board" aria-label="투지 4x4 각인 추천 배치">' +
             '<svg class="soul-engrave-line-svg" viewBox="0 0 4 4" aria-hidden="true">' +
             '<path class="soul-engrave-line red" d="M 1.5 .5 L 2.5 .5 L 3.5 .5 M 1.5 .5 L 1.5 1.5" />' +
-            '<path class="soul-engrave-line red" d="M 1.5 1.5 L 2.5 1.5 L 3.5 1.5 L 3.5 2.5 L 3.5 3.5" />' +
+            '<path class="soul-engrave-line red" d="M 2.5 1.5 L 3.5 1.5 L 3.5 2.5 L 3.5 3.5" />' +
             '<path class="soul-engrave-line green" d="M 1.5 2.5 L 1.5 3.5 M .5 3.5 L 1.5 3.5 L 2.5 3.5" />' +
             '</svg>' +
             '<div class="soul-engrave-grid cols-4">' + gridHtml + '</div>' +
