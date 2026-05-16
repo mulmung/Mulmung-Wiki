@@ -11772,5 +11772,393 @@ window.goToAdventureSkillSettings = goToAdventureSkillSettings;
 })();
 </script>
 
+
+
+<!-- FINAL PATCH: 블랙 오브 최종 속성별 데미지 변경 전/후 비교 -->
+<style id="black-orb-final-damage-compare-style">
+  .black-orb-final-damage-compare{
+    position:relative;
+    margin:20px 0 6px;
+    padding:20px 12px 12px;
+    border:2px solid rgba(20,184,166,.36);
+    border-radius:20px;
+    background:linear-gradient(180deg,rgba(240,253,250,.84),rgba(255,255,255,.98));
+    box-shadow:0 8px 18px rgba(15,23,42,.06);
+  }
+  .black-orb-final-damage-compare-title{
+    position:absolute;
+    left:50%;
+    top:0;
+    transform:translate(-50%,-50%);
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-width:132px;
+    height:30px;
+    padding:0 16px;
+    border-radius:999px;
+    background:#111827;
+    color:#fff;
+    font-size:13px;
+    font-weight:950;
+    line-height:1;
+    white-space:nowrap;
+    box-shadow:0 8px 16px rgba(15,23,42,.16);
+  }
+  .black-orb-final-damage-compare-grid{
+    display:grid;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:8px;
+  }
+  .black-orb-final-damage-compare-item{
+    display:grid;
+    grid-template-rows:auto auto auto auto;
+    gap:6px;
+    min-width:0;
+    padding:8px 4px;
+    border:2px solid rgba(20,184,166,.22);
+    border-radius:15px;
+    background:#fff;
+    box-shadow:0 6px 14px rgba(15,23,42,.05);
+  }
+  .black-orb-final-damage-label{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    justify-self:center;
+    min-width:42px;
+    height:22px;
+    padding:0 9px;
+    border-radius:999px;
+    color:#fff;
+    font-size:12px;
+    font-weight:950;
+    line-height:1;
+    white-space:nowrap;
+  }
+  .black-orb-final-damage-label.wind{background:var(--wind-color,#14d4c0);color:#fff;}
+  .black-orb-final-damage-label.earth{background:var(--earth-color,#ffc45f);color:#111827;}
+  .black-orb-final-damage-label.fire{background:var(--fire-color,#c21a08);color:#fff;}
+  .black-orb-final-damage-label.water{background:var(--water-color,#07006e);color:#fff;}
+  .black-orb-final-damage-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:4px;
+    min-height:22px;
+    padding:0 2px;
+    font-size:11px;
+    font-weight:900;
+    letter-spacing:-.04em;
+    color:#475569;
+    white-space:nowrap;
+  }
+  .black-orb-final-damage-row strong{
+    color:#111827;
+    font-size:11.5px;
+    font-weight:950;
+  }
+  .black-orb-final-damage-diff strong.positive{color:#0f766e;}
+  .black-orb-final-damage-diff strong.negative{color:#dc2626;}
+  .black-orb-final-damage-diff strong.zero{color:#64748b;}
+  @media(max-width:768px){
+    .black-orb-final-damage-compare{margin-top:18px;padding:18px 8px 10px;border-radius:18px;}
+    .black-orb-final-damage-compare-title{height:27px;min-width:118px;padding:0 12px;font-size:11.5px;}
+    .black-orb-final-damage-compare-grid{gap:5px;}
+    .black-orb-final-damage-compare-item{padding:7px 2px;border-radius:12px;gap:5px;}
+    .black-orb-final-damage-label{min-width:36px;height:20px;padding:0 7px;font-size:10.5px;}
+    .black-orb-final-damage-row{font-size:9.6px;gap:2px;padding:0;}
+    .black-orb-final-damage-row strong{font-size:10px;}
+  }
+  @media(max-width:380px){
+    .black-orb-final-damage-row{font-size:9px;}
+    .black-orb-final-damage-row strong{font-size:9.3px;}
+  }
+</style>
+<script id="black-orb-final-damage-compare-script">
+(function(){
+  'use strict';
+
+  const STORAGE_KEY = 'mulmung_black_orb_detail_states_v1';
+  const ATTRS = ['wind','earth','fire','water'];
+  const DISPLAY = [
+    {key:'wind', label:'바람'},
+    {key:'earth', label:'땅'},
+    {key:'fire', label:'불'},
+    {key:'water', label:'물'}
+  ];
+
+  function num(value){
+    const n = Number(String(value ?? '').replace(/,/g,'').replace(/[^0-9.\-]/g,''));
+    return Number.isFinite(n) ? n : 0;
+  }
+  function formatPercent(value){
+    const rounded = Math.round((Number(value) || 0) * 100) / 100;
+    return (rounded >= 0 ? '+' : '') + rounded.toLocaleString('ko-KR', {maximumFractionDigits:2}) + '%';
+  }
+  function clone(obj){
+    try{return JSON.parse(JSON.stringify(obj || {}));}catch(e){return {};}
+  }
+  function emptyState(){
+    return {
+      wind:{topValue:'', rows:[]},
+      earth:{topValue:'', rows:[]},
+      fire:{topValue:'', rows:[]},
+      water:{topValue:'', rows:[]}
+    };
+  }
+  function normalizeState(raw){
+    const base = emptyState();
+    ATTRS.forEach(function(attr){
+      const src = raw && raw[attr] ? raw[attr] : {};
+      base[attr].topValue = typeof src.topValue === 'string' || typeof src.topValue === 'number' ? String(src.topValue) : '';
+      base[attr].rows = Array.isArray(src.rows) ? src.rows.slice(0,4).map(function(row){
+        return {
+          value: row && typeof row.value === 'string' ? row.value : 'all',
+          label: row && typeof row.label === 'string' ? row.label : '모든',
+          badgeClass: row && typeof row.badgeClass === 'string' ? row.badgeClass : (row && typeof row.value === 'string' ? row.value : 'all'),
+          number: row && typeof row.number === 'string' ? row.number : '',
+          percentValue: row && (typeof row.percentValue === 'string' || typeof row.percentValue === 'number') ? String(row.percentValue) : '',
+          percentLabel: row && typeof row.percentLabel === 'string' ? row.percentLabel : '없음',
+          percentClass: row && typeof row.percentClass === 'string' ? row.percentClass : 'none'
+        };
+      }) : [];
+      while(base[attr].rows.length < 4){
+        base[attr].rows.push({value:'all', label:'모든', badgeClass:'all', number:'', percentValue:'', percentLabel:'없음', percentClass:'none'});
+      }
+    });
+    return base;
+  }
+  function readSavedStates(){
+    try{
+      if(typeof blackOrbDetailPopupState !== 'undefined' && blackOrbDetailPopupState){
+        return normalizeState(blackOrbDetailPopupState);
+      }
+    }catch(e){}
+    try{
+      return normalizeState(JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null') || {});
+    }catch(e){
+      return emptyState();
+    }
+  }
+  function collectBoxState(box){
+    if(!box) return {topValue:'', rows:[]};
+    const topInput = box.querySelector('.black-orb-option-row .black-orb-input');
+    const rows = Array.from(box.querySelectorAll('.black-orb-detail-row')).slice(0,4).map(function(row){
+      const picker = row.querySelector('.black-orb-element-picker, .black-orb-element-picker-btn');
+      const valueBtn = row.querySelector('.black-orb-value-badge');
+      const input = row.querySelector('.black-orb-input, .black-orb-small-input');
+      return {
+        value: picker?.dataset.value || picker?.dataset.class || 'all',
+        label: picker?.dataset.label || '모든',
+        badgeClass: picker?.dataset.class || picker?.dataset.value || 'all',
+        number: input ? input.value : '',
+        percentValue: valueBtn?.dataset.value || '',
+        percentLabel: valueBtn?.dataset.label || '없음',
+        percentClass: valueBtn?.dataset.class || 'none'
+      };
+    });
+    while(rows.length < 4){
+      rows.push({value:'all', label:'모든', badgeClass:'all', number:'', percentValue:'', percentLabel:'없음', percentClass:'none'});
+    }
+    return {topValue: topInput ? topInput.value : '', rows};
+  }
+  function getCurrentMainAttr(){
+    if(typeof window.getCurrentMainBlackOrbAttribute === 'function') return window.getCurrentMainBlackOrbAttribute() || '';
+    const panel = document.getElementById('blackOrbPanel');
+    if(!panel) return '';
+    return ATTRS.find(function(attr){ return panel.classList.contains('selected-' + attr); }) || '';
+  }
+  function rowTarget(row){
+    return row && (row.value || row.badgeClass || 'all') || 'all';
+  }
+  function addTarget(totals, target, value){
+    if(!value || target === 'none') return;
+    if(target === 'all'){
+      ATTRS.forEach(function(attr){ totals[attr] += value; });
+      return;
+    }
+    if(Object.prototype.hasOwnProperty.call(totals, target)) totals[target] += value;
+  }
+  function calculateOptionSum(states){
+    const totals = {wind:0, earth:0, fire:0, water:0};
+    ATTRS.forEach(function(owner){
+      const rows = Array.isArray(states?.[owner]?.rows) ? states[owner].rows : [];
+      rows.slice(0,4).forEach(function(row){
+        const target = rowTarget(row);
+        const base = num(row && row.percentValue);
+        if(!base) return;
+        const multiplier = target === owner ? 2 : 1;
+        addTarget(totals, target, base * multiplier);
+      });
+    });
+    return totals;
+  }
+  function readOrderStatueTotals(){
+    let saved = null;
+    try{ if(typeof window.getBlackOrbOrderStatueFinalValues === 'function') saved = window.getBlackOrbOrderStatueFinalValues(); }catch(e){}
+    if(!saved){
+      try{ saved = JSON.parse(localStorage.getItem('blackOrbOrderStatueSettings') || 'null') || {}; }catch(e){ saved = {}; }
+    }
+    return {wind:num(saved.wind), earth:num(saved.earth), fire:num(saved.fire), water:num(saved.water)};
+  }
+  function readResonanceAmp(){
+    try{
+      const saved = JSON.parse(localStorage.getItem('blackOrbResonanceSettings') || 'null') || {};
+      if(saved.amp !== undefined) return num(saved.amp);
+      if(saved.ampText !== undefined) return num(saved.ampText);
+      const lv = Number(String(saved.level ?? '').replace(/,/g,'').replace(/[^0-9]/g,''));
+      if(Number.isFinite(lv) && lv >= 50) return Math.floor((lv - 48) / 24) * 2;
+    }catch(e){}
+    const el = document.getElementById('blackOrbResonanceAmpValue');
+    return el ? num(el.textContent) : 0;
+  }
+  function calculateAmplifyTotals(states){
+    const order = readOrderStatueTotals();
+    const option = calculateOptionSum(states);
+    const resonance = readResonanceAmp();
+    return {
+      wind:order.wind + option.wind + resonance,
+      earth:order.earth + option.earth + resonance,
+      fire:order.fire + option.fire + resonance,
+      water:order.water + option.water + resonance
+    };
+  }
+  function readIncreaseTotals(){
+    const ids = {
+      wind:'blackOrbTotalIncreaseWindDamage',
+      earth:'blackOrbTotalIncreaseEarthDamage',
+      fire:'blackOrbTotalIncreaseFireDamage',
+      water:'blackOrbTotalIncreaseWaterDamage'
+    };
+    const result = {wind:0, earth:0, fire:0, water:0};
+    ATTRS.forEach(function(attr){
+      const el = document.getElementById(ids[attr]);
+      result[attr] = el ? num(el.textContent) : 0;
+    });
+    return result;
+  }
+  function topMainOptions(states){
+    return {
+      wind:num(states?.wind?.topValue),
+      earth:num(states?.earth?.topValue),
+      fire:num(states?.fire?.topValue),
+      water:num(states?.water?.topValue)
+    };
+  }
+  function calculateFinalDamage(states){
+    const increase = readIncreaseTotals();
+    const amplify = calculateAmplifyTotals(states);
+    const top = topMainOptions(states);
+    return {
+      wind: increase.wind + top.wind * (1 + amplify.wind / 100),
+      earth: increase.earth + top.earth * (1 + amplify.earth / 100),
+      fire: increase.fire + top.fire * (1 + amplify.fire / 100),
+      water: increase.water + top.water * (1 + amplify.water / 100)
+    };
+  }
+  function buildAfterStates(beforeStates){
+    const afterStates = clone(beforeStates);
+    const mainAttr = getCurrentMainAttr();
+    const afterBox = document.querySelector('#blackOrbPanel .black-orb-after-box');
+    if(mainAttr && afterBox){
+      afterStates[mainAttr] = collectBoxState(afterBox);
+    }
+    return normalizeState(afterStates);
+  }
+  function ensureCompareBox(){
+    const panel = document.getElementById('blackOrbPanel');
+    if(!panel) return null;
+    let box = document.getElementById('blackOrbFinalDamageCompareBox');
+    if(!box){
+      box = document.createElement('div');
+      box.id = 'blackOrbFinalDamageCompareBox';
+      box.className = 'black-orb-final-damage-compare';
+      box.setAttribute('aria-label','최종 속성별 데미지 변경 전후 비교');
+      box.innerHTML = `
+        <div class="black-orb-final-damage-compare-title">최종 데미지 비교</div>
+        <div class="black-orb-final-damage-compare-grid">
+          ${DISPLAY.map(function(item){
+            return `<div class="black-orb-final-damage-compare-item">
+              <span class="black-orb-final-damage-label ${item.key}">${item.label}</span>
+              <div class="black-orb-final-damage-row"><span>전</span><strong id="blackOrbFinalDamageBefore_${item.key}">+0%</strong></div>
+              <div class="black-orb-final-damage-row"><span>후</span><strong id="blackOrbFinalDamageAfter_${item.key}">+0%</strong></div>
+              <div class="black-orb-final-damage-row black-orb-final-damage-diff"><span>차이</span><strong id="blackOrbFinalDamageDiff_${item.key}" class="zero">+0%</strong></div>
+            </div>`;
+          }).join('')}
+        </div>`;
+      const applyRow = panel.querySelector('.black-orb-apply-row');
+      if(applyRow) applyRow.insertAdjacentElement('beforebegin', box);
+      else panel.appendChild(box);
+    }
+    return box;
+  }
+  function updateCompare(){
+    ensureCompareBox();
+    const beforeStates = readSavedStates();
+    const afterStates = buildAfterStates(beforeStates);
+    const beforeDamage = calculateFinalDamage(beforeStates);
+    const afterDamage = calculateFinalDamage(afterStates);
+    DISPLAY.forEach(function(item){
+      const beforeEl = document.getElementById('blackOrbFinalDamageBefore_' + item.key);
+      const afterEl = document.getElementById('blackOrbFinalDamageAfter_' + item.key);
+      const diffEl = document.getElementById('blackOrbFinalDamageDiff_' + item.key);
+      const diff = afterDamage[item.key] - beforeDamage[item.key];
+      if(beforeEl) beforeEl.textContent = formatPercent(beforeDamage[item.key]);
+      if(afterEl) afterEl.textContent = formatPercent(afterDamage[item.key]);
+      if(diffEl){
+        diffEl.textContent = formatPercent(diff);
+        diffEl.classList.remove('positive','negative','zero');
+        diffEl.classList.add(diff > 0 ? 'positive' : (diff < 0 ? 'negative' : 'zero'));
+      }
+    });
+    return {before:beforeDamage, after:afterDamage};
+  }
+  function scheduleUpdate(){
+    clearTimeout(window.__blackOrbFinalDamageCompareTimer);
+    window.__blackOrbFinalDamageCompareTimer = setTimeout(updateCompare, 0);
+    setTimeout(updateCompare, 120);
+    setTimeout(updateCompare, 450);
+  }
+  function wrap(name){
+    const original = window[name];
+    if(typeof original !== 'function' || original.__finalDamageCompareWrapped) return;
+    const wrapped = function(){
+      const result = original.apply(this, arguments);
+      Promise.resolve(result).finally(scheduleUpdate);
+      return result;
+    };
+    wrapped.__finalDamageCompareWrapped = true;
+    window[name] = wrapped;
+  }
+  function bind(){
+    ensureCompareBox();
+    ['updateBlackOrbIncreaseDamageTotal','updateBlackOrbAmplifyDamageFinalTotal','updateBlackOrbAmplifyDamageTotal','updateBlackOrbDamageAmpTotal','saveBlackOrbDetailStateToStorage','applyBlackOrbAfterToBefore','applyBlackOrbSavedStateToMainLeft','selectBlackOrbMainAttribute'].forEach(wrap);
+    document.addEventListener('input', function(e){
+      if(e.target && e.target.closest && e.target.closest('#blackOrbPanel, .black-orb-basic-info-wrap, .black-orb-damage-amp-wrap')) scheduleUpdate();
+    }, true);
+    document.addEventListener('change', function(e){
+      if(e.target && e.target.closest && e.target.closest('#blackOrbPanel, .black-orb-basic-info-wrap, .black-orb-damage-amp-wrap')) scheduleUpdate();
+    }, true);
+    document.addEventListener('click', function(e){
+      const btn = e.target && e.target.closest ? e.target.closest('button') : null;
+      if(btn) scheduleUpdate();
+    }, true);
+    window.addEventListener('storage', scheduleUpdate);
+    scheduleUpdate();
+  }
+  window.calculateBlackOrbFinalDamageCompare = function(){
+    const beforeStates = readSavedStates();
+    const afterStates = buildAfterStates(beforeStates);
+    return {before:calculateFinalDamage(beforeStates), after:calculateFinalDamage(afterStates)};
+  };
+  window.updateBlackOrbFinalDamageCompare = updateCompare;
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bind);
+  else bind();
+  window.addEventListener('load', function(){ bind(); setTimeout(updateCompare, 500); setTimeout(updateCompare, 1200); });
+  window.addEventListener('pageshow', function(){ setTimeout(updateCompare, 0); });
+})();
+</script>
+
 </body>
 </html>
