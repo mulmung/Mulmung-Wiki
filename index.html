@@ -5727,7 +5727,7 @@ renderSavedSettingCollection();
 <script type="module">var _a;
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
-import { getFirestore, doc, getDoc, setDoc, deleteDoc, collection, getDocs, serverTimestamp, increment } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
+import { getFirestore, doc, getDoc, setDoc, deleteDoc, collection, getDocs, serverTimestamp, increment, onSnapshot } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
 const firebaseConfig = {
     apiKey: "AIzaSyDfcd53sM_tUUp4VVeskZEhKndymzwq6uA",
     authDomain: "mulmung-wiki-login.firebaseapp.com",
@@ -6899,6 +6899,89 @@ async function setUserBetaTester(uid, enabled) {
     }
 }
 window.setUserBetaTester = setUserBetaTester;
+
+let blackOrbMissingUnsubscribe = null;
+function applyBlackOrbMainLevelRealtime(level) {
+    if (level === undefined || level === null)
+        return;
+    const clean = String(level || "").replace(/[^0-9]/g, "");
+    try { localStorage.setItem("blackOrbMainLevel", clean); } catch (e) {}
+    const input = document.getElementById("blackOrbMainLevelInput");
+    if (input && input.value !== clean) {
+        input.value = clean;
+        input.dispatchEvent(new Event("input", { bubbles: true }));
+        input.dispatchEvent(new Event("change", { bubbles: true }));
+    }
+}
+function applyBlackOrbResonanceRealtime(settings) {
+    if (!settings)
+        return;
+    try { localStorage.setItem("blackOrbResonanceSettings", JSON.stringify(settings)); } catch (e) {}
+    const input = document.getElementById("blackOrbResonanceLevel");
+    if (input && settings.level !== undefined && settings.level !== null) {
+        const clean = String(settings.level).replace(/[^0-9]/g, "");
+        const formatted = clean ? clean.replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "";
+        if (input.value !== formatted) {
+            input.value = formatted;
+            input.dispatchEvent(new Event("input", { bubbles: true }));
+            input.dispatchEvent(new Event("change", { bubbles: true }));
+        }
+    }
+    if (typeof window.renderBlackOrbResonanceFormulaBody === "function")
+        setTimeout(window.renderBlackOrbResonanceFormulaBody, 0);
+}
+function applyBlackOrbMissingRealtimeData(data) {
+    if (!data)
+        return;
+    if (data.blackOrbCompanionSettings && typeof window.applyBlackOrbCompanionCloudSettings === "function") {
+        try {
+            localStorage.setItem("blackOrbCompanionSettings", JSON.stringify(data.blackOrbCompanionSettings));
+            window.applyBlackOrbCompanionCloudSettings(data.blackOrbCompanionSettings);
+        } catch (e) { console.warn("동료 실시간 반영 실패:", e); }
+    }
+    if (data.blackOrbOrderStatueSettings && typeof window.applyBlackOrbOrderStatueSettings === "function") {
+        try {
+            localStorage.setItem("blackOrbOrderStatueSettings", JSON.stringify(data.blackOrbOrderStatueSettings));
+            window.applyBlackOrbOrderStatueSettings(data.blackOrbOrderStatueSettings);
+        } catch (e) { console.warn("질서의 신상 실시간 반영 실패:", e); }
+    }
+    if (data.blackOrbResonanceSettings) {
+        applyBlackOrbResonanceRealtime(data.blackOrbResonanceSettings);
+    }
+    if (Object.prototype.hasOwnProperty.call(data, "blackOrbMainLevel")) {
+        applyBlackOrbMainLevelRealtime(data.blackOrbMainLevel);
+    }
+    if (typeof window.updateBlackOrbCompanionDamageSummary === "function")
+        window.updateBlackOrbCompanionDamageSummary();
+    if (typeof window.updateBlackOrbDamageIncreaseTotal === "function")
+        window.updateBlackOrbDamageIncreaseTotal();
+    if (typeof window.updateBlackOrbDamageAmpTotal === "function")
+        window.updateBlackOrbDamageAmpTotal();
+    if (typeof window.updateBlackOrbAmplifyDamageTotal === "function")
+        window.updateBlackOrbAmplifyDamageTotal();
+    if (typeof window.updateBlackOrbFinalDamageCompare === "function")
+        window.updateBlackOrbFinalDamageCompare();
+}
+function startBlackOrbMissingRealtimeSync(user) {
+    if (blackOrbMissingUnsubscribe) {
+        try { blackOrbMissingUnsubscribe(); } catch (e) {}
+        blackOrbMissingUnsubscribe = null;
+    }
+    if (!user)
+        return;
+    try {
+        blackOrbMissingUnsubscribe = onSnapshot(doc(db, "users", user.uid), function (snap) {
+            if (!snap.exists())
+                return;
+            applyBlackOrbMissingRealtimeData(snap.data());
+        }, function (error) {
+            console.warn("블랙 오브 추가 항목 실시간 동기화 오류:", error);
+        });
+    } catch (error) {
+        console.warn("블랙 오브 추가 항목 실시간 동기화 시작 실패:", error);
+    }
+}
+
 onAuthStateChanged(auth, async (user) => {
     if (user) {
         currentUser = user;
@@ -6942,6 +7025,7 @@ onAuthStateChanged(auth, async (user) => {
             if (window.loadBlackOrbMainLevelFromCloud) {
                 await window.loadBlackOrbMainLevelFromCloud();
             }
+            startBlackOrbMissingRealtimeSync(user);
         }
         catch (error) {
             console.error("유저 정보 불러오기 오류:", error);
@@ -6954,6 +7038,10 @@ onAuthStateChanged(auth, async (user) => {
     }
     else {
         stopPresenceTimer();
+        if (blackOrbMissingUnsubscribe) {
+            try { blackOrbMissingUnsubscribe(); } catch (e) {}
+            blackOrbMissingUnsubscribe = null;
+        }
         currentUser = null;
         currentNickname = "";
         currentServer = "";
@@ -13042,6 +13130,39 @@ window.goToAdventureSkillSettings = goToAdventureSkillSettings;
         setTimeout(installBlackOrbMissingCloudSync, 1500);
     });
     window.addEventListener('pageshow', function () { setTimeout(installBlackOrbMissingCloudSync, 0); });
+})();
+</script>
+
+
+
+<script id="black-orb-missing-cloud-realtime-final-patch">
+(function () {
+  'use strict';
+  function digits(value){ return String(value || '').replace(/[^0-9]/g, ''); }
+  function readJson(key){ try { return JSON.parse(localStorage.getItem(key) || 'null'); } catch(e){ return null; } }
+  function syncResonanceFormulaSave(){
+    if (typeof window.saveBlackOrbResonanceSettingsToCloud !== 'function') return;
+    var saved = readJson('blackOrbResonanceSettings') || {};
+    var input = document.getElementById('blackOrbResonanceLevel');
+    if (input && input.value !== '') {
+      var level = digits(input.value);
+      saved.level = Number(level || 0);
+      if (typeof window.calculateBlackOrbResonanceAmp === 'function') {
+        saved.amp = window.calculateBlackOrbResonanceAmp(saved.level);
+        saved.ampText = '+' + saved.amp + '%';
+      }
+    }
+    saved.savedAt = new Date().toISOString();
+    Promise.resolve(window.saveBlackOrbResonanceSettingsToCloud(saved)).catch(function(e){ console.warn('오브 공명 계정 저장 실패:', e); });
+  }
+  document.addEventListener('click', function(e){
+    var target = e.target && e.target.closest ? e.target.closest('#blackOrbResonanceFormulaSaveBtn, #blackOrbResonanceSaveBtn') : null;
+    if (!target) return;
+    setTimeout(syncResonanceFormulaSave, 80);
+  }, true);
+  window.addEventListener('storage', function(){
+    if (typeof window.updateBlackOrbFinalDamageCompare === 'function') window.updateBlackOrbFinalDamageCompare();
+  });
 })();
 </script>
 
