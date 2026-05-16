@@ -3249,20 +3249,27 @@ function addSections() {
           <div id="blackOrbDamageAmpPopupTitle" class="black-orb-damage-amp-popup-title">증폭 데미지</div>
           <div id="blackOrbDamageAmpPlaceholder" class="black-orb-damage-amp-popup-body">계산식 입력 예정</div>
           <div id="blackOrbOrderStatueBody" class="black-orb-order-statue-body" style="display:none;">
-            <input id="blackOrbOrderStatueLevel" class="black-orb-order-statue-input" type="text" min="0" max="80" inputmode="numeric" placeholder="레벨 입력" autocomplete="off" />
+            <input id="blackOrbOrderStatueLevel" class="black-orb-order-statue-input" type="text" min="1" max="80" inputmode="numeric" placeholder="레벨 입력" autocomplete="off" />
+            <label class="black-orb-order-statue-correction-row" for="blackOrbOrderStatueCorrectionToggle">
+              <span class="black-orb-order-statue-correction-label">보정식 적용</span>
+              <span class="black-orb-order-statue-correction-switch">
+                <input id="blackOrbOrderStatueCorrectionToggle" type="checkbox" />
+                <span class="black-orb-order-statue-correction-slider"></span>
+              </span>
+            </label>
             <div class="black-orb-order-statue-grid" aria-label="질서의 신상 속성별 증폭량">
-              <div class="black-orb-order-statue-element wind">바람</div>
-              <div class="black-orb-order-statue-element earth">땅</div>
               <div class="black-orb-order-statue-element fire">불</div>
               <div class="black-orb-order-statue-element water">물</div>
-              <div id="blackOrbOrderStatueWindAmp" class="black-orb-order-statue-value">증폭량</div>
-              <div id="blackOrbOrderStatueEarthAmp" class="black-orb-order-statue-value">증폭량</div>
-              <div id="blackOrbOrderStatueFireAmp" class="black-orb-order-statue-value">증폭량</div>
-              <div id="blackOrbOrderStatueWaterAmp" class="black-orb-order-statue-value">증폭량</div>
+              <div class="black-orb-order-statue-element wind">바람</div>
+              <div class="black-orb-order-statue-element earth">땅</div>
+              <div id="blackOrbOrderStatueFireAmp" class="black-orb-order-statue-value">+0%</div>
+              <div id="blackOrbOrderStatueWaterAmp" class="black-orb-order-statue-value">+0%</div>
+              <div id="blackOrbOrderStatueWindAmp" class="black-orb-order-statue-value">+0%</div>
+              <div id="blackOrbOrderStatueEarthAmp" class="black-orb-order-statue-value">+0%</div>
             </div>
             <div class="black-orb-order-statue-save-wrap">
               <button type="button" class="black-orb-order-statue-save-btn" onclick="saveBlackOrbOrderStatueSettings()">저장하기</button>
-              <div id="blackOrbOrderStatueTooltip" class="black-orb-order-statue-tooltip">0에서 80까지만 입력할 수 있습니다.</div>
+              <div id="blackOrbOrderStatueTooltip" class="black-orb-order-statue-tooltip">1에서 80까지만 입력할 수 있습니다.</div>
             </div>
           </div>
         </div>
@@ -7472,8 +7479,8 @@ function openBlackOrbDamageAmpPopup(title){const p=document.getElementById("blac
 function closeBlackOrbDamageAmpPopup(event){if(event&&event.target&&event.target.id!=="blackOrbDamageAmpPopup")return;const p=document.getElementById("blackOrbDamageAmpPopup");if(p)p.classList.remove("active");hideBlackOrbOrderStatueTooltip()}
 function hideBlackOrbOrderStatueTooltip(){const t=document.getElementById("blackOrbOrderStatueTooltip");if(t)t.classList.remove("show")}
 function showBlackOrbOrderStatueTooltip(){const t=document.getElementById("blackOrbOrderStatueTooltip");if(!t)return;t.classList.add("show");clearTimeout(window.blackOrbOrderStatueTooltipTimer);window.blackOrbOrderStatueTooltipTimer=setTimeout(()=>t.classList.remove("show"),2400)}
-function isValidBlackOrbOrderStatueLevel(value){if(value===""||value===null||value===undefined)return false;if(!/^\d+$/.test(String(value).trim()))return false;const n=Number(value);return Number.isInteger(n)&&n>=0&&n<=80}
-function collectBlackOrbOrderStatueSettings(){const level=document.getElementById("blackOrbOrderStatueLevel");return{level:level?String(level.value||"").trim():"",wind:document.getElementById("blackOrbOrderStatueWindAmp")?.textContent||"증폭량",earth:document.getElementById("blackOrbOrderStatueEarthAmp")?.textContent||"증폭량",fire:document.getElementById("blackOrbOrderStatueFireAmp")?.textContent||"증폭량",water:document.getElementById("blackOrbOrderStatueWaterAmp")?.textContent||"증폭량"}}
+function isValidBlackOrbOrderStatueLevel(value){if(value===""||value===null||value===undefined)return false;if(!/^\d+$/.test(String(value).trim()))return false;const n=Number(value);return Number.isInteger(n)&&n>=1&&n<=80}
+function collectBlackOrbOrderStatueSettings(){const level=document.getElementById("blackOrbOrderStatueLevel");return (typeof window.getBlackOrbOrderStatueFinalValues === "function") ? window.getBlackOrbOrderStatueFinalValues() : {level:level?String(level.value||"").trim():"",wind:document.getElementById("blackOrbOrderStatueWindAmp")?.textContent||"+0%",earth:document.getElementById("blackOrbOrderStatueEarthAmp")?.textContent||"+0%",fire:document.getElementById("blackOrbOrderStatueFireAmp")?.textContent||"+0%",water:document.getElementById("blackOrbOrderStatueWaterAmp")?.textContent||"+0%"}}
 function applyBlackOrbOrderStatueSettings(values){if(!values)return;const level=document.getElementById("blackOrbOrderStatueLevel");if(level&&Object.prototype.hasOwnProperty.call(values,"level"))level.value=values.level||"";[["blackOrbOrderStatueWindAmp","wind"],["blackOrbOrderStatueEarthAmp","earth"],["blackOrbOrderStatueFireAmp","fire"],["blackOrbOrderStatueWaterAmp","water"]].forEach(([id,key])=>{const el=document.getElementById(id);if(el&&values[key])el.textContent=values[key]})}
 window.saveBlackOrbOrderStatueSettings=async function(){const values=collectBlackOrbOrderStatueSettings();if(!isValidBlackOrbOrderStatueLevel(values.level)){showBlackOrbOrderStatueTooltip();return}hideBlackOrbOrderStatueTooltip();localStorage.setItem("blackOrbOrderStatueSettings",JSON.stringify(values));if(window.saveBlackOrbOrderStatueSettingsToCloud){const result=await window.saveBlackOrbOrderStatueSettingsToCloud(values);if(!result||!result.ok){showBlackOrbSaveFail(".black-orb-order-statue-save-btn");return}}setBlackOrbSaveButtonState(document.querySelector(".black-orb-order-statue-save-btn"), "done")};
 (function initBlackOrbOrderStatueLocalSettings(){try{const saved=localStorage.getItem("blackOrbOrderStatueSettings");if(saved)applyBlackOrbOrderStatueSettings(JSON.parse(saved))}catch(e){console.warn("질서의 신상 저장값 불러오기 실패",e)}})();
@@ -8297,6 +8304,88 @@ window.goToAdventureSkillSettings = goToAdventureSkillSettings;
 </script>
 
 
+
+<style id="black-orb-order-statue-correction-style">
+.black-orb-order-statue-correction-row{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:42px;padding:8px 12px;border:2px solid rgba(20,184,166,.22);border-radius:16px;background:#f8fafc;cursor:pointer;user-select:none}
+.black-orb-order-statue-correction-label{font-size:14px;font-weight:950;color:#0f172a;letter-spacing:-.03em}
+.black-orb-order-statue-correction-switch{position:relative;display:inline-flex;width:54px;height:30px;flex:0 0 auto}
+.black-orb-order-statue-correction-switch input{position:absolute;opacity:0;width:0;height:0}
+.black-orb-order-statue-correction-slider{position:absolute;inset:0;border-radius:999px;background:#cbd5e1;transition:.2s ease;box-shadow:inset 0 2px 5px rgba(15,23,42,.16)}
+.black-orb-order-statue-correction-slider::before{content:"";position:absolute;width:24px;height:24px;left:3px;top:3px;border-radius:50%;background:#fff;transition:.2s ease;box-shadow:0 3px 8px rgba(15,23,42,.24)}
+.black-orb-order-statue-correction-switch input:checked + .black-orb-order-statue-correction-slider{background:#14b8a6}
+.black-orb-order-statue-correction-switch input:checked + .black-orb-order-statue-correction-slider::before{transform:translateX(24px)}
+@media(max-width:768px){.black-orb-order-statue-correction-row{min-height:38px;padding:7px 10px;border-radius:14px}.black-orb-order-statue-correction-label{font-size:12px}.black-orb-order-statue-correction-switch{width:48px;height:27px}.black-orb-order-statue-correction-slider::before{width:21px;height:21px}.black-orb-order-statue-correction-switch input:checked + .black-orb-order-statue-correction-slider::before{transform:translateX(21px)}}
+</style>
+<script id="black-orb-order-statue-correction-script">
+(function(){
+  function digitsOnly(value){ return String(value ?? '').replace(/,/g,'').replace(/[^0-9]/g,''); }
+  function calculate(levelValue, correction){
+    const level = Number(digitsOnly(levelValue));
+    const result = {fire:0, water:0, wind:0, earth:0};
+    if(!Number.isInteger(level) || level < 1) return result;
+    const points = Math.max(0, level - 1);
+    const order = ['fire','water','wind','earth'];
+    for(let i=0;i<points;i++) result[order[i % 4]] += 1;
+    if(correction){
+      result.fire += 1;
+      result.earth = Math.max(0, result.earth - 1);
+    }
+    return result;
+  }
+  function text(v){ return '+' + (Number(v)||0) + '%'; }
+  function applyDisplay(values){
+    const fire=document.getElementById('blackOrbOrderStatueFireAmp');
+    const water=document.getElementById('blackOrbOrderStatueWaterAmp');
+    const wind=document.getElementById('blackOrbOrderStatueWindAmp');
+    const earth=document.getElementById('blackOrbOrderStatueEarthAmp');
+    if(fire) fire.textContent=text(values.fire);
+    if(water) water.textContent=text(values.water);
+    if(wind) wind.textContent=text(values.wind);
+    if(earth) earth.textContent=text(values.earth);
+  }
+  function update(){
+    const level=document.getElementById('blackOrbOrderStatueLevel');
+    const toggle=document.getElementById('blackOrbOrderStatueCorrectionToggle');
+    applyDisplay(calculate(level ? level.value : '', !!(toggle && toggle.checked)));
+  }
+  function getValues(){
+    const level=document.getElementById('blackOrbOrderStatueLevel');
+    const toggle=document.getElementById('blackOrbOrderStatueCorrectionToggle');
+    const correction=!!(toggle && toggle.checked);
+    const calc=calculate(level ? level.value : '', correction);
+    return {level:level ? String(level.value||'').trim() : '', correction:correction, fire:text(calc.fire), water:text(calc.water), wind:text(calc.wind), earth:text(calc.earth), savedAt:new Date().toISOString()};
+  }
+  function applySaved(values){
+    if(!values) return;
+    const level=document.getElementById('blackOrbOrderStatueLevel');
+    const toggle=document.getElementById('blackOrbOrderStatueCorrectionToggle');
+    if(level && Object.prototype.hasOwnProperty.call(values,'level')) level.value=values.level || '';
+    if(toggle) toggle.checked=!!values.correction;
+    update();
+  }
+  function bind(){
+    const level=document.getElementById('blackOrbOrderStatueLevel');
+    const toggle=document.getElementById('blackOrbOrderStatueCorrectionToggle');
+    if(level && level.dataset.orderStatueCalcBound !== '1'){
+      level.dataset.orderStatueCalcBound='1';
+      level.addEventListener('input', update);
+    }
+    if(toggle && toggle.dataset.orderStatueCalcBound !== '1'){
+      toggle.dataset.orderStatueCalcBound='1';
+      toggle.addEventListener('change', update);
+    }
+    try{ applySaved(JSON.parse(localStorage.getItem('blackOrbOrderStatueSettings') || 'null')); }catch(e){ update(); }
+    update();
+  }
+  window.calculateBlackOrbOrderStatueAmp = calculate;
+  window.updateBlackOrbOrderStatueAmpDisplay = update;
+  window.getBlackOrbOrderStatueFinalValues = getValues;
+  window.applyBlackOrbOrderStatueFinalValues = applySaved;
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bind);
+  else bind();
+})();
+</script>
+
 <script id="black-orb-final-force-patch">
 (function(){
   function digitsOnly(value){
@@ -8725,8 +8814,12 @@ window.goToAdventureSkillSettings = goToAdventureSkillSettings;
   }
   async function saveOrder(btn){
     hideOldMsgs();
-    if(clearInvalid('#blackOrbOrderStatueLevel',0,80,false)){ buttonState(btn,'fail','0~80'); return; }
-    saveLocal('blackOrbOrderStatueSettings',{level:document.getElementById('blackOrbOrderStatueLevel')?.value || '', savedAt:new Date().toISOString()});
+    if(clearInvalid('#blackOrbOrderStatueLevel',1,80,false)){ buttonState(btn,'fail','1~80'); return; }
+    if(typeof window.updateBlackOrbOrderStatueAmpDisplay === 'function') window.updateBlackOrbOrderStatueAmpDisplay();
+    const values = (typeof window.getBlackOrbOrderStatueFinalValues === 'function')
+      ? window.getBlackOrbOrderStatueFinalValues()
+      : {level:document.getElementById('blackOrbOrderStatueLevel')?.value || '', savedAt:new Date().toISOString()};
+    saveLocal('blackOrbOrderStatueSettings', values);
     buttonState(btn,'done');
   }
   function ensureResonanceBody(){
