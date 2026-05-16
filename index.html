@@ -3188,6 +3188,15 @@ function addSections() {
           <button type="button" class="black-orb-basic-info-btn" onclick="openBlackOrbRelicPopup()">유물</button>
           <button type="button" id="blackOrbSkillMasteryOpenBtn" class="black-orb-basic-info-btn" onclick="openBlackOrbSkillMasteryPopup()">스킬 숙련도</button>
         </div>
+        <div class="black-orb-increase-total-summary" aria-label="속성별 증가 데미지 총합">
+          <div class="black-orb-increase-total-title">총 증가 데미지</div>
+          <div class="black-orb-increase-total-grid">
+            <div class="black-orb-increase-total-item"><span class="black-orb-increase-total-label wind">바람</span><span id="blackOrbTotalIncreaseWindDamage" class="black-orb-increase-total-value">+0%</span></div>
+            <div class="black-orb-increase-total-item"><span class="black-orb-increase-total-label earth">땅</span><span id="blackOrbTotalIncreaseEarthDamage" class="black-orb-increase-total-value">+0%</span></div>
+            <div class="black-orb-increase-total-item"><span class="black-orb-increase-total-label fire">불</span><span id="blackOrbTotalIncreaseFireDamage" class="black-orb-increase-total-value">+0%</span></div>
+            <div class="black-orb-increase-total-item"><span class="black-orb-increase-total-label water">물</span><span id="blackOrbTotalIncreaseWaterDamage" class="black-orb-increase-total-value">+0%</span></div>
+          </div>
+        </div>
       </div>
 
       <div class="black-orb-damage-amp-wrap" aria-label="블랙 오브 증폭 데미지 정보">
@@ -10391,6 +10400,217 @@ window.goToAdventureSkillSettings = goToAdventureSkillSettings;
   if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', installFinalHandlers);
   else installFinalHandlers();
   window.addEventListener('load', function(){ setTimeout(installFinalHandlers, 50); setTimeout(installFinalHandlers, 400); });
+})();
+</script>
+
+
+<!-- FINAL PATCH: 증가 데미지 속성별 총합 표시 -->
+<style>
+  .black-orb-increase-total-summary{
+    position:relative;
+    margin:18px 0 0;
+    padding:18px 12px 12px;
+    border:2px solid rgba(20,184,166,.34);
+    border-radius:18px;
+    background:linear-gradient(180deg,rgba(236,253,245,.74),rgba(255,255,255,.97));
+    box-shadow:0 7px 16px rgba(15,23,42,.06);
+  }
+  .black-orb-increase-total-title{
+    position:absolute;
+    left:50%;
+    top:0;
+    transform:translate(-50%,-50%);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-width:112px;
+    height:28px;
+    padding:0 16px;
+    border-radius:999px;
+    background:#0f172a;
+    color:#fff;
+    font-size:13px;
+    font-weight:950;
+    letter-spacing:-.03em;
+    white-space:nowrap;
+    box-shadow:0 8px 16px rgba(15,23,42,.16);
+  }
+  .black-orb-increase-total-grid{
+    display:grid;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:8px;
+  }
+  .black-orb-increase-total-item{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    min-height:54px;
+    padding:7px 4px;
+    border:2px solid rgba(20,184,166,.24);
+    border-radius:14px;
+    background:#fff;
+    box-shadow:0 6px 14px rgba(15,23,42,.06);
+  }
+  .black-orb-increase-total-label{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-width:44px;
+    height:22px;
+    padding:0 9px;
+    border-radius:999px;
+    color:#fff;
+    font-size:12px;
+    font-weight:950;
+    line-height:1;
+    white-space:nowrap;
+  }
+  .black-orb-increase-total-label.wind{background:var(--wind-color,#14d4c0);color:#fff;}
+  .black-orb-increase-total-label.earth{background:var(--earth-color,#ffc45f);color:#111827;}
+  .black-orb-increase-total-label.fire{background:var(--fire-color,#c21a08);color:#fff;}
+  .black-orb-increase-total-label.water{background:var(--water-color,#07006e);color:#fff;}
+  .black-orb-increase-total-value{
+    margin-top:5px;
+    color:#111827;
+    font-size:13px;
+    font-weight:950;
+    line-height:1;
+  }
+  @media(max-width:768px){
+    .black-orb-increase-total-summary{margin-top:16px;padding:16px 9px 10px;border-radius:16px;}
+    .black-orb-increase-total-title{height:26px;min-width:104px;padding:0 13px;font-size:12px;}
+    .black-orb-increase-total-grid{gap:6px;}
+    .black-orb-increase-total-item{min-height:48px;padding:6px 2px;border-radius:12px;}
+    .black-orb-increase-total-label{min-width:38px;height:20px;padding:0 7px;font-size:11px;}
+    .black-orb-increase-total-value{font-size:12px;}
+  }
+</style>
+<script>
+(function(){
+  'use strict';
+
+  const TOTAL_TARGETS = {
+    wind:  'blackOrbTotalIncreaseWindDamage',
+    earth: 'blackOrbTotalIncreaseEarthDamage',
+    fire:  'blackOrbTotalIncreaseFireDamage',
+    water: 'blackOrbTotalIncreaseWaterDamage'
+  };
+
+  const COMPANION_TARGETS = {
+    wind:  'blackOrbCompanionWindDamage',
+    earth: 'blackOrbCompanionEarthDamage',
+    fire:  'blackOrbCompanionFireDamage',
+    water: 'blackOrbCompanionWaterDamage'
+  };
+
+  const RELIC_TARGETS = {
+    wind:  ['blackOrbRelicTyphoonEyeDamage', 'blackOrbRelicWindDamage'],
+    earth: ['blackOrbRelicKingProofDamage', 'blackOrbRelicEarthDamage', 'blackOrbRelicEmperorProofDamage'],
+    fire:  ['blackOrbRelicSilentFlameDamage', 'blackOrbRelicFireDamage', 'blackOrbRelicQuietFlameDamage', 'blackOrbRelicCalmFlameDamage'],
+    water: ['blackOrbRelicAbyssDropDamage', 'blackOrbRelicWaterDamage', 'blackOrbRelicAbyssWaterdropDamage']
+  };
+
+  function firstExistingText(ids){
+    for(const id of ids){
+      const el = document.getElementById(id);
+      if(el) return el.textContent || '';
+    }
+    return '';
+  }
+
+  function parsePercentText(text){
+    const cleaned = String(text || '')
+      .replace(/,/g,'')
+      .replace(/[^0-9.\-]/g,'');
+    if(cleaned === '' || cleaned === '-' || cleaned === '.') return 0;
+    const value = parseFloat(cleaned);
+    return Number.isFinite(value) ? value : 0;
+  }
+
+  function formatPercent(value){
+    const rounded = Math.round((Number(value) || 0) * 100) / 100;
+    return '+' + rounded.toLocaleString('ko-KR', { maximumFractionDigits:2 }) + '%';
+  }
+
+  function readCompanion(type){
+    const el = document.getElementById(COMPANION_TARGETS[type]);
+    return parsePercentText(el ? el.textContent : '');
+  }
+
+  function readRelic(type){
+    return parsePercentText(firstExistingText(RELIC_TARGETS[type] || []));
+  }
+
+  function readSkillMastery(){
+    const el = document.getElementById('blackOrbSkillMasteryDamage');
+    return parsePercentText(el ? el.textContent : '');
+  }
+
+  window.updateBlackOrbIncreaseDamageTotal = function(){
+    const skill = readSkillMastery();
+    Object.keys(TOTAL_TARGETS).forEach(function(type){
+      const target = document.getElementById(TOTAL_TARGETS[type]);
+      if(!target) return;
+      const total = readCompanion(type) + readRelic(type) + skill;
+      target.textContent = formatPercent(total);
+    });
+  };
+
+  function debounceUpdate(){
+    clearTimeout(window.__blackOrbIncreaseTotalTimer);
+    window.__blackOrbIncreaseTotalTimer = setTimeout(window.updateBlackOrbIncreaseDamageTotal, 0);
+  }
+
+  function wrapFunction(name){
+    const original = window[name];
+    if(typeof original !== 'function' || original.__increaseTotalWrapped) return;
+    const wrapped = function(){
+      const result = original.apply(this, arguments);
+      Promise.resolve(result).finally(debounceUpdate);
+      return result;
+    };
+    wrapped.__increaseTotalWrapped = true;
+    window[name] = wrapped;
+  }
+
+  function installIncreaseTotalPatch(){
+    [
+      'updateBlackOrbCompanionDamageSummary',
+      'updateBlackOrbRelicDamageSummary',
+      'updateBlackOrbRelicDamages',
+      'updateBlackOrbRelicDamage',
+      'updateBlackOrbRelicDamageOutputs',
+      'updateBlackOrbSkillMasteryDamage',
+      'saveBlackOrbCompanionSettings',
+      'saveBlackOrbRelicSettings',
+      'saveBlackOrbSkillMasterySettings',
+      'applyBlackOrbCompanionCloudSettings',
+      'applyBlackOrbRelicSettings',
+      'applyBlackOrbSkillMasterySettings',
+      'loadBlackOrbRelicSettings',
+      'loadBlackOrbSkillMasterySettings'
+    ].forEach(wrapFunction);
+
+    document.querySelectorAll('#blackOrbCompanionPopupBg input, #blackOrbCompanionPopupBg select, #blackOrbRelicPopup input, #blackOrbSkillMasteryPopup input').forEach(function(el){
+      if(el.dataset.increaseTotalBound === '1') return;
+      el.dataset.increaseTotalBound = '1';
+      el.addEventListener('input', debounceUpdate);
+      el.addEventListener('change', debounceUpdate);
+      el.addEventListener('blur', debounceUpdate);
+    });
+
+    debounceUpdate();
+  }
+
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', installIncreaseTotalPatch);
+  else installIncreaseTotalPatch();
+  window.addEventListener('load', function(){
+    setTimeout(installIncreaseTotalPatch, 100);
+    setTimeout(window.updateBlackOrbIncreaseDamageTotal, 500);
+    setTimeout(window.updateBlackOrbIncreaseDamageTotal, 1500);
+  });
+  window.addEventListener('pageshow', function(){ setTimeout(installIncreaseTotalPatch, 0); });
 })();
 </script>
 
