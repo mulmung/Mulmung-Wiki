@@ -779,6 +779,9 @@ button.faq-flow-item:focus,button.faq-flow-item:focus-visible{outline:none;borde
 .soul-amount-check-btn:hover,.soul-amount-reset-btn:hover{filter:brightness(.96)}
 .soul-amount-message{display:none;margin-top:9px;padding:9px 11px;border-radius:14px;background:#fff7ed;color:#c2410c;text-align:center;font-size:12px;font-weight:900;line-height:1.4}
 .soul-amount-message.show{display:block}
+.soul-amount-input:disabled{background:#f3f4f6;color:#9ca3af;border-color:#d1d5db;box-shadow:none;cursor:not-allowed}
+.soul-amount-check-btn:disabled{background:#cbd5e1;color:#64748b;box-shadow:none;cursor:not-allowed;transform:none}
+.soul-amount-check-btn:disabled:hover{filter:none}
 .soul-weapon-search-input{width:100%;height:46px;margin-top:12px;border:2px solid #111827;border-radius:16px;background:#fff;color:#111827;padding:0 14px;font-size:16px;font-weight:900;outline:none}
 .soul-weapon-search-input::placeholder{color:#6b7280;font-weight:800}
 .soul-weapon-search-input:focus{box-shadow:0 0 0 3px rgba(17,24,39,.10)}
@@ -3547,7 +3550,7 @@ function addSections() {
       <p class="soul-weapon-guide">소울 웨폰 색상을 선택하거나 아래 버튼을 눌러 필요 정보를 확인할 수 있습니다.</p>
       <div class="soul-weapon-filter-box">
         <label for="soulWeaponColorSelect" class="soul-weapon-filter-label">원하는 색의 소울 웨폰을 골라주세요.</label>
-        <select id="soulWeaponColorSelect" class="soul-weapon-select" onchange="applySoulWeaponFilters()">
+        <select id="soulWeaponColorSelect" class="soul-weapon-select" onchange="handleSoulWeaponColorChange()">
           <option value="all" selected>전체 소울 웨폰</option>
           <option value="green">그린 소울 웨폰</option>
           <option value="blue">블루 소울 웨폰</option>
@@ -3567,9 +3570,9 @@ function addSections() {
               </span>
             </span>
           </div>
-          <input id="soulWeaponOwnedSoulInput" class="soul-amount-input" type="text" inputmode="decimal" placeholder="예: 3.5b" autocomplete="off" />
+          <input id="soulWeaponOwnedSoulInput" class="soul-amount-input" type="text" inputmode="text" placeholder="소울 색을 먼저 선택해 주세요" autocomplete="off" disabled />
           <div class="soul-amount-actions">
-            <button class="soul-amount-check-btn" type="button" onclick="checkSoulWeaponCraftAvailability()">제작 가능 확인</button>
+            <button id="soulWeaponCraftCheckBtn" class="soul-amount-check-btn" type="button" onclick="checkSoulWeaponCraftAvailability()" disabled>제작 가능 확인</button>
             <button class="soul-amount-reset-btn" type="button" onclick="resetSoulWeaponCraftAvailability()">소울량 초기화</button>
           </div>
           <div id="soulWeaponAmountMessage" class="soul-amount-message"></div>
@@ -6187,8 +6190,43 @@ function parseSoulWeaponRequiredSoul(value) {
 function getSoulWeaponButtonName(btn) {
     return String(btn ? btn.textContent || '' : '').trim();
 }
+function getSelectedSoulWeaponColor() {
+    var colorSelect = document.getElementById('soulWeaponColorSelect');
+    return colorSelect ? colorSelect.value : 'all';
+}
+function isSoulWeaponCraftColorSelected() {
+    var selectedColor = getSelectedSoulWeaponColor();
+    return selectedColor === 'green' || selectedColor === 'blue' || selectedColor === 'red';
+}
+function updateSoulWeaponAmountInputState() {
+    var input = document.getElementById('soulWeaponOwnedSoulInput');
+    var checkBtn = document.getElementById('soulWeaponCraftCheckBtn');
+    var enabled = isSoulWeaponCraftColorSelected();
+    if (input) {
+        input.disabled = !enabled;
+        input.placeholder = enabled ? '예: 3.5b' : '소울 색을 먼저 선택해 주세요';
+        if (!enabled)
+            input.value = '';
+    }
+    if (checkBtn)
+        checkBtn.disabled = !enabled;
+}
+function handleSoulWeaponColorChange() {
+    clearSoulWeaponCraftClasses();
+    showSoulWeaponAmountMessage('');
+    closeSoulAmountInfo();
+    updateSoulWeaponAmountInputState();
+    applySoulWeaponFilters();
+}
 function checkSoulWeaponCraftAvailability() {
     closeSoulAmountInfo();
+    updateSoulWeaponAmountInputState();
+    var selectedColor = getSelectedSoulWeaponColor();
+    if (!isSoulWeaponCraftColorSelected()) {
+        clearSoulWeaponCraftClasses();
+        showSoulWeaponAmountMessage('먼저 소울 색을 선택해 주세요.');
+        return;
+    }
     var input = document.getElementById('soulWeaponOwnedSoulInput');
     var owned = parseSoulWeaponAmountToBigInt(input ? input.value : '');
     if (owned === null) {
@@ -6203,6 +6241,8 @@ function checkSoulWeaponCraftAvailability() {
         var info = soulWeaponInfoMap[name] || {};
         var required = parseSoulWeaponRequiredSoul(info.soul);
         btn.classList.remove('craft-available', 'craft-unavailable');
+        if (btn.dataset.soulColor !== selectedColor)
+            return;
         if (required === null)
             return;
         checkedCount += 1;
@@ -6223,12 +6263,14 @@ function resetSoulWeaponCraftAvailability() {
     clearSoulWeaponCraftClasses();
     showSoulWeaponAmountMessage('');
     closeSoulAmountInfo();
+    updateSoulWeaponAmountInputState();
 }
 function applySoulWeaponFilters() {
     var colorSelect = document.getElementById('soulWeaponColorSelect');
     var searchInput = document.getElementById('soulWeaponSearchInput');
     var routeToggle = document.getElementById('soulWeaponRouteToggle');
     var selectedColor = colorSelect ? colorSelect.value : 'all';
+    updateSoulWeaponAmountInputState();
     var keyword = searchInput ? searchInput.value.trim().toLowerCase() : '';
     var keywordChosung = getKoreanChosungText(keyword);
     var routeOn = !!(routeToggle && routeToggle.checked);
