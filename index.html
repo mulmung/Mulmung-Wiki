@@ -564,15 +564,17 @@ body.skill-can-manage .skill-manage-only{display:inline-block}
 .spirit-enhancement-desc{margin:0 0 18px !important;font-size:15px !important;font-weight:800;color:#4b5563}
 .spirit-enhancement-visuals{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:18px}
 .spirit-enhancement-visual-card{border:1px solid #e5e7eb;border-radius:20px;background:#fff;padding:14px;text-align:center}
+.spirit-enhancement-visual-card .spirit-key-label.same-one{background:#a16207;color:#fff}
+.spirit-enhancement-visual-card .spirit-key-label.same-element{background:#16a34a;color:#fff}
 .spirit-enhancement-visual-row{display:flex;align-items:flex-start;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:8px}
 .spirit-enhancement-visual-row.single .awakening-material-card{width:82px}
 .spirit-enhancement-flow{display:grid;gap:10px}
-.spirit-enhancement-step{padding:14px;border:1px solid #e5e7eb;border-radius:20px;background:#fff;box-shadow:0 6px 16px rgba(0,0,0,.04)}
-.spirit-enhancement-step-badge{display:inline-flex;align-items:center;justify-content:center;min-height:30px;padding:6px 12px;border-radius:999px;background:#111827;color:#fff;font-size:14px;font-weight:950;line-height:1;margin-bottom:10px}
-.spirit-enhancement-step-title{font-size:16px;font-weight:950;color:#111827;word-break:keep-all}
+.spirit-enhancement-step{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:14px;border:1px solid #e5e7eb;border-radius:20px;background:#fff;box-shadow:0 6px 16px rgba(0,0,0,.04)}
+.spirit-enhancement-step-badge{display:inline-flex;align-items:center;justify-content:center;min-height:30px;padding:6px 12px;border-radius:999px;background:#111827;color:#fff;font-size:14px;font-weight:950;line-height:1;margin:0 auto 10px}
+.spirit-enhancement-step-title{font-size:16px;font-weight:950;color:#111827;word-break:keep-all;text-align:center}
 .spirit-enhancement-step-title .same-one{color:#a16207}
 .spirit-enhancement-step-title .same-element{color:#16a34a}
-.spirit-enhancement-step-text{margin-top:6px;font-size:14px;font-weight:850;color:#4b5563;word-break:keep-all}
+.spirit-enhancement-step-text{margin-top:6px;font-size:14px;font-weight:850;color:#4b5563;word-break:keep-all;text-align:center}
 @media(max-width:768px){.spirit-enhancement-btn{padding:7px 13px;font-size:13px}.spirit-enhancement-popup{max-width:94vw;max-height:84vh;padding:14px;border-radius:20px}.spirit-enhancement-guide{padding:16px;border-radius:18px}.spirit-enhancement-head{display:block;margin-bottom:12px}.spirit-enhancement-title{font-size:21px;margin-bottom:8px}.spirit-enhancement-desc{font-size:14px !important}.spirit-enhancement-visuals{grid-template-columns:1fr;gap:8px}.spirit-enhancement-visual-card{padding:12px;border-radius:18px}.spirit-enhancement-step{padding:12px;border-radius:17px}.spirit-enhancement-step-badge{font-size:13px;padding:6px 11px;margin-bottom:8px}.spirit-enhancement-step-title{font-size:15px}.spirit-enhancement-step-text{font-size:13px}}
 .sidebar-promotion-badge{display:inline-flex;align-items:center;justify-content:center;width:max-content;max-width:100%;min-width:0;height:32px;padding:0 14px;border-radius:999px;font-size:14px;font-weight:950;color:#fff;line-height:1;white-space:nowrap;box-shadow:0 6px 14px rgba(0,0,0,.16)}
 .role-popup{max-width:720px;padding:20px;border-radius:22px}
@@ -1643,11 +1645,11 @@ button.faq-flow-item:focus,button.faq-flow-item:focus-visible{outline:none;borde
         </div>
         <div class="spirit-awakening-key">
           <div class="spirit-key-card">
-            <span class="spirit-key-label">같은 개체</span>
+            <span class="spirit-key-label same-one">같은 개체</span>
             <div class="spirit-key-text">노아를 각성한다면 <strong>노아만</strong> 재료로 사용</div>
           </div>
           <div class="spirit-key-card">
-            <span class="spirit-key-label">같은 속성</span>
+            <span class="spirit-key-label same-element">같은 속성</span>
             <div class="spirit-key-text">땅 속성인 <strong>노아 / 로어 / 라돈</strong> 중 선택</div>
           </div>
         </div>
@@ -1772,7 +1774,7 @@ button.faq-flow-item:focus,button.faq-flow-item:focus-visible{outline:none;borde
         </div>
         <div class="spirit-enhancement-visuals">
           <div class="spirit-enhancement-visual-card">
-            <span class="spirit-key-label">같은 개체</span>
+            <span class="spirit-key-label same-one">같은 개체</span>
             <div class="spirit-enhancement-visual-row single">
               <div class="awakening-material-card legendary">
                 <img src="noa.png" alt="노아" class="awakening-material-img">
@@ -1781,7 +1783,7 @@ button.faq-flow-item:focus,button.faq-flow-item:focus-visible{outline:none;borde
             </div>
           </div>
           <div class="spirit-enhancement-visual-card">
-            <span class="spirit-key-label">같은 속성</span>
+            <span class="spirit-key-label same-element">같은 속성</span>
             <div class="spirit-enhancement-visual-row">
               <div class="awakening-material-card legendary"><img src="noa.png" alt="노아" class="awakening-material-img"><span class="awakening-material-name">노아</span></div>
               <div class="awakening-material-card legendary"><img src="roar.png" alt="로어" class="awakening-material-img"><span class="awakening-material-name">로어</span></div>
