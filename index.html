@@ -5618,32 +5618,38 @@ function getSoulWeaponEngraveGridHtml(name) {
             '<div class="soul-engrave-grid cols-5">' + gridHtml + '</div>' +
             '</div>';
     }
-    const renderAutoSoulEngraveBoard = function(label, grid) {
+    const sg = function(color, group) {
+        return { color: color, group: group };
+    };
+
+    const renderGroupedSoulEngraveBoard = function(label, grid) {
         const rows = grid.length;
         const cols = grid[0].length;
-        const gridHtml = grid.map(row => row.map(color => {
-            if (!color) return '<div class="soul-engrave-cell empty-fill"></div>';
-            return '<div class="soul-engrave-cell has-node"><span class="soul-engrave-node ' + color + '" aria-hidden="true"></span></div>';
+        const gridHtml = grid.map(row => row.map(cell => {
+            if (!cell) return '<div class="soul-engrave-cell empty-fill"></div>';
+            return '<div class="soul-engrave-cell has-node"><span class="soul-engrave-node ' + cell.color + '" aria-hidden="true"></span></div>';
         }).join('')).join('');
 
-        const pathByColor = {};
+        const pathByGroup = {};
+        const colorByGroup = {};
         for (let r = 0; r < rows; r++) {
             for (let c = 0; c < cols; c++) {
-                const color = grid[r][c];
-                if (!color) continue;
-                if (c + 1 < cols && grid[r][c + 1] === color) {
-                    if (!pathByColor[color]) pathByColor[color] = [];
-                    pathByColor[color].push('M ' + (c + 0.5) + ' ' + (r + 0.5) + ' L ' + (c + 1.5) + ' ' + (r + 0.5));
+                const cell = grid[r][c];
+                if (!cell) continue;
+                colorByGroup[cell.group] = cell.color;
+                if (c + 1 < cols && grid[r][c + 1] && grid[r][c + 1].group === cell.group) {
+                    if (!pathByGroup[cell.group]) pathByGroup[cell.group] = [];
+                    pathByGroup[cell.group].push('M ' + (c + 0.5) + ' ' + (r + 0.5) + ' L ' + (c + 1.5) + ' ' + (r + 0.5));
                 }
-                if (r + 1 < rows && grid[r + 1][c] === color) {
-                    if (!pathByColor[color]) pathByColor[color] = [];
-                    pathByColor[color].push('M ' + (c + 0.5) + ' ' + (r + 0.5) + ' L ' + (c + 0.5) + ' ' + (r + 1.5));
+                if (r + 1 < rows && grid[r + 1][c] && grid[r + 1][c].group === cell.group) {
+                    if (!pathByGroup[cell.group]) pathByGroup[cell.group] = [];
+                    pathByGroup[cell.group].push('M ' + (c + 0.5) + ' ' + (r + 0.5) + ' L ' + (c + 0.5) + ' ' + (r + 1.5));
                 }
             }
         }
 
-        const svgHtml = Object.keys(pathByColor).map(color => {
-            return '<path class="soul-engrave-line ' + color + '" d="' + pathByColor[color].join(' ') + '" />';
+        const svgHtml = Object.keys(pathByGroup).map(group => {
+            return '<path class="soul-engrave-line ' + colorByGroup[group] + '" d="' + pathByGroup[group].join(' ') + '" />';
         }).join('');
 
         return '<div class="soul-engrave-board" aria-label="' + label + ' 5x5 각인 추천 배치">' +
@@ -5653,183 +5659,183 @@ function getSoulWeaponEngraveGridHtml(name) {
     };
 
     if (name === "변화") {
-        return renderAutoSoulEngraveBoard("변화", [
-            [null, null, null, null, "red"],
-            [null, null, "red", "red", "red"],
-            [null, "blue", "blue", "blue", "green"],
-            [null, "blue", "green", "green", "green"],
-            ["yellow", "yellow", "yellow", "yellow", null]
+        return renderGroupedSoulEngraveBoard("변화", [
+            [null, null, null, null, sg('red','a1')],
+            [null, null, sg('red','a1'), sg('red','a1'), sg('red','a1')],
+            [null, sg('red','a2'), sg('red','a2'), sg('red','a2'), sg('red','a3')],
+            [null, sg('red','a2'), sg('red','a3'), sg('red','a3'), sg('red','a3')],
+            [sg('blue','e1'), sg('blue','e1'), sg('blue','e1'), sg('blue','e1'), null]
         ]);
     }
     if (name === "흥미") {
-        return renderAutoSoulEngraveBoard("흥미", [
-            [null, "red", "red", "green", "green"],
-            [null, null, "red", "yellow", "green"],
-            [null, null, "red", "yellow", "green"],
-            [null, "blue", "blue", "yellow", null],
-            [null, "blue", "blue", "yellow", null]
+        return renderGroupedSoulEngraveBoard("흥미", [
+            [null, sg('red','a1'), sg('red','a1'), sg('red','a2'), sg('red','a2')],
+            [null, null, sg('red','a1'), sg('blue','e1'), sg('red','a2')],
+            [null, null, sg('red','a1'), sg('blue','e1'), sg('red','a2')],
+            [null, sg('orange','b1'), sg('orange','b1'), sg('blue','e1'), null],
+            [null, sg('orange','b1'), sg('orange','b1'), sg('blue','e1'), null]
         ]);
     }
     if (name === "총명") {
-        return renderAutoSoulEngraveBoard("총명", [
-            ["yellow", "yellow", "yellow", "blue", "blue"],
-            ["yellow", "red", "red", "blue", "blue"],
-            [null, "green", "red", null, null],
-            [null, "green", "red", null, null],
-            [null, "green", "green", null, null]
+        return renderGroupedSoulEngraveBoard("총명", [
+            [sg('red','a1'), sg('red','a1'), sg('red','a1'), sg('orange','b1'), sg('orange','b1')],
+            [sg('red','a1'), sg('red','a2'), sg('red','a2'), sg('orange','b1'), sg('orange','b1')],
+            [null, sg('red','a3'), sg('red','a2'), null, null],
+            [null, sg('red','a3'), sg('red','a2'), null, null],
+            [null, sg('red','a3'), sg('red','a3'), null, null]
         ]);
     }
     if (name === "탐욕") {
-        return renderAutoSoulEngraveBoard("탐욕", [
-            ["red", "yellow", "yellow", "green", "green"],
-            ["red", null, "yellow", null, "green"],
-            ["red", "red", "yellow", "blue", "green"],
-            [null, "blue", "blue", "blue", null],
+        return renderGroupedSoulEngraveBoard("탐욕", [
+            [sg('red','a1'), sg('red','a2'), sg('red','a2'), sg('red','a3'), sg('red','a3')],
+            [sg('red','a1'), null, sg('red','a2'), null, sg('red','a3')],
+            [sg('red','a1'), sg('red','a1'), sg('red','a2'), sg('red','a4'), sg('red','a3')],
+            [null, sg('red','a4'), sg('red','a4'), sg('red','a4'), null],
             [null, null, null, null, null]
         ]);
     }
     if (name === "맹세") {
-        return renderAutoSoulEngraveBoard("맹세", [
-            [null, "red", "red", "red", "yellow"],
-            [null, "red", "yellow", "yellow", "yellow"],
-            ["green", "blue", "blue", "blue", null],
-            ["green", "blue", null, null, null],
-            ["green", "green", null, null, null]
+        return renderGroupedSoulEngraveBoard("맹세", [
+            [null, sg('red','a1'), sg('red','a1'), sg('red','a1'), sg('red','a2')],
+            [null, sg('red','a1'), sg('red','a2'), sg('red','a2'), sg('red','a2')],
+            [sg('red','a3'), sg('red','a4'), sg('red','a4'), sg('red','a4'), null],
+            [sg('red','a3'), sg('red','a4'), null, null, null],
+            [sg('red','a3'), sg('red','a3'), null, null, null]
         ]);
     }
     if (name === "불안") {
-        return renderAutoSoulEngraveBoard("불안", [
-            ["green", "yellow", "yellow", null, null],
-            ["green", "yellow", "yellow", null, null],
-            ["green", "green", "red", "blue", null],
-            [null, "red", "red", "blue", null],
-            [null, null, "red", "blue", "blue"]
+        return renderGroupedSoulEngraveBoard("불안", [
+            [sg('red','a1'), sg('orange','b1'), sg('orange','b1'), null, null],
+            [sg('red','a1'), sg('orange','b1'), sg('orange','b1'), null, null],
+            [sg('red','a1'), sg('red','a1'), sg('green','d1'), sg('red','a2'), null],
+            [null, sg('green','d1'), sg('green','d1'), sg('red','a2'), null],
+            [null, null, sg('green','d1'), sg('red','a2'), sg('red','a2')]
         ]);
     }
     if (name === "혈기") {
-        return renderAutoSoulEngraveBoard("혈기", [
-            [null, "yellow", "yellow", "green", null],
-            ["red", "red", "yellow", "green", "green"],
-            ["red", "red", "yellow", "blue", "green"],
-            [null, "blue", "blue", "blue", null],
+        return renderGroupedSoulEngraveBoard("혈기", [
+            [null, sg('red','a1'), sg('red','a1'), sg('purple','f1'), null],
+            [sg('orange','b1'), sg('orange','b1'), sg('red','a1'), sg('purple','f1'), sg('purple','f1')],
+            [sg('orange','b1'), sg('orange','b1'), sg('red','a1'), sg('red','a2'), sg('purple','f1')],
+            [null, sg('red','a2'), sg('red','a2'), sg('red','a2'), null],
             [null, null, null, null, null]
         ]);
     }
     if (name === "기대") {
-        return renderAutoSoulEngraveBoard("기대", [
-            ["red", "green", "green", "green", "green"],
-            ["red", null, null, null, "blue"],
-            ["red", "red", "blue", "blue", "blue"],
-            [null, "yellow", "yellow", "yellow", null],
-            [null, null, "yellow", null, null]
+        return renderGroupedSoulEngraveBoard("기대", [
+            [sg('red','a1'), sg('blue','e1'), sg('blue','e1'), sg('blue','e1'), sg('blue','e1')],
+            [sg('red','a1'), null, null, null, sg('red','a2')],
+            [sg('red','a1'), sg('red','a1'), sg('red','a2'), sg('red','a2'), sg('red','a2')],
+            [null, sg('green','d1'), sg('green','d1'), sg('green','d1'), null],
+            [null, null, sg('green','d1'), null, null]
         ]);
     }
     if (name === "방황") {
-        return renderAutoSoulEngraveBoard("방황", [
-            [null, "red", "green", "green", null],
-            [null, "red", "green", "green", null],
-            [null, "red", "red", "yellow", null],
-            [null, "blue", "blue", "yellow", null],
-            ["blue", "blue", null, "yellow", "yellow"]
+        return renderGroupedSoulEngraveBoard("방황", [
+            [null, sg('red','a1'), sg('orange','b1'), sg('orange','b1'), null],
+            [null, sg('red','a1'), sg('orange','b1'), sg('orange','b1'), null],
+            [null, sg('red','a1'), sg('red','a1'), sg('red','a2'), null],
+            [null, sg('purple','f1'), sg('purple','f1'), sg('red','a2'), null],
+            [sg('purple','f1'), sg('purple','f1'), null, sg('red','a2'), sg('red','a2')]
         ]);
     }
     if (name === "일탈") {
-        return renderAutoSoulEngraveBoard("일탈", [
-            ["yellow", "red", "red", "red", "green"],
-            ["yellow", "red", "green", "green", "green"],
-            ["yellow", null, "blue", "blue", "blue"],
-            ["yellow", null, null, "blue", null],
+        return renderGroupedSoulEngraveBoard("일탈", [
+            [sg('blue','e1'), sg('red','a1'), sg('red','a1'), sg('red','a1'), sg('red','a2')],
+            [sg('blue','e1'), sg('red','a1'), sg('red','a2'), sg('red','a2'), sg('red','a2')],
+            [sg('blue','e1'), null, sg('green','d1'), sg('green','d1'), sg('green','d1')],
+            [sg('blue','e1'), null, null, sg('green','d1'), null],
             [null, null, null, null, null]
         ]);
     }
     if (name === "갈증") {
-        return renderAutoSoulEngraveBoard("갈증", [
-            ["green", "green", "green", "green", null],
-            ["red", "red", "red", "blue", "blue"],
-            ["red", "yellow", "yellow", "blue", "blue"],
-            [null, null, "yellow", null, null],
-            [null, null, "yellow", null, null]
+        return renderGroupedSoulEngraveBoard("갈증", [
+            [sg('blue','e1'), sg('blue','e1'), sg('blue','e1'), sg('blue','e1'), null],
+            [sg('red','a1'), sg('red','a1'), sg('red','a1'), sg('orange','b1'), sg('orange','b1')],
+            [sg('red','a1'), sg('red','a2'), sg('red','a2'), sg('orange','b1'), sg('orange','b1')],
+            [null, null, sg('red','a2'), null, null],
+            [null, null, sg('red','a2'), null, null]
         ]);
     }
     if (name === "성실") {
-        return renderAutoSoulEngraveBoard("성실", [
-            [null, null, "green", "green", "green"],
-            [null, "blue", "green", "red", null],
-            ["blue", "blue", "red", "red", null],
-            [null, "blue", "yellow", "red", null],
-            [null, null, "yellow", "yellow", "yellow"]
+        return renderGroupedSoulEngraveBoard("성실", [
+            [null, null, sg('red','a1'), sg('red','a1'), sg('red','a1')],
+            [null, sg('green','d1'), sg('red','a1'), sg('green','d2'), null],
+            [sg('green','d1'), sg('green','d1'), sg('green','d2'), sg('green','d2'), null],
+            [null, sg('green','d1'), sg('yellow','c1'), sg('green','d2'), null],
+            [null, null, sg('yellow','c1'), sg('yellow','c1'), sg('yellow','c1')]
         ]);
     }
     if (name === "결의") {
-        return renderAutoSoulEngraveBoard("결의", [
+        return renderGroupedSoulEngraveBoard("결의", [
             [null, null, null, null, null],
-            ["blue", "blue", "blue", "yellow", "yellow"],
-            ["blue", "red", "red", "yellow", "yellow"],
-            [null, "red", "red", "green", null],
-            [null, "green", "green", "green", null]
+            [sg('red','a1'), sg('red','a1'), sg('red','a1'), sg('orange','b1'), sg('orange','b1')],
+            [sg('red','a1'), sg('orange','b2'), sg('orange','b2'), sg('orange','b1'), sg('orange','b1')],
+            [null, sg('orange','b2'), sg('orange','b2'), sg('red','a2'), null],
+            [null, sg('red','a2'), sg('red','a2'), sg('red','a2'), null]
         ]);
     }
     if (name === "고양") {
-        return renderAutoSoulEngraveBoard("고양", [
-            ["green", "green", null, null, null],
-            [null, "green", "red", "yellow", "yellow"],
-            [null, "green", "red", "yellow", "yellow"],
-            [null, null, "red", "red", "blue"],
-            [null, null, "blue", "blue", "blue"]
+        return renderGroupedSoulEngraveBoard("고양", [
+            [sg('red','a1'), sg('red','a1'), null, null, null],
+            [null, sg('red','a1'), sg('red','a2'), sg('orange','b1'), sg('orange','b1')],
+            [null, sg('red','a1'), sg('red','a2'), sg('orange','b1'), sg('orange','b1')],
+            [null, null, sg('red','a2'), sg('red','a2'), sg('red','a3')],
+            [null, null, sg('red','a3'), sg('red','a3'), sg('red','a3')]
         ]);
     }
     if (name === "기백") {
-        return renderAutoSoulEngraveBoard("기백", [
-            ["blue", null, null, null, null],
-            ["blue", null, null, null, null],
-            ["blue", "blue", "yellow", "yellow", null],
-            ["red", "red", "yellow", "yellow", "green"],
-            ["red", "red", "green", "green", "green"]
+        return renderGroupedSoulEngraveBoard("기백", [
+            [sg('red','a1'), null, null, null, null],
+            [sg('red','a1'), null, null, null, null],
+            [sg('red','a1'), sg('red','a1'), sg('orange','b1'), sg('orange','b1'), null],
+            [sg('orange','b2'), sg('orange','b2'), sg('orange','b1'), sg('orange','b1'), sg('red','a2')],
+            [sg('orange','b2'), sg('orange','b2'), sg('red','a2'), sg('red','a2'), sg('red','a2')]
         ]);
     }
     if (name === "환상") {
-        return renderAutoSoulEngraveBoard("환상", [
-            [null, "red", "red", "red", null],
-            [null, "red", "green", "blue", "blue"],
-            ["green", "green", "green", "blue", "blue"],
-            [null, "yellow", "yellow", "yellow", null],
-            [null, null, "yellow", null, null]
+        return renderGroupedSoulEngraveBoard("환상", [
+            [null, sg('red','a1'), sg('red','a1'), sg('red','a1'), null],
+            [null, sg('red','a1'), sg('red','a2'), sg('orange','b1'), sg('orange','b1')],
+            [sg('red','a2'), sg('red','a2'), sg('red','a2'), sg('orange','b1'), sg('orange','b1')],
+            [null, sg('green','d1'), sg('green','d1'), sg('green','d1'), null],
+            [null, null, sg('green','d1'), null, null]
         ]);
     }
     if (name === "회의") {
-        return renderAutoSoulEngraveBoard("회의", [
-            [null, "red", "red", "red", null],
-            [null, "red", "blue", "green", "green"],
-            ["blue", "blue", "blue", "green", "green"],
-            ["yellow", "yellow", "yellow", "purple", null],
-            ["yellow", "purple", "purple", "purple", null]
+        return renderGroupedSoulEngraveBoard("회의", [
+            [null, sg('red','a1'), sg('red','a1'), sg('red','a1'), null],
+            [null, sg('red','a1'), sg('red','a2'), sg('orange','b1'), sg('orange','b1')],
+            [sg('red','a2'), sg('red','a2'), sg('red','a2'), sg('orange','b1'), sg('orange','b1')],
+            [sg('red','a3'), sg('red','a3'), sg('red','a3'), sg('red','a4'), null],
+            [sg('red','a3'), sg('red','a4'), sg('red','a4'), sg('red','a4'), null]
         ]);
     }
     if (name === "허무") {
-        return renderAutoSoulEngraveBoard("허무", [
-            ["red", "red", "green", "purple", "purple"],
-            ["yellow", "red", "green", "purple", "purple"],
-            ["yellow", "red", "green", "green", "blue"],
-            ["yellow", null, null, "blue", "blue"],
-            ["yellow", null, null, null, "blue"]
+        return renderGroupedSoulEngraveBoard("허무", [
+            [sg('red','a1'), sg('red','a1'), sg('red','a2'), sg('orange','b1'), sg('orange','b1')],
+            [sg('blue','e1'), sg('red','a1'), sg('red','a2'), sg('orange','b1'), sg('orange','b1')],
+            [sg('blue','e1'), sg('red','a1'), sg('red','a2'), sg('red','a2'), sg('green','d1')],
+            [sg('blue','e1'), null, null, sg('green','d1'), sg('green','d1')],
+            [sg('blue','e1'), null, null, null, sg('green','d1')]
         ]);
     }
     if (name === "집착") {
-        return renderAutoSoulEngraveBoard("집착", [
-            [null, "yellow", "yellow", "yellow", null],
-            ["green", "yellow", "red", "red", "red"],
-            ["green", "green", "red", "blue", null],
-            ["green", "purple", "purple", "blue", "blue"],
-            [null, "purple", "purple", "blue", null]
+        return renderGroupedSoulEngraveBoard("집착", [
+            [null, sg('red','a1'), sg('red','a1'), sg('red','a1'), null],
+            [sg('green','d1'), sg('red','a1'), sg('red','a2'), sg('red','a2'), sg('red','a2')],
+            [sg('green','d1'), sg('green','d1'), sg('red','a2'), sg('green','d2'), null],
+            [sg('green','d1'), sg('orange','b1'), sg('orange','b1'), sg('green','d2'), sg('green','d2')],
+            [null, sg('orange','b1'), sg('orange','b1'), sg('green','d2'), null]
         ]);
     }
     if (name === "여운") {
-        return renderAutoSoulEngraveBoard("여운", [
-            ["red", "red", null, "purple", "purple"],
-            ["red", "red", "blue", "blue", "purple"],
-            ["yellow", "yellow", "green", "blue", "purple"],
-            [null, "yellow", "green", "blue", null],
-            [null, "yellow", "green", "green", null]
+        return renderGroupedSoulEngraveBoard("여운", [
+            [sg('orange','b1'), sg('orange','b1'), null, sg('red','a1'), sg('red','a1')],
+            [sg('orange','b1'), sg('orange','b1'), sg('red','a2'), sg('red','a2'), sg('red','a1')],
+            [sg('red','a3'), sg('red','a3'), sg('red','a4'), sg('red','a2'), sg('red','a1')],
+            [null, sg('red','a3'), sg('red','a4'), sg('red','a2'), null],
+            [null, sg('red','a3'), sg('red','a4'), sg('red','a4'), null]
         ]);
     }
 
