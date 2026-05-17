@@ -757,6 +757,28 @@ button.faq-flow-item:focus,button.faq-flow-item:focus-visible{outline:none;borde
 .soul-weapon-btn.route-highlight{border:3px solid #facc15;box-shadow:0 0 0 2px rgba(255,255,255,.92),0 0 16px rgba(250,204,21,.78),0 10px 22px rgba(0,0,0,.16)}
 .soul-weapon-btn.route-disabled{opacity:.22;filter:grayscale(.45) saturate(.72);cursor:not-allowed;box-shadow:none;transform:none!important}
 .soul-weapon-btn.route-disabled:hover{transform:none;filter:grayscale(.45) saturate(.72);box-shadow:none}
+.soul-weapon-btn.craft-available{border:3px solid #2dd4bf;box-shadow:0 0 0 2px rgba(255,255,255,.95),0 0 18px rgba(45,212,191,.88),0 10px 22px rgba(0,0,0,.16)}
+.soul-weapon-btn.route-highlight.craft-available{border:3px solid #2dd4bf;box-shadow:inset 0 0 0 3px rgba(250,204,21,.95),0 0 0 2px rgba(255,255,255,.95),0 0 20px rgba(45,212,191,.92),0 10px 24px rgba(0,0,0,.18)}
+.soul-weapon-btn.craft-unavailable{background:#9ca3af!important;color:#fff;filter:grayscale(.18) saturate(.72);box-shadow:0 6px 14px rgba(107,114,128,.18)}
+.soul-weapon-btn.craft-unavailable:hover{filter:grayscale(.18) saturate(.72);box-shadow:0 8px 16px rgba(107,114,128,.20)}
+.soul-weapon-btn.route-highlight.craft-unavailable{border:3px solid #facc15;box-shadow:inset 0 0 0 2px rgba(255,255,255,.88),0 0 14px rgba(250,204,21,.68),0 8px 16px rgba(107,114,128,.20)}
+.soul-amount-box{margin-top:14px;padding:13px 14px;border:1px solid #e5e7eb;border-radius:16px;background:#fff}
+.soul-amount-head{display:flex;align-items:center;gap:7px;margin-bottom:9px;color:#111827;font-size:15px;font-weight:950;line-height:1.2}
+.soul-amount-help-wrap{position:relative;display:inline-flex;align-items:center;justify-content:center}
+.soul-amount-help-btn{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border:none;border-radius:999px;background:#111827;color:#fff;font-size:13px;font-weight:950;line-height:1;cursor:pointer;box-shadow:0 5px 12px rgba(0,0,0,.14)}
+.soul-amount-help-bubble{display:none;position:absolute;left:50%;top:calc(100% + 10px);transform:translateX(-50%);z-index:50;width:max-content;max-width:min(78vw,300px);padding:12px 14px;border-radius:16px;background:#111827;color:#fff;text-align:left;font-size:12px;font-weight:850;line-height:1.55;box-shadow:0 10px 22px rgba(0,0,0,.22);word-break:keep-all}
+.soul-amount-help-bubble::before{content:"";position:absolute;left:50%;top:-7px;transform:translateX(-50%);border-left:7px solid transparent;border-right:7px solid transparent;border-bottom:8px solid #111827}
+.soul-amount-help-bubble.show{display:block}
+.soul-amount-input{width:100%;height:46px;border:2px solid #111827;border-radius:16px;background:#fff;color:#111827;padding:0 14px;font-size:16px;font-weight:900;outline:none}
+.soul-amount-input::placeholder{color:#6b7280;font-weight:850}
+.soul-amount-input:focus{box-shadow:0 0 0 3px rgba(20,184,166,.14);border-color:#14b8a6}
+.soul-amount-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.soul-amount-check-btn,.soul-amount-reset-btn{height:42px;border:none;border-radius:999px;font-size:13px;font-weight:950;cursor:pointer;word-break:keep-all}
+.soul-amount-check-btn{background:#14b8a6;color:#fff;box-shadow:0 8px 16px rgba(20,184,166,.18)}
+.soul-amount-reset-btn{background:#111827;color:#fff}
+.soul-amount-check-btn:hover,.soul-amount-reset-btn:hover{filter:brightness(.96)}
+.soul-amount-message{display:none;margin-top:9px;padding:9px 11px;border-radius:14px;background:#fff7ed;color:#c2410c;text-align:center;font-size:12px;font-weight:900;line-height:1.4}
+.soul-amount-message.show{display:block}
 .soul-weapon-search-input{width:100%;height:46px;margin-top:12px;border:2px solid #111827;border-radius:16px;background:#fff;color:#111827;padding:0 14px;font-size:16px;font-weight:900;outline:none}
 .soul-weapon-search-input::placeholder{color:#6b7280;font-weight:800}
 .soul-weapon-search-input:focus{box-shadow:0 0 0 3px rgba(17,24,39,.10)}
@@ -815,7 +837,7 @@ button.faq-flow-item:focus,button.faq-flow-item:focus-visible{outline:none;borde
 .soul-title-inline-info .soul-word-green{color:#22c55e;font-weight:950}
 .soul-title-inline-info .soul-word-blue{color:#38bdf8;font-weight:950}
 .soul-title-inline-info .soul-word-red{color:#fb7185;font-weight:950}
-@media(max-width:768px){.soul-weapon-filter-box{padding:15px;border-radius:18px}.soul-weapon-filter-label{font-size:14px}.soul-weapon-select{height:44px;border-radius:14px;font-size:14px}.soul-weapon-search-input{height:42px;border-radius:14px;font-size:14px;margin-top:10px}.soul-route-toggle-row{margin-top:11px;padding:10px 11px;border-radius:14px}.soul-route-toggle-title{font-size:13px}.soul-route-toggle-desc{font-size:11px}.soul-route-switch{width:50px;height:28px}.soul-route-slider::before{width:22px;height:22px}.soul-route-switch input:checked + .soul-route-slider::before{transform:translateX(22px)}.soul-weapon-grid{grid-template-columns:repeat(5,minmax(0,1fr));gap:7px}.soul-weapon-btn{min-height:45px;padding:9px 4px;border-radius:12px;font-size:13px}.soul-weapon-btn.route-highlight{border-width:2px;box-shadow:0 0 0 1.5px rgba(255,255,255,.92),0 0 12px rgba(250,204,21,.78),0 8px 16px rgba(0,0,0,.14)}.unlock-popup.soul-weapon-popup-mode{max-width:94vw;padding:20px 14px 16px}.soul-info-list{gap:12px 10px}.soul-info-card{min-height:92px;padding:15px 10px 12px;border-radius:18px}.soul-info-card.full-width{min-height:280px}.soul-info-badge{min-width:102px;font-size:13px;padding:7px 12px}.soul-info-value,.soul-value-main{font-size:18px}.soul-weapon-item-grade,.soul-weapon-item-rank{font-size:16px}.soul-help-btn,.soul-color-info-btn{width:24px;height:24px;font-size:13px}.soul-inline-info,.soul-title-inline-info{font-size:12px;padding:9px 10px}.soul-title-inline-info{min-width:180px;max-width:220px}.soul-inline-info{min-width:72px;max-width:min(76vw,360px)}}
+@media(max-width:768px){.soul-weapon-filter-box{padding:15px;border-radius:18px}.soul-weapon-filter-label{font-size:14px}.soul-weapon-select{height:44px;border-radius:14px;font-size:14px}.soul-amount-box{margin-top:12px;padding:11px 12px;border-radius:14px}.soul-amount-head{font-size:13px;margin-bottom:8px}.soul-amount-help-btn{width:22px;height:22px;font-size:12px}.soul-amount-help-bubble{font-size:11px;max-width:min(80vw,260px);padding:10px 12px}.soul-amount-input{height:42px;border-radius:14px;font-size:14px}.soul-amount-actions{gap:7px}.soul-amount-check-btn,.soul-amount-reset-btn{height:39px;font-size:12px}.soul-weapon-btn.craft-available{border-width:2px;box-shadow:0 0 0 1.5px rgba(255,255,255,.95),0 0 13px rgba(45,212,191,.88),0 8px 16px rgba(0,0,0,.14)}.soul-weapon-btn.route-highlight.craft-available{border-width:2px;box-shadow:inset 0 0 0 2px rgba(250,204,21,.95),0 0 0 1.5px rgba(255,255,255,.95),0 0 15px rgba(45,212,191,.92),0 8px 18px rgba(0,0,0,.16)}.soul-weapon-search-input{height:42px;border-radius:14px;font-size:14px;margin-top:10px}.soul-route-toggle-row{margin-top:11px;padding:10px 11px;border-radius:14px}.soul-route-toggle-title{font-size:13px}.soul-route-toggle-desc{font-size:11px}.soul-route-switch{width:50px;height:28px}.soul-route-slider::before{width:22px;height:22px}.soul-route-switch input:checked + .soul-route-slider::before{transform:translateX(22px)}.soul-weapon-grid{grid-template-columns:repeat(5,minmax(0,1fr));gap:7px}.soul-weapon-btn{min-height:45px;padding:9px 4px;border-radius:12px;font-size:13px}.soul-weapon-btn.route-highlight{border-width:2px;box-shadow:0 0 0 1.5px rgba(255,255,255,.92),0 0 12px rgba(250,204,21,.78),0 8px 16px rgba(0,0,0,.14)}.unlock-popup.soul-weapon-popup-mode{max-width:94vw;padding:20px 14px 16px}.soul-info-list{gap:12px 10px}.soul-info-card{min-height:92px;padding:15px 10px 12px;border-radius:18px}.soul-info-card.full-width{min-height:280px}.soul-info-badge{min-width:102px;font-size:13px;padding:7px 12px}.soul-info-value,.soul-value-main{font-size:18px}.soul-weapon-item-grade,.soul-weapon-item-rank{font-size:16px}.soul-help-btn,.soul-color-info-btn{width:24px;height:24px;font-size:13px}.soul-inline-info,.soul-title-inline-info{font-size:12px;padding:9px 10px}.soul-title-inline-info{min-width:180px;max-width:220px}.soul-inline-info{min-width:72px;max-width:min(76vw,360px)}}
 @media(max-width:380px){.soul-weapon-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.soul-info-list{grid-template-columns:1fr}.soul-info-card{grid-column:auto;min-height:90px}.soul-info-card.full-width{grid-column:auto;min-height:280px}}
 /* 전역 팝업 우측 상단 닫기 버튼 */
 .popup-floating-close-btn{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:center;width:42px;height:42px;margin:-8px -6px -34px auto;border:none;border-radius:999px;background:#111827;color:#fff;font-size:28px;font-weight:950;line-height:1;cursor:pointer;box-shadow:0 8px 20px rgba(0,0,0,.24)}
@@ -3532,6 +3554,26 @@ function addSections() {
           <option value="red">레드 소울 웨폰</option>
         </select>
         <input id="soulWeaponSearchInput" class="soul-weapon-search-input" type="search" placeholder="소울 웨폰 이름 / 초성 검색" autocomplete="off" oninput="applySoulWeaponFilters()" />
+        <div class="soul-amount-box">
+          <div class="soul-amount-head">
+            <span>보유 소울</span>
+            <span class="soul-amount-help-wrap">
+              <button class="soul-amount-help-btn" type="button" onclick="toggleSoulAmountInfo(event)" aria-label="보유 소울 입력 안내">?</button>
+              <span id="soulAmountHelpBubble" class="soul-amount-help-bubble">
+                <strong>입력 안내</strong><br>
+                a = 1,000 / b = 1,000,000 / c = 1,000,000,000<br>
+                예: 1a, 500a, 1b, 3.5b, 12c<br>
+                대소문자 모두 입력 가능합니다.
+              </span>
+            </span>
+          </div>
+          <input id="soulWeaponOwnedSoulInput" class="soul-amount-input" type="text" inputmode="decimal" placeholder="예: 3.5b" autocomplete="off" />
+          <div class="soul-amount-actions">
+            <button class="soul-amount-check-btn" type="button" onclick="checkSoulWeaponCraftAvailability()">제작 가능 확인</button>
+            <button class="soul-amount-reset-btn" type="button" onclick="resetSoulWeaponCraftAvailability()">소울량 초기화</button>
+          </div>
+          <div id="soulWeaponAmountMessage" class="soul-amount-message"></div>
+        </div>
         <div class="soul-route-toggle-row">
           <div class="soul-route-toggle-text">
             <span class="soul-route-toggle-title">추천 루트 강조</span>
@@ -6077,6 +6119,110 @@ function getKoreanChosungText(text) {
         }
         return ch;
     }).join('');
+}
+
+function closeSoulAmountInfo() {
+    var bubble = document.getElementById('soulAmountHelpBubble');
+    if (bubble)
+        bubble.classList.remove('show');
+}
+function toggleSoulAmountInfo(event) {
+    if (event && event.stopPropagation)
+        event.stopPropagation();
+    var bubble = document.getElementById('soulAmountHelpBubble');
+    if (!bubble)
+        return;
+    var willShow = !bubble.classList.contains('show');
+    closeAllSoulInfoBubbles();
+    if (willShow)
+        bubble.classList.add('show');
+    else
+        bubble.classList.remove('show');
+}
+function showSoulWeaponAmountMessage(text) {
+    var msg = document.getElementById('soulWeaponAmountMessage');
+    if (!msg)
+        return;
+    msg.textContent = text || '';
+    msg.classList.toggle('show', !!text);
+}
+function clearSoulWeaponCraftClasses() {
+    document.querySelectorAll('.soul-weapon-btn').forEach(function (btn) {
+        btn.classList.remove('craft-available', 'craft-unavailable');
+    });
+}
+function parseSoulWeaponAmountToBigInt(value) {
+    var raw = String(value !== null && value !== void 0 ? value : '').trim();
+    if (!raw)
+        return null;
+    var compact = raw.replace(/,/g, '').replace(/\s+/g, '').toLowerCase();
+    var match = compact.match(/^(\d+(?:\.\d+)?)([a-z])?$/);
+    if (!match)
+        return null;
+    var numberText = match[1];
+    var unitText = match[2] || '';
+    var parts = numberText.split('.');
+    var intPart = parts[0] || '0';
+    var fracPart = parts[1] || '';
+    var digitsText = (intPart + fracPart).replace(/^0+(?=\d)/, '') || '0';
+    var digits = BigInt(digitsText);
+    var scale = BigInt(Math.pow(10, fracPart.length));
+    var multiplier = 1n;
+    if (unitText) {
+        var unitIndex = unitText.charCodeAt(0) - 96;
+        if (unitIndex < 1 || unitIndex > 26)
+            return null;
+        for (var i = 0; i < unitIndex; i += 1) {
+            multiplier *= 1000n;
+        }
+    }
+    return digits * multiplier / scale;
+}
+function parseSoulWeaponRequiredSoul(value) {
+    var raw = String(value !== null && value !== void 0 ? value : '').replace(/,/g, '').trim();
+    if (!/^\d+$/.test(raw))
+        return null;
+    return BigInt(raw);
+}
+function getSoulWeaponButtonName(btn) {
+    return String(btn ? btn.textContent || '' : '').trim();
+}
+function checkSoulWeaponCraftAvailability() {
+    closeSoulAmountInfo();
+    var input = document.getElementById('soulWeaponOwnedSoulInput');
+    var owned = parseSoulWeaponAmountToBigInt(input ? input.value : '');
+    if (owned === null) {
+        clearSoulWeaponCraftClasses();
+        showSoulWeaponAmountMessage('보유 소울을 입력해 주세요. 예: 1a, 500a, 1b, 3.5b');
+        return;
+    }
+    var checkedCount = 0;
+    var availableCount = 0;
+    document.querySelectorAll('.soul-weapon-btn').forEach(function (btn) {
+        var name = getSoulWeaponButtonName(btn);
+        var info = soulWeaponInfoMap[name] || {};
+        var required = parseSoulWeaponRequiredSoul(info.soul);
+        btn.classList.remove('craft-available', 'craft-unavailable');
+        if (required === null)
+            return;
+        checkedCount += 1;
+        if (owned >= required) {
+            btn.classList.add('craft-available');
+            availableCount += 1;
+        }
+        else {
+            btn.classList.add('craft-unavailable');
+        }
+    });
+    showSoulWeaponAmountMessage(checkedCount ? '제작 가능 ' + availableCount + '개를 표시했습니다.' : '확인할 소울 웨폰 정보가 없습니다.');
+}
+function resetSoulWeaponCraftAvailability() {
+    var input = document.getElementById('soulWeaponOwnedSoulInput');
+    if (input)
+        input.value = '';
+    clearSoulWeaponCraftClasses();
+    showSoulWeaponAmountMessage('');
+    closeSoulAmountInfo();
 }
 function applySoulWeaponFilters() {
     var colorSelect = document.getElementById('soulWeaponColorSelect');
@@ -14552,5 +14698,13 @@ window.goToAdventureSkillSettings = goToAdventureSkillSettings;
 })();
 </script>
 
+
+<script>
+document.addEventListener('click', function (event) {
+  var target = event.target;
+  if (target && target.closest && target.closest('.soul-amount-help-wrap')) return;
+  if (typeof closeSoulAmountInfo === 'function') closeSoulAmountInfo();
+});
+</script>
 </body>
 </html>
