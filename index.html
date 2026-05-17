@@ -5618,198 +5618,219 @@ function getSoulWeaponEngraveGridHtml(name) {
             '<div class="soul-engrave-grid cols-5">' + gridHtml + '</div>' +
             '</div>';
     }
-    if (name === "변화") {
-    return renderSoulWeaponColoredCellGrid([
-      [null,null,null,null,swCell('A','red')],
-      [null,null,swCell('A','red'),swCell('A','red'),swCell('A','red')],
-      [null,swCell('A','red'),swCell('A','red'),swCell('A','red'),swCell('A','red')],
-      [null,swCell('A','red'),swCell('A','red'),swCell('A','red'),swCell('A','red')],
-      [swCell('E','blue'),swCell('E','blue'),swCell('E','blue'),swCell('E','blue'),null]
-    ]);
-  }
-  if (name === "흥미") {
-    return renderSoulWeaponColoredCellGrid([
-      [null,swCell('A','red'),swCell('A','red'),swCell('A','red'),swCell('A','red')],
-      [null,null,swCell('A','red'),swCell('E','blue'),swCell('A','red')],
-      [null,null,swCell('A','red'),swCell('E','blue'),swCell('A','red')],
-      [null,swCell('B','orange'),swCell('B','orange'),swCell('E','blue'),null],
-      [null,swCell('B','orange'),swCell('B','orange'),swCell('E','blue'),null]
-    ]);
-  }
-  if (name === "총명") {
-    return renderSoulWeaponColoredCellGrid([
-      [swCell('A','red'),swCell('A','red'),swCell('A','red'),swCell('B','orange'),swCell('B','orange')],
-      [swCell('A','red'),swCell('A','red'),swCell('A','red'),swCell('B','orange'),swCell('B','orange')],
-      [null,swCell('A','red'),swCell('A','red'),null,null],
-      [null,swCell('A','red'),swCell('A','red'),null,null],
-      [null,swCell('A','red'),swCell('A','red'),null,null]
-    ]);
-  }
-  if (name === "탐욕") {
-    return renderSoulWeaponColoredCellGrid([
-      [swCell('A','red'),swCell('A','red'),swCell('A','red'),swCell('A','red'),swCell('A','red')],
-      [swCell('A','red'),null,swCell('A','red'),null,swCell('A','red')],
-      [swCell('A','red'),swCell('A','red'),swCell('A','red'),swCell('A','red'),swCell('A','red')],
-      [null,swCell('A','red'),swCell('A','red'),swCell('A','red'),null],
-      [null,null,null,null,null]
-    ]);
-  }
-  if (name === "맹세") {
-    return renderSoulWeaponColoredCellGrid([
-      [null,swCell('A','red'),swCell('A','red'),swCell('A','red'),swCell('A','red')],
-      [null,swCell('A','red'),swCell('A','red'),swCell('A','red'),swCell('A','red')],
-      [null,swCell('A','red'),swCell('A','red'),swCell('A','red'),swCell('A','red')],
-      [null,swCell('A','red'),swCell('A','red'),null,null],
-      [null,swCell('A','red'),swCell('A','red'),null,null]
-    ]);
-  }
-  if (name === "불안") {
-    return renderSoulWeaponColoredCellGrid([
-      [swCell('A','red'),swCell('B','orange'),swCell('B','orange'),null,null],
-      [swCell('A','red'),swCell('B','orange'),swCell('B','orange'),null,null],
-      [swCell('A','red'),swCell('A','red'),swCell('D','green'),swCell('A','red'),null],
-      [null,swCell('D','green'),swCell('D','green'),swCell('A','red'),null],
-      [null,null,swCell('D','green'),swCell('A','red'),swCell('A','red')]
-    ]);
-  }
-  if (name === "혈기") {
-    return renderSoulWeaponColoredCellGrid([
-      [null,swCell('A','red'),swCell('A','red'),swCell('F','purple'),null],
-      [swCell('B','orange'),swCell('B','orange'),swCell('A','red'),swCell('F','purple'),swCell('F','purple')],
-      [swCell('B','orange'),swCell('B','orange'),swCell('A','red'),swCell('A','red'),swCell('F','purple')],
-      [null,swCell('A','red'),swCell('A','red'),swCell('A','red'),null],
-      [null,null,null,null,null]
-    ]);
-  }
-  if (name === "기대") {
-    return renderSoulWeaponColoredCellGrid([
-      [swCell('A','red'),swCell('E','blue'),swCell('E','blue'),swCell('E','blue'),swCell('E','blue')],
-      [swCell('A','red'),null,null,null,swCell('A','red')],
-      [swCell('A','red'),swCell('A','red'),swCell('A','red'),swCell('A','red'),swCell('A','red')],
-      [null,swCell('D','green'),swCell('D','green'),swCell('D','green'),null],
-      [null,null,swCell('D','green'),null,null]
-    ]);
-  }
-  if (name === "방황") {
-    return renderSoulWeaponColoredCellGrid([
-      [null,swCell('A','red'),swCell('B','orange'),swCell('B','orange'),null],
-      [null,swCell('A','red'),swCell('B','orange'),swCell('B','orange'),null],
-      [null,swCell('A','red'),swCell('A','red'),swCell('A','red'),null],
-      [null,swCell('F','purple'),swCell('F','purple'),swCell('A','red'),null],
-      [swCell('F','purple'),swCell('F','purple'),null,swCell('A','red'),swCell('A','red')]
-    ]);
-  }
-  if (name === "일탈") {
-    return renderSoulWeaponColoredCellGrid([
-      [swCell('E','blue'),swCell('A','red'),swCell('A','red'),swCell('A','red'),swCell('A','red')],
-      [swCell('E','blue'),swCell('A','red'),swCell('A','red'),swCell('A','red'),swCell('A','red')],
-      [swCell('E','blue'),null,swCell('D','green'),swCell('D','green'),swCell('D','green')],
-      [swCell('E','blue'),null,null,swCell('D','green'),null],
-      [null,null,null,null,null]
-    ]);
-  }
-  if (name === "갈증") {
-    return renderSoulWeaponColoredCellGrid([
-      [swCell('E','green'),swCell('E','green'),swCell('E','green'),swCell('E','green'),null],
-      [swCell('A','red'),swCell('A','red'),swCell('A','red'),swCell('B','blue'),swCell('B','blue')],
-      [swCell('A','red'),swCell('A','yellow'),swCell('A','yellow'),swCell('B','blue'),swCell('B','blue')],
-      [null,null,swCell('A','yellow'),null,null],
-      [null,null,swCell('A','yellow'),null,null]
-    ]);
-  }
-  if (name === "성실") {
-    return renderSoulWeaponColoredCellGrid([
-      [null,null,swCell('A','green'),swCell('A','green'),swCell('A','green')],
-      [null,swCell('D','blue'),swCell('A','green'),swCell('D','red'),null],
-      [swCell('D','blue'),swCell('D','blue'),swCell('D','red'),swCell('D','red'),null],
-      [null,swCell('D','blue'),swCell('C','yellow'),swCell('D','red'),null],
-      [null,null,swCell('C','yellow'),swCell('C','yellow'),swCell('C','yellow')]
-    ]);
-  }
-  if (name === "결의") {
-    return renderSoulWeaponColoredCellGrid([
-      [null,null,null,null,null],
-      [swCell('A','blue'),swCell('A','blue'),swCell('A','blue'),swCell('B','yellow'),swCell('B','yellow')],
-      [swCell('A','blue'),swCell('B','red'),swCell('B','red'),swCell('B','yellow'),swCell('B','yellow')],
-      [null,swCell('B','red'),swCell('B','red'),swCell('A','green'),null],
-      [null,swCell('A','green'),swCell('A','green'),swCell('A','green'),null]
-    ]);
-  }
-  if (name === "기백") {
-    return renderSoulWeaponColoredCellGrid([
-      [swCell('A','blue'),null,null,null,null],
-      [swCell('A','blue'),null,null,null,null],
-      [swCell('A','blue'),swCell('A','blue'),swCell('B','yellow'),swCell('B','yellow'),null],
-      [swCell('B','red'),swCell('B','red'),swCell('B','yellow'),swCell('B','yellow'),swCell('A','green')],
-      [swCell('B','red'),swCell('B','red'),swCell('A','green'),swCell('A','green'),swCell('A','green')]
-    ]);
-  }
-  if (name === "고양") {
-    return renderSoulWeaponColoredCellGrid([
-      [swCell('A','green'),swCell('A','green'),null,null,null],
-      [null,swCell('A','green'),swCell('A','red'),swCell('B','yellow'),swCell('B','yellow')],
-      [null,swCell('A','green'),swCell('A','red'),swCell('B','yellow'),swCell('B','yellow')],
-      [null,null,swCell('A','red'),swCell('A','red'),swCell('A','blue')],
-      [null,null,swCell('A','blue'),swCell('A','blue'),swCell('A','blue')]
-    ]);
-  }
-  if (name === "환상") {
-    return renderSoulWeaponColoredCellGrid([
-      [null,swCell('A','red'),swCell('A','red'),swCell('A','red'),null],
-      [null,swCell('A','red'),swCell('A','green'),swCell('B','blue'),swCell('B','blue')],
-      [swCell('A','green'),swCell('A','green'),swCell('A','green'),swCell('B','blue'),swCell('B','blue')],
-      [null,swCell('D','yellow'),swCell('D','yellow'),swCell('D','yellow'),null],
-      [null,null,swCell('D','yellow'),null,null]
-    ]);
-  }
-  if (name === "회의") {
-    return renderSoulWeaponColoredCellGrid([
-      [null,swCell('A','red'),swCell('A','red'),swCell('A','red'),null],
-      [null,swCell('A','red'),swCell('A','blue'),swCell('B','green'),swCell('B','green')],
-      [swCell('A','blue'),swCell('A','blue'),swCell('A','blue'),swCell('B','green'),swCell('B','green')],
-      [swCell('A','yellow'),swCell('A','yellow'),swCell('A','yellow'),swCell('A','purple'),null],
-      [swCell('A','yellow'),swCell('A','purple'),swCell('A','purple'),swCell('A','purple'),null]
-    ]);
-  }
-  if (name === "허무") {
-    return renderSoulWeaponColoredCellGrid([
-      [swCell('A','red'),swCell('A','red'),swCell('A','green'),swCell('B','purple'),swCell('B','purple')],
-      [swCell('E','yellow'),swCell('A','red'),swCell('A','green'),swCell('B','purple'),swCell('B','purple')],
-      [swCell('E','yellow'),swCell('A','red'),swCell('A','green'),swCell('A','green'),swCell('D','blue')],
-      [swCell('E','yellow'),null,null,swCell('D','blue'),swCell('D','blue')],
-      [swCell('E','yellow'),null,null,null,swCell('D','blue')]
-    ]);
-  }
-  if (name === "집착") {
-    return renderSoulWeaponColoredCellGrid([
-      [null,swCell('A','yellow'),swCell('A','yellow'),swCell('A','yellow'),null],
-      [swCell('D','green'),swCell('A','yellow'),swCell('A','red'),swCell('A','red'),swCell('A','red')],
-      [swCell('D','green'),swCell('D','green'),swCell('A','red'),swCell('D','blue'),null],
-      [swCell('D','green'),swCell('B','purple'),swCell('B','purple'),swCell('D','blue'),swCell('D','blue')],
-      [null,swCell('B','purple'),swCell('B','purple'),swCell('D','blue'),null]
-    ]);
-  }
+    const renderAutoSoulEngraveBoard = function(label, grid) {
+        const rows = grid.length;
+        const cols = grid[0].length;
+        const gridHtml = grid.map(row => row.map(color => {
+            if (!color) return '<div class="soul-engrave-cell empty-fill"></div>';
+            return '<div class="soul-engrave-cell has-node"><span class="soul-engrave-node ' + color + '" aria-hidden="true"></span></div>';
+        }).join('')).join('');
 
-  if (name === "방황") {
-        const banghwangCells = [
-            null, { color: "red" }, { color: "yellow" }, { color: "yellow" }, null,
-            null, { color: "red" }, { color: "yellow" }, { color: "yellow" }, null,
-            null, { color: "red" }, { color: "red" }, { color: "red" }, null,
-            null, { color: "purple" }, { color: "purple" }, { color: "red" }, null,
-            { color: "purple" }, { color: "purple" }, null, { color: "red" }, { color: "red" }
-        ];
-        const gridHtml = banghwangCells.map(cell => {
-            if (!cell) return '<div class="soul-engrave-cell empty-fill"></div>';
-            return '<div class="soul-engrave-cell has-node"><span class="soul-engrave-node ' + cell.color + '" aria-hidden="true"></span></div>';
+        const pathByColor = {};
+        for (let r = 0; r < rows; r++) {
+            for (let c = 0; c < cols; c++) {
+                const color = grid[r][c];
+                if (!color) continue;
+                if (c + 1 < cols && grid[r][c + 1] === color) {
+                    if (!pathByColor[color]) pathByColor[color] = [];
+                    pathByColor[color].push('M ' + (c + 0.5) + ' ' + (r + 0.5) + ' L ' + (c + 1.5) + ' ' + (r + 0.5));
+                }
+                if (r + 1 < rows && grid[r + 1][c] === color) {
+                    if (!pathByColor[color]) pathByColor[color] = [];
+                    pathByColor[color].push('M ' + (c + 0.5) + ' ' + (r + 0.5) + ' L ' + (c + 0.5) + ' ' + (r + 1.5));
+                }
+            }
+        }
+
+        const svgHtml = Object.keys(pathByColor).map(color => {
+            return '<path class="soul-engrave-line ' + color + '" d="' + pathByColor[color].join(' ') + '" />';
         }).join('');
-        return '<div class="soul-engrave-board" aria-label="방황 5x5 각인 추천 배치">' +
-            '<svg class="soul-engrave-line-svg" viewBox="0 0 5 5" aria-hidden="true">' +
-            '<path class="soul-engrave-line red" d="M 1.5 .5 L 1.5 1.5 L 1.5 2.5 L 2.5 2.5 L 3.5 2.5 L 3.5 3.5 L 3.5 4.5 L 4.5 4.5" />' +
-            '<path class="soul-engrave-line yellow" d="M 2.5 .5 L 3.5 .5 M 2.5 1.5 L 3.5 1.5 M 2.5 .5 L 2.5 1.5 M 3.5 .5 L 3.5 1.5" />' +
-            '<path class="soul-engrave-line purple" d="M 2.5 3.5 L 1.5 3.5 L 1.5 4.5 L .5 4.5" />' +
-            '</svg>' +
+
+        return '<div class="soul-engrave-board" aria-label="' + label + ' 5x5 각인 추천 배치">' +
+            '<svg class="soul-engrave-line-svg" viewBox="0 0 5 5" aria-hidden="true">' + svgHtml + '</svg>' +
             '<div class="soul-engrave-grid cols-5">' + gridHtml + '</div>' +
             '</div>';
+    };
+
+    if (name === "변화") {
+        return renderAutoSoulEngraveBoard("변화", [
+            [null, null, null, null, "red"],
+            [null, null, "red", "red", "red"],
+            [null, "blue", "blue", "blue", "green"],
+            [null, "blue", "green", "green", "green"],
+            ["yellow", "yellow", "yellow", "yellow", null]
+        ]);
+    }
+    if (name === "흥미") {
+        return renderAutoSoulEngraveBoard("흥미", [
+            [null, "red", "red", "green", "green"],
+            [null, null, "red", "yellow", "green"],
+            [null, null, "red", "yellow", "green"],
+            [null, "blue", "blue", "yellow", null],
+            [null, "blue", "blue", "yellow", null]
+        ]);
+    }
+    if (name === "총명") {
+        return renderAutoSoulEngraveBoard("총명", [
+            ["yellow", "yellow", "yellow", "blue", "blue"],
+            ["yellow", "red", "red", "blue", "blue"],
+            [null, "green", "red", null, null],
+            [null, "green", "red", null, null],
+            [null, "green", "green", null, null]
+        ]);
+    }
+    if (name === "탐욕") {
+        return renderAutoSoulEngraveBoard("탐욕", [
+            ["red", "yellow", "yellow", "green", "green"],
+            ["red", null, "yellow", null, "green"],
+            ["red", "red", "yellow", "blue", "green"],
+            [null, "blue", "blue", "blue", null],
+            [null, null, null, null, null]
+        ]);
+    }
+    if (name === "맹세") {
+        return renderAutoSoulEngraveBoard("맹세", [
+            [null, "red", "red", "red", "yellow"],
+            [null, "red", "yellow", "yellow", "yellow"],
+            ["green", "blue", "blue", "blue", null],
+            ["green", "blue", null, null, null],
+            ["green", "green", null, null, null]
+        ]);
+    }
+    if (name === "불안") {
+        return renderAutoSoulEngraveBoard("불안", [
+            ["green", "yellow", "yellow", null, null],
+            ["green", "yellow", "yellow", null, null],
+            ["green", "green", "red", "blue", null],
+            [null, "red", "red", "blue", null],
+            [null, null, "red", "blue", "blue"]
+        ]);
+    }
+    if (name === "혈기") {
+        return renderAutoSoulEngraveBoard("혈기", [
+            [null, "yellow", "yellow", "green", null],
+            ["red", "red", "yellow", "green", "green"],
+            ["red", "red", "yellow", "blue", "green"],
+            [null, "blue", "blue", "blue", null],
+            [null, null, null, null, null]
+        ]);
+    }
+    if (name === "기대") {
+        return renderAutoSoulEngraveBoard("기대", [
+            ["red", "green", "green", "green", "green"],
+            ["red", null, null, null, "blue"],
+            ["red", "red", "blue", "blue", "blue"],
+            [null, "yellow", "yellow", "yellow", null],
+            [null, null, "yellow", null, null]
+        ]);
+    }
+    if (name === "방황") {
+        return renderAutoSoulEngraveBoard("방황", [
+            [null, "red", "green", "green", null],
+            [null, "red", "green", "green", null],
+            [null, "red", "red", "yellow", null],
+            [null, "blue", "blue", "yellow", null],
+            ["blue", "blue", null, "yellow", "yellow"]
+        ]);
+    }
+    if (name === "일탈") {
+        return renderAutoSoulEngraveBoard("일탈", [
+            ["yellow", "red", "red", "red", "green"],
+            ["yellow", "red", "green", "green", "green"],
+            ["yellow", null, "blue", "blue", "blue"],
+            ["yellow", null, null, "blue", null],
+            [null, null, null, null, null]
+        ]);
+    }
+    if (name === "갈증") {
+        return renderAutoSoulEngraveBoard("갈증", [
+            ["green", "green", "green", "green", null],
+            ["red", "red", "red", "blue", "blue"],
+            ["red", "yellow", "yellow", "blue", "blue"],
+            [null, null, "yellow", null, null],
+            [null, null, "yellow", null, null]
+        ]);
+    }
+    if (name === "성실") {
+        return renderAutoSoulEngraveBoard("성실", [
+            [null, null, "green", "green", "green"],
+            [null, "blue", "green", "red", null],
+            ["blue", "blue", "red", "red", null],
+            [null, "blue", "yellow", "red", null],
+            [null, null, "yellow", "yellow", "yellow"]
+        ]);
+    }
+    if (name === "결의") {
+        return renderAutoSoulEngraveBoard("결의", [
+            [null, null, null, null, null],
+            ["blue", "blue", "blue", "yellow", "yellow"],
+            ["blue", "red", "red", "yellow", "yellow"],
+            [null, "red", "red", "green", null],
+            [null, "green", "green", "green", null]
+        ]);
+    }
+    if (name === "고양") {
+        return renderAutoSoulEngraveBoard("고양", [
+            ["green", "green", null, null, null],
+            [null, "green", "red", "yellow", "yellow"],
+            [null, "green", "red", "yellow", "yellow"],
+            [null, null, "red", "red", "blue"],
+            [null, null, "blue", "blue", "blue"]
+        ]);
+    }
+    if (name === "기백") {
+        return renderAutoSoulEngraveBoard("기백", [
+            ["blue", null, null, null, null],
+            ["blue", null, null, null, null],
+            ["blue", "blue", "yellow", "yellow", null],
+            ["red", "red", "yellow", "yellow", "green"],
+            ["red", "red", "green", "green", "green"]
+        ]);
+    }
+    if (name === "환상") {
+        return renderAutoSoulEngraveBoard("환상", [
+            [null, "red", "red", "red", null],
+            [null, "red", "green", "blue", "blue"],
+            ["green", "green", "green", "blue", "blue"],
+            [null, "yellow", "yellow", "yellow", null],
+            [null, null, "yellow", null, null]
+        ]);
+    }
+    if (name === "회의") {
+        return renderAutoSoulEngraveBoard("회의", [
+            [null, "red", "red", "red", null],
+            [null, "red", "blue", "green", "green"],
+            ["blue", "blue", "blue", "green", "green"],
+            ["yellow", "yellow", "yellow", "purple", null],
+            ["yellow", "purple", "purple", "purple", null]
+        ]);
+    }
+    if (name === "허무") {
+        return renderAutoSoulEngraveBoard("허무", [
+            ["red", "red", "green", "purple", "purple"],
+            ["yellow", "red", "green", "purple", "purple"],
+            ["yellow", "red", "green", "green", "blue"],
+            ["yellow", null, null, "blue", "blue"],
+            ["yellow", null, null, null, "blue"]
+        ]);
+    }
+    if (name === "집착") {
+        return renderAutoSoulEngraveBoard("집착", [
+            [null, "yellow", "yellow", "yellow", null],
+            ["green", "yellow", "red", "red", "red"],
+            ["green", "green", "red", "blue", null],
+            ["green", "purple", "purple", "blue", "blue"],
+            [null, "purple", "purple", "blue", null]
+        ]);
+    }
+    if (name === "여운") {
+        return renderAutoSoulEngraveBoard("여운", [
+            ["red", "red", null, "purple", "purple"],
+            ["red", "red", "blue", "blue", "purple"],
+            ["yellow", "yellow", "green", "blue", "purple"],
+            [null, "yellow", "green", "blue", null],
+            [null, "yellow", "green", "green", null]
+        ]);
     }
 
     const isFourByFour = somangIndex >= 0 && index <= somangIndex;
