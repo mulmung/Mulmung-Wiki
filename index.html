@@ -5920,6 +5920,78 @@ function getSoulWeaponEngraveGridHtml(name) {
             [null, sg('purple','g1'), sg('purple','g1'), sg('green','d2'), null]
         ]);
     }
+    if (name === "냉철") {
+        return renderGroupedSoulEngraveBoard("냉철", [
+            [sg('red','a1'), null, null, null, sg('yellow','c1')],
+            [sg('red','a1'), null, sg('red','a2'), null, sg('yellow','c1')],
+            [sg('red','a1'), sg('red','a1'), sg('red','a2'), sg('yellow','c1'), sg('yellow','c1')],
+            [sg('orange','b1'), sg('orange','b1'), sg('red','a2'), sg('red','a2'), sg('red','a2')],
+            [sg('orange','b1'), sg('orange','b1'), sg('red','a2'), sg('red','a2'), sg('red','a2')]
+        ]);
+    }
+    if (name === "설렘") {
+        return renderGroupedSoulEngraveBoard("설렘", [
+            [sg('red','a1'), sg('red','a1'), sg('red','a1'), sg('purple','f1'), sg('purple','f1')],
+            [sg('red','a1'), sg('green','d1'), sg('purple','f1'), sg('purple','f1'), null],
+            [null, sg('green','d1'), sg('green','d1'), sg('red','a2'), null],
+            [null, sg('green','d1'), sg('red','a2'), sg('red','a2'), null],
+            [sg('red','a2'), sg('red','a2'), sg('red','a2'), sg('red','a2'), sg('red','a2')]
+        ]);
+    }
+    if (name === "만족") {
+        return renderGroupedSoulEngraveBoard("만족", [
+            [sg('orange','b1'), sg('orange','b1'), null, null, null],
+            [sg('orange','b1'), sg('orange','b1'), sg('red','a1'), sg('orange','b2'), sg('orange','b2')],
+            [sg('red','a1'), sg('red','a1'), sg('red','a1'), sg('orange','b2'), sg('orange','b2')],
+            [sg('orange','b2'), sg('orange','b2'), sg('orange','b2'), sg('orange','b2'), null],
+            [sg('orange','b2'), sg('orange','b2'), sg('orange','b2'), sg('orange','b2'), null]
+        ]);
+    }
+    if (name === "잔향") {
+        return renderGroupedSoulEngraveBoard("잔향", [
+            [null, null, sg('red','a1'), null, sg('green','d1')],
+            [null, null, sg('red','a1'), sg('green','d1'), sg('green','d1')],
+            [sg('orange','b1'), sg('orange','b1'), sg('red','a1'), sg('red','a1'), sg('green','d1')],
+            [sg('orange','b1'), sg('orange','b1'), sg('red','a1'), sg('orange','b2'), sg('orange','b2')],
+            [sg('red','a1'), sg('red','a1'), sg('red','a1'), sg('orange','b2'), sg('orange','b2')]
+        ]);
+    }
+    if (name === "전조") {
+        return renderGroupedSoulEngraveBoard("전조", [
+            [null, sg('orange','b1'), sg('orange','b1'), sg('orange','b1'), sg('orange','b1')],
+            [sg('purple','f1'), sg('orange','b1'), sg('orange','b1'), sg('orange','b1'), sg('orange','b1')],
+            [sg('purple','f1'), sg('purple','f1'), sg('red','a1'), sg('orange','b1'), sg('orange','b1')],
+            [null, sg('purple','f1'), sg('red','a1'), sg('orange','b1'), sg('orange','b1')],
+            [null, null, sg('red','a1'), sg('red','a1'), null]
+        ]);
+    }
+    if (name === "정화") {
+        return renderGroupedSoulEngraveBoard("정화", [
+            [sg('orange','b1'), sg('orange','b1'), sg('green','d1'), null, null],
+            [sg('orange','b1'), sg('orange','b1'), sg('green','d1'), sg('green','d1'), null],
+            [sg('orange','b1'), sg('orange','b1'), sg('green','d1'), sg('red','a1'), sg('red','a1')],
+            [sg('orange','b1'), sg('orange','b1'), sg('orange','b1'), sg('orange','b1'), sg('red','a1')],
+            [null, null, sg('orange','b1'), sg('orange','b1'), sg('red','a1')]
+        ]);
+    }
+    if (name === "투영") {
+        return renderGroupedSoulEngraveBoard("투영", [
+            [sg('green','d1'), sg('green','d1'), sg('green','d1'), sg('red','a1'), sg('red','a1')],
+            [null, sg('green','d1'), sg('red','a1'), sg('red','a1'), sg('red','a1')],
+            [null, null, null, sg('red','a1'), sg('red','a1')],
+            [null, sg('purple','f1'), sg('purple','f1'), sg('red','a1'), sg('red','a1')],
+            [sg('purple','f1'), sg('purple','f1'), sg('red','a1'), sg('red','a1'), sg('red','a1')]
+        ]);
+    }
+    if (name === "재회") {
+        return renderGroupedSoulEngraveBoard("재회", [
+            [sg('red','a1'), null, sg('green','d1'), null, sg('green','d1')],
+            [sg('red','a1'), sg('green','d1'), sg('green','d1'), sg('green','d1'), sg('green','d1')],
+            [sg('red','a1'), sg('red','a1'), sg('green','d1'), sg('purple','f1'), sg('green','d1')],
+            [sg('red','a1'), sg('red','a1'), sg('red','a1'), sg('purple','f1'), sg('purple','f1')],
+            [sg('red','a1'), null, null, null, sg('purple','f1')]
+        ]);
+    }
     const isFourByFour = somangIndex >= 0 && index <= somangIndex;
     const cols = isFourByFour ? 4 : 5;
     const size = cols * cols;
@@ -10645,4 +10717,3601 @@ window.goToAdventureSkillSettings = goToAdventureSkillSettings;
             return;
         }
         if (btn.matches('.black-orb-skill-save-btn')) {
-            e.pre
+            e.preventDefault();
+            e.stopPropagation();
+            e.stopImmediatePropagation();
+            saveSkill(btn);
+            return;
+        }
+        if (btn.matches('.black-orb-order-statue-save-btn') && btn.id !== 'blackOrbResonanceSaveBtn') {
+            const title = (((_a = document.getElementById('blackOrbDamageAmpPopupTitle')) === null || _a === void 0 ? void 0 : _a.textContent) || '').trim();
+            if (title === '오브 공명') {
+                e.preventDefault();
+                e.stopPropagation();
+                e.stopImmediatePropagation();
+                saveResonance(btn);
+                return;
+            }
+            e.preventDefault();
+            e.stopPropagation();
+            e.stopImmediatePropagation();
+            saveOrder(btn);
+            return;
+        }
+        if (btn.id === 'blackOrbResonanceSaveBtn') {
+            e.preventDefault();
+            e.stopPropagation();
+            e.stopImmediatePropagation();
+            saveResonance(btn);
+            return;
+        }
+    }, true);
+    if (document.readyState === 'loading')
+        document.addEventListener('DOMContentLoaded', function () { var _a; applyCommas(); ((_a = ensureResonanceBody()) === null || _a === void 0 ? void 0 : _a.style) && (document.getElementById('blackOrbResonanceBody').style.display = 'none'); });
+    else {
+        applyCommas();
+        const b = ensureResonanceBody();
+        if (b)
+            b.style.display = 'none';
+    }
+    window.openBlackOrbOrbResonancePopupFinal = openResonance;
+})();
+</script>
+
+
+
+
+<script id="black-orb-companion-damage-formula">(function () {
+    function rawNumber(value) {
+        return String(value !== null && value !== void 0 ? value : "").replace(/,/g, "").replace(/[^0-9]/g, "");
+    }
+    function companionDamageBySkillLevel(value) {
+        const raw = rawNumber(value);
+        if (raw === "")
+            return 0;
+        const x = Number(raw);
+        if (!Number.isFinite(x) || x <= 0)
+            return 0;
+        const q = Math.min(Math.floor(x / 10), 49);
+        const r = x > 490 ? x - 490 : x % 10;
+        return 10 * q * (q + 1) / 2 + r * (q + 1);
+    }
+    const companionLevelCoefficientTable = {
+        1: 0.005, 2: 0.01, 3: 0.015, 4: 0.02, 5: 0.03, 6: 0.04, 7: 0.05,
+        8: 0.06, 9: 0.07, 10: 0.08, 11: 0.09, 12: 0.1, 13: 0.11, 14: 0.12,
+        15: 0.13, 16: 0.14, 17: 0.15, 18: 0.16, 19: 0.17, 20: 0.18, 21: 0.19,
+        22: 0.2, 23: 0.21, 24: 0.22, 25: 0.23, 26: 0.24, 27: 0.25, 28: 0.26,
+        29: 0.27, 30: 0.28, 31: 0.29, 32: 0.3, 33: 0.31, 34: 0.32, 35: 0.33,
+        36: 0.34, 37: 0.35, 38: 0.36, 39: 0.37, 40: 0.38, 41: 0.39, 42: 0.4,
+        43: 0.41, 44: 0.42, 45: 0.43, 46: 0.44, 47: 0.45, 48: 0.46, 49: 0.47
+    };
+    function parseCompanionJobPage(value) {
+        const text = String(value !== null && value !== void 0 ? value : "").trim().toUpperCase();
+        const romanMap = { I: 1, II: 2, III: 3, IV: 4, V: 5, VI: 6, VII: 7 };
+        if (romanMap[text])
+            return romanMap[text];
+        const raw = rawNumber(text);
+        return raw === "" ? 0 : Number(raw);
+    }
+    function companionDamageByLevel(levelValue, pageValue, countValue) {
+        const levelRaw = rawNumber(levelValue);
+        const countRaw = rawNumber(countValue);
+        if (levelRaw === "" || countRaw === "")
+            return 0;
+        const level = Number(levelRaw);
+        const page = parseCompanionJobPage(pageValue);
+        const count = Number(countRaw);
+        if (!Number.isFinite(level) || !Number.isFinite(page) || !Number.isFinite(count))
+            return 0;
+        if (level <= 0 || page <= 0 || count <= 0)
+            return 0;
+        const index = (page - 1) * 7 + count;
+        const coefficient = companionLevelCoefficientTable[index] || 0;
+        // 계수표 값은 0.005 = 0.5%처럼 백분율 기준이므로 화면 표시용 % 값으로 변환한다.
+        return level * coefficient * 100;
+    }
+    function companionTotalDamage(levelValue, pageValue, countValue, skillValue) {
+        return companionDamageBySkillLevel(skillValue) + companionDamageByLevel(levelValue, pageValue, countValue);
+    }
+    function formatDamage(value) {
+        const n = Number(value) || 0;
+        return "+" + n.toLocaleString("ko-KR", { maximumFractionDigits: 3 }) + "%";
+    }
+    function updateBlackOrbCompanionDamageSummary() {
+        const levels = Array.from(document.querySelectorAll("#blackOrbCompanionPopupBg .companion-level"));
+        const pages = Array.from(document.querySelectorAll("#blackOrbCompanionPopupBg .companion-job-page"));
+        const counts = Array.from(document.querySelectorAll("#blackOrbCompanionPopupBg .companion-job-count"));
+        const skills = Array.from(document.querySelectorAll("#blackOrbCompanionPopupBg .companion-skill-level"));
+        const targets = [
+            "blackOrbCompanionWindDamage",
+            "blackOrbCompanionEarthDamage",
+            "blackOrbCompanionFireDamage",
+            "blackOrbCompanionWaterDamage"
+        ];
+        targets.forEach(function (id, index) {
+            const target = document.getElementById(id);
+            if (!target)
+                return;
+            target.textContent = formatDamage(companionTotalDamage(levels[index] ? levels[index].value : "", pages[index] ? pages[index].value : "", counts[index] ? counts[index].value : "", skills[index] ? skills[index].value : ""));
+        });
+    }
+    function bindBlackOrbCompanionDamageSummary() {
+        document.querySelectorAll("#blackOrbCompanionPopupBg .companion-level, #blackOrbCompanionPopupBg .companion-job-page, #blackOrbCompanionPopupBg .companion-job-count, #blackOrbCompanionPopupBg .companion-skill-level").forEach(function (input) {
+            if (input.dataset.companionDamageBound === "1")
+                return;
+            input.dataset.companionDamageBound = "1";
+            input.addEventListener("input", updateBlackOrbCompanionDamageSummary);
+            input.addEventListener("change", updateBlackOrbCompanionDamageSummary);
+            input.addEventListener("blur", updateBlackOrbCompanionDamageSummary);
+        });
+        updateBlackOrbCompanionDamageSummary();
+    }
+    const prevOpen = window.openBlackOrbCompanionPopup;
+    window.openBlackOrbCompanionPopup = function () {
+        if (typeof prevOpen === "function")
+            prevOpen.apply(this, arguments);
+        setTimeout(bindBlackOrbCompanionDamageSummary, 0);
+    };
+    window.updateBlackOrbCompanionDamageSummary = updateBlackOrbCompanionDamageSummary;
+    window.calculateBlackOrbCompanionDamage = companionTotalDamage;
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", bindBlackOrbCompanionDamageSummary);
+    }
+    else {
+        bindBlackOrbCompanionDamageSummary();
+    }
+})();
+</script>
+
+
+
+<script>/* Black Orb companion local/cloud restore patch */
+(function () {
+    const STORAGE_KEY = "blackOrbCompanionSettings";
+    const POPUP = "#blackOrbCompanionPopupBg";
+    function getSavedCompanionSettings() {
+        try {
+            const raw = localStorage.getItem(STORAGE_KEY);
+            return raw ? JSON.parse(raw) : null;
+        }
+        catch (error) {
+            console.warn("동료 설정 localStorage 불러오기 실패:", error);
+            return null;
+        }
+    }
+    function normalizeSavedCompanionSettings(settings) {
+        if (!settings || typeof settings !== "object")
+            return null;
+        return {
+            companionLevels: Array.isArray(settings.companionLevels) ? settings.companionLevels : (Array.isArray(settings.levels) ? settings.levels : []),
+            jobPages: Array.isArray(settings.jobPages) ? settings.jobPages : [],
+            jobCounts: Array.isArray(settings.jobCounts) ? settings.jobCounts : [],
+            skillLevels: Array.isArray(settings.skillLevels) ? settings.skillLevels : [],
+            savedAt: settings.savedAt || new Date().toISOString()
+        };
+    }
+    function setValues(selector, values) {
+        const arr = Array.isArray(values) ? values : [];
+        document.querySelectorAll(selector).forEach(function (el, index) {
+            el.value = arr[index] || "";
+        });
+    }
+    function applyCompanionSettings(settings) {
+        const normalized = normalizeSavedCompanionSettings(settings);
+        if (!normalized)
+            return;
+        setValues(POPUP + " .companion-level", normalized.companionLevels);
+        setValues(POPUP + " .companion-job-page", normalized.jobPages);
+        setValues(POPUP + " .companion-job-count", normalized.jobCounts);
+        setValues(POPUP + " .companion-skill-level", normalized.skillLevels);
+        if (typeof window.updateBlackOrbCompanionDamageSummary === "function") {
+            window.updateBlackOrbCompanionDamageSummary();
+        }
+    }
+    const prevApplyCloud = window.applyBlackOrbCompanionCloudSettings;
+    window.applyBlackOrbCompanionCloudSettings = function (settings) {
+        const normalized = normalizeSavedCompanionSettings(settings);
+        if (normalized) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(normalized));
+            applyCompanionSettings(normalized);
+            return;
+        }
+        if (typeof prevApplyCloud === "function")
+            prevApplyCloud.apply(this, arguments);
+    };
+    window.applyBlackOrbCompanionLocalSettings = applyCompanionSettings;
+    window.loadBlackOrbCompanionLocalSettings = function () {
+        applyCompanionSettings(getSavedCompanionSettings());
+    };
+    const prevOpenCompanion = window.openBlackOrbCompanionPopup;
+    window.openBlackOrbCompanionPopup = function () {
+        if (typeof prevOpenCompanion === "function")
+            prevOpenCompanion.apply(this, arguments);
+        setTimeout(function () {
+            window.loadBlackOrbCompanionLocalSettings();
+        }, 0);
+    };
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", window.loadBlackOrbCompanionLocalSettings);
+    }
+    else {
+        window.loadBlackOrbCompanionLocalSettings();
+    }
+})();
+</script>
+
+
+<script>/* 유물 증가 데미지 계산/표시 최종 보정 */
+(function () {
+    const RELIC_ROWS = [
+        { inputId: "blackOrbRelicTyphoonEye", damageId: "blackOrbRelicTyphoonEyeDamage", label: "바람", element: "wind" },
+        { inputId: "blackOrbRelicKingProof", damageId: "blackOrbRelicKingProofDamage", label: "땅", element: "earth" },
+        { inputId: "blackOrbRelicSilentFlame", damageId: "blackOrbRelicSilentFlameDamage", label: "불", element: "fire" },
+        { inputId: "blackOrbRelicAbyssDrop", damageId: "blackOrbRelicAbyssDropDamage", label: "물", element: "water" }
+    ];
+    const style = document.createElement("style");
+    style.textContent = `
+    .black-orb-relic-damage{
+      display:flex !important;
+      align-items:center !important;
+      justify-content:center !important;
+      gap:4px !important;
+      padding:4px 6px !important;
+      min-width:0 !important;
+      font-size:12px !important;
+      white-space:nowrap !important;
+    }
+    .black-orb-relic-result-badge{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-width:34px;
+      height:24px;
+      padding:0 9px;
+      border-radius:999px;
+      font-size:11px;
+      font-weight:900;
+      line-height:1;
+      color:#fff;
+      box-shadow:0 4px 10px rgba(15,23,42,.10);
+      flex:0 0 auto;
+    }
+    .black-orb-relic-result-badge.wind{background:var(--element-wind,#14d7c9);color:#fff;}
+    .black-orb-relic-result-badge.earth{background:var(--element-earth,#ffc45d);color:#111827;}
+    .black-orb-relic-result-badge.fire{background:var(--element-fire,#c91d0b);color:#fff;}
+    .black-orb-relic-result-badge.water{background:var(--element-water,#080078);color:#fff;}
+    .black-orb-relic-result-value{
+      font-size:12px;
+      font-weight:900;
+      color:#111827;
+      line-height:1;
+      flex:0 0 auto;
+    }
+    @media (max-width:520px){
+      .black-orb-relic-damage{gap:3px !important;padding:3px 4px !important;font-size:11px !important;}
+      .black-orb-relic-result-badge{min-width:30px;height:22px;padding:0 7px;font-size:10px;}
+      .black-orb-relic-result-value{font-size:11px;}
+    }
+  `;
+    document.head.appendChild(style);
+    function relicCoefficient(level) {
+        if (level > 99)
+            return 3;
+        if (level > 89)
+            return 2.6;
+        if (level > 79)
+            return 2.3;
+        if (level > 69)
+            return 2;
+        if (level > 59)
+            return 1.8;
+        if (level > 49)
+            return 1.6;
+        if (level > 39)
+            return 1.45;
+        if (level > 29)
+            return 1.3;
+        if (level > 19)
+            return 1.2;
+        if (level > 9)
+            return 1.1;
+        return 1;
+    }
+    function formatRelicPercent(value) {
+        const rounded = Math.round(value * 10) / 10;
+        if (Number.isInteger(rounded))
+            return String(rounded);
+        return String(rounded).replace(/\.0$/, "");
+    }
+    window.calculateBlackOrbRelicDamagePercent = function (levelValue) {
+        const level = Number(String(levelValue || "").replace(/,/g, ""));
+        if (!Number.isFinite(level) || level <= 0)
+            return 0;
+        return level * relicCoefficient(level);
+    };
+    window.updateBlackOrbRelicDamageSummary = function () {
+        RELIC_ROWS.forEach(row => {
+            const input = document.getElementById(row.inputId);
+            const target = document.getElementById(row.damageId);
+            if (!target)
+                return;
+            const value = window.calculateBlackOrbRelicDamagePercent(input ? input.value : 0);
+            target.innerHTML = `<span class="black-orb-relic-result-badge ${row.element}">${row.label}</span><span class="black-orb-relic-result-value">+${formatRelicPercent(value)}%</span>`;
+        });
+    };
+    const previousApply = window.applyBlackOrbRelicSettings;
+    window.applyBlackOrbRelicSettings = function (values) {
+        if (typeof previousApply === "function")
+            previousApply(values);
+        else if (values) {
+            Object.keys(values).forEach(id => {
+                const el = document.getElementById(id);
+                if (el)
+                    el.value = values[id] || "";
+            });
+        }
+        window.updateBlackOrbRelicDamageSummary();
+    };
+    const previousSave = window.saveBlackOrbRelicSettings;
+    window.saveBlackOrbRelicSettings = async function () {
+        const result = typeof previousSave === "function" ? await previousSave() : undefined;
+        window.updateBlackOrbRelicDamageSummary();
+        return result;
+    };
+    function bindRelicDamageEvents() {
+        RELIC_ROWS.forEach(row => {
+            const input = document.getElementById(row.inputId);
+            if (input && !input.dataset.relicDamageBound) {
+                input.dataset.relicDamageBound = "1";
+                input.addEventListener("input", window.updateBlackOrbRelicDamageSummary);
+                input.addEventListener("change", window.updateBlackOrbRelicDamageSummary);
+            }
+        });
+        window.updateBlackOrbRelicDamageSummary();
+    }
+    const previousOpenRelicPopup = window.openBlackOrbRelicPopup;
+    window.openBlackOrbRelicPopup = function () {
+        if (typeof previousOpenRelicPopup === "function")
+            previousOpenRelicPopup.apply(this, arguments);
+        setTimeout(bindRelicDamageEvents, 0);
+    };
+    if (document.readyState === "loading")
+        document.addEventListener("DOMContentLoaded", bindRelicDamageEvents);
+    else
+        bindRelicDamageEvents();
+    window.addEventListener("load", bindRelicDamageEvents);
+})();
+</script>
+
+
+
+<!-- 유물 증가 데미지 계산/저장 최종 보정 -->
+<style>
+  .black-orb-relic-damage{display:flex !important;align-items:center !important;justify-content:center !important;gap:6px !important;padding:6px 8px !important;min-width:0 !important;white-space:nowrap !important;color:#111827 !important;font-weight:900 !important;}
+  .black-orb-relic-damage .relic-result-badge{display:inline-flex;align-items:center;justify-content:center;min-width:42px;height:28px;padding:0 12px;border-radius:999px;font-size:14px;font-weight:900;line-height:1;color:#fff;}
+  .black-orb-relic-damage .relic-result-badge.wind{background:#19d5c3;color:#fff;}
+  .black-orb-relic-damage .relic-result-badge.earth{background:#ffc45f;color:#111827;}
+  .black-orb-relic-damage .relic-result-badge.fire{background:#d81e0c;color:#fff;}
+  .black-orb-relic-damage .relic-result-badge.water{background:#070078;color:#fff;}
+  .black-orb-relic-damage .relic-result-value{display:inline-flex;align-items:center;justify-content:center;font-size:15px;font-weight:900;color:#111827;line-height:1;}
+  @media (max-width:520px){.black-orb-relic-damage{gap:4px !important;padding:5px 4px !important;}.black-orb-relic-damage .relic-result-badge{min-width:34px;height:24px;padding:0 8px;font-size:12px;}.black-orb-relic-damage .relic-result-value{font-size:13px;}}
+</style>
+<script>(function () {
+    const STORAGE_KEY = "blackOrbRelicSettings";
+    const RELIC_ROWS = [
+        { inputId: "blackOrbRelicTyphoonEye", damageId: "blackOrbRelicTyphoonEyeDamage", key: "typhoonEye", element: "wind", label: "바람" },
+        { inputId: "blackOrbRelicEmperorProof", damageId: "blackOrbRelicEmperorProofDamage", key: "emperorProof", element: "earth", label: "땅" },
+        { inputId: "blackOrbRelicQuietFlame", damageId: "blackOrbRelicQuietFlameDamage", key: "quietFlame", element: "fire", label: "불" },
+        { inputId: "blackOrbRelicAbyssWaterdrop", damageId: "blackOrbRelicAbyssWaterdropDamage", key: "abyssWaterdrop", element: "water", label: "물" }
+    ];
+    function cleanNumber(value) { return String(value !== null && value !== void 0 ? value : "").replace(/[^0-9]/g, ""); }
+    function relicMultiplier(level) {
+        if (level > 99)
+            return 3;
+        if (level > 89)
+            return 2.6;
+        if (level > 79)
+            return 2.3;
+        if (level > 69)
+            return 2;
+        if (level > 59)
+            return 1.8;
+        if (level > 49)
+            return 1.6;
+        if (level > 39)
+            return 1.45;
+        if (level > 29)
+            return 1.3;
+        if (level > 19)
+            return 1.2;
+        if (level > 9)
+            return 1.1;
+        return 1;
+    }
+    function formatPercent(value) {
+        const rounded = Math.round((Number(value) || 0) * 100) / 100;
+        return Number.isInteger(rounded) ? String(rounded) : String(rounded).replace(/\.0+$/, "");
+    }
+    function calculateRelicDamage(levelValue) {
+        const level = Number(cleanNumber(levelValue));
+        if (!Number.isFinite(level) || level <= 0)
+            return 0;
+        return level * relicMultiplier(level);
+    }
+    function renderRelicDamage(row) {
+        const input = document.getElementById(row.inputId);
+        const output = document.getElementById(row.damageId);
+        if (!output)
+            return;
+        const damage = calculateRelicDamage(input ? input.value : "");
+        output.innerHTML = '<span class="relic-result-badge ' + row.element + '">' + row.label + '</span><span class="relic-result-value">+' + formatPercent(damage) + '%</span>';
+    }
+    function updateAllRelicDamage() { RELIC_ROWS.forEach(renderRelicDamage); }
+    function collectRelicSettings() {
+        const values = {};
+        RELIC_ROWS.forEach(row => {
+            var _a, _b;
+            const input = document.getElementById(row.inputId);
+            values[row.inputId] = input ? cleanNumber(input.value) : "";
+            values[row.key] = values[row.inputId];
+            values[row.damageId] = ((_b = (_a = document.getElementById(row.damageId)) === null || _a === void 0 ? void 0 : _a.textContent) === null || _b === void 0 ? void 0 : _b.trim()) || "";
+        });
+        return values;
+    }
+    function applyRelicSettings(values) {
+        if (!values)
+            return;
+        RELIC_ROWS.forEach(row => {
+            var _a, _b;
+            const input = document.getElementById(row.inputId);
+            if (!input)
+                return;
+            const savedValue = (_b = (_a = values[row.inputId]) !== null && _a !== void 0 ? _a : values[row.key]) !== null && _b !== void 0 ? _b : "";
+            input.value = cleanNumber(savedValue);
+        });
+        updateAllRelicDamage();
+    }
+    function saveRelicSettingsLocal() { try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(collectRelicSettings()));
+    }
+    catch (e) { } }
+    function loadRelicSettingsLocal() {
+        try {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (saved)
+                applyRelicSettings(JSON.parse(saved));
+            else
+                updateAllRelicDamage();
+        }
+        catch (e) {
+            updateAllRelicDamage();
+        }
+    }
+    function isValidRelicLevel(value) {
+        const v = cleanNumber(value);
+        if (v === "")
+            return true;
+        const n = Number(v);
+        return Number.isInteger(n) && n >= 0 && n <= 100;
+    }
+    window.collectBlackOrbRelicSettings = collectRelicSettings;
+    window.applyBlackOrbRelicSettings = applyRelicSettings;
+    window.updateBlackOrbRelicDamage = updateAllRelicDamage;
+    window.isValidBlackOrbRelicLevel = isValidRelicLevel;
+    window.saveBlackOrbRelicSettings = async function () {
+        const values = collectRelicSettings();
+        const valid = RELIC_ROWS.every(row => isValidRelicLevel(values[row.inputId]));
+        if (!valid) {
+            if (window.showBlackOrbRelicTooltip)
+                window.showBlackOrbRelicTooltip();
+            return;
+        }
+        if (window.hideBlackOrbRelicTooltip)
+            window.hideBlackOrbRelicTooltip();
+        saveRelicSettingsLocal();
+        if (window.saveBlackOrbRelicSettingsToCloud) {
+            const result = await window.saveBlackOrbRelicSettingsToCloud(values);
+            if (!result || !result.ok) {
+                if (window.showBlackOrbSaveFail)
+                    window.showBlackOrbSaveFail(".black-orb-relic-save-btn");
+                return;
+            }
+        }
+        if (window.setBlackOrbSaveButtonState)
+            window.setBlackOrbSaveButtonState(document.querySelector(".black-orb-relic-save-btn"), "done");
+    };
+    document.addEventListener("input", function (e) {
+        const row = RELIC_ROWS.find(r => e.target && e.target.id === r.inputId);
+        if (!row)
+            return;
+        const cleaned = cleanNumber(e.target.value);
+        if (e.target.value !== cleaned)
+            e.target.value = cleaned;
+        renderRelicDamage(row);
+        saveRelicSettingsLocal();
+    });
+    const originalOpen = window.openBlackOrbRelicPopup;
+    window.openBlackOrbRelicPopup = function () {
+        if (typeof originalOpen === "function")
+            originalOpen.apply(this, arguments);
+        setTimeout(loadRelicSettingsLocal, 0);
+    };
+    if (document.readyState === "loading")
+        document.addEventListener("DOMContentLoaded", loadRelicSettingsLocal);
+    else
+        loadRelicSettingsLocal();
+})();
+</script>
+
+
+<script>/* Final robust patch: relic damage render + persistent save/load */
+(function () {
+    const STORAGE_KEY = "blackOrbRelicSettings";
+    const ROWS = [
+        { inputId: "blackOrbRelicTyphoonEyeLevel", damageId: "blackOrbRelicTyphoonEyeDamage", element: "wind" },
+        { inputId: "blackOrbRelicEmperorProofLevel", damageId: "blackOrbRelicEmperorProofDamage", element: "earth" },
+        { inputId: "blackOrbRelicQuietFlameLevel", damageId: "blackOrbRelicQuietFlameDamage", element: "fire" },
+        { inputId: "blackOrbRelicAbyssWaterdropLevel", damageId: "blackOrbRelicAbyssWaterdropDamage", element: "water" }
+    ];
+    const arrayToObject = (arr) => {
+        var _a, _b, _c, _d;
+        return ({
+            blackOrbRelicTyphoonEyeLevel: (_a = arr === null || arr === void 0 ? void 0 : arr[0]) !== null && _a !== void 0 ? _a : "",
+            blackOrbRelicEmperorProofLevel: (_b = arr === null || arr === void 0 ? void 0 : arr[1]) !== null && _b !== void 0 ? _b : "",
+            blackOrbRelicQuietFlameLevel: (_c = arr === null || arr === void 0 ? void 0 : arr[2]) !== null && _c !== void 0 ? _c : "",
+            blackOrbRelicAbyssWaterdropLevel: (_d = arr === null || arr === void 0 ? void 0 : arr[3]) !== null && _d !== void 0 ? _d : ""
+        });
+    };
+    const normalize = (raw) => Array.isArray(raw) ? arrayToObject(raw) : (raw || {});
+    function relicRate(level) {
+        const x = Math.max(0, Number(String(level || "").replace(/,/g, "")) || 0);
+        let rate = 1;
+        if (x > 99)
+            rate = 3;
+        else if (x > 89)
+            rate = 2.6;
+        else if (x > 79)
+            rate = 2.3;
+        else if (x > 69)
+            rate = 2;
+        else if (x > 59)
+            rate = 1.8;
+        else if (x > 49)
+            rate = 1.6;
+        else if (x > 39)
+            rate = 1.45;
+        else if (x > 29)
+            rate = 1.3;
+        else if (x > 19)
+            rate = 1.2;
+        else if (x > 9)
+            rate = 1.1;
+        return x * rate;
+    }
+    function fmt(v) {
+        if (!Number.isFinite(v))
+            return "+0%";
+        return "+" + (Number.isInteger(v) ? String(v) : v.toFixed(2).replace(/\.00$/, "").replace(/(\.\d)0$/, "$1")) + "%";
+    }
+    function elementBadge(element) {
+        const map = { wind: "바람", earth: "땅", fire: "불", water: "물" };
+        return `<span class="black-orb-element-badge ${element}">${map[element] || ""}</span>`;
+    }
+    window.updateBlackOrbRelicDamageSummary = function () {
+        ROWS.forEach(row => {
+            const input = document.getElementById(row.inputId);
+            const out = document.getElementById(row.damageId);
+            if (!input || !out)
+                return;
+            out.innerHTML = `${elementBadge(row.element)} <strong>${fmt(relicRate(input.value))}</strong>`;
+        });
+    };
+    window.collectBlackOrbRelicSettings = function () {
+        const values = {};
+        ROWS.forEach(row => { var _a; return values[row.inputId] = ((_a = document.getElementById(row.inputId)) === null || _a === void 0 ? void 0 : _a.value) || ""; });
+        return values;
+    };
+    window.applyBlackOrbRelicSettings = function (settings) {
+        const values = normalize(settings);
+        ROWS.forEach(row => {
+            const input = document.getElementById(row.inputId);
+            if (input && Object.prototype.hasOwnProperty.call(values, row.inputId))
+                input.value = values[row.inputId] || "";
+        });
+        window.updateBlackOrbRelicDamageSummary();
+    };
+    window.saveBlackOrbRelicSettings = async function () {
+        const values = window.collectBlackOrbRelicSettings();
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(values));
+        window.updateBlackOrbRelicDamageSummary();
+        if (window.saveBlackOrbRelicSettingsToCloud) {
+            const result = await window.saveBlackOrbRelicSettingsToCloud(values);
+            if (!result || !result.ok) {
+                if (typeof showBlackOrbSaveFail === "function")
+                    showBlackOrbSaveFail(".black-orb-relic-save-btn");
+                return;
+            }
+        }
+        if (typeof setBlackOrbSaveButtonState === "function") {
+            setBlackOrbSaveButtonState(document.querySelector(".black-orb-relic-save-btn"), "done");
+        }
+    };
+    const oldOpen = window.openBlackOrbRelicPopup;
+    window.openBlackOrbRelicPopup = function () {
+        if (typeof oldOpen === "function")
+            oldOpen();
+        try {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (saved)
+                window.applyBlackOrbRelicSettings(JSON.parse(saved));
+            else
+                window.updateBlackOrbRelicDamageSummary();
+        }
+        catch (e) {
+            window.updateBlackOrbRelicDamageSummary();
+        }
+    };
+    document.addEventListener("input", function (e) {
+        if (e.target && e.target.classList && e.target.classList.contains("black-orb-relic-input")) {
+            window.updateBlackOrbRelicDamageSummary();
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(window.collectBlackOrbRelicSettings()));
+        }
+    }, true);
+    document.addEventListener("DOMContentLoaded", function () {
+        try {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (saved)
+                window.applyBlackOrbRelicSettings(JSON.parse(saved));
+            else
+                window.updateBlackOrbRelicDamageSummary();
+        }
+        catch (e) {
+            window.updateBlackOrbRelicDamageSummary();
+        }
+    });
+})();
+</script>
+
+
+<script>/* 최종 보정: 블랙 오브 > 스킬 숙련도 계산/저장/복구 */
+(function () {
+    const STORAGE_KEY = "blackOrbSkillMasterySettings";
+    const LEGACY_KEYS = ["blackOrbSkillMasterySettings"];
+    function getLevelInput() { return document.getElementById("blackOrbSkillMasteryLevel"); }
+    function getDamageBox() { return document.getElementById("blackOrbSkillMasteryDamage"); }
+    function getSaveBtn() { return document.querySelector(".black-orb-skill-save-btn"); }
+    function normalizeDigits(value) {
+        return String(value || "").replace(/[^0-9]/g, "");
+    }
+    function parseLevel(value) {
+        const digits = normalizeDigits(value);
+        if (digits === "")
+            return null;
+        const n = Number(digits);
+        return Number.isFinite(n) ? n : null;
+    }
+    function isValidSkillMasteryLevel(value) {
+        const n = parseLevel(value);
+        return n !== null && Number.isInteger(n) && n >= 0 && n <= 328;
+    }
+    function calculateSkillMasteryDamage(level) {
+        const n = Number(level);
+        if (!Number.isFinite(n))
+            return null;
+        if (n === 256)
+            return 40345;
+        const quotient = Math.floor(n / 5);
+        return Math.round((n * 5 * Math.pow(1.07000005, quotient)) * 100) / 100;
+    }
+    function formatDamage(value) {
+        if (value === null || value === undefined || !Number.isFinite(Number(value)))
+            return "데미지 증가량";
+        const n = Number(value);
+        const text = Number.isInteger(n) ? String(n) : n.toFixed(2).replace(/\.00$/, "").replace(/(\.\d)0$/, "$1");
+        return "+" + text + "%";
+    }
+    function updateSkillMasteryDamage() {
+        const input = getLevelInput();
+        const box = getDamageBox();
+        if (!input || !box)
+            return;
+        const level = parseLevel(input.value);
+        if (level === null) {
+            box.textContent = "데미지 증가량";
+            return;
+        }
+        box.textContent = formatDamage(calculateSkillMasteryDamage(level));
+    }
+    function collectSettings() {
+        const input = getLevelInput();
+        const levelText = normalizeDigits(input ? input.value : "");
+        const level = levelText === "" ? "" : String(Number(levelText));
+        const damage = level === "" ? "" : formatDamage(calculateSkillMasteryDamage(Number(level)));
+        return { level, damage, savedAt: new Date().toISOString() };
+    }
+    function applySettings(values) {
+        if (!values)
+            return;
+        const input = getLevelInput();
+        if (input && Object.prototype.hasOwnProperty.call(values, "level")) {
+            input.value = normalizeDigits(values.level);
+        }
+        updateSkillMasteryDamage();
+    }
+    function loadLocalSettings() {
+        for (const key of LEGACY_KEYS) {
+            try {
+                const raw = localStorage.getItem(key);
+                if (!raw)
+                    continue;
+                const parsed = JSON.parse(raw);
+                if (parsed && typeof parsed === "object")
+                    return parsed;
+            }
+            catch (e) { }
+        }
+        return null;
+    }
+    function saveLocalSettings(values) {
+        try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(values));
+        }
+        catch (e) { }
+    }
+    async function saveSettings() {
+        const input = getLevelInput();
+        const btn = getSaveBtn();
+        const value = input ? input.value : "";
+        if (!isValidSkillMasteryLevel(value)) {
+            if (typeof window.showBlackOrbSkillMasteryTooltip === "function")
+                window.showBlackOrbSkillMasteryTooltip();
+            if (btn) {
+                const old = btn.textContent;
+                btn.textContent = "0~328";
+                btn.classList.add("save-fail");
+                setTimeout(function () { btn.textContent = old || "저장하기"; btn.classList.remove("save-fail"); }, 1200);
+            }
+            return false;
+        }
+        if (typeof window.hideBlackOrbSkillMasteryTooltip === "function")
+            window.hideBlackOrbSkillMasteryTooltip();
+        updateSkillMasteryDamage();
+        const values = collectSettings();
+        saveLocalSettings(values);
+        if (typeof window.saveBlackOrbSkillMasterySettingsToCloud === "function") {
+            try {
+                await window.saveBlackOrbSkillMasterySettingsToCloud(values);
+            }
+            catch (e) { }
+        }
+        if (btn) {
+            const old = btn.textContent;
+            btn.textContent = "저장완료";
+            setTimeout(function () { btn.textContent = old || "저장하기"; }, 1200);
+        }
+        return true;
+    }
+    window.calculateBlackOrbSkillMasteryDamage = updateSkillMasteryDamage;
+    window.collectBlackOrbSkillMasterySettings = collectSettings;
+    window.applyBlackOrbSkillMasterySettings = applySettings;
+    window.isValidBlackOrbSkillMasteryLevel = isValidSkillMasteryLevel;
+    window.saveBlackOrbSkillMasterySettings = saveSettings;
+    const previousOpen = window.openBlackOrbSkillMasteryPopup;
+    window.openBlackOrbSkillMasteryPopup = function () {
+        if (typeof previousOpen === "function")
+            previousOpen.apply(this, arguments);
+        applySettings(loadLocalSettings());
+        setTimeout(updateSkillMasteryDamage, 0);
+    };
+    function bind() {
+        const input = getLevelInput();
+        if (input && !input.dataset.skillMasteryFormulaBound) {
+            input.dataset.skillMasteryFormulaBound = "1";
+            input.addEventListener("input", function () {
+                const cleaned = normalizeDigits(input.value);
+                if (input.value !== cleaned)
+                    input.value = cleaned;
+                updateSkillMasteryDamage();
+            });
+            input.addEventListener("change", updateSkillMasteryDamage);
+        }
+        const btn = getSaveBtn();
+        if (btn && !btn.dataset.skillMasterySaveBound) {
+            btn.dataset.skillMasterySaveBound = "1";
+            btn.addEventListener("click", function (ev) {
+                ev.preventDefault();
+                ev.stopImmediatePropagation();
+                saveSettings();
+            }, true);
+        }
+        applySettings(loadLocalSettings());
+    }
+    document.addEventListener("DOMContentLoaded", bind);
+    window.addEventListener("pageshow", function () { setTimeout(bind, 0); });
+    setTimeout(bind, 0);
+    setTimeout(bind, 500);
+})();
+</script>
+
+
+
+<script>/* ===== Black Orb final persistence + damage calculation patch ===== */
+(function () {
+    const RELIC_KEY = "blackOrbRelicSettings";
+    const SKILL_KEY = "blackOrbSkillMasterySettings";
+    const RELICS = [
+        { type: "wind", input: "blackOrbRelicWindLevel", output: "blackOrbRelicWindDamage", label: "바람" },
+        { type: "earth", input: "blackOrbRelicEarthLevel", output: "blackOrbRelicEarthDamage", label: "땅" },
+        { type: "fire", input: "blackOrbRelicFireLevel", output: "blackOrbRelicFireDamage", label: "불" },
+        { type: "water", input: "blackOrbRelicWaterLevel", output: "blackOrbRelicWaterDamage", label: "물" }
+    ];
+    function $(id) { return document.getElementById(id); }
+    function cleanNumber(value) {
+        return String(value !== null && value !== void 0 ? value : "").replace(/[^0-9]/g, "");
+    }
+    function readInt(id) {
+        const el = $(id);
+        const raw = cleanNumber(el ? el.value : "");
+        return raw === "" ? 0 : parseInt(raw, 10);
+    }
+    function normalizeInput(id) {
+        const el = $(id);
+        if (!el)
+            return;
+        const raw = cleanNumber(el.value);
+        el.value = raw === "" ? "" : String(parseInt(raw, 10));
+    }
+    function formatPercentValue(n) {
+        const rounded = Math.round((Number(n) || 0) * 100) / 100;
+        return rounded.toLocaleString("ko-KR", { maximumFractionDigits: 2 });
+    }
+    function relicMultiplier(level) {
+        if (level > 99)
+            return 3;
+        if (level > 89)
+            return 2.6;
+        if (level > 79)
+            return 2.3;
+        if (level > 69)
+            return 2;
+        if (level > 59)
+            return 1.8;
+        if (level > 49)
+            return 1.6;
+        if (level > 39)
+            return 1.45;
+        if (level > 29)
+            return 1.3;
+        if (level > 19)
+            return 1.2;
+        if (level > 9)
+            return 1.1;
+        return 1;
+    }
+    window.calculateBlackOrbRelicDamage = function (level) {
+        const lv = Math.max(0, parseInt(level || 0, 10) || 0);
+        return lv * relicMultiplier(lv);
+    };
+    function makeElementBadge(type, label) {
+        return '<span class="black-orb-element-badge black-orb-element-' + type + '">' + label + '</span>';
+    }
+    window.updateBlackOrbRelicDamageOutputs = function () {
+        RELICS.forEach(item => {
+            normalizeInput(item.input);
+            const lv = readInt(item.input);
+            const out = $(item.output);
+            if (out) {
+                out.innerHTML = makeElementBadge(item.type, item.label) + '<span class="black-orb-damage-value"> +' + formatPercentValue(window.calculateBlackOrbRelicDamage(lv)) + '%</span>';
+            }
+        });
+    };
+    window.collectBlackOrbRelicSettings = function () {
+        return {
+            wind: readInt("blackOrbRelicWindLevel"),
+            earth: readInt("blackOrbRelicEarthLevel"),
+            fire: readInt("blackOrbRelicFireLevel"),
+            water: readInt("blackOrbRelicWaterLevel")
+        };
+    };
+    window.applyBlackOrbRelicSettings = function (values) {
+        values = values || {};
+        const map = { wind: "blackOrbRelicWindLevel", earth: "blackOrbRelicEarthLevel", fire: "blackOrbRelicFireLevel", water: "blackOrbRelicWaterLevel" };
+        Object.entries(map).forEach(([key, id]) => {
+            const el = $(id);
+            if (el && values[key] !== undefined && values[key] !== null && values[key] !== "")
+                el.value = String(parseInt(cleanNumber(values[key]), 10) || 0);
+        });
+        window.updateBlackOrbRelicDamageOutputs();
+    };
+    function readSavedRelic() {
+        try {
+            return JSON.parse(localStorage.getItem(RELIC_KEY) || "null");
+        }
+        catch (e) {
+            return null;
+        }
+    }
+    function saveRelicLocal(values) {
+        localStorage.setItem(RELIC_KEY, JSON.stringify(values));
+        localStorage.setItem(RELIC_KEY + "V2", JSON.stringify(values));
+    }
+    window.saveBlackOrbRelicSettings = async function () {
+        RELICS.forEach(item => normalizeInput(item.input));
+        const values = window.collectBlackOrbRelicSettings();
+        saveRelicLocal(values);
+        window.updateBlackOrbRelicDamageOutputs();
+        if (typeof window.saveBlackOrbRelicSettingsToCloud === "function") {
+            try {
+                await window.saveBlackOrbRelicSettingsToCloud(values);
+            }
+            catch (e) { }
+        }
+        if (typeof window.setBlackOrbSaveButtonState === "function") {
+            window.setBlackOrbSaveButtonState(document.querySelector(".black-orb-relic-save-btn"), "done");
+        }
+    };
+    const prevOpenRelic = window.openBlackOrbRelicPopup;
+    window.openBlackOrbRelicPopup = function () {
+        if (typeof prevOpenRelic === "function")
+            prevOpenRelic();
+        const saved = readSavedRelic();
+        if (saved)
+            window.applyBlackOrbRelicSettings(saved);
+        else
+            window.updateBlackOrbRelicDamageOutputs();
+    };
+    function calculateSkillMasteryDamage(level) {
+        const lv = Math.max(0, parseInt(level || 0, 10) || 0);
+        if (lv === 256)
+            return 40345;
+        return lv * 5 * Math.pow(1.07000005, Math.floor(lv / 5));
+    }
+    window.calculateBlackOrbSkillMasteryDamage = calculateSkillMasteryDamage;
+    window.updateBlackOrbSkillMasteryDamage = function () {
+        normalizeInput("blackOrbSkillMasteryLevel");
+        const level = readInt("blackOrbSkillMasteryLevel");
+        const out = $("blackOrbSkillMasteryDamage");
+        if (out) {
+            out.textContent = "+" + formatPercentValue(calculateSkillMasteryDamage(level)) + "%";
+        }
+    };
+    window.collectBlackOrbSkillMasterySettings = function () {
+        return { level: readInt("blackOrbSkillMasteryLevel") };
+    };
+    window.applyBlackOrbSkillMasterySettings = function (values) {
+        const el = $("blackOrbSkillMasteryLevel");
+        if (el && values && values.level !== undefined && values.level !== null && values.level !== "") {
+            el.value = String(parseInt(cleanNumber(values.level), 10) || 0);
+        }
+        window.updateBlackOrbSkillMasteryDamage();
+    };
+    function readSavedSkill() {
+        try {
+            return JSON.parse(localStorage.getItem(SKILL_KEY) || "null");
+        }
+        catch (e) {
+            return null;
+        }
+    }
+    function saveSkillLocal(values) {
+        localStorage.setItem(SKILL_KEY, JSON.stringify(values));
+        localStorage.setItem(SKILL_KEY + "V2", JSON.stringify(values));
+    }
+    window.saveBlackOrbSkillMasterySettings = async function () {
+        normalizeInput("blackOrbSkillMasteryLevel");
+        const values = window.collectBlackOrbSkillMasterySettings();
+        saveSkillLocal(values);
+        window.updateBlackOrbSkillMasteryDamage();
+        if (typeof window.saveBlackOrbSkillMasterySettingsToCloud === "function") {
+            try {
+                await window.saveBlackOrbSkillMasterySettingsToCloud(values);
+            }
+            catch (e) { }
+        }
+        if (typeof window.setBlackOrbSaveButtonState === "function") {
+            window.setBlackOrbSaveButtonState(document.querySelector(".black-orb-skill-save-btn"), "done");
+        }
+    };
+    const prevOpenSkill = window.openBlackOrbSkillMasteryPopup;
+    window.openBlackOrbSkillMasteryPopup = function () {
+        if (typeof prevOpenSkill === "function")
+            prevOpenSkill();
+        const saved = readSavedSkill();
+        if (saved)
+            window.applyBlackOrbSkillMasterySettings(saved);
+        else
+            window.updateBlackOrbSkillMasteryDamage();
+    };
+    function bindFinalBlackOrbCalculationPatch() {
+        RELICS.forEach(item => {
+            const el = $(item.input);
+            if (el) {
+                el.removeAttribute("readonly");
+                el.addEventListener("input", () => {
+                    window.updateBlackOrbRelicDamageOutputs();
+                    saveRelicLocal(window.collectBlackOrbRelicSettings());
+                });
+                el.addEventListener("change", () => {
+                    window.updateBlackOrbRelicDamageOutputs();
+                    saveRelicLocal(window.collectBlackOrbRelicSettings());
+                });
+            }
+        });
+        const skill = $("blackOrbSkillMasteryLevel");
+        if (skill) {
+            skill.removeAttribute("readonly");
+            skill.removeAttribute("max");
+            skill.addEventListener("input", () => {
+                window.updateBlackOrbSkillMasteryDamage();
+                saveSkillLocal(window.collectBlackOrbSkillMasterySettings());
+            });
+            skill.addEventListener("change", () => {
+                window.updateBlackOrbSkillMasteryDamage();
+                saveSkillLocal(window.collectBlackOrbSkillMasterySettings());
+            });
+        }
+        const savedRelic = readSavedRelic();
+        if (savedRelic)
+            window.applyBlackOrbRelicSettings(savedRelic);
+        else
+            window.updateBlackOrbRelicDamageOutputs();
+        const savedSkill = readSavedSkill();
+        if (savedSkill)
+            window.applyBlackOrbSkillMasterySettings(savedSkill);
+        else
+            window.updateBlackOrbSkillMasteryDamage();
+    }
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", bindFinalBlackOrbCalculationPatch);
+    }
+    else {
+        bindFinalBlackOrbCalculationPatch();
+    }
+    window.addEventListener("load", () => {
+        setTimeout(bindFinalBlackOrbCalculationPatch, 300);
+        setTimeout(bindFinalBlackOrbCalculationPatch, 1200);
+        setTimeout(bindFinalBlackOrbCalculationPatch, 3000);
+    });
+})();
+</script>
+
+
+
+<script>/* ===== Stable patch: 유물/스킬 숙련도 계산 + 새로고침/업로드 유지 저장 ===== */
+(function () {
+    const RELIC_KEY = "blackOrbRelicSettings";
+    const SKILL_KEY = "blackOrbSkillMasterySettings";
+    const RELICS = [
+        { key: "typhoonEye", input: "blackOrbRelicTyphoonEye", output: "blackOrbRelicTyphoonEyeDamage", element: "wind", label: "바람" },
+        { key: "kingProof", input: "blackOrbRelicKingProof", output: "blackOrbRelicKingProofDamage", element: "earth", label: "땅" },
+        { key: "silentFlame", input: "blackOrbRelicSilentFlame", output: "blackOrbRelicSilentFlameDamage", element: "fire", label: "불" },
+        { key: "abyssDrop", input: "blackOrbRelicAbyssDrop", output: "blackOrbRelicAbyssDropDamage", element: "water", label: "물" }
+    ];
+    function $(id) { return document.getElementById(id); }
+    function digits(value) { return String(value == null ? "" : value).replace(/[^0-9]/g, ""); }
+    function toInt(value) { const d = digits(value); return d === "" ? 0 : parseInt(d, 10); }
+    function clamp(n, min, max) { return Math.max(min, Math.min(max, n)); }
+    function setSaveDone(btn) {
+        if (!btn)
+            return;
+        const old = btn.textContent || "저장하기";
+        btn.textContent = "저장완료";
+        setTimeout(function () { btn.textContent = old; }, 1200);
+    }
+    function relicCoeff(level) {
+        if (level > 99)
+            return 3;
+        if (level > 89)
+            return 2.6;
+        if (level > 79)
+            return 2.3;
+        if (level > 69)
+            return 2;
+        if (level > 59)
+            return 1.8;
+        if (level > 49)
+            return 1.6;
+        if (level > 39)
+            return 1.45;
+        if (level > 29)
+            return 1.3;
+        if (level > 19)
+            return 1.2;
+        if (level > 9)
+            return 1.1;
+        return 1;
+    }
+    function formatPercent(n) {
+        const v = Math.round((Number(n) || 0) * 100) / 100;
+        return v.toLocaleString("ko-KR", { maximumFractionDigits: 2 });
+    }
+    function relicDamage(level) {
+        const lv = clamp(toInt(level), 0, 100);
+        return lv * relicCoeff(lv);
+    }
+    function relicBadge(row, value) {
+        return '<span class="black-orb-relic-result-badge ' + row.element + '">' + row.label + '</span>' +
+            '<span class="black-orb-relic-result-value">+' + formatPercent(value) + '%</span>';
+    }
+    function normalizeRelicInputs() {
+        RELICS.forEach(function (row) {
+            const input = $(row.input);
+            if (!input)
+                return;
+            const d = digits(input.value);
+            input.value = d === "" ? "" : String(clamp(parseInt(d, 10) || 0, 0, 100));
+        });
+    }
+    function updateRelicDamage() {
+        RELICS.forEach(function (row) {
+            const input = $(row.input);
+            const output = $(row.output);
+            if (!output)
+                return;
+            output.innerHTML = relicBadge(row, relicDamage(input ? input.value : 0));
+        });
+    }
+    function collectRelicSettings() {
+        const values = {};
+        RELICS.forEach(function (row) {
+            const input = $(row.input);
+            values[row.key] = input ? digits(input.value) : "";
+        });
+        values.savedAt = new Date().toISOString();
+        return values;
+    }
+    function applyRelicSettings(values) {
+        if (!values || typeof values !== "object") {
+            updateRelicDamage();
+            return;
+        }
+        RELICS.forEach(function (row) {
+            const input = $(row.input);
+            if (!input)
+                return;
+            let v = values[row.key];
+            if (v == null)
+                v = values[row.input];
+            if (v == null)
+                v = values[row.key + "Level"];
+            if (v != null)
+                input.value = digits(v);
+        });
+        normalizeRelicInputs();
+        updateRelicDamage();
+    }
+    function loadRelicLocal() {
+        try {
+            const raw = localStorage.getItem(RELIC_KEY);
+            return raw ? JSON.parse(raw) : null;
+        }
+        catch (e) {
+            return null;
+        }
+    }
+    function saveRelicLocal(values) {
+        try {
+            localStorage.setItem(RELIC_KEY, JSON.stringify(values));
+        }
+        catch (e) { }
+    }
+    async function saveRelicSettings() {
+        normalizeRelicInputs();
+        updateRelicDamage();
+        const values = collectRelicSettings();
+        saveRelicLocal(values);
+        if (typeof window.saveBlackOrbRelicSettingsToCloud === "function") {
+            try {
+                await window.saveBlackOrbRelicSettingsToCloud(values);
+            }
+            catch (e) {
+                console.warn("유물 클라우드 저장 실패", e);
+            }
+        }
+        setSaveDone(document.querySelector(".black-orb-relic-save-btn"));
+        return true;
+    }
+    function skillDamage(level) {
+        const lv = toInt(level);
+        if (lv === 256)
+            return 40345;
+        const q = Math.floor(lv / 5);
+        return Math.round((lv * 5 * Math.pow(1.07000005, q)) * 100) / 100;
+    }
+    function updateSkillDamage() {
+        const input = $("blackOrbSkillMasteryLevel");
+        const output = $("blackOrbSkillMasteryDamage");
+        if (!output)
+            return;
+        const raw = input ? digits(input.value) : "";
+        if (input && input.value !== raw)
+            input.value = raw;
+        if (raw === "")
+            output.textContent = "데미지 증가량";
+        else
+            output.textContent = "+" + formatPercent(skillDamage(raw)) + "%";
+    }
+    function collectSkillSettings() {
+        const input = $("blackOrbSkillMasteryLevel");
+        const level = input ? digits(input.value) : "";
+        return { level: level, damage: level === "" ? "" : ("+" + formatPercent(skillDamage(level)) + "%"), savedAt: new Date().toISOString() };
+    }
+    function applySkillSettings(values) {
+        if (!values || typeof values !== "object") {
+            updateSkillDamage();
+            return;
+        }
+        const input = $("blackOrbSkillMasteryLevel");
+        if (input && values.level != null)
+            input.value = digits(values.level);
+        updateSkillDamage();
+    }
+    function loadSkillLocal() {
+        try {
+            const raw = localStorage.getItem(SKILL_KEY);
+            return raw ? JSON.parse(raw) : null;
+        }
+        catch (e) {
+            return null;
+        }
+    }
+    function saveSkillLocal(values) {
+        try {
+            localStorage.setItem(SKILL_KEY, JSON.stringify(values));
+        }
+        catch (e) { }
+    }
+    async function saveSkillSettings() {
+        updateSkillDamage();
+        const values = collectSkillSettings();
+        saveSkillLocal(values);
+        if (typeof window.saveBlackOrbSkillMasterySettingsToCloud === "function") {
+            try {
+                await window.saveBlackOrbSkillMasterySettingsToCloud(values);
+            }
+            catch (e) {
+                console.warn("스킬 숙련도 클라우드 저장 실패", e);
+            }
+        }
+        setSaveDone(document.querySelector(".black-orb-skill-save-btn"));
+        return true;
+    }
+    function bindStablePatch() {
+        RELICS.forEach(function (row) {
+            const input = $(row.input);
+            if (input && !input.dataset.relicStableBound) {
+                input.dataset.relicStableBound = "1";
+                input.addEventListener("input", function () { normalizeRelicInputs(); updateRelicDamage(); });
+                input.addEventListener("change", function () { normalizeRelicInputs(); updateRelicDamage(); });
+            }
+        });
+        const relicBtn = document.querySelector(".black-orb-relic-save-btn");
+        if (relicBtn && !relicBtn.dataset.relicStableSaveBound) {
+            relicBtn.dataset.relicStableSaveBound = "1";
+            relicBtn.addEventListener("click", function (e) { e.preventDefault(); e.stopImmediatePropagation(); saveRelicSettings(); }, true);
+        }
+        const skillInput = $("blackOrbSkillMasteryLevel");
+        if (skillInput && !skillInput.dataset.skillStableBound) {
+            skillInput.dataset.skillStableBound = "1";
+            skillInput.addEventListener("input", updateSkillDamage);
+            skillInput.addEventListener("change", updateSkillDamage);
+        }
+        const skillBtn = document.querySelector(".black-orb-skill-save-btn");
+        if (skillBtn && !skillBtn.dataset.skillStableSaveBound) {
+            skillBtn.dataset.skillStableSaveBound = "1";
+            skillBtn.addEventListener("click", function (e) { e.preventDefault(); e.stopImmediatePropagation(); saveSkillSettings(); }, true);
+        }
+        const relicSaved = loadRelicLocal();
+        if (relicSaved)
+            applyRelicSettings(relicSaved);
+        else
+            updateRelicDamage();
+        const skillSaved = loadSkillLocal();
+        if (skillSaved)
+            applySkillSettings(skillSaved);
+        else
+            updateSkillDamage();
+    }
+    window.calculateBlackOrbRelicDamagePercent = relicDamage;
+    window.updateBlackOrbRelicDamageSummary = updateRelicDamage;
+    window.collectBlackOrbRelicSettings = collectRelicSettings;
+    window.applyBlackOrbRelicSettings = applyRelicSettings;
+    window.saveBlackOrbRelicSettings = saveRelicSettings;
+    window.calculateBlackOrbSkillMasteryDamagePercent = skillDamage;
+    window.updateBlackOrbSkillMasteryDamage = updateSkillDamage;
+    window.collectBlackOrbSkillMasterySettings = collectSkillSettings;
+    window.applyBlackOrbSkillMasterySettings = applySkillSettings;
+    window.saveBlackOrbSkillMasterySettings = saveSkillSettings;
+    const oldRelicOpen = window.openBlackOrbRelicPopup;
+    window.openBlackOrbRelicPopup = function () {
+        if (typeof oldRelicOpen === "function")
+            oldRelicOpen.apply(this, arguments);
+        applyRelicSettings(loadRelicLocal());
+        setTimeout(updateRelicDamage, 0);
+    };
+    const oldSkillOpen = window.openBlackOrbSkillMasteryPopup;
+    window.openBlackOrbSkillMasteryPopup = function () {
+        if (typeof oldSkillOpen === "function")
+            oldSkillOpen.apply(this, arguments);
+        applySkillSettings(loadSkillLocal());
+        setTimeout(updateSkillDamage, 0);
+    };
+    function protectCloudLoaders() {
+        if (typeof window.loadBlackOrbRelicSettingsFromCloud === "function" && !window.loadBlackOrbRelicSettingsFromCloud.__stableWrapped) {
+            const original = window.loadBlackOrbRelicSettingsFromCloud;
+            window.loadBlackOrbRelicSettingsFromCloud = async function () {
+                const local = loadRelicLocal();
+                if (local) {
+                    applyRelicSettings(local);
+                    return;
+                }
+                await original.apply(this, arguments);
+                updateRelicDamage();
+            };
+            window.loadBlackOrbRelicSettingsFromCloud.__stableWrapped = true;
+        }
+        if (typeof window.loadBlackOrbSkillMasterySettingsFromCloud === "function" && !window.loadBlackOrbSkillMasterySettingsFromCloud.__stableWrapped) {
+            const original = window.loadBlackOrbSkillMasterySettingsFromCloud;
+            window.loadBlackOrbSkillMasterySettingsFromCloud = async function () {
+                const local = loadSkillLocal();
+                if (local) {
+                    applySkillSettings(local);
+                    return;
+                }
+                await original.apply(this, arguments);
+                updateSkillDamage();
+            };
+            window.loadBlackOrbSkillMasterySettingsFromCloud.__stableWrapped = true;
+        }
+    }
+    document.addEventListener("DOMContentLoaded", function () { bindStablePatch(); protectCloudLoaders(); });
+    window.addEventListener("pageshow", function () { setTimeout(function () { bindStablePatch(); protectCloudLoaders(); }, 0); });
+    setTimeout(function () { bindStablePatch(); protectCloudLoaders(); }, 0);
+    setTimeout(function () { bindStablePatch(); protectCloudLoaders(); }, 600);
+    setInterval(protectCloudLoaders, 1200);
+})();
+</script>
+
+
+<script>/* FINAL relic save/load hardening v2
+   - 유물 레벨은 input id 그대로 저장한다.
+   - 예전 저장키(typhoonEye/kingProof...)와 새 저장키(blackOrbRelic...)를 둘 다 읽는다.
+   - 제왕의 증표 key 오타(KingsProof)를 제거하고 KingProof로 통일한다.
+*/
+(function () {
+    const RELIC_STORAGE_KEY = 'blackOrbRelicSettings';
+    const RELIC_META = [
+        { key: 'typhoonEye', id: 'blackOrbRelicTyphoonEye', element: 'wind', label: '바람' },
+        { key: 'kingProof', id: 'blackOrbRelicKingProof', element: 'earth', label: '땅' },
+        { key: 'calmFlame', id: 'blackOrbRelicCalmFlame', element: 'fire', label: '불' },
+        { key: 'abyssDrop', id: 'blackOrbRelicAbyssWaterdrop', element: 'water', label: '물' }
+    ];
+    function clampRelicLevel(v) {
+        const n = parseInt(String(v !== null && v !== void 0 ? v : '').replace(/[^0-9]/g, ''), 10);
+        if (!Number.isFinite(n))
+            return '';
+        return String(Math.max(0, Math.min(100, n)));
+    }
+    function calcRelicDamage(level) {
+        const lv = Number(level || 0);
+        let c = 1;
+        if (lv > 99)
+            c = 3;
+        else if (lv > 89)
+            c = 2.6;
+        else if (lv > 79)
+            c = 2.3;
+        else if (lv > 69)
+            c = 2;
+        else if (lv > 59)
+            c = 1.8;
+        else if (lv > 49)
+            c = 1.6;
+        else if (lv > 39)
+            c = 1.45;
+        else if (lv > 29)
+            c = 1.3;
+        else if (lv > 19)
+            c = 1.2;
+        else if (lv > 9)
+            c = 1.1;
+        return lv * c;
+    }
+    function fmtPercent(n) {
+        const v = Math.round((Number(n) || 0) * 100) / 100;
+        return Number.isInteger(v) ? `+${v}%` : `+${v.toFixed(2)}%`;
+    }
+    function elementBadge(meta) {
+        return `<span class="black-orb-element-badge ${meta.element}">${meta.label}</span>`;
+    }
+    function normalizeRelicSettings(settings) {
+        const src = settings || {};
+        const out = {};
+        RELIC_META.forEach(meta => {
+            var _a, _b, _c;
+            out[meta.id] = clampRelicLevel((_c = (_b = (_a = src[meta.id]) !== null && _a !== void 0 ? _a : src[meta.key]) !== null && _b !== void 0 ? _b : src[meta.id + 'Level']) !== null && _c !== void 0 ? _c : '');
+        });
+        return out;
+    }
+    function collectRelicSettings() {
+        const out = {};
+        RELIC_META.forEach(meta => {
+            const el = document.getElementById(meta.id);
+            out[meta.id] = clampRelicLevel(el ? el.value : '');
+        });
+        return out;
+    }
+    function renderRelicDamage() {
+        RELIC_META.forEach(meta => {
+            const input = document.getElementById(meta.id);
+            const box = document.getElementById(meta.id + 'Damage') || document.getElementById(meta.id + 'Result');
+            if (!input || !box)
+                return;
+            input.value = clampRelicLevel(input.value);
+            const damage = calcRelicDamage(input.value);
+            box.innerHTML = `${elementBadge(meta)} <span>${fmtPercent(damage)}</span>`;
+        });
+    }
+    function applyRelicSettings(settings) {
+        const fixed = normalizeRelicSettings(settings);
+        RELIC_META.forEach(meta => {
+            const el = document.getElementById(meta.id);
+            if (el)
+                el.value = fixed[meta.id] || '';
+        });
+        renderRelicDamage();
+    }
+    function loadRelicLocal() {
+        try {
+            const raw = localStorage.getItem(RELIC_STORAGE_KEY);
+            if (!raw)
+                return null;
+            return normalizeRelicSettings(JSON.parse(raw));
+        }
+        catch (e) {
+            return null;
+        }
+    }
+    function saveRelicLocal(settings) {
+        const fixed = normalizeRelicSettings(settings);
+        try {
+            localStorage.setItem(RELIC_STORAGE_KEY, JSON.stringify(fixed));
+        }
+        catch (e) { }
+        return fixed;
+    }
+    window.calculateBlackOrbRelicDamage = calcRelicDamage;
+    window.updateBlackOrbRelicDamages = renderRelicDamage;
+    window.collectBlackOrbRelicSettings = collectRelicSettings;
+    window.applyBlackOrbRelicSettings = applyRelicSettings;
+    const oldCloudLoad = window.loadBlackOrbRelicSettingsFromCloud;
+    window.loadBlackOrbRelicSettings = function () {
+        const local = loadRelicLocal();
+        if (local)
+            applyRelicSettings(local);
+        else
+            applyRelicSettings({});
+        if (typeof oldCloudLoad === 'function') {
+            return Promise.resolve(oldCloudLoad()).then(() => {
+                const afterLocal = loadRelicLocal();
+                if (afterLocal)
+                    applyRelicSettings(afterLocal);
+                renderRelicDamage();
+            }).catch(() => renderRelicDamage());
+        }
+        return Promise.resolve();
+    };
+    window.saveBlackOrbRelicSettings = function () {
+        const fixed = saveRelicLocal(collectRelicSettings());
+        applyRelicSettings(fixed);
+        if (typeof window.saveBlackOrbRelicSettingsToCloud === 'function') {
+            Promise.resolve(window.saveBlackOrbRelicSettingsToCloud(fixed)).catch(function (err) {
+                console.warn('Relic cloud save failed; localStorage saved.', err);
+            });
+        }
+        if (typeof window.showBlackOrbBubble === 'function') {
+            window.showBlackOrbBubble('유물 설정을 저장했습니다.');
+        }
+    };
+    const oldOpen = window.openBlackOrbRelicPopup;
+    window.openBlackOrbRelicPopup = function () {
+        if (typeof oldOpen === 'function')
+            oldOpen();
+        const local = loadRelicLocal();
+        if (local)
+            applyRelicSettings(local);
+        renderRelicDamage();
+    };
+    document.addEventListener('input', function (e) {
+        if (!e.target || !RELIC_META.some(meta => meta.id === e.target.id))
+            return;
+        e.target.value = clampRelicLevel(e.target.value);
+        renderRelicDamage();
+    }, true);
+    document.addEventListener('DOMContentLoaded', function () {
+        const local = loadRelicLocal();
+        if (local)
+            applyRelicSettings(local);
+        renderRelicDamage();
+    });
+})();
+</script>
+
+
+<!-- FINAL PATCH: relic + skill mastery save/calculation recovery -->
+<style>
+  .black-orb-relic-save-btn-fixed,
+  .black-orb-skill-save-btn-fixed{
+    width:100%;border:none;border-radius:18px;background:#0f172a;color:#fff;
+    font-size:22px;font-weight:900;padding:18px 16px;cursor:pointer;
+  }
+  .black-orb-relic-damage-display{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;font-weight:900;color:#111827;white-space:nowrap;}
+  .black-orb-relic-damage-display .relic-damage-badge{display:inline-flex;align-items:center;justify-content:center;min-width:46px;height:30px;padding:0 10px;border-radius:999px;color:#fff;font-size:15px;font-weight:900;line-height:1;box-shadow:0 2px 7px rgba(15,23,42,.12);}
+  .black-orb-relic-damage-display .relic-damage-value{font-size:18px;font-weight:900;}
+  .relic-damage-badge.wind{background:#1fcdbd;}
+  .relic-damage-badge.earth{background:#ffc65c;color:#111827;}
+  .relic-damage-badge.fire{background:#d91f12;}
+  .relic-damage-badge.water{background:#080070;}
+  @media(max-width:480px){
+    .black-orb-relic-damage-display{gap:6px;}
+    .black-orb-relic-damage-display .relic-damage-badge{min-width:40px;height:27px;padding:0 8px;font-size:13px;}
+    .black-orb-relic-damage-display .relic-damage-value{font-size:16px;}
+  }
+</style>
+<script>(function () {
+    'use strict';
+    const RELIC_STORAGE_KEY = 'blackOrbRelicSettings_v1';
+    const SKILL_STORAGE_KEY = 'blackOrbSkillMasterySettings_v1';
+    const relicRows = [
+        { key: 'typhoonEye', label: '바람', element: 'wind', ids: ['blackOrbRelicTyphoonEye', 'blackOrbRelicTyphoonEyeLevel'], damageIds: ['blackOrbRelicTyphoonEyeDamage', 'blackOrbRelicTyphoonEyeDamageCell'] },
+        { key: 'kingProof', label: '땅', element: 'earth', ids: ['blackOrbRelicKingProof', 'blackOrbRelicKingProofLevel', 'blackOrbRelicKingsProof', 'blackOrbRelicKingsProofLevel'], damageIds: ['blackOrbRelicKingProofDamage', 'blackOrbRelicKingProofDamageCell', 'blackOrbRelicKingsProofDamage', 'blackOrbRelicKingsProofDamageCell'] },
+        { key: 'silentFlame', label: '불', element: 'fire', ids: ['blackOrbRelicSilentFlame', 'blackOrbRelicSilentFlameLevel'], damageIds: ['blackOrbRelicSilentFlameDamage', 'blackOrbRelicSilentFlameDamageCell'] },
+        { key: 'abyssDrop', label: '물', element: 'water', ids: ['blackOrbRelicAbyssDrop', 'blackOrbRelicAbyssDropLevel', 'blackOrbRelicAbyssWaterdrop', 'blackOrbRelicAbyssWaterdropLevel'], damageIds: ['blackOrbRelicAbyssDropDamage', 'blackOrbRelicAbyssDropDamageCell', 'blackOrbRelicAbyssWaterdropDamage', 'blackOrbRelicAbyssWaterdropDamageCell'] }
+    ];
+    function qs(sel) { return document.querySelector(sel); }
+    function byId(id) { return document.getElementById(id); }
+    function firstExisting(ids) { for (const id of ids) {
+        const el = byId(id);
+        if (el)
+            return el;
+    } return null; }
+    function parseNum(v) { return Number(String(v !== null && v !== void 0 ? v : '').replace(/,/g, '').trim()) || 0; }
+    function formatNumber(n) {
+        if (!isFinite(n))
+            return '0';
+        const rounded = Math.round(n * 100) / 100;
+        return Number.isInteger(rounded) ? String(rounded) : rounded.toFixed(2).replace(/\.00$/, '').replace(/0$/, '');
+    }
+    function calcRelicDamage(level) {
+        level = parseNum(level);
+        if (level <= 0)
+            return 0;
+        let coeff = 1;
+        if (level > 99)
+            coeff = 3;
+        else if (level > 89)
+            coeff = 2.6;
+        else if (level > 79)
+            coeff = 2.3;
+        else if (level > 69)
+            coeff = 2;
+        else if (level > 59)
+            coeff = 1.8;
+        else if (level > 49)
+            coeff = 1.6;
+        else if (level > 39)
+            coeff = 1.45;
+        else if (level > 29)
+            coeff = 1.3;
+        else if (level > 19)
+            coeff = 1.2;
+        else if (level > 9)
+            coeff = 1.1;
+        return level * coeff;
+    }
+    function renderRelicDamage(row) {
+        const input = firstExisting(row.ids);
+        const damageEl = firstExisting(row.damageIds);
+        if (!damageEl)
+            return;
+        const value = calcRelicDamage(input ? input.value : 0);
+        damageEl.innerHTML = `<div class="black-orb-relic-damage-display"><span class="relic-damage-badge ${row.element}">${row.label}</span><span class="relic-damage-value">+${formatNumber(value)}%</span></div>`;
+    }
+    function updateAllRelicDamage() { relicRows.forEach(renderRelicDamage); }
+    function getRelicPayload() {
+        const data = {};
+        relicRows.forEach(row => {
+            const input = firstExisting(row.ids);
+            data[row.key] = input ? String(input.value || '').trim() : '';
+        });
+        data.updatedAt = Date.now();
+        return data;
+    }
+    function applyRelicPayload(data) {
+        if (!data || typeof data !== 'object')
+            return;
+        const alias = {
+            kingProof: ['kingProof', 'kingsProof'],
+            abyssDrop: ['abyssDrop', 'abyssWaterdrop'],
+            typhoonEye: ['typhoonEye'],
+            silentFlame: ['silentFlame']
+        };
+        relicRows.forEach(row => {
+            const input = firstExisting(row.ids);
+            if (!input)
+                return;
+            let val = '';
+            const keys = [row.key, ...(alias[row.key] || []), ...row.ids];
+            for (const k of keys) {
+                if (data[k] !== undefined && data[k] !== null && data[k] !== '') {
+                    val = data[k];
+                    break;
+                }
+            }
+            if (val !== '')
+                input.value = String(val).replace(/[^0-9]/g, '');
+        });
+        updateAllRelicDamage();
+    }
+    window.saveBlackOrbRelicSettings = function () {
+        const data = getRelicPayload();
+        localStorage.setItem(RELIC_STORAGE_KEY, JSON.stringify(data));
+        localStorage.setItem('blackOrbRelicSettings', JSON.stringify(data));
+        // compatibility keys for older patches
+        localStorage.setItem('blackOrbRelicSettings_unified', JSON.stringify(data));
+        updateAllRelicDamage();
+        if (typeof window.saveBlackOrbRelicSettingsToCloud === 'function') {
+            Promise.resolve(window.saveBlackOrbRelicSettingsToCloud(data)).catch(console.warn);
+        }
+    };
+    window.loadBlackOrbRelicSettings = function () {
+        let data = null;
+        for (const key of [RELIC_STORAGE_KEY, 'blackOrbRelicSettings', 'blackOrbRelicSettings_unified']) {
+            try {
+                data = JSON.parse(localStorage.getItem(key) || 'null');
+            }
+            catch (e) {
+                data = null;
+            }
+            if (data)
+                break;
+        }
+        applyRelicPayload(data || {});
+    };
+    window.openBlackOrbRelicPopup = function () {
+        const overlay = qs('#blackOrbRelicPopupOverlay, .black-orb-relic-popup-overlay');
+        if (overlay) {
+            overlay.classList.add('active');
+            overlay.style.display = 'flex';
+        }
+        window.loadBlackOrbRelicSettings();
+        updateAllRelicDamage();
+    };
+    window.closeBlackOrbRelicPopup = function () {
+        const overlay = qs('#blackOrbRelicPopupOverlay, .black-orb-relic-popup-overlay');
+        if (overlay) {
+            overlay.classList.remove('active');
+            overlay.style.display = 'none';
+        }
+    };
+    function calcSkillMasteryDamage(level) {
+        const x = parseNum(level);
+        if (x <= 0)
+            return 0;
+        if (x === 256)
+            return 40345;
+        const result = x * 5 * Math.pow(1.07000005, Math.floor(x / 5));
+        return Math.round(result * 100) / 100;
+    }
+    function skillInput() { return qs('#blackOrbSkillMasteryLevel, #blackOrbSkillMasteryInput, .black-orb-skill-mastery-input'); }
+    function skillDamageEl() { return qs('#blackOrbSkillMasteryDamage, #blackOrbSkillMasteryDamageValue, .black-orb-skill-mastery-damage'); }
+    window.updateBlackOrbSkillMasteryDamage = function () {
+        const input = skillInput();
+        const damage = skillDamageEl();
+        if (!damage)
+            return;
+        const val = calcSkillMasteryDamage(input ? input.value : 0);
+        damage.textContent = val > 0 ? `+${formatNumber(val)}%` : '데미지 증가량';
+    };
+    window.saveBlackOrbSkillMasterySettings = function () {
+        const input = skillInput();
+        const data = { level: input ? String(input.value || '').replace(/[^0-9]/g, '') : '', updatedAt: Date.now() };
+        if (input)
+            input.value = data.level;
+        localStorage.setItem(SKILL_STORAGE_KEY, JSON.stringify(data));
+        localStorage.setItem('blackOrbSkillMasterySettings', JSON.stringify(data));
+        window.updateBlackOrbSkillMasteryDamage();
+        if (typeof window.saveBlackOrbSkillMasterySettingsToCloud === 'function') {
+            Promise.resolve(window.saveBlackOrbSkillMasterySettingsToCloud(data)).catch(console.warn);
+        }
+    };
+    window.loadBlackOrbSkillMasterySettings = function () {
+        let data = null;
+        for (const key of [SKILL_STORAGE_KEY, 'blackOrbSkillMasterySettings']) {
+            try {
+                data = JSON.parse(localStorage.getItem(key) || 'null');
+            }
+            catch (e) {
+                data = null;
+            }
+            if (data)
+                break;
+        }
+        const input = skillInput();
+        if (input && data && data.level !== undefined)
+            input.value = String(data.level).replace(/[^0-9]/g, '');
+        window.updateBlackOrbSkillMasteryDamage();
+    };
+    window.openBlackOrbSkillMasteryPopup = function () {
+        const overlay = qs('#blackOrbSkillMasteryPopupOverlay, .black-orb-skill-mastery-popup-overlay');
+        if (overlay) {
+            overlay.classList.add('active');
+            overlay.style.display = 'flex';
+        }
+        window.loadBlackOrbSkillMasterySettings();
+        window.updateBlackOrbSkillMasteryDamage();
+    };
+    window.closeBlackOrbSkillMasteryPopup = function () {
+        const overlay = qs('#blackOrbSkillMasteryPopupOverlay, .black-orb-skill-mastery-popup-overlay');
+        if (overlay) {
+            overlay.classList.remove('active');
+            overlay.style.display = 'none';
+        }
+    };
+    function installFinalHandlers() {
+        relicRows.forEach(row => {
+            const input = firstExisting(row.ids);
+            if (!input)
+                return;
+            input.removeAttribute('readonly');
+            input.removeAttribute('disabled');
+            input.setAttribute('inputmode', 'numeric');
+            input.addEventListener('input', function () {
+                this.value = String(this.value || '').replace(/[^0-9]/g, '');
+                renderRelicDamage(row);
+            });
+        });
+        const relicSaveBtn = qs('.black-orb-relic-save-btn, .black-orb-relic-save-btn-fixed');
+        if (relicSaveBtn) {
+            relicSaveBtn.classList.remove('black-orb-relic-save-btn');
+            relicSaveBtn.classList.add('black-orb-relic-save-btn-fixed');
+            relicSaveBtn.removeAttribute('onclick');
+            relicSaveBtn.onclick = function (e) { e.preventDefault(); e.stopPropagation(); window.saveBlackOrbRelicSettings(); return false; };
+        }
+        const si = skillInput();
+        if (si) {
+            si.removeAttribute('readonly');
+            si.removeAttribute('disabled');
+            si.setAttribute('inputmode', 'numeric');
+            si.addEventListener('input', function () {
+                this.value = String(this.value || '').replace(/[^0-9]/g, '');
+                window.updateBlackOrbSkillMasteryDamage();
+            });
+        }
+        const skillSaveBtn = qs('.black-orb-skill-save-btn, .black-orb-skill-save-btn-fixed');
+        if (skillSaveBtn) {
+            skillSaveBtn.classList.remove('black-orb-skill-save-btn');
+            skillSaveBtn.classList.add('black-orb-skill-save-btn-fixed');
+            skillSaveBtn.removeAttribute('onclick');
+            skillSaveBtn.onclick = function (e) { e.preventDefault(); e.stopPropagation(); window.saveBlackOrbSkillMasterySettings(); return false; };
+        }
+        window.loadBlackOrbRelicSettings();
+        window.loadBlackOrbSkillMasterySettings();
+        updateAllRelicDamage();
+    }
+    if (document.readyState === 'loading')
+        document.addEventListener('DOMContentLoaded', installFinalHandlers);
+    else
+        installFinalHandlers();
+    window.addEventListener('load', function () { setTimeout(installFinalHandlers, 50); setTimeout(installFinalHandlers, 400); });
+})();
+</script>
+
+
+<!-- FINAL PATCH: 증가 데미지 속성별 총합 표시 -->
+<style>
+  .black-orb-increase-total-summary{
+    position:relative;
+    margin:18px 0 0;
+    padding:18px 12px 12px;
+    border:2px solid rgba(20,184,166,.34);
+    border-radius:18px;
+    background:linear-gradient(180deg,rgba(236,253,245,.74),rgba(255,255,255,.97));
+    box-shadow:0 7px 16px rgba(15,23,42,.06);
+  }
+  .black-orb-increase-total-title{
+    position:absolute;
+    left:50%;
+    top:0;
+    transform:translate(-50%,-50%);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-width:112px;
+    height:28px;
+    padding:0 16px;
+    border-radius:999px;
+    background:#0f172a;
+    color:#fff;
+    font-size:13px;
+    font-weight:950;
+    letter-spacing:-.03em;
+    white-space:nowrap;
+    box-shadow:0 8px 16px rgba(15,23,42,.16);
+  }
+  .black-orb-increase-total-grid{
+    display:grid;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:8px;
+  }
+  .black-orb-increase-total-item{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    min-height:54px;
+    padding:7px 4px;
+    border:2px solid rgba(20,184,166,.24);
+    border-radius:14px;
+    background:#fff;
+    box-shadow:0 6px 14px rgba(15,23,42,.06);
+  }
+  .black-orb-increase-total-label{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-width:44px;
+    height:22px;
+    padding:0 9px;
+    border-radius:999px;
+    color:#fff;
+    font-size:12px;
+    font-weight:950;
+    line-height:1;
+    white-space:nowrap;
+  }
+  .black-orb-increase-total-label.wind{background:var(--wind-color,#14d4c0);color:#fff;}
+  .black-orb-increase-total-label.earth{background:var(--earth-color,#ffc45f);color:#111827;}
+  .black-orb-increase-total-label.fire{background:var(--fire-color,#c21a08);color:#fff;}
+  .black-orb-increase-total-label.water{background:var(--water-color,#07006e);color:#fff;}
+  .black-orb-increase-total-value{
+    margin-top:5px;
+    color:#111827;
+    font-size:13px;
+    font-weight:950;
+    line-height:1;
+  }
+  @media(max-width:768px){
+    .black-orb-increase-total-summary{margin-top:16px;padding:16px 9px 10px;border-radius:16px;}
+    .black-orb-increase-total-title{height:26px;min-width:104px;padding:0 13px;font-size:12px;}
+    .black-orb-increase-total-grid{gap:6px;}
+    .black-orb-increase-total-item{min-height:48px;padding:6px 2px;border-radius:12px;}
+    .black-orb-increase-total-label{min-width:38px;height:20px;padding:0 7px;font-size:11px;}
+    .black-orb-increase-total-value{font-size:12px;}
+  }
+</style>
+<script>(function () {
+    'use strict';
+    const TOTAL_TARGETS = {
+        wind: 'blackOrbTotalIncreaseWindDamage',
+        earth: 'blackOrbTotalIncreaseEarthDamage',
+        fire: 'blackOrbTotalIncreaseFireDamage',
+        water: 'blackOrbTotalIncreaseWaterDamage'
+    };
+    const COMPANION_TARGETS = {
+        wind: 'blackOrbCompanionWindDamage',
+        earth: 'blackOrbCompanionEarthDamage',
+        fire: 'blackOrbCompanionFireDamage',
+        water: 'blackOrbCompanionWaterDamage'
+    };
+    const RELIC_TARGETS = {
+        wind: ['blackOrbRelicTyphoonEyeDamage', 'blackOrbRelicWindDamage'],
+        earth: ['blackOrbRelicKingProofDamage', 'blackOrbRelicEarthDamage', 'blackOrbRelicEmperorProofDamage'],
+        fire: ['blackOrbRelicSilentFlameDamage', 'blackOrbRelicFireDamage', 'blackOrbRelicQuietFlameDamage', 'blackOrbRelicCalmFlameDamage'],
+        water: ['blackOrbRelicAbyssDropDamage', 'blackOrbRelicWaterDamage', 'blackOrbRelicAbyssWaterdropDamage']
+    };
+    function firstExistingText(ids) {
+        for (const id of ids) {
+            const el = document.getElementById(id);
+            if (el)
+                return el.textContent || '';
+        }
+        return '';
+    }
+    function parsePercentText(text) {
+        const cleaned = String(text || '')
+            .replace(/,/g, '')
+            .replace(/[^0-9.\-]/g, '');
+        if (cleaned === '' || cleaned === '-' || cleaned === '.')
+            return 0;
+        const value = parseFloat(cleaned);
+        return Number.isFinite(value) ? value : 0;
+    }
+    function formatPercent(value) {
+        const rounded = Math.round((Number(value) || 0) * 100) / 100;
+        return '+' + rounded.toLocaleString('ko-KR', { maximumFractionDigits: 2 }) + '%';
+    }
+    function readCompanion(type) {
+        const el = document.getElementById(COMPANION_TARGETS[type]);
+        return parsePercentText(el ? el.textContent : '');
+    }
+    function readRelic(type) {
+        return parsePercentText(firstExistingText(RELIC_TARGETS[type] || []));
+    }
+    function readSkillMastery() {
+        const el = document.getElementById('blackOrbSkillMasteryDamage');
+        return parsePercentText(el ? el.textContent : '');
+    }
+    window.updateBlackOrbIncreaseDamageTotal = function () {
+        const skill = readSkillMastery();
+        Object.keys(TOTAL_TARGETS).forEach(function (type) {
+            const target = document.getElementById(TOTAL_TARGETS[type]);
+            if (!target)
+                return;
+            const total = readCompanion(type) + readRelic(type) + skill;
+            target.textContent = formatPercent(total);
+        });
+    };
+    function debounceUpdate() {
+        clearTimeout(window.__blackOrbIncreaseTotalTimer);
+        window.__blackOrbIncreaseTotalTimer = setTimeout(window.updateBlackOrbIncreaseDamageTotal, 0);
+    }
+    function wrapFunction(name) {
+        const original = window[name];
+        if (typeof original !== 'function' || original.__increaseTotalWrapped)
+            return;
+        const wrapped = function () {
+            const result = original.apply(this, arguments);
+            Promise.resolve(result).finally(debounceUpdate);
+            return result;
+        };
+        wrapped.__increaseTotalWrapped = true;
+        window[name] = wrapped;
+    }
+    function installIncreaseTotalPatch() {
+        [
+            'updateBlackOrbCompanionDamageSummary',
+            'updateBlackOrbRelicDamageSummary',
+            'updateBlackOrbRelicDamages',
+            'updateBlackOrbRelicDamage',
+            'updateBlackOrbRelicDamageOutputs',
+            'updateBlackOrbSkillMasteryDamage',
+            'saveBlackOrbCompanionSettings',
+            'saveBlackOrbRelicSettings',
+            'saveBlackOrbSkillMasterySettings',
+            'applyBlackOrbCompanionCloudSettings',
+            'applyBlackOrbRelicSettings',
+            'applyBlackOrbSkillMasterySettings',
+            'loadBlackOrbRelicSettings',
+            'loadBlackOrbSkillMasterySettings'
+        ].forEach(wrapFunction);
+        document.querySelectorAll('#blackOrbCompanionPopupBg input, #blackOrbCompanionPopupBg select, #blackOrbRelicPopup input, #blackOrbSkillMasteryPopup input').forEach(function (el) {
+            if (el.dataset.increaseTotalBound === '1')
+                return;
+            el.dataset.increaseTotalBound = '1';
+            el.addEventListener('input', debounceUpdate);
+            el.addEventListener('change', debounceUpdate);
+            el.addEventListener('blur', debounceUpdate);
+        });
+        debounceUpdate();
+    }
+    if (document.readyState === 'loading')
+        document.addEventListener('DOMContentLoaded', installIncreaseTotalPatch);
+    else
+        installIncreaseTotalPatch();
+    window.addEventListener('load', function () {
+        setTimeout(installIncreaseTotalPatch, 100);
+        setTimeout(window.updateBlackOrbIncreaseDamageTotal, 500);
+        setTimeout(window.updateBlackOrbIncreaseDamageTotal, 1500);
+    });
+    window.addEventListener('pageshow', function () { setTimeout(installIncreaseTotalPatch, 0); });
+})();
+</script>
+
+
+<style>
+  /* 블랙 오브 레벨 입력 + 오브 공명 해금 상태 */
+  .black-orb-level-row{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    max-width:360px;
+    margin:0 auto 10px;
+    padding:10px 12px;
+    border:1px solid #ccfbf1;
+    border-radius:18px;
+    background:#fff;
+    box-shadow:0 6px 14px rgba(15,23,42,.05);
+  }
+  .black-orb-level-label{
+    flex:0 0 auto;
+    color:#111827;
+    font-size:14px;
+    font-weight:950;
+    white-space:nowrap;
+  }
+  .black-orb-level-input{
+    width:100%;
+    max-width:170px;
+    height:38px;
+    border:2px solid #99f6e4;
+    border-radius:14px;
+    background:#f8fafc;
+    color:#111827;
+    text-align:center;
+    font-size:15px;
+    font-weight:950;
+    outline:none;
+  }
+  .black-orb-level-input:focus{
+    border-color:#14b8a6;
+    background:#fff;
+    box-shadow:0 0 0 3px rgba(20,184,166,.14);
+  }
+  .black-orb-level-input::placeholder{color:#6b7280;font-weight:900;}
+  .black-orb-damage-amp-btn.resonance-locked,
+  .black-orb-damage-amp-btn:disabled{
+    border-color:#d1d5db !important;
+    background:#e5e7eb !important;
+    color:#9ca3af !important;
+    cursor:not-allowed !important;
+    box-shadow:none !important;
+    transform:none !important;
+  }
+  .black-orb-resonance-lock-msg{
+    display:none;
+    position:relative;
+    grid-column:1/-1;
+    margin:4px auto 0;
+    padding:8px 12px;
+    border-radius:999px;
+    background:#111827;
+    color:#fff;
+    font-size:12px;
+    font-weight:900;
+    line-height:1.2;
+    text-align:center;
+    white-space:nowrap;
+    box-shadow:0 8px 18px rgba(15,23,42,.18);
+  }
+  .black-orb-resonance-lock-msg.show{display:block;}
+  .black-orb-resonance-lock-msg::before{
+    content:"";
+    position:absolute;
+    left:50%;
+    top:-6px;
+    transform:translateX(-50%);
+    border-left:6px solid transparent;
+    border-right:6px solid transparent;
+    border-bottom:7px solid #111827;
+  }
+  @media(max-width:768px){
+    .black-orb-level-row{max-width:300px;margin-bottom:8px;padding:8px 10px;border-radius:16px;gap:8px;}
+    .black-orb-level-label{font-size:13px;}
+    .black-orb-level-input{max-width:150px;height:34px;border-radius:12px;font-size:13px;}
+    .black-orb-resonance-lock-msg{font-size:11px;max-width:260px;white-space:normal;border-radius:14px;}
+  }
+</style>
+<script>(function () {
+    'use strict';
+    const LEVEL_KEY = 'blackOrbMainLevel';
+    let lockTimer = null;
+    let originalDamageAmpOpen = null;
+    function onlyDigits(value) {
+        return String(value || '').replace(/[^0-9]/g, '');
+    }
+    function getOrbLevel() {
+        const input = document.getElementById('blackOrbMainLevelInput');
+        const raw = input ? input.value : localStorage.getItem(LEVEL_KEY);
+        const n = parseInt(onlyDigits(raw), 10);
+        return Number.isFinite(n) ? n : 0;
+    }
+    function ensureLockMessage() {
+        const grid = document.querySelector('.black-orb-damage-amp-grid');
+        if (!grid)
+            return null;
+        let msg = document.getElementById('blackOrbResonanceLockMsg');
+        if (!msg) {
+            msg = document.createElement('div');
+            msg.id = 'blackOrbResonanceLockMsg';
+            msg.className = 'black-orb-resonance-lock-msg';
+            msg.textContent = '오브 공명은 블랙 오브 16레벨 이상부터 적용됩니다.';
+            grid.appendChild(msg);
+        }
+        return msg;
+    }
+    function showLockMessage() {
+        const msg = ensureLockMessage();
+        if (!msg)
+            return;
+        msg.classList.add('show');
+        clearTimeout(lockTimer);
+        lockTimer = setTimeout(function () { msg.classList.remove('show'); }, 1800);
+    }
+    function updateResonanceButtonState() {
+        const btn = document.getElementById('blackOrbResonanceOpenBtn') || Array.from(document.querySelectorAll('.black-orb-damage-amp-btn')).find(function (b) { return (b.textContent || '').trim() === '오브 공명'; });
+        if (!btn)
+            return;
+        const unlocked = getOrbLevel() >= 16;
+        btn.disabled = !unlocked;
+        btn.setAttribute('aria-disabled', String(!unlocked));
+        btn.classList.toggle('resonance-locked', !unlocked);
+        btn.title = unlocked ? '' : '블랙 오브 16레벨 이상부터 적용됩니다.';
+        if (unlocked) {
+            const msg = document.getElementById('blackOrbResonanceLockMsg');
+            if (msg)
+                msg.classList.remove('show');
+        }
+    }
+    function bindOrbLevelInput() {
+        const input = document.getElementById('blackOrbMainLevelInput');
+        if (!input || input.dataset.orbLevelBound === '1')
+            return;
+        input.dataset.orbLevelBound = '1';
+        input.value = onlyDigits(localStorage.getItem(LEVEL_KEY) || input.value || '');
+        input.addEventListener('input', function () {
+            const clean = onlyDigits(input.value);
+            if (input.value !== clean)
+                input.value = clean;
+            localStorage.setItem(LEVEL_KEY, clean);
+            updateResonanceButtonState();
+        });
+        input.addEventListener('change', function () {
+            input.value = onlyDigits(input.value);
+            localStorage.setItem(LEVEL_KEY, input.value);
+            updateResonanceButtonState();
+        });
+    }
+    function patchDamageAmpOpen() {
+        if (typeof window.openBlackOrbDamageAmpPopup === 'function' && !window.openBlackOrbDamageAmpPopup.__orbLevelGuarded) {
+            originalDamageAmpOpen = window.openBlackOrbDamageAmpPopup;
+            const guarded = function (title) {
+                if (title === '오브 공명' && getOrbLevel() < 16) {
+                    showLockMessage();
+                    updateResonanceButtonState();
+                    return false;
+                }
+                return originalDamageAmpOpen.apply(this, arguments);
+            };
+            guarded.__orbLevelGuarded = true;
+            window.openBlackOrbDamageAmpPopup = guarded;
+        }
+    }
+    function bindDisabledClickHint() {
+        const btn = document.getElementById('blackOrbResonanceOpenBtn') || Array.from(document.querySelectorAll('.black-orb-damage-amp-btn')).find(function (b) { return (b.textContent || '').trim() === '오브 공명'; });
+        if (!btn || btn.dataset.orbLevelHintBound === '1')
+            return;
+        btn.dataset.orbLevelHintBound = '1';
+        btn.addEventListener('click', function (e) {
+            if (getOrbLevel() < 16) {
+                e.preventDefault();
+                e.stopPropagation();
+                showLockMessage();
+            }
+        }, true);
+    }
+    function installOrbLevelGate() {
+        bindOrbLevelInput();
+        ensureLockMessage();
+        patchDamageAmpOpen();
+        bindDisabledClickHint();
+        updateResonanceButtonState();
+    }
+    if (document.readyState === 'loading')
+        document.addEventListener('DOMContentLoaded', installOrbLevelGate);
+    else
+        installOrbLevelGate();
+    window.addEventListener('load', function () {
+        installOrbLevelGate();
+        setTimeout(installOrbLevelGate, 300);
+        setTimeout(installOrbLevelGate, 1000);
+    });
+    window.addEventListener('pageshow', installOrbLevelGate);
+})();
+</script>
+
+
+
+<style id="black-orb-resonance-formula-final-style">
+  .black-orb-resonance-result-box{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+    align-items:stretch;
+    width:100%;
+  }
+  .black-orb-resonance-result-label,
+  .black-orb-resonance-result-value{
+    min-height:42px;
+    border-radius:14px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    font-size:14px;
+    font-weight:950;
+    line-height:1.15;
+    word-break:keep-all;
+  }
+  .black-orb-resonance-result-label{
+    background:#111827;
+    color:#fff;
+    box-shadow:0 8px 18px rgba(15,23,42,.14);
+  }
+  .black-orb-resonance-result-value{
+    border:2px solid rgba(20,184,166,.30);
+    background:#fff;
+    color:#0f766e;
+  }
+  .black-orb-resonance-tooltip{
+    display:none;
+    position:relative;
+    width:max-content;
+    max-width:260px;
+    margin:9px auto 0;
+    padding:9px 12px;
+    border-radius:999px;
+    background:#111827;
+    color:#fff;
+    font-size:12px;
+    font-weight:900;
+    line-height:1.25;
+    text-align:center;
+    white-space:nowrap;
+    box-shadow:0 8px 18px rgba(15,23,42,.22);
+  }
+  .black-orb-resonance-tooltip.show{display:block;}
+  .black-orb-resonance-tooltip::before{
+    content:"";
+    position:absolute;
+    left:50%;
+    top:-6px;
+    transform:translateX(-50%);
+    border-left:6px solid transparent;
+    border-right:6px solid transparent;
+    border-bottom:7px solid #111827;
+  }
+  @media(max-width:768px){
+    .black-orb-resonance-result-label,
+    .black-orb-resonance-result-value{min-height:36px;border-radius:12px;font-size:12px;}
+    .black-orb-resonance-tooltip{font-size:11px;max-width:230px;white-space:normal;border-radius:14px;}
+  }
+</style>
+<script id="black-orb-resonance-formula-final-script">(function () {
+    'use strict';
+    const STORAGE_KEY = 'blackOrbResonanceSettings';
+    function digitsOnly(value) {
+        return String(value || '').replace(/,/g, '').replace(/[^0-9]/g, '');
+    }
+    function comma(value) {
+        const clean = digitsOnly(value);
+        return clean ? clean.replace(/\B(?=(\d{3})+(?!\d))/g, ',') : '';
+    }
+    function numberValue(value) {
+        const n = parseInt(digitsOnly(value), 10);
+        return Number.isFinite(n) ? n : 0;
+    }
+    function ampValue(level) {
+        const lv = Number(level) || 0;
+        if (lv >= 50)
+            return Math.floor((lv - 48) / 24) * 2;
+        return 0;
+    }
+    function ampText(level) {
+        return '+' + ampValue(level) + '%';
+    }
+    function setBtnState(btn, state, text) {
+        if (!btn)
+            return;
+        const original = btn.dataset.originalText || btn.textContent || '저장하기';
+        btn.dataset.originalText = original;
+        btn.classList.remove('black-orb-save-done', 'black-orb-save-fail');
+        if (state === 'done') {
+            btn.classList.add('black-orb-save-done');
+            btn.textContent = text || '저장 완료';
+        }
+        else if (state === 'fail') {
+            btn.classList.add('black-orb-save-fail');
+            btn.textContent = text || '저장 불가';
+        }
+        else {
+            btn.textContent = original;
+        }
+        clearTimeout(btn._resonanceStateTimer);
+        if (state) {
+            btn._resonanceStateTimer = setTimeout(function () {
+                btn.classList.remove('black-orb-save-done', 'black-orb-save-fail');
+                btn.textContent = original;
+            }, 1500);
+        }
+    }
+    function showTooltip(message) {
+        const tip = document.getElementById('blackOrbResonanceTooltip');
+        if (!tip)
+            return;
+        tip.textContent = message;
+        tip.classList.add('show');
+        clearTimeout(tip._timer);
+        tip._timer = setTimeout(function () { tip.classList.remove('show'); }, 2200);
+    }
+    function updateDisplay() {
+        const input = document.getElementById('blackOrbResonanceLevel');
+        const result = document.getElementById('blackOrbResonanceAmpValue');
+        if (result)
+            result.textContent = ampText(numberValue(input ? input.value : 0));
+    }
+    function bindInput(input) {
+        if (!input || input.dataset.resonanceFormulaBound === '1')
+            return;
+        input.dataset.resonanceFormulaBound = '1';
+        input.addEventListener('input', function () {
+            const formatted = comma(input.value);
+            input.value = formatted;
+            updateDisplay();
+        });
+        input.addEventListener('change', function () {
+            input.value = comma(input.value);
+            updateDisplay();
+        });
+    }
+    function readSaved() {
+        try {
+            return JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null') || null;
+        }
+        catch (e) {
+            return null;
+        }
+    }
+    function renderResonanceBody() {
+        const popup = document.getElementById('blackOrbDamageAmpPopup');
+        const title = document.getElementById('blackOrbDamageAmpPopupTitle');
+        const placeholder = document.getElementById('blackOrbDamageAmpPlaceholder');
+        const orderBody = document.getElementById('blackOrbOrderStatueBody');
+        if (!popup || !title || !placeholder)
+            return false;
+        if ((title.textContent || '').trim() !== '오브 공명')
+            return false;
+        if (orderBody)
+            orderBody.style.display = 'none';
+        placeholder.style.display = 'block';
+        placeholder.classList.add('black-orb-resonance-placeholder-final');
+        placeholder.innerHTML = `
+      <div id="blackOrbResonanceBody" class="black-orb-resonance-body">
+        <input id="blackOrbResonanceLevel" class="black-orb-resonance-level-input black-orb-comma-input" type="text" inputmode="numeric" placeholder="레벨 입력" autocomplete="off" />
+        <div class="black-orb-resonance-result-box" aria-label="오브 공명 증폭 데미지">
+          <div class="black-orb-resonance-result-label">증폭 데미지</div>
+          <div id="blackOrbResonanceAmpValue" class="black-orb-resonance-result-value">+0%</div>
+        </div>
+        <div class="black-orb-order-statue-save-wrap">
+          <button id="blackOrbResonanceFormulaSaveBtn" type="button" class="black-orb-resonance-save-btn">저장하기</button>
+          <div id="blackOrbResonanceTooltip" class="black-orb-resonance-tooltip">0~320까지만 입력할 수 있습니다.</div>
+        </div>
+      </div>
+    `;
+        const saved = readSaved();
+        const input = document.getElementById('blackOrbResonanceLevel');
+        if (input && saved && saved.level !== undefined)
+            input.value = comma(saved.level);
+        bindInput(input);
+        updateDisplay();
+        const saveBtn = document.getElementById('blackOrbResonanceFormulaSaveBtn');
+        if (saveBtn && saveBtn.dataset.resonanceSaveBound !== '1') {
+            saveBtn.dataset.resonanceSaveBound = '1';
+            saveBtn.addEventListener('click', function (ev) {
+                ev.preventDefault();
+                ev.stopPropagation();
+                const level = numberValue(input ? input.value : 0);
+                if (!input || input.value === '' || level < 0 || level > 320) {
+                    if (input)
+                        input.value = '';
+                    updateDisplay();
+                    setBtnState(saveBtn, 'fail', '저장 불가');
+                    showTooltip('0~320까지만 입력할 수 있습니다.');
+                    return;
+                }
+                const amp = ampValue(level);
+                localStorage.setItem(STORAGE_KEY, JSON.stringify({
+                    level: level,
+                    amp: amp,
+                    ampText: '+' + amp + '%',
+                    savedAt: new Date().toISOString()
+                }));
+                input.value = comma(level);
+                updateDisplay();
+                setBtnState(saveBtn, 'done', '저장 완료');
+                if (typeof window.updateBlackOrbDamageAmpTotal === 'function')
+                    window.updateBlackOrbDamageAmpTotal();
+                if (typeof window.updateBlackOrbAmplifyDamageTotal === 'function')
+                    window.updateBlackOrbAmplifyDamageTotal();
+            });
+        }
+        return true;
+    }
+    function wrapOpenFunctions() {
+        const names = ['openBlackOrbDamageAmpPopup', 'openBlackOrbOrbResonancePopupFinal'];
+        names.forEach(function (name) {
+            const fn = window[name];
+            if (typeof fn !== 'function' || fn.__resonanceFormulaWrapped)
+                return;
+            const wrapped = function () {
+                const ret = fn.apply(this, arguments);
+                const wantsResonance = arguments[0] === '오브 공명' || name === 'openBlackOrbOrbResonancePopupFinal';
+                if (wantsResonance) {
+                    setTimeout(renderResonanceBody, 0);
+                    setTimeout(renderResonanceBody, 60);
+                }
+                return ret;
+            };
+            wrapped.__resonanceFormulaWrapped = true;
+            window[name] = wrapped;
+        });
+    }
+    function install() {
+        wrapOpenFunctions();
+        renderResonanceBody();
+        const popup = document.getElementById('blackOrbDamageAmpPopup');
+        if (popup && !popup.dataset.resonanceFormulaObserved) {
+            popup.dataset.resonanceFormulaObserved = '1';
+            const observer = new MutationObserver(function () {
+                const title = document.getElementById('blackOrbDamageAmpPopupTitle');
+                if (title && (title.textContent || '').trim() === '오브 공명') {
+                    if (!document.getElementById('blackOrbResonanceFormulaSaveBtn'))
+                        renderResonanceBody();
+                }
+            });
+            observer.observe(popup, { childList: true, subtree: true, characterData: true });
+        }
+    }
+    window.calculateBlackOrbResonanceAmp = ampValue;
+    window.getBlackOrbResonanceFinalValues = function () {
+        const saved = readSaved();
+        const level = saved && saved.level !== undefined ? Number(saved.level) : 0;
+        const amp = ampValue(level);
+        return { level: level, amp: amp, ampText: '+' + amp + '%' };
+    };
+    window.renderBlackOrbResonanceFormulaBody = renderResonanceBody;
+    if (document.readyState === 'loading')
+        document.addEventListener('DOMContentLoaded', install);
+    else
+        install();
+    window.addEventListener('load', function () {
+        install();
+        setTimeout(install, 300);
+        setTimeout(install, 1000);
+    });
+    window.addEventListener('pageshow', install);
+})();
+</script>
+
+
+<style id="black-orb-resonance-duplicate-remove-style">
+  .black-orb-resonance-save-btn{
+    width:100%;
+    height:44px;
+    border:none;
+    border-radius:999px;
+    background:#111827;
+    color:#fff;
+    font-size:15px;
+    font-weight:950;
+    cursor:pointer;
+  }
+  @media(max-width:768px){.black-orb-resonance-save-btn{height:42px;font-size:14px}}
+</style>
+
+<script id="black-orb-resonance-duplicate-remove-script">(function () {
+    'use strict';
+    function cleanupOrbResonancePopup() {
+        const popup = document.getElementById('blackOrbDamageAmpPopup');
+        const title = document.getElementById('blackOrbDamageAmpPopupTitle');
+        const placeholder = document.getElementById('blackOrbDamageAmpPlaceholder');
+        if (!popup || !title || !placeholder)
+            return;
+        const isResonance = (title.textContent || '').trim() === '오브 공명';
+        const bodies = Array.from(popup.querySelectorAll('.black-orb-resonance-body'));
+        if (isResonance) {
+            bodies.forEach(function (body) {
+                if (!placeholder.contains(body))
+                    body.remove();
+            });
+            placeholder.style.display = 'block';
+            const orderBody = document.getElementById('blackOrbOrderStatueBody');
+            if (orderBody)
+                orderBody.style.display = 'none';
+            if (typeof window.renderBlackOrbResonanceFormulaBody === 'function' && !placeholder.querySelector('#blackOrbResonanceFormulaSaveBtn')) {
+                try {
+                    window.renderBlackOrbResonanceFormulaBody();
+                }
+                catch (e) { }
+            }
+        }
+        else {
+            bodies.forEach(function (body) {
+                if (!placeholder.contains(body))
+                    body.style.display = 'none';
+            });
+        }
+    }
+    function install() {
+        cleanupOrbResonancePopup();
+        const popup = document.getElementById('blackOrbDamageAmpPopup');
+        if (popup && popup.dataset.resonanceDuplicateCleanup !== '1') {
+            popup.dataset.resonanceDuplicateCleanup = '1';
+            const observer = new MutationObserver(function () {
+                setTimeout(cleanupOrbResonancePopup, 0);
+            });
+            observer.observe(popup, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ['class', 'style'] });
+        }
+        document.addEventListener('click', function (e) {
+            const btn = e.target.closest && e.target.closest('button');
+            if (!btn)
+                return;
+            const txt = (btn.textContent || '').trim();
+            if (txt === '오브 공명' || btn.id === 'blackOrbResonanceFormulaSaveBtn') {
+                setTimeout(cleanupOrbResonancePopup, 0);
+                setTimeout(cleanupOrbResonancePopup, 80);
+            }
+        }, true);
+    }
+    if (document.readyState === 'loading')
+        document.addEventListener('DOMContentLoaded', install);
+    else
+        install();
+    window.addEventListener('load', function () {
+        install();
+        setTimeout(cleanupOrbResonancePopup, 300);
+    });
+    window.addEventListener('pageshow', function () { setTimeout(cleanupOrbResonancePopup, 0); });
+})();
+</script>
+
+
+<style id="black-orb-amplify-option-sum-style">
+  /* 증폭 데미지 3배열 + 부가 옵션 합계 팝업 */
+  .black-orb-damage-amp-grid{
+    grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+  }
+  .black-orb-amp-sum-placeholder{
+    display:block !important;
+    padding:0 !important;
+    border:none !important;
+    background:transparent !important;
+  }
+  .black-orb-amp-sum-body{
+    display:grid;
+    gap:12px;
+    width:100%;
+  }
+  .black-orb-amp-sum-desc{
+    margin:0;
+    color:#64748b;
+    font-size:12px;
+    font-weight:850;
+    line-height:1.4;
+    word-break:keep-all;
+  }
+  .black-orb-amp-sum-grid{
+    display:grid;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:7px;
+  }
+  .black-orb-amp-sum-item{
+    display:grid;
+    grid-template-rows:auto auto;
+    gap:7px;
+    min-width:0;
+  }
+  .black-orb-amp-sum-label{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-height:34px;
+    border-radius:13px;
+    color:#fff;
+    font-size:12px;
+    font-weight:950;
+    box-shadow:0 6px 14px rgba(15,23,42,.10);
+  }
+  .black-orb-amp-sum-label.fire{background:var(--fire-color)}
+  .black-orb-amp-sum-label.water{background:var(--water-color)}
+  .black-orb-amp-sum-label.wind{background:var(--wind-color)}
+  .black-orb-amp-sum-label.earth{background:var(--earth-color);color:#111827}
+  .black-orb-amp-sum-value{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-height:36px;
+    padding:0 4px;
+    border:2px solid rgba(20,184,166,.35);
+    border-radius:13px;
+    background:#fff;
+    color:#0f766e;
+    font-size:12px;
+    font-weight:950;
+    letter-spacing:-.03em;
+    white-space:nowrap;
+  }
+  @media(max-width:768px){
+    .black-orb-damage-amp-grid{gap:6px !important;}
+    .black-orb-damage-amp-btn{font-size:11px !important;padding:0 2px !important;min-height:40px !important;}
+    .black-orb-amp-sum-grid{gap:5px;}
+    .black-orb-amp-sum-label{min-height:30px;border-radius:11px;font-size:11px;}
+    .black-orb-amp-sum-value{min-height:32px;border-radius:11px;font-size:10.5px;padding:0 2px;}
+    .black-orb-amp-sum-desc{font-size:11px;}
+  }
+</style>
+
+<script id="black-orb-amplify-option-sum-script">(function () {
+    'use strict';
+    const STORAGE_KEY = 'mulmung_black_orb_detail_states_v1';
+    const ATTRS = ['wind', 'earth', 'fire', 'water'];
+    const DISPLAY = [
+        { key: 'fire', label: '불' },
+        { key: 'water', label: '물' },
+        { key: 'wind', label: '바람' },
+        { key: 'earth', label: '땅' }
+    ];
+    function toNumber(value) {
+        const n = Number(String(value !== null && value !== void 0 ? value : '').replace(/,/g, '').replace(/[^0-9.\-]/g, ''));
+        return Number.isFinite(n) ? n : 0;
+    }
+    function formatPercent(value) {
+        const rounded = Math.round((Number(value) || 0) * 100) / 100;
+        return '+' + rounded.toLocaleString('ko-KR', { maximumFractionDigits: 2 }) + '%';
+    }
+    function emptyState() {
+        return {
+            wind: { topValue: '', rows: [] },
+            earth: { topValue: '', rows: [] },
+            fire: { topValue: '', rows: [] },
+            water: { topValue: '', rows: [] }
+        };
+    }
+    function readDetailStates() {
+        try {
+            if (typeof blackOrbDetailPopupState !== 'undefined' && blackOrbDetailPopupState) {
+                return blackOrbDetailPopupState;
+            }
+        }
+        catch (e) { }
+        try {
+            return JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null') || emptyState();
+        }
+        catch (e) {
+            return emptyState();
+        }
+    }
+    function getRowValue(row) {
+        return row && (row.value || row.badgeClass || 'all') || 'all';
+    }
+    function addToTarget(totals, target, value) {
+        if (!value)
+            return;
+        if (target === 'none')
+            return;
+        if (target === 'all') {
+            ATTRS.forEach(function (attr) { totals[attr] += value; });
+            return;
+        }
+        if (Object.prototype.hasOwnProperty.call(totals, target))
+            totals[target] += value;
+    }
+    function calculateTotals() {
+        const states = readDetailStates();
+        const totals = { wind: 0, earth: 0, fire: 0, water: 0 };
+        ATTRS.forEach(function (ownerAttr) {
+            const state = states && states[ownerAttr];
+            const rows = Array.isArray(state && state.rows) ? state.rows : [];
+            rows.slice(0, 4).forEach(function (row) {
+                const target = getRowValue(row);
+                const baseValue = toNumber(row && row.percentValue);
+                if (!baseValue)
+                    return;
+                const multiplier = target === ownerAttr ? 2 : 1;
+                addToTarget(totals, target, baseValue * multiplier);
+            });
+        });
+        return totals;
+    }
+    function ensureSummaryButton() {
+        const grid = document.querySelector('.black-orb-damage-amp-grid');
+        if (!grid)
+            return null;
+        let btn = document.getElementById('blackOrbAmpOptionSumOpenBtn');
+        if (!btn) {
+            btn = document.createElement('button');
+            btn.type = 'button';
+            btn.id = 'blackOrbAmpOptionSumOpenBtn';
+            btn.className = 'black-orb-damage-amp-btn';
+            btn.textContent = '합계';
+            btn.addEventListener('click', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                openSummaryPopup();
+            });
+            grid.appendChild(btn);
+        }
+        return btn;
+    }
+    function renderSummaryBody() {
+        const title = document.getElementById('blackOrbDamageAmpPopupTitle');
+        const placeholder = document.getElementById('blackOrbDamageAmpPlaceholder');
+        const orderBody = document.getElementById('blackOrbOrderStatueBody');
+        if (!title || !placeholder)
+            return false;
+        if ((title.textContent || '').trim() !== '합계')
+            return false;
+        const totals = calculateTotals();
+        if (orderBody)
+            orderBody.style.display = 'none';
+        placeholder.style.display = 'block';
+        placeholder.className = 'black-orb-damage-amp-popup-body black-orb-amp-sum-placeholder';
+        placeholder.innerHTML = `
+      <div class="black-orb-amp-sum-body" aria-label="속성별 오브 부가 옵션 합계">
+        <p class="black-orb-amp-sum-desc">속성별 오브 팝업의 부가 옵션 수치만 합산한 값입니다.</p>
+        <div class="black-orb-amp-sum-grid">
+          ${DISPLAY.map(function (item) {
+            return `<div class="black-orb-amp-sum-item"><span class="black-orb-amp-sum-label ${item.key}">${item.label}</span><span id="blackOrbAmpSum_${item.key}" class="black-orb-amp-sum-value">${formatPercent(totals[item.key])}</span></div>`;
+        }).join('')}
+        </div>
+      </div>
+    `;
+        return true;
+    }
+    function openSummaryPopup() {
+        const popup = document.getElementById('blackOrbDamageAmpPopup');
+        const title = document.getElementById('blackOrbDamageAmpPopupTitle');
+        if (title)
+            title.textContent = '합계';
+        renderSummaryBody();
+        if (popup)
+            popup.classList.add('active');
+    }
+    function wrapDamageAmpOpen() {
+        const fn = window.openBlackOrbDamageAmpPopup;
+        if (typeof fn !== 'function' || fn.__ampOptionSumWrapped)
+            return;
+        const wrapped = function (title) {
+            if (title === '합계') {
+                openSummaryPopup();
+                return false;
+            }
+            const ret = fn.apply(this, arguments);
+            setTimeout(function () {
+                const t = document.getElementById('blackOrbDamageAmpPopupTitle');
+                if (t && (t.textContent || '').trim() === '합계')
+                    renderSummaryBody();
+            }, 0);
+            return ret;
+        };
+        wrapped.__ampOptionSumWrapped = true;
+        window.openBlackOrbDamageAmpPopup = wrapped;
+    }
+    function bindClicks() {
+        if (document.documentElement.dataset.blackOrbAmpSumClickBound === '1')
+            return;
+        document.documentElement.dataset.blackOrbAmpSumClickBound = '1';
+        document.addEventListener('click', function (e) {
+            const btn = e.target && e.target.closest ? e.target.closest('button') : null;
+            if (!btn)
+                return;
+            if (btn.id === 'blackOrbAmpOptionSumOpenBtn' || (btn.textContent || '').trim() === '합계') {
+                e.preventDefault();
+                e.stopPropagation();
+                e.stopImmediatePropagation();
+                openSummaryPopup();
+            }
+        }, true);
+    }
+    function refreshIfOpen() {
+        const title = document.getElementById('blackOrbDamageAmpPopupTitle');
+        if (title && (title.textContent || '').trim() === '합계')
+            renderSummaryBody();
+    }
+    function install() {
+        ensureSummaryButton();
+        wrapDamageAmpOpen();
+        bindClicks();
+        refreshIfOpen();
+    }
+    window.calculateBlackOrbAmplifyOptionTotals = calculateTotals;
+    window.openBlackOrbAmplifyOptionSumPopup = openSummaryPopup;
+    window.updateBlackOrbAmplifyOptionSumPopup = refreshIfOpen;
+    if (document.readyState === 'loading')
+        document.addEventListener('DOMContentLoaded', install);
+    else
+        install();
+    window.addEventListener('load', function () {
+        install();
+        setTimeout(install, 300);
+        setTimeout(install, 1000);
+    });
+    window.addEventListener('pageshow', function () { setTimeout(install, 0); });
+})();
+</script>
+
+
+<style id="black-orb-amplify-final-total-style">
+  /* 증폭 데미지: 질서의 신상 + 오브 공명 + 부가 옵션 합계 최종 표시 */
+  .black-orb-amp-final-total{
+    position:relative;
+    margin:18px 0 0;
+    padding:18px 12px 12px;
+    border:2px solid rgba(20,184,166,.34);
+    border-radius:18px;
+    background:linear-gradient(180deg,rgba(236,253,245,.72),rgba(255,255,255,.96));
+    box-shadow:0 6px 14px rgba(15,23,42,.05);
+  }
+  .black-orb-amp-final-total-title{
+    position:absolute;
+    left:50%;
+    top:0;
+    transform:translate(-50%,-50%);
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-width:118px;
+    height:30px;
+    padding:0 16px;
+    border-radius:999px;
+    background:#111827;
+    color:#fff;
+    font-size:13px;
+    font-weight:950;
+    line-height:1;
+    white-space:nowrap;
+    box-shadow:0 8px 16px rgba(15,23,42,.16);
+  }
+  .black-orb-amp-final-total-grid{
+    display:grid;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:7px;
+  }
+  .black-orb-amp-final-total-item{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    min-width:0;
+    min-height:58px;
+    padding:7px 4px;
+    border:2px solid rgba(20,184,166,.24);
+    border-radius:14px;
+    background:#fff;
+    box-shadow:0 6px 14px rgba(15,23,42,.05);
+  }
+  .black-orb-amp-final-total-label{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-width:42px;
+    height:22px;
+    padding:0 9px;
+    border-radius:999px;
+    color:#fff;
+    font-size:12px;
+    font-weight:950;
+    line-height:1;
+  }
+  .black-orb-amp-final-total-label.wind{background:var(--wind-color);color:#fff;}
+  .black-orb-amp-final-total-label.earth{background:var(--earth-color);color:#111827;}
+  .black-orb-amp-final-total-label.fire{background:var(--fire-color);color:#fff;}
+  .black-orb-amp-final-total-label.water{background:var(--water-color);color:#fff;}
+  .black-orb-amp-final-total-value{
+    margin-top:6px;
+    color:#0f766e;
+    font-size:13px;
+    font-weight:950;
+    line-height:1;
+    letter-spacing:-.03em;
+    white-space:nowrap;
+  }
+  @media(max-width:768px){
+    .black-orb-amp-final-total{margin-top:15px;padding:16px 9px 10px;border-radius:16px;}
+    .black-orb-amp-final-total-title{height:27px;min-width:104px;padding:0 13px;font-size:11.5px;}
+    .black-orb-amp-final-total-grid{gap:5px;}
+    .black-orb-amp-final-total-item{min-height:50px;padding:6px 2px;border-radius:12px;}
+    .black-orb-amp-final-total-label{min-width:36px;height:20px;padding:0 7px;font-size:10.5px;}
+    .black-orb-amp-final-total-value{font-size:11.5px;margin-top:5px;}
+  }
+</style>
+
+<script id="black-orb-amplify-final-total-script">(function () {
+    'use strict';
+    const DISPLAY = [
+        { key: 'wind', label: '바람' },
+        { key: 'earth', label: '땅' },
+        { key: 'fire', label: '불' },
+        { key: 'water', label: '물' }
+    ];
+    function num(value) {
+        const n = Number(String(value !== null && value !== void 0 ? value : '').replace(/,/g, '').replace(/[^0-9.\-]/g, ''));
+        return Number.isFinite(n) ? n : 0;
+    }
+    function formatPercent(value) {
+        const rounded = Math.round((Number(value) || 0) * 100) / 100;
+        return '+' + rounded.toLocaleString('ko-KR', { maximumFractionDigits: 2 }) + '%';
+    }
+    function readJson(key) {
+        try {
+            return JSON.parse(localStorage.getItem(key) || 'null') || null;
+        }
+        catch (e) {
+            return null;
+        }
+    }
+    function readOrderStatueTotals() {
+        let saved = null;
+        try {
+            if (typeof window.getBlackOrbOrderStatueFinalValues === 'function')
+                saved = window.getBlackOrbOrderStatueFinalValues();
+        }
+        catch (e) { }
+        if (!saved)
+            saved = readJson('blackOrbOrderStatueSettings') || {};
+        return {
+            wind: num(saved.wind),
+            earth: num(saved.earth),
+            fire: num(saved.fire),
+            water: num(saved.water)
+        };
+    }
+    function readResonanceAmp() {
+        const saved = readJson('blackOrbResonanceSettings') || {};
+        if (saved.amp !== undefined)
+            return num(saved.amp);
+        if (saved.ampText !== undefined)
+            return num(saved.ampText);
+        const result = document.getElementById('blackOrbResonanceAmpValue');
+        return result ? num(result.textContent) : 0;
+    }
+    function readOptionSumTotals() {
+        try {
+            if (typeof window.calculateBlackOrbAmplifyOptionTotals === 'function') {
+                const totals = window.calculateBlackOrbAmplifyOptionTotals() || {};
+                return {
+                    wind: num(totals.wind),
+                    earth: num(totals.earth),
+                    fire: num(totals.fire),
+                    water: num(totals.water)
+                };
+            }
+        }
+        catch (e) { }
+        return { wind: 0, earth: 0, fire: 0, water: 0 };
+    }
+    function calculateFinalTotals() {
+        const order = readOrderStatueTotals();
+        const option = readOptionSumTotals();
+        const resonance = readResonanceAmp();
+        return {
+            wind: order.wind + option.wind + resonance,
+            earth: order.earth + option.earth + resonance,
+            fire: order.fire + option.fire + resonance,
+            water: order.water + option.water + resonance
+        };
+    }
+    function ensureFinalTotalBox() {
+        const wrap = document.querySelector('.black-orb-damage-amp-wrap');
+        if (!wrap)
+            return null;
+        let box = document.getElementById('blackOrbAmpFinalTotalBox');
+        if (!box) {
+            box = document.createElement('div');
+            box.id = 'blackOrbAmpFinalTotalBox';
+            box.className = 'black-orb-amp-final-total';
+            box.setAttribute('aria-label', '증폭 데미지 최종 합계');
+            box.innerHTML = `
+        <div class="black-orb-amp-final-total-title">최종 증폭 데미지</div>
+        <div class="black-orb-amp-final-total-grid">
+          ${DISPLAY.map(function (item) {
+                return `<div class="black-orb-amp-final-total-item"><span class="black-orb-amp-final-total-label ${item.key}">${item.label}</span><span id="blackOrbAmpFinalTotal_${item.key}" class="black-orb-amp-final-total-value">+0%</span></div>`;
+            }).join('')}
+        </div>
+      `;
+            wrap.appendChild(box);
+        }
+        return box;
+    }
+    function updateFinalTotal() {
+        ensureFinalTotalBox();
+        const totals = calculateFinalTotals();
+        DISPLAY.forEach(function (item) {
+            const el = document.getElementById('blackOrbAmpFinalTotal_' + item.key);
+            if (el)
+                el.textContent = formatPercent(totals[item.key]);
+        });
+        return totals;
+    }
+    function bindAutoRefresh() {
+        if (document.documentElement.dataset.blackOrbAmpFinalTotalBound === '1')
+            return;
+        document.documentElement.dataset.blackOrbAmpFinalTotalBound = '1';
+        document.addEventListener('click', function (e) {
+            const btn = e.target && e.target.closest ? e.target.closest('button') : null;
+            if (!btn)
+                return;
+            setTimeout(updateFinalTotal, 80);
+            setTimeout(updateFinalTotal, 350);
+        }, true);
+        document.addEventListener('input', function (e) {
+            const target = e.target;
+            if (target && target.matches && target.matches('input'))
+                setTimeout(updateFinalTotal, 80);
+        }, true);
+        window.addEventListener('storage', updateFinalTotal);
+    }
+    function install() {
+        ensureFinalTotalBox();
+        updateFinalTotal();
+        bindAutoRefresh();
+    }
+    window.calculateBlackOrbAmplifyDamageFinalTotals = calculateFinalTotals;
+    window.updateBlackOrbAmplifyDamageFinalTotal = updateFinalTotal;
+    window.updateBlackOrbAmplifyDamageTotal = updateFinalTotal;
+    window.updateBlackOrbDamageAmpTotal = updateFinalTotal;
+    if (document.readyState === 'loading')
+        document.addEventListener('DOMContentLoaded', install);
+    else
+        install();
+    window.addEventListener('load', function () {
+        install();
+        setTimeout(install, 300);
+        setTimeout(install, 1000);
+    });
+    window.addEventListener('pageshow', function () { setTimeout(install, 0); });
+})();
+</script>
+
+
+
+<!-- FINAL PATCH: 블랙 오브 최종 속성별 데미지 변경 전/후 비교 -->
+<style id="black-orb-final-damage-compare-style">
+  .black-orb-final-damage-compare{
+    position:relative;
+    margin:20px 0 6px;
+    padding:20px 12px 12px;
+    border:2px solid rgba(20,184,166,.36);
+    border-radius:20px;
+    background:linear-gradient(180deg,rgba(240,253,250,.84),rgba(255,255,255,.98));
+    box-shadow:0 8px 18px rgba(15,23,42,.06);
+  }
+  .black-orb-final-damage-compare-title{
+    position:absolute;
+    left:50%;
+    top:0;
+    transform:translate(-50%,-50%);
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-width:132px;
+    height:30px;
+    padding:0 16px;
+    border-radius:999px;
+    background:#111827;
+    color:#fff;
+    font-size:13px;
+    font-weight:950;
+    line-height:1;
+    white-space:nowrap;
+    box-shadow:0 8px 16px rgba(15,23,42,.16);
+  }
+  .black-orb-final-damage-compare-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:7px;
+  }
+  .black-orb-final-damage-compare-item{
+    display:grid;
+    grid-template-columns:auto minmax(0,1fr) minmax(0,1fr) minmax(0,1fr);
+    align-items:center;
+    gap:6px;
+    min-width:0;
+    padding:8px 9px;
+    border:2px solid rgba(20,184,166,.22);
+    border-radius:15px;
+    background:#fff;
+    box-shadow:0 6px 14px rgba(15,23,42,.05);
+  }
+  .black-orb-final-damage-label{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-width:45px;
+    height:24px;
+    padding:0 10px;
+    border-radius:999px;
+    color:#fff;
+    font-size:12px;
+    font-weight:950;
+    line-height:1;
+    white-space:nowrap;
+  }
+  .black-orb-final-damage-label.wind{background:var(--wind-color,#14d4c0);color:#fff;}
+  .black-orb-final-damage-label.earth{background:var(--earth-color,#ffc45f);color:#111827;}
+  .black-orb-final-damage-label.fire{background:var(--fire-color,#c21a08);color:#fff;}
+  .black-orb-final-damage-label.water{background:var(--water-color,#07006e);color:#fff;}
+  .black-orb-final-damage-row{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:4px;
+    min-width:0;
+    min-height:24px;
+    padding:0 4px;
+    border-radius:999px;
+    background:rgba(248,250,252,.9);
+    font-size:11px;
+    font-weight:900;
+    letter-spacing:-.045em;
+    color:#475569;
+    white-space:nowrap;
+  }
+  .black-orb-final-damage-row strong{
+    color:#111827;
+    font-size:11px;
+    font-weight:950;
+    letter-spacing:-.055em;
+  }
+  .black-orb-final-damage-diff{
+    background:#64748b;
+    color:#fff;
+  }
+  .black-orb-final-damage-diff span,
+  .black-orb-final-damage-diff strong{
+    color:#fff;
+  }
+  .black-orb-final-damage-diff.positive{background:#16a34a;}
+  .black-orb-final-damage-diff.negative{background:#dc2626;}
+  .black-orb-final-damage-diff.zero{background:#64748b;}
+  .black-orb-final-damage-diff strong.positive,
+  .black-orb-final-damage-diff strong.negative,
+  .black-orb-final-damage-diff strong.zero{color:#fff;}
+  @media(max-width:768px){
+    .black-orb-final-damage-compare{margin-top:18px;padding:18px 7px 10px;border-radius:18px;}
+    .black-orb-final-damage-compare-title{height:27px;min-width:118px;padding:0 12px;font-size:11.5px;}
+    .black-orb-final-damage-compare-grid{gap:6px;}
+    .black-orb-final-damage-compare-item{grid-template-columns:auto minmax(0,1fr) minmax(0,1fr) minmax(0,1fr);gap:4px;padding:7px 5px;border-radius:13px;}
+    .black-orb-final-damage-label{min-width:38px;height:22px;padding:0 7px;font-size:10.5px;}
+    .black-orb-final-damage-row{min-height:22px;padding:0 3px;font-size:9.7px;gap:2px;}
+    .black-orb-final-damage-row strong{font-size:9.8px;}
+  }
+  @media(max-width:380px){
+    .black-orb-final-damage-compare{padding-left:5px;padding-right:5px;}
+    .black-orb-final-damage-compare-item{gap:3px;padding-left:4px;padding-right:4px;}
+    .black-orb-final-damage-label{min-width:35px;height:21px;font-size:10px;padding:0 6px;}
+    .black-orb-final-damage-row{font-size:9px;padding:0 2px;}
+    .black-orb-final-damage-row strong{font-size:9.1px;}
+  }
+</style>
+<script id="black-orb-final-damage-compare-script">(function () {
+    'use strict';
+    const STORAGE_KEY = 'mulmung_black_orb_detail_states_v1';
+    const ATTRS = ['wind', 'earth', 'fire', 'water'];
+    const DISPLAY = [
+        { key: 'wind', label: '바람' },
+        { key: 'earth', label: '땅' },
+        { key: 'fire', label: '불' },
+        { key: 'water', label: '물' }
+    ];
+    function num(value) {
+        const n = Number(String(value !== null && value !== void 0 ? value : '').replace(/,/g, '').replace(/[^0-9.\-]/g, ''));
+        return Number.isFinite(n) ? n : 0;
+    }
+    function formatPercent(value) {
+        const rounded = Math.round((Number(value) || 0) * 100) / 100;
+        return (rounded >= 0 ? '+' : '') + rounded.toLocaleString('ko-KR', { maximumFractionDigits: 2 }) + '%';
+    }
+    function clone(obj) {
+        try {
+            return JSON.parse(JSON.stringify(obj || {}));
+        }
+        catch (e) {
+            return {};
+        }
+    }
+    function emptyState() {
+        return {
+            wind: { topValue: '', rows: [] },
+            earth: { topValue: '', rows: [] },
+            fire: { topValue: '', rows: [] },
+            water: { topValue: '', rows: [] }
+        };
+    }
+    function normalizeState(raw) {
+        const base = emptyState();
+        ATTRS.forEach(function (attr) {
+            const src = raw && raw[attr] ? raw[attr] : {};
+            base[attr].topValue = typeof src.topValue === 'string' || typeof src.topValue === 'number' ? String(src.topValue) : '';
+            base[attr].rows = Array.isArray(src.rows) ? src.rows.slice(0, 4).map(function (row) {
+                return {
+                    value: row && typeof row.value === 'string' ? row.value : 'all',
+                    label: row && typeof row.label === 'string' ? row.label : '모든',
+                    badgeClass: row && typeof row.badgeClass === 'string' ? row.badgeClass : (row && typeof row.value === 'string' ? row.value : 'all'),
+                    number: row && typeof row.number === 'string' ? row.number : '',
+                    percentValue: row && (typeof row.percentValue === 'string' || typeof row.percentValue === 'number') ? String(row.percentValue) : '',
+                    percentLabel: row && typeof row.percentLabel === 'string' ? row.percentLabel : '없음',
+                    percentClass: row && typeof row.percentClass === 'string' ? row.percentClass : 'none'
+                };
+            }) : [];
+            while (base[attr].rows.length < 4) {
+                base[attr].rows.push({ value: 'all', label: '모든', badgeClass: 'all', number: '', percentValue: '', percentLabel: '없음', percentClass: 'none' });
+            }
+        });
+        return base;
+    }
+    function readSavedStates() {
+        try {
+            if (typeof blackOrbDetailPopupState !== 'undefined' && blackOrbDetailPopupState) {
+                return normalizeState(blackOrbDetailPopupState);
+            }
+        }
+        catch (e) { }
+        try {
+            return normalizeState(JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null') || {});
+        }
+        catch (e) {
+            return emptyState();
+        }
+    }
+    function collectBoxState(box) {
+        if (!box)
+            return { topValue: '', rows: [] };
+        const topInput = box.querySelector('.black-orb-option-row .black-orb-input');
+        const rows = Array.from(box.querySelectorAll('.black-orb-detail-row')).slice(0, 4).map(function (row) {
+            const picker = row.querySelector('.black-orb-element-picker, .black-orb-element-picker-btn');
+            const valueBtn = row.querySelector('.black-orb-value-badge');
+            const input = row.querySelector('.black-orb-input, .black-orb-small-input');
+            return {
+                value: (picker === null || picker === void 0 ? void 0 : picker.dataset.value) || (picker === null || picker === void 0 ? void 0 : picker.dataset.class) || 'all',
+                label: (picker === null || picker === void 0 ? void 0 : picker.dataset.label) || '모든',
+                badgeClass: (picker === null || picker === void 0 ? void 0 : picker.dataset.class) || (picker === null || picker === void 0 ? void 0 : picker.dataset.value) || 'all',
+                number: input ? input.value : '',
+                percentValue: (valueBtn === null || valueBtn === void 0 ? void 0 : valueBtn.dataset.value) || '',
+                percentLabel: (valueBtn === null || valueBtn === void 0 ? void 0 : valueBtn.dataset.label) || '없음',
+                percentClass: (valueBtn === null || valueBtn === void 0 ? void 0 : valueBtn.dataset.class) || 'none'
+            };
+        });
+        while (rows.length < 4) {
+            rows.push({ value: 'all', label: '모든', badgeClass: 'all', number: '', percentValue: '', percentLabel: '없음', percentClass: 'none' });
+        }
+        return { topValue: topInput ? topInput.value : '', rows };
+    }
+    function getCurrentMainAttr() {
+        if (typeof window.getCurrentMainBlackOrbAttribute === 'function')
+            return window.getCurrentMainBlackOrbAttribute() || '';
+        const panel = document.getElementById('blackOrbPanel');
+        if (!panel)
+            return '';
+        return ATTRS.find(function (attr) { return panel.classList.contains('selected-' + attr); }) || '';
+    }
+    function rowTarget(row) {
+        return row && (row.value || row.badgeClass || 'all') || 'all';
+    }
+    function addTarget(totals, target, value) {
+        if (!value || target === 'none')
+            return;
+        if (target === 'all') {
+            ATTRS.forEach(function (attr) { totals[attr] += value; });
+            return;
+        }
+        if (Object.prototype.hasOwnProperty.call(totals, target))
+            totals[target] += value;
+    }
+    function calculateOptionSum(states) {
+        const totals = { wind: 0, earth: 0, fire: 0, water: 0 };
+        ATTRS.forEach(function (owner) {
+            var _a;
+            const rows = Array.isArray((_a = states === null || states === void 0 ? void 0 : states[owner]) === null || _a === void 0 ? void 0 : _a.rows) ? states[owner].rows : [];
+            rows.slice(0, 4).forEach(function (row) {
+                const target = rowTarget(row);
+                const base = num(row && row.percentValue);
+                if (!base)
+                    return;
+                const multiplier = target === owner ? 2 : 1;
+                addTarget(totals, target, base * multiplier);
+            });
+        });
+        return totals;
+    }
+    function readOrderStatueTotals() {
+        let saved = null;
+        try {
+            if (typeof window.getBlackOrbOrderStatueFinalValues === 'function')
+                saved = window.getBlackOrbOrderStatueFinalValues();
+        }
+        catch (e) { }
+        if (!saved) {
+            try {
+                saved = JSON.parse(localStorage.getItem('blackOrbOrderStatueSettings') || 'null') || {};
+            }
+            catch (e) {
+                saved = {};
+            }
+        }
+        return { wind: num(saved.wind), earth: num(saved.earth), fire: num(saved.fire), water: num(saved.water) };
+    }
+    function readResonanceAmp() {
+        var _a;
+        try {
+            const saved = JSON.parse(localStorage.getItem('blackOrbResonanceSettings') || 'null') || {};
+            if (saved.amp !== undefined)
+                return num(saved.amp);
+            if (saved.ampText !== undefined)
+                return num(saved.ampText);
+            const lv = Number(String((_a = saved.level) !== null && _a !== void 0 ? _a : '').replace(/,/g, '').replace(/[^0-9]/g, ''));
+            if (Number.isFinite(lv) && lv >= 50)
+                return Math.floor((lv - 48) / 24) * 2;
+        }
+        catch (e) { }
+        const el = document.getElementById('blackOrbResonanceAmpValue');
+        return el ? num(el.textContent) : 0;
+    }
+    function calculateAmplifyTotals(states) {
+        const order = readOrderStatueTotals();
+        const option = calculateOptionSum(states);
+        const resonance = readResonanceAmp();
+        return {
+            wind: order.wind + option.wind + resonance,
+            earth: order.earth + option.earth + resonance,
+            fire: order.fire + option.fire + resonance,
+            water: order.water + option.water + resonance
+        };
+    }
+    function readIncreaseTotals() {
+        const ids = {
+            wind: 'blackOrbTotalIncreaseWindDamage',
+            earth: 'blackOrbTotalIncreaseEarthDamage',
+            fire: 'blackOrbTotalIncreaseFireDamage',
+            water: 'blackOrbTotalIncreaseWaterDamage'
+        };
+        const result = { wind: 0, earth: 0, fire: 0, water: 0 };
+        ATTRS.forEach(function (attr) {
+            const el = document.getElementById(ids[attr]);
+            result[attr] = el ? num(el.textContent) : 0;
+        });
+        return result;
+    }
+    function topMainOptions(states) {
+        var _a, _b, _c, _d;
+        return {
+            wind: num((_a = states === null || states === void 0 ? void 0 : states.wind) === null || _a === void 0 ? void 0 : _a.topValue),
+            earth: num((_b = states === null || states === void 0 ? void 0 : states.earth) === null || _b === void 0 ? void 0 : _b.topValue),
+            fire: num((_c = states === null || states === void 0 ? void 0 : states.fire) === null || _c === void 0 ? void 0 : _c.topValue),
+            water: num((_d = states === null || states === void 0 ? void 0 : states.water) === null || _d === void 0 ? void 0 : _d.topValue)
+        };
+    }
+    function calculateFinalDamage(states) {
+        const increase = readIncreaseTotals();
+        const amplify = calculateAmplifyTotals(states);
+        const top = topMainOptions(states);
+        return {
+            wind: increase.wind + top.wind * (1 + amplify.wind / 100),
+            earth: increase.earth + top.earth * (1 + amplify.earth / 100),
+            fire: increase.fire + top.fire * (1 + amplify.fire / 100),
+            water: increase.water + top.water * (1 + amplify.water / 100)
+        };
+    }
+    function buildAfterStates(beforeStates) {
+        const afterStates = clone(beforeStates);
+        const mainAttr = getCurrentMainAttr();
+        const afterBox = document.querySelector('#blackOrbPanel .black-orb-after-box');
+        if (mainAttr && afterBox) {
+            afterStates[mainAttr] = collectBoxState(afterBox);
+        }
+        return normalizeState(afterStates);
+    }
+    function ensureCompareBox() {
+        const panel = document.getElementById('blackOrbPanel');
+        if (!panel)
+            return null;
+        let box = document.getElementById('blackOrbFinalDamageCompareBox');
+        if (!box) {
+            box = document.createElement('div');
+            box.id = 'blackOrbFinalDamageCompareBox';
+            box.className = 'black-orb-final-damage-compare';
+            box.setAttribute('aria-label', '최종 속성별 데미지 변경 전후 비교');
+            box.innerHTML = `
+        <div class="black-orb-final-damage-compare-title">최종 데미지 비교</div>
+        <div class="black-orb-final-damage-compare-grid">
+          ${DISPLAY.map(function (item) {
+                return `<div class="black-orb-final-damage-compare-item">
+              <span class="black-orb-final-damage-label ${item.key}">${item.label}</span>
+              <div class="black-orb-final-damage-row"><span>전</span><strong id="blackOrbFinalDamageBefore_${item.key}">+0%</strong></div>
+              <div class="black-orb-final-damage-row"><span>후</span><strong id="blackOrbFinalDamageAfter_${item.key}">+0%</strong></div>
+              <div class="black-orb-final-damage-row black-orb-final-damage-diff"><span>차이</span><strong id="blackOrbFinalDamageDiff_${item.key}" class="zero">+0%</strong></div>
+            </div>`;
+            }).join('')}
+        </div>`;
+            const applyRow = panel.querySelector('.black-orb-apply-row');
+            if (applyRow)
+                applyRow.insertAdjacentElement('beforebegin', box);
+            else
+                panel.appendChild(box);
+        }
+        return box;
+    }
+    function updateCompare() {
+        ensureCompareBox();
+        const beforeStates = readSavedStates();
+        const afterStates = buildAfterStates(beforeStates);
+        const beforeDamage = calculateFinalDamage(beforeStates);
+        const afterDamage = calculateFinalDamage(afterStates);
+        DISPLAY.forEach(function (item) {
+            const beforeEl = document.getElementById('blackOrbFinalDamageBefore_' + item.key);
+            const afterEl = document.getElementById('blackOrbFinalDamageAfter_' + item.key);
+            const diffEl = document.getElementById('blackOrbFinalDamageDiff_' + item.key);
+            const diff = afterDamage[item.key] - beforeDamage[item.key];
+            if (beforeEl)
+                beforeEl.textContent = formatPercent(beforeDamage[item.key]);
+            if (afterEl)
+                afterEl.textContent = formatPercent(afterDamage[item.key]);
+            if (diffEl) {
+                const diffStateClass = diff > 0 ? 'positive' : (diff < 0 ? 'negative' : 'zero');
+                diffEl.textContent = formatPercent(diff);
+                diffEl.classList.remove('positive', 'negative', 'zero');
+                diffEl.classList.add(diffStateClass);
+                const diffRow = diffEl.closest('.black-orb-final-damage-diff');
+                if (diffRow) {
+                    diffRow.classList.remove('positive', 'negative', 'zero');
+                    diffRow.classList.add(diffStateClass);
+                }
+            }
+        });
+        return { before: beforeDamage, after: afterDamage };
+    }
+    function scheduleUpdate() {
+        clearTimeout(window.__blackOrbFinalDamageCompareTimer);
+        window.__blackOrbFinalDamageCompareTimer = setTimeout(updateCompare, 0);
+        setTimeout(updateCompare, 120);
+        setTimeout(updateCompare, 450);
+    }
+    function wrap(name) {
+        const original = window[name];
+        if (typeof original !== 'function' || original.__finalDamageCompareWrapped)
+            return;
+        const wrapped = function () {
+            const result = original.apply(this, arguments);
+            Promise.resolve(result).finally(scheduleUpdate);
+            return result;
+        };
+        wrapped.__finalDamageCompareWrapped = true;
+        window[name] = wrapped;
+    }
+    function bind() {
+        ensureCompareBox();
+        ['updateBlackOrbIncreaseDamageTotal', 'updateBlackOrbAmplifyDamageFinalTotal', 'updateBlackOrbAmplifyDamageTotal', 'updateBlackOrbDamageAmpTotal', 'saveBlackOrbDetailStateToStorage', 'applyBlackOrbAfterToBefore', 'applyBlackOrbSavedStateToMainLeft', 'selectBlackOrbMainAttribute'].forEach(wrap);
+        document.addEventListener('input', function (e) {
+            if (e.target && e.target.closest && e.target.closest('#blackOrbPanel, .black-orb-basic-info-wrap, .black-orb-damage-amp-wrap'))
+                scheduleUpdate();
+        }, true);
+        document.addEventListener('change', function (e) {
+            if (e.target && e.target.closest && e.target.closest('#blackOrbPanel, .black-orb-basic-info-wrap, .black-orb-damage-amp-wrap'))
+                scheduleUpdate();
+        }, true);
+        document.addEventListener('click', function (e) {
+            const btn = e.target && e.target.closest ? e.target.closest('button') : null;
+            if (btn)
+                scheduleUpdate();
+        }, true);
+        window.addEventListener('storage', scheduleUpdate);
+        scheduleUpdate();
+    }
+    window.calculateBlackOrbFinalDamageCompare = function () {
+        const beforeStates = readSavedStates();
+        const afterStates = buildAfterStates(beforeStates);
+        return { before: calculateFinalDamage(beforeStates), after: calculateFinalDamage(afterStates) };
+    };
+    window.updateBlackOrbFinalDamageCompare = updateCompare;
+    if (document.readyState === 'loading')
+        document.addEventListener('DOMContentLoaded', bind);
+    else
+        bind();
+    window.addEventListener('load', function () { bind(); setTimeout(updateCompare, 500); setTimeout(updateCompare, 1200); });
+    window.addEventListener('pageshow', function () { setTimeout(updateCompare, 0); });
+})();
+</script>
+
+
+<script>
+(function () {
+    'use strict';
+    function digits(value) {
+        return String(value || '').replace(/[^0-9]/g, '');
+    }
+    function parseJSON(raw) {
+        try { return JSON.parse(raw || 'null'); } catch (e) { return null; }
+    }
+    function syncResonanceToCloud() {
+        if (typeof window.saveBlackOrbResonanceSettingsToCloud !== 'function')
+            return;
+        var saved = parseJSON(localStorage.getItem('blackOrbResonanceSettings')) || {};
+        var input = document.getElementById('blackOrbResonanceLevel');
+        if (input && input.value !== '')
+            saved.level = digits(input.value);
+        if (saved && saved.level !== undefined)
+            Promise.resolve(window.saveBlackOrbResonanceSettingsToCloud(saved)).catch(function (e) { console.warn('오브 공명 저장 동기화 실패:', e); });
+    }
+    function installResonanceCloudWrap() {
+        if (typeof window.saveBlackOrbResonanceSettings !== 'function' || window.saveBlackOrbResonanceSettings.__cloudWrapped)
+            return;
+        var original = window.saveBlackOrbResonanceSettings;
+        window.saveBlackOrbResonanceSettings = function () {
+            var result = original.apply(this, arguments);
+            Promise.resolve(result).finally(function () { setTimeout(syncResonanceToCloud, 0); });
+            return result;
+        };
+        window.saveBlackOrbResonanceSettings.__cloudWrapped = true;
+    }
+    function installMainLevelCloudSync() {
+        var input = document.getElementById('blackOrbMainLevelInput');
+        if (!input || input.dataset.mainLevelCloudSync === '1')
+            return;
+        input.dataset.mainLevelCloudSync = '1';
+        var timer = null;
+        function save() {
+            if (typeof window.saveBlackOrbMainLevelToCloud !== 'function')
+                return;
+            clearTimeout(timer);
+            timer = setTimeout(function () {
+                Promise.resolve(window.saveBlackOrbMainLevelToCloud(digits(input.value))).catch(function (e) { console.warn('오브 레벨 저장 동기화 실패:', e); });
+            }, 350);
+        }
+        input.addEventListener('input', save);
+        input.addEventListener('change', save);
+        input.addEventListener('blur', save);
+    }
+    function installBlackOrbMissingCloudSync() {
+        installResonanceCloudWrap();
+        installMainLevelCloudSync();
+    }
+    window.installBlackOrbMissingCloudSync = installBlackOrbMissingCloudSync;
+    if (document.readyState === 'loading')
+        document.addEventListener('DOMContentLoaded', installBlackOrbMissingCloudSync);
+    else
+        installBlackOrbMissingCloudSync();
+    window.addEventListener('load', function () {
+        installBlackOrbMissingCloudSync();
+        setTimeout(installBlackOrbMissingCloudSync, 500);
+        setTimeout(installBlackOrbMissingCloudSync, 1500);
+    });
+    window.addEventListener('pageshow', function () { setTimeout(installBlackOrbMissingCloudSync, 0); });
+})();
+</script>
+
+
+
+<script id="black-orb-missing-cloud-realtime-final-patch">
+(function () {
+  'use strict';
+  function digits(value){ return String(value || '').replace(/[^0-9]/g, ''); }
+  function readJson(key){ try { return JSON.parse(localStorage.getItem(key) || 'null'); } catch(e){ return null; } }
+  function syncResonanceFormulaSave(){
+    if (typeof window.saveBlackOrbResonanceSettingsToCloud !== 'function') return;
+    var saved = readJson('blackOrbResonanceSettings') || {};
+    var input = document.getElementById('blackOrbResonanceLevel');
+    if (input && input.value !== '') {
+      var level = digits(input.value);
+      saved.level = Number(level || 0);
+      if (typeof window.calculateBlackOrbResonanceAmp === 'function') {
+        saved.amp = window.calculateBlackOrbResonanceAmp(saved.level);
+        saved.ampText = '+' + saved.amp + '%';
+      }
+    }
+    saved.savedAt = new Date().toISOString();
+    Promise.resolve(window.saveBlackOrbResonanceSettingsToCloud(saved)).catch(function(e){ console.warn('오브 공명 계정 저장 실패:', e); });
+  }
+  document.addEventListener('click', function(e){
+    var target = e.target && e.target.closest ? e.target.closest('#blackOrbResonanceFormulaSaveBtn, #blackOrbResonanceSaveBtn') : null;
+    if (!target) return;
+    setTimeout(syncResonanceFormulaSave, 80);
+  }, true);
+  window.addEventListener('storage', function(){
+    if (typeof window.updateBlackOrbFinalDamageCompare === 'function') window.updateBlackOrbFinalDamageCompare();
+  });
+})();
+</script>
+
+</body>
+</html>
